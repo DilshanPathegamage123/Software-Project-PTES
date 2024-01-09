@@ -1,0 +1,236 @@
+
+.Navigation{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    position: sticky;
+    top: 0;
+  
+  }
+  nav {
+      width: 100%;
+      
+      background-color: rgb(255, 255, 255);
+      justify-content: space-between;
+      padding-top: 10px;
+   
+    }
+  
+    
+    
+    nav ul {
+      display: flex;
+      width: 100%;
+      
+    }
+    
+    .NavItem {
+      list-style: none;
+      margin: 0;
+      display: flex;
+      align-items: center; 
+    }
+    
+    .VehicleType {
+      list-style: none;
+  margin-left: auto;
+     
+  text-align: left;
+  
+      
+      
+    }
+    
+    .NavButton1 {
+      text-decoration: none;
+  
+      color: #0254A4;
+      margin-left: 30px;
+      margin-top: 10px;
+      border-radius: 5px;
+      
+  border: 2px solid #0254A4;
+  width: 80px;
+  height: 30px;
+  text-align: center;
+  padding-top: 2px;
+  
+  font-size: 15px;
+  font-weight:500;
+  
+    }
+  
+    .NavButton2 {
+      text-decoration: none;
+      color: rgb(255, 255, 255);
+      margin-left: 30px;
+      margin-right: 50px;
+      margin-top: 10px;
+      border-radius: 5px;
+  background: #0254A4;
+     
+      width: 80px;
+      height: 30px;
+      text-align: center;
+      padding-top: 3px;
+      
+      font-size: 15px;
+      font-weight: 500;
+  
+    }
+    
+    .Logo {
+      width: 75px;
+      height: 35px; 
+      top: 0px;
+      margin-left: 10px;
+      
+  
+    }
+    
+    .BrandName {
+      margin:0 20px;
+      width: 170px;
+      height: 25px;
+    
+    }
+    
+    .dropdown-toggle{
+      
+      
+      border: none;
+     
+      text-align: left;
+      padding-top: 4px;
+      font-size: 15px;
+      height: 20px;
+      margin-top: 10px;
+    }
+  
+    .dropdown-item{
+      text-align: center;
+      padding-top: 4px;
+      font-size: 15px;
+    }
+  
+    nav .Menu{
+      display: none;
+      justify-content: space-between;
+      width: 80px;
+      height: 60px;
+      position: absolute;
+      top: 60px;
+      background-color: rgb(255, 255, 255);
+      padding-top: 10px;
+      flex-direction: column;
+      left: 25px;
+    }
+  
+    nav .Menu span{ 
+      height: 30px;
+      width: 80px;
+      align-items: center;
+      background-color: rgb(255, 255, 255);
+      border-radius: 5px;
+    }
+  
+    nav ul .open{
+      display: flex;
+    }
+  
+   /*media query for smaller screens */
+  @media only screen and (max-width: 768px) {
+    nav {
+      padding-top: 0;
+    }
+  
+    nav ul {
+      flex-direction: column;
+      align-items: left; 
+      margin: 0;
+    }
+  
+    .NavItem {
+     /* Add some margin between items */
+    }
+  
+    .Logo{
+      margin-top: 10px;
+      margin-left: 0px;
+      align-items: left;
+    }
+    .BrandName{
+      margin-top: 15px;
+      margin-left: 0px;
+      align-items: left;
+  
+    }
+    .VehicleType {
+      margin-top: 10px;
+      margin-left: 0px;
+      margin-bottom: 10px;
+      align-items: left;
+      text-align: left;
+    }
+  
+    .NavButton1,
+    .NavButton2 {
+      margin-left: 0; /* Remove left margin on buttons */
+      margin-top: 0px;
+      width : 100px; 
+      height: 30px;
+      color: #0254A4;
+      background-color: rgb(255, 255, 255);
+      border: none;
+      text-align: left;
+      margin-bottom: 0px;
+      padding-left: 10px;
+      padding-top: 3px;
+    }
+  
+    .Menu {
+      display: flex; /* Make the menu visible on smaller screens */
+      position: static; /* Remove absolute positioning */
+      margin-top: 10px; /* Adjust margin-top for spacing */
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    .Menu span {
+      height: 5px; /* Decrease the height of the menu bars */
+      width: 30px; /* Adjust the width of the menu bars */
+      background-color: #000; /* Make the menu bars black */
+      border-radius: 5px;
+    }
+  
+    .dropdown {
+      margin: 0; /* Add margin for better spacing */
+   
+      width: 80px;
+    }
+  
+    .dropdown-toggle {
+      margin: 0; /* Remove unnecessary margin */
+      width: 100px; /* Full width on smaller screens */
+      text-align: left !important;; /* Align text to the left on smaller screens */
+      
+    }
+  
+    .dropdown-menu {
+      text-align: left !important;; /* Align text to the left on smaller screens */
+      width: 100px; /* Full width on smaller screens */
+      
+    }
+  
+  
+    .dropdown-item{
+      text-align: left ;
+      padding-top: 4px;
+      font-size: 15px;
+     
+    }
+  }
+  
+  
+  

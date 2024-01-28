@@ -8,6 +8,8 @@ function App() {
 
   return (
     <>
+    <button type="button" className="btn btn-primary">Primary</button>
+    <input className="btn btn-primary" type="reset" value="Reset"></input>
       
     </>
   )

@@ -1,0 +1,36 @@
+.HomePage {
+
+    width: 100vw; /* Set width to 100% of viewport width */
+    height: auto;
+    
+  }
+
+  .HomeBackground{
+    width: 100vw; /* Set width to 100% of viewport width */
+  }
+  
+  .HomeBackground img {
+    width: 100%; /* Make sure the background image does not exceed the viewport width */
+    height: 273px;
+  }
+  
+  .SearchTravel {
+    position: absolute;
+    top: 275px;
+    left: 50%;
+    transform: translateX(-50%);  /* Center element horizontally */
+    z-index: 1; /* Set z-index to 1 to make sure the element is above the background image */
+  }
+
+
+  /* .para1{
+    
+height: 305px;
+flex-shrink: 0;
+border-radius: 18px;
+background: linear-gradient(180deg, #042F40 0%, rgba(0, 128, 178, 0.18) 100%);
+
+  } */
+
+  
+  

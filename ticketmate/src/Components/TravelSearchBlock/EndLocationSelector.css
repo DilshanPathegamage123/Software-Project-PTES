@@ -1,0 +1,24 @@
+input{
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 8px;
+    background: var(--White-100, #F0F1F3);
+    border-left: 1px solid rgba(99, 115, 129, 0.10); /* Vertical line styling */
+}
+
+.icon-containor{
+    margin-right: 8px;
+}
+
+.selector{
+    width: 204px;
+height: 50px;
+flex-shrink: 0;
+border-radius: 8px;
+border: 1px solid rgba(99, 115, 129, 0.10);
+background: var(--White-100, #F0F1F3);
+display: flex;
+
+}

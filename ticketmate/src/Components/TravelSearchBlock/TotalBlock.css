@@ -1,0 +1,18 @@
+.TotalBlock{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 1223px;
+height: 122px;
+flex-shrink: 0;
+border-radius: 10px;
+background: #FFF;
+box-shadow: 5px 5px 10.9px 1px rgba(0, 0, 0, 0.16);
+align-items: center;
+margin: auto;
+}
+
+.item1{
+    margin-left: 20px;
+    width: 204px;
+
+}

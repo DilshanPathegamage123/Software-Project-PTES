@@ -1,0 +1,67 @@
+
+.HomeContent{
+height: auto;
+width: 1250px;
+border-radius: 18px;
+margin: auto;
+background: linear-gradient(180deg, #042F40 0%, rgba(0, 128, 178, 0.18) 100%);
+display : grid;
+grid-template-columns:1fr 1fr 1fr;
+grid-template-rows: 1fr;
+column-gap: 20px;
+padding: 20px;
+
+}
+
+.HomeTextContent1{
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin-top: 80px    ;
+    margin-left: 80px;
+}
+
+.HomeImg1{
+    max-width: 260px;
+height: 233px;
+flex-shrink: 0;
+grid-row-start: 1; 
+grid-row-end: 2;
+grid-column-start: 3;
+
+margin-top: 50px;
+margin-right: 80px;
+
+}
+
+.para1{
+    color: #FFF;
+font-family: Poppins;
+font-size: 37px;
+font-style: normal;
+font-weight: 700;
+line-height: 22px; /* 59.459% */
+}
+
+.para2{
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px; /* 78.571% */ 
+}
+
+.para3{
+    width: 673px;
+height: 103px;
+flex-shrink: 0;
+
+color: #FFF;
+font-family: Poppins;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: 22px; /* 122.222% */
+}

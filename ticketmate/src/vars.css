@@ -16,4 +16,10 @@
   --font-sub-title: "poppind-semibold", sans-serif;
   --font-regular: "poppins-regular", sans-serif;
   }
+
+
+  *{
+    font-family: 'poppins', sans-serif;
+  }
+
   

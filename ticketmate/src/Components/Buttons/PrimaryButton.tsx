@@ -24,10 +24,14 @@ function PrimaryButton(props: any) {
       width: props.width,
     };
 
+    const LINK = () => {
+      window.location.href = props.link;
+    }
+
     return (
       <>
           <div>
-              <input type={props.type} className={`btn btn-primary ${classColor} ${Block} ${size}`} value={props.value}  style={buttonStyles}/>
+              <input type={props.type} className={`btn btn-primary ${classColor} ${Block} ${size}`} value={props.value}  style={buttonStyles} onClick={LINK}/>
           </div>
       </>
   )

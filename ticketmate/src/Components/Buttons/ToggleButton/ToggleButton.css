@@ -1,0 +1,7 @@
+@import '../../../vars.css';
+
+.toggleButton{
+    width: 8%;
+    padding-top: 3%;
+    border: none;
+}

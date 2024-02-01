@@ -3,6 +3,7 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import ProfileSection from '../../Components/ProfileSection/ProfileSection'
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton'
 import './BusOwnerPage.css'
+import Footer from '../../Components/Footer/Footer'
 
 function BusOwnerPage() {
   return (
@@ -29,7 +30,7 @@ function BusOwnerPage() {
           
             
         </div>
-        
+        <Footer/>
         
     </>
   )

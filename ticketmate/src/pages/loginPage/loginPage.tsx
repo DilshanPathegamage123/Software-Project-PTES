@@ -1,4 +1,4 @@
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import React from 'react';
 
 function LoginPage() {

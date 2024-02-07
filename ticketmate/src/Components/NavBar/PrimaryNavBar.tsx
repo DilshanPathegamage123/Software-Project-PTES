@@ -5,7 +5,7 @@ import LOGO2 from './assest/logopart2.png'
 import PrimaryButton from '../Buttons/PrimaryButton'
 import '../../vars.css'
 
-function PrimaryNavBar() {
+export default function PrimaryNavBar() {
   return (
     <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
@@ -35,7 +35,5 @@ function PrimaryNavBar() {
             </div>
         </nav>
     </>
-  )
+  );
 }
-
-export default PrimaryNavBar

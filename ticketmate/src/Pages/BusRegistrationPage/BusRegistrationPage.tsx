@@ -3,15 +3,12 @@ import './BusRegistrationPage.css'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import Wheel from './assets/steering-wheel (1).png'
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton'
-import Footer from '../../Components/Footer/Footer'
-
 
 function BusRegistrationPage() {
   return (
     <>
       <PrimaryNavBar/>
-      
-      <div className='container-fluid py-4'>
+      <div className='container-fluid pt-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
@@ -184,8 +181,6 @@ function BusRegistrationPage() {
         </div>
         
       </div>
-
-      <Footer/>
     </>
   )
 }

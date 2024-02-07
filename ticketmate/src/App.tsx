@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import BusOwnerPage from './Pages/BusOwnerPage/BusOwnerPage'
+import BusRegistrationPage from './Pages/BusRegistrationPage/BusRegistrationPage'
 
 
 

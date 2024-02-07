@@ -5,13 +5,10 @@ import LOGO2 from './assest/logopart2.png'
 import PrimaryButton from '../Buttons/PrimaryButton'
 import '../../vars.css'
 
-export default function PrimaryNavBar() {
+function PrimaryNavBar() {
   return (
     <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
-
-        <nav className="navbar navbar-expand-lg navbar-light bg-light cpadding">
-
             <a className="navbar-brand" href="#"> <img src={LOGO} alt="LOGO" width="84px" height="37px" /> <img src={LOGO2} alt="LOGO2" width= "156px" height= "22px" /></a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
@@ -35,5 +32,7 @@ export default function PrimaryNavBar() {
             </div>
         </nav>
     </>
-  );
+  )
 }
+
+export default PrimaryNavBar

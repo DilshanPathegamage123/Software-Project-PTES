@@ -1,0 +1,19 @@
+.selector {
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(99, 115, 129, 0.1);
+  background: var(--White-100, #f0f1f3);
+}
+
+input {
+  outline: none;
+  background: var(--White-100, #f0f1f3);
+  border: none;
+  color: #7d7d7d;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}

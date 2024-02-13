@@ -1,0 +1,18 @@
+
+body{
+    background-image: url("../../assets/login background.png");
+    width: 100%;
+    height: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+/* .container{
+    background-color: white;
+} */
+.custom-bg-color{
+    background-color:#F0F1F3;
+}
+#login-form{
+    border-radius: 200px 0px 0px 0px;
+  
+}

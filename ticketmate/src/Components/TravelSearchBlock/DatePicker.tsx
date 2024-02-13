@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import "./DatePicker.css";
 import axios from "axios";
@@ -19,6 +20,7 @@ export default function DatePicker() {
       console.error("Error while sending date to backend", error);
     }
   };
+
 
   return (
     <div className="datepicker  d-flex ">

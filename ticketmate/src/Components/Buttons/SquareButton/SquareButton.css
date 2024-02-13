@@ -1,0 +1,19 @@
+@import "../../../vars.css";
+
+.square-btn {
+    width: 220px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: var(--color-secondary); /* Bootstrap primary color */
+    color: var(--color-bg); /* Text color */
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .square-btn:hover {
+    background-color: var(--color-primary); /* Darker shade on hover */
+  }

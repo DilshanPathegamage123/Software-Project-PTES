@@ -1,13 +1,13 @@
 // import React from 'react'
-import './footer.css'
-import f_logo from './assets/icon1.png'
-import i_logo from './assets/icon2.png'
-import t_logo from './assets/icon3.png'
+import './Footer.css'
+import f_logo from '../../assets/icon1.png'
+import i_logo from '../../assets/icon2.png'
+import t_logo from '../../assets/icon3.png'
 
 function Footer() {
   return (
 
-      <div className='futter'>
+      <div className='futter mt-3'>
         <div className="container">
         <footer className="py-3 my-0">
             <div className='row'>

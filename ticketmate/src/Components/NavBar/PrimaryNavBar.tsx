@@ -8,7 +8,10 @@ import "../../vars.css";
 function PrimaryNavBar() {
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light cpadding">
+
+
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
+
         <a className="navbar-brand" href="#">
           {" "}
           <img src={LOGO} alt="LOGO" width="84px" height="37px" />{" "}
@@ -49,6 +52,7 @@ function PrimaryNavBar() {
           </ul>
           <form className="form-inline my-2 my-md-0 ">
             <div className="pr-3">
+
               <a href="/passenger_form">
                 <button
                   type="button"
@@ -59,15 +63,13 @@ function PrimaryNavBar() {
               </a>
             </div>
            
+
             <PrimaryButton
               type="button"
               value="SIGN IN"
               color="third"
               IsSmall={true}
-              link="/loginPage"
-              
             />
-            
           </form>
         </div>
       </nav>

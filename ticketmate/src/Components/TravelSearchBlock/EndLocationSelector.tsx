@@ -1,23 +1,53 @@
-import React, { useState} from "react";
+//   //I'm hardcoding the data here. We must fetch it from an API later.
+//   const data = [
+//     "Colombo",
+//     "Gampaha",
+//     "Wattala",
+//     "Negombo",
+//     "Anuradhapura",
+//     "Jaffna",
+//     "Ja-Ela",
+//     "Galle",
+//   ];
+import React, { useEffect, useState } from "react";
 import "./EndLocationSelector.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
 function EndLocationSelector() {
-  const [, setValue] = useState("");
-  //I'm hardcoding the data here. We must fetch it from an API later.
-  const data = [
-    "Colombo",
-    "Gampaha",
-    "Wattala",
-    "Negombo",
-    "Anuradhapura",
-    "Jaffna",
-    "Ja-Ela",
-    "Galle",
-  ];
+  const [_value, _setValue] = useState("");
+  const [_data, _setData] = useState([]);
+  const [_filteredData, _setFilteredData] = useState([]);
+
+  useEffect(() => {
+    getAllEndLocations();
+  }, []);
+
+  const getAllEndLocations = async () => {
+    try {
+      const response1 = await axios.get(
+        "https://localhost:7028/api/EndLocation"
+      );
+      console.log("Response end (locations) from backend:", response1.data);
+      _setData(response1.data);
+      _setFilteredData(response1.data);
+    } catch (error) {
+      console.error("Error while fetching end locations from backend", error);
+    }
+  };
+
+  const filterEndLocations = (input: string) => {
+    const filteredLocations = _data.filter(
+      (location: { endLocation: string }) =>
+        location.endLocation &&
+        location.endLocation.toLowerCase().includes(input.toLowerCase())
+    );
+    _setFilteredData(filteredLocations);
+  };
+
   return (
     <div className="selector d-flex ">
       <span className="">
-        {/* path for svg type icons  */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="48"
@@ -56,16 +86,19 @@ function EndLocationSelector() {
         </svg>
       </span>
       <input
-      className=" p-sm-3 p-2 align-content-center w-100 "
+        className=" p-sm-3 p-2 align-content-center w-100 "
         list="data"
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          _setValue(e.target.value);
+          filterEndLocations(e.target.value);
+        }}
         placeholder="To"
       />
 
       {/* datalist element to create a dropdown list of predefined options for an <input> field.*/}
       <datalist id="data">
-        {data.map((op) => (
-          <option>{op}</option>
+        {_filteredData.map((op: { endLocation: string }, index: number) => (
+          <option key={index}>{op.endLocation}</option>
         ))}
       </datalist>
     </div>

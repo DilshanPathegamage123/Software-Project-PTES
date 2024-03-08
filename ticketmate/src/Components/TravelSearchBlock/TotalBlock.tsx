@@ -28,7 +28,6 @@ export default function TotalBlock() {
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <SearchButton />
         </div>
-
       </div>
     </div>
   );

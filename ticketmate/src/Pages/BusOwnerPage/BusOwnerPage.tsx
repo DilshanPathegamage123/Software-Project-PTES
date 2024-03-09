@@ -32,7 +32,7 @@ function BusOwnerPage() {
             <ProfileSection/>
           </div>
           <div className='row'>
-            <div className='col-lg-2 col-sm-4'id="getWidth">
+            <div className='col-lg-2 col-sm-4 m-0'id="getWidth">
               <div>
                 <SquareButton text="Register a Bus" link="/BusRegistrationPage" bwidth={divWidth}/>
               </div>

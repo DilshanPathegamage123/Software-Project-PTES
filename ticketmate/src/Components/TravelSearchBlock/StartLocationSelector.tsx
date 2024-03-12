@@ -3,10 +3,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import "./StartLocationSelector.css";
 
-function StartLocationSelector() {
-  const [value, setValue] = useState("");
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+interface StartLocationSelectorProps {
+  setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
+  setSelectedStartLocation,
+}) => {
+  const [startvalue, setStartValue] = useState("");
+  const [startData, setStartData] = useState([]);
+  const [filteredStartData, setFilteredStartData] = useState([]);
 
   useEffect(() => {
     getAllStartLocations();
@@ -16,23 +22,23 @@ function StartLocationSelector() {
     try {
       // Api call for fetching start locations
       const response = await axios.get(
-        "https://localhost:7028/api/StartLocation"
+        "https://localhost:7028/api/startlocation"
       );
-      console.log("Response from backend:", response.data); // for checking the response is correct or not
-      setData(response.data);
-      setFilteredData(response.data); // Initialize filteredData with the same data
+      console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
+      setStartData(response.data);
+      setFilteredStartData(response.data); // Initialize filteredData with the same data
     } catch (error) {
       console.error("Error while sending date to backend", error);
     }
   };
 
   const filterStartLocations = (input: string) => {
-    const filteredLocations = data.filter(
-      (location: { startLocation: string }) =>
-        location.startLocation &&
-        location.startLocation.toLowerCase().includes(input.toLowerCase())
+    const filteredLocations = startData.filter(
+      (location: { stopName: string }) =>
+        location.stopName &&
+        location.stopName.toLowerCase().includes(input.toLowerCase())
     );
-    setFilteredData(filteredLocations);
+    setFilteredStartData(filteredLocations);
   };
 
   return (
@@ -80,20 +86,21 @@ function StartLocationSelector() {
         className="p-sm-3 p-2 align-content-center w-100"
         list="data"
         onChange={(e) => {
-          setValue(e.target.value);
+          setStartValue(e.target.value);
           filterStartLocations(e.target.value);
+          setSelectedStartLocation(e.target.value);
         }}
         placeholder="Start"
       />
 
       {/* datalist element to create a dropdown list of predefined options for an input field.  */}
       <datalist id="data">
-        {filteredData.map((op: { startLocation: string }, index: number) => (
-          <option key={index}>{op.startLocation}</option>
+        {filteredStartData.map((op: { stopName: string }, index: number) => (
+          <option key={index}>{op.stopName}</option>
         ))}
       </datalist>
     </div>
   );
-}
+};
 
 export default StartLocationSelector;

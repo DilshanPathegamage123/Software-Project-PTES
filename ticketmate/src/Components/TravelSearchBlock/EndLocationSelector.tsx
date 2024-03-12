@@ -14,10 +14,17 @@ import "./EndLocationSelector.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
-function EndLocationSelector() {
-  const [_value, _setValue] = useState("");
-  const [_data, _setData] = useState([]);
-  const [_filteredData, _setFilteredData] = useState([]);
+interface EndLocationSelectorProps {
+  setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
+}
+
+//function EndLocationSelector() {
+const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
+  setSelectedEndLocation,
+}) => {
+  const [endvalue, setEndValue] = useState("");
+  const [endData, setEndData] = useState([]);
+  const [filteredEndData, setFilteredEndData] = useState([]);
 
   useEffect(() => {
     getAllEndLocations();
@@ -26,23 +33,23 @@ function EndLocationSelector() {
   const getAllEndLocations = async () => {
     try {
       const response1 = await axios.get(
-        "https://localhost:7028/api/EndLocation"
+        "https://localhost:7028/api/endlocation"
       );
       console.log("Response end (locations) from backend:", response1.data);
-      _setData(response1.data);
-      _setFilteredData(response1.data);
+      setEndData(response1.data);
+      setFilteredEndData(response1.data);
     } catch (error) {
       console.error("Error while fetching end locations from backend", error);
     }
   };
 
   const filterEndLocations = (input: string) => {
-    const filteredLocations = _data.filter(
-      (location: { endLocation: string }) =>
-        location.endLocation &&
-        location.endLocation.toLowerCase().includes(input.toLowerCase())
+    const filteredLocations = endData.filter(
+      (location: { stopName: string }) =>
+        location.stopName &&
+        location.stopName.toLowerCase().includes(input.toLowerCase())
     );
-    _setFilteredData(filteredLocations);
+    setFilteredEndData(filteredLocations);
   };
 
   return (
@@ -89,20 +96,21 @@ function EndLocationSelector() {
         className=" p-sm-3 p-2 align-content-center w-100 "
         list="data"
         onChange={(e) => {
-          _setValue(e.target.value);
+          setEndValue(e.target.value);
           filterEndLocations(e.target.value);
+          setSelectedEndLocation(e.target.value);
         }}
         placeholder="To"
       />
 
       {/* datalist element to create a dropdown list of predefined options for an <input> field.*/}
       <datalist id="data">
-        {_filteredData.map((op: { endLocation: string }, index: number) => (
-          <option key={index}>{op.endLocation}</option>
+        {filteredEndData.map((op: { stopName: string }, index: number) => (
+          <option key={index}>{op.stopName}</option>
         ))}
       </datalist>
     </div>
   );
-}
+};
 
 export default EndLocationSelector;

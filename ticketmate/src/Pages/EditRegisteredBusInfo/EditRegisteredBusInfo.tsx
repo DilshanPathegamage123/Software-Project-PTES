@@ -1,56 +1,24 @@
 import React from 'react'
 import { useState } from 'react';
-import './BusRegistrationPage.css'
+import './EditRegisteredBusInfo.css'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import Wheel from './assets/steering-wheel (1).png'
+import Wheel from '../../Pages/BusRegistrationPage/assets/steering-wheel (1).png'
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton'
 import Footer from '../../Components/Footer/Footer'
-import axios from 'axios';
 
-function BusRegistrationPage() {
+function EditRegisteredBusInfo() {
 
 
-  const [data, setData] = useState([]);
 
   const [BusNo, setBusNo] = useState('');
   const [LicenceNo, setLicenceNo] = useState('');
   const [SeatCount, setSeatCount] = useState('');
   const [ACorNonAC, setACorNonAC] = useState(0);
 
-  const handleACorNonACChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value === 'option1' ? 1 : 0;
-    setACorNonAC(value);
-  };
-
   const [EditBusNo, setEditBusNo] = useState('');
   const [EditLicenceNo, setEditLicenceNo] = useState('');
   const [EditSeatCount, setEditSeatCount] = useState('');
   const [EditACorNonAC, setEditACorNonAC] = useState(0);
-
-  const handleSave = () => {
-    const url = 'https://localhost:7001/api/BusReg';
-    const data = {
-      "busNo": BusNo,
-      "licenNo": LicenceNo,
-      "setsCount": SeatCount,
-      "aCorNONAC": ACorNonAC
-    }
-    axios.post(url, data)
-    .then((result) =>{
-      clear();
-    })
-  }
-
-  const clear = () => {
-    setBusNo('');
-    setLicenceNo('');
-    setSeatCount('');
-    setACorNonAC(0);
-    setEditBusNo('');
-    setEditLicenceNo('');
-    setEditSeatCount('');
-    setEditACorNonAC(0);
-  }
 
   return (
     <>
@@ -58,7 +26,7 @@ function BusRegistrationPage() {
       <div className='container-fluid py-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
-            <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
+            <h3 className='h3Style text-center'>Edit the registered bus information</h3>
           </div>
           <form action="">
           <div className='row'>
@@ -98,13 +66,13 @@ function BusRegistrationPage() {
                       <legend className="col-form-label pt-0">AC or NoN AC</legend>
                       <div className="">
                         <div className="form-check">
-                          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked={ACorNonAC === 1} onChange={handleACorNonACChange}/>
+                          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1"/>
                           <label className="form-check-label" htmlFor="gridRadios1">
                             AC
                           </label>
                         </div>
                         <div className="form-check">
-                          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2" checked={ACorNonAC === 0} onChange={handleACorNonACChange}/>
+                          <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2"/>
                           <label className="form-check-label" htmlFor="gridRadios2">
                             Non AC
                           </label>
@@ -223,11 +191,6 @@ function BusRegistrationPage() {
               </div>
             
           </div>
-          <div className='row'>
-            <div className='col-12 text-center p-3'>
-              <button type="submit" className="btn btn-primary" onClick={()=>handleSave()}>Register</button>
-            </div>
-          </div>
           </form>
 
         </div>
@@ -238,4 +201,4 @@ function BusRegistrationPage() {
   )
 }
 
-export default BusRegistrationPage
+export default EditRegisteredBusInfo

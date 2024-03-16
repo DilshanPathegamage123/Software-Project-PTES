@@ -22,6 +22,7 @@ export default function TotalBlock() {
       selectedDate == null
     ) {
       alert("Please fill in all required fields before searching.");
+      console.log("Please fill in all required fields before searching.");
       return;
     }
 

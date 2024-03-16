@@ -31,10 +31,10 @@
 //   </ul>
 // </div>
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import axios from "axios";
+
 import "./VehicleType.css";
 
 interface VehicleTypeProps {
@@ -87,9 +87,9 @@ const VehicleType: React.FC<VehicleTypeProps> = ({
   // }, []);
 
   return (
-    <div className="dropdown d-flex p-0 m-0">
+    <div>
       <select
-        className="form-select btn dropdown-toggle align-items-center  "
+        className="form-select  "
         onChange={(e) => {
           //handleVehicleTypeSelection(e.target.value);
           setSelectedVehicleType(e.target.value);

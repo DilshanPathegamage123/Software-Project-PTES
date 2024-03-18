@@ -7,22 +7,28 @@ import DatePicker from "./DatePicker";
 import SearchButton from "./SearchButton";
 import axios from "axios";
 
-export default function TotalBlock() {
-  const [selectedVehicleType, setSelectedVehicleType] = useState("");
+export default function TotalBlock({
+  selectedVehicleType,
+  setSelectedVehicleType,
+}: {
+  selectedVehicleType: string;
+  setSelectedVehicleType: (value: string) => void;
+}) {
+  //const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
   const handleSearch = async () => {
     if (
-      selectedVehicleType == "vehicleType" ||
-      selectedVehicleType == null ||
-      selectedStartLocation == null ||
-      selectedEndLocation == null ||
-      selectedDate == null
+      selectedVehicleType === "vehicleType" ||
+      selectedVehicleType === "" ||
+      selectedStartLocation === "" ||
+      selectedEndLocation === "" ||
+      selectedDate === ""
     ) {
       alert("Please fill in all required fields before searching.");
-      console.log("Please fill in all required fields before searching.");
+      //console.log("Please fill in all required fields before searching.");
       return;
     }
 

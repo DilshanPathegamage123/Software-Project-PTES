@@ -33,7 +33,7 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
   const getAllEndLocations = async () => {
     try {
       const response1 = await axios.get(
-        "https://localhost:7028/api/endlocation"
+        "https://localhost:7124/api/EndLocation"
       );
       console.log("Response end (locations) from backend:", response1.data);
       setEndData(response1.data);

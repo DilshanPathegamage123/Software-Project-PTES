@@ -39,7 +39,7 @@ export default function TotalBlock({
 
     try {
       const Response = await axios.post(
-        "https://localhost:7028/api/travelsearch",
+        "https://localhost:7124/api/TravelSearch",
         {
           VehicleType: selectedVehicleType,
           StartLocation: selectedStartLocation,

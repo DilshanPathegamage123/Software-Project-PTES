@@ -4,7 +4,13 @@ import EndLocationSelector from "./EndLocationSelector";
 import DatePicker from "./DatePicker";
 import "./TotalBlock2.css";
 import axios from "axios";
-export default function TotalBlock2({ selectedVehicleType, setSelectedVehicleType }: { selectedVehicleType: string, setSelectedVehicleType: (value: string) => void }) {
+export default function TotalBlock2({
+  selectedVehicleType,
+  setSelectedVehicleType,
+}: {
+  selectedVehicleType: string;
+  setSelectedVehicleType: (value: string) => void;
+}) {
   // const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
@@ -30,7 +36,7 @@ export default function TotalBlock2({ selectedVehicleType, setSelectedVehicleTyp
 
     try {
       const Response = await axios.post(
-        "https://localhost:7028/api/travelsearch",
+        "https://localhost:7124/api/TravelSearch",
         {
           VehicleType: selectedVehicleType,
           StartLocation: selectedStartLocation,

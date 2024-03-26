@@ -22,13 +22,13 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
     try {
       // Api call for fetching start locations
       const response = await axios.get(
-        "https://localhost:7028/api/startlocation"
+        "https://localhost:7124/api/StartLocation"
       );
       console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
       setStartData(response.data);
       setFilteredStartData(response.data); // Initialize filteredData with the same data
     } catch (error) {
-      console.error("Error while sending date to backend", error);
+      console.error("Error while sending start location to backend", error);
     }
   };
 

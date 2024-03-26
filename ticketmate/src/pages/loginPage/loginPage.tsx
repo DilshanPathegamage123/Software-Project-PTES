@@ -6,6 +6,14 @@ import "./loginPage.css";
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
+
+
+import React from "react";
+import "./loginPage.css";
+// import vars from '../../vars'
+import loginimage from "../../assets/Ellipse 628.svg";
+import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+import Footer from "../../Components/Footer/footer";
 import { BsFillPersonFill } from "react-icons/bs";
 function LoginPage() {
   return (
@@ -27,14 +35,17 @@ function LoginPage() {
         </svg>
       </a>
       <form>
+
         <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
+
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" />
             </div>
+
             {/* <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -53,6 +64,7 @@ function LoginPage() {
               type="password"
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="      password"
+
               required
             ></input>
             <div className="d-flex justify-content-center ">
@@ -68,6 +80,7 @@ function LoginPage() {
       </form>
       <Footer />
     </div>
+
 
   );
 }

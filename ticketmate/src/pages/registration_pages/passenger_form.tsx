@@ -1,6 +1,17 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 
+import "./passenger_form.css";
+import React, { useState } from "react";
+import "../../vars.css";
+import PassengerFormComponent from "./passengerFormComponent";
+import OwnerFormComponent from "./ownerFormComponent";
+import DriverFormComponent from "./driverFormComponent";
+import Footer from "../../Components/Footer/footer";
+
 function PassengerForm() {
+  const [selectedOption, setSelectedOption] = useState("option1");
+
+
   return (
     <div>
       <PrimaryNavBar />
@@ -19,40 +30,80 @@ function PassengerForm() {
           />
         </svg>
       </a>
-      <div className="row">
-        
-      
-      <svg xmlns="http://www.w3.org/2000/svg" width="1050" height="161" viewBox="0 0 1050 161" fill="none">
-  <g filter="url(#filter0_d_2_8543)">
-    
-    <path d="M4 0H1035C1041.08 0 1046 4.92487 1046 11V142C1046 148.075 1041.08 153 1035 153H15C8.92488 153 4 148.075 4 142V0Z" fill="white"/>
-    
-  </g>
-  <defs>
-  
-    <filter id="filter0_d_2_8543" x="0" y="0" width="1050" height="161" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-    
-      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-      <feOffset dy="4"/>
-      <feGaussianBlur stdDeviation="2"/>
-      <feComposite in2="hardAlpha" operator="out"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_8543"/>
-      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_8543" result="shape"/>
-      
-    </filter>
-  </defs>
-  <div>
-    
-  </div>
-  
-</svg>
 
-      
+
+      <div className="row container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded  mx-auto">
+        <div className="row">
+          <p
+            className="text-teal fs-5 fw-semibold font-family-Inter  m-0 px-3 py-2 "
+            style={{ color: "var(--color-secondary)" }}
+          >
+            What type of user are you?
+          </p>
+        </div>
+        <div className="row">
+          <div className="col-lg-4 col-md-6">
+            <label
+              onClick={() => setSelectedOption("option1")}
+              className="d-inline-flex align-items-center"
+            >
+              <input
+                type="radio"
+                name="option"
+                value="option1"
+                checked={selectedOption === "option1"}
+
+                //  onChange={selectedOption}
+              />
+              Passenger
+            </label>
+          </div>
+          <div className="col-lg-4 col-md-6">
+            <label
+              onClick={() => setSelectedOption("option2")}
+              className="d-inline-flex align-items-center"
+            >
+              <input
+                type="radio"
+                name="option"
+                value="option2"
+                checked={selectedOption === "option2"}
+
+                //  onChange={handleUserTypeChange}
+              />
+              Vehicle Owner
+            </label>
+          </div>
+          <div className="col-lg-4 col-md-6">
+            <label
+              onClick={() => setSelectedOption("option3")}
+              className="d-inline-flex align-items-center"
+            >
+              <input
+                type="radio"
+                name="option"
+                value="option3"
+                checked={selectedOption === "option3"}
+                //  onChange={handleUserTypeChange}
+              />
+              Vehicle Driver
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="row">
+        {selectedOption === "option1" && <PassengerFormComponent />}
+        {selectedOption === "option2" && <OwnerFormComponent />}
+        {selectedOption === "option3" && <DriverFormComponent />}
+      </div>
+      <div>
+        <Footer />
 
       </div>
     </div>
   );
 }
+
 export default PassengerForm;
+

@@ -1,9 +1,10 @@
-import Home from "./pages/HomePage/Home";
+import React, { useState } from 'react'
 
 
 function App() {
   return (
     <>
+
 
     </>
   );

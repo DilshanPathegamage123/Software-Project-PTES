@@ -1,6 +1,4 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-
-
 import React from "react";
 import "./loginPage.css";
 // import vars from '../../vars'

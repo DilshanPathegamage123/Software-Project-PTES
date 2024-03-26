@@ -1,4 +1,5 @@
 //import TravelOptionsPage from "./pages/TravelOptionsPage/TravelOptionsPage";
+import StartLocationSelector from "./Components/TravelSearchBlock/StartLocationSelector";
 import Home from "./pages/HomePage/Home";
 import React, { useState } from "react";
 //import TotalBlock2 from "./Components/TravelSearchBlock/TotalBlock2";
@@ -12,8 +13,7 @@ function App() {
       {/* <DetailsCard /> */}
       {/* <TotalBlock2
         selectedVehicleType={selectedVehicleType}
-        setSelectedVehicleType={setSelectedVehicleType}
-      /> */}
+        setSelectedVehicleType={setSelectedVehicleType}/> */}
     </>
   );
 }

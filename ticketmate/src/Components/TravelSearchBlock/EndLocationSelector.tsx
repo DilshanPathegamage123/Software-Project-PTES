@@ -94,7 +94,7 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
       </span>
       <input
         className=" p-sm-3 p-2 align-content-center w-100 "
-        list="data"
+        list="endLocationList"
         onChange={(e) => {
           setEndValue(e.target.value);
           filterEndLocations(e.target.value);
@@ -104,7 +104,7 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
       />
 
       {/* datalist element to create a dropdown list of predefined options for an <input> field.*/}
-      <datalist id="data">
+      <datalist id="endLocationList">
         {filteredEndData.map((op: { stopName: string }, index: number) => (
           <option key={index}>{op.stopName}</option>
         ))}

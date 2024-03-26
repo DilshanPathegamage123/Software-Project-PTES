@@ -28,14 +28,13 @@ export default function TotalBlock({
       selectedDate === ""
     ) {
       alert("Please fill in all required fields before searching.");
-      //console.log("Please fill in all required fields before searching.");
       return;
     }
 
-    // if (selectedStartLocation == selectedStartLocation) {
-    //   alert("You Can't Travel Between Same Locations");
-    //   return;
-    // }
+    if (selectedStartLocation === selectedEndLocation) {
+      alert("You Can't Travel Between Same Locations");
+      return;
+    }
 
     try {
       const Response = await axios.post(

@@ -7,10 +7,19 @@ import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
 import Footer from "../../Components/Footer/Footer";
 
 const TravelOptionsPage = () => {
+  const selectedVehicleType = ""; // Declare the variable selectedVehicleType
+
+  const setSelectedVehicleType = (type: string) => {
+    // logic for setting the selected vehicle type
+  };
+
   return (
     <>
       <PrimaryNavBar />
-      <TotalBlock2 />
+      <TotalBlock2
+        selectedVehicleType={selectedVehicleType}
+        setSelectedVehicleType={setSelectedVehicleType}
+      />
       <DetailsCard/>
       <DetailsCard/>
       <DetailsCard/>

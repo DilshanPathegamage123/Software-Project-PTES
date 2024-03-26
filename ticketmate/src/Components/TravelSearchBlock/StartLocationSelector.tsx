@@ -84,7 +84,7 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
       </span>
       <input
         className="p-sm-3 p-2 align-content-center w-100"
-        list="data"
+        list="startLocationList"
         onChange={(e) => {
           setStartValue(e.target.value);
           filterStartLocations(e.target.value);
@@ -94,7 +94,7 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
       />
 
       {/* datalist element to create a dropdown list of predefined options for an input field.  */}
-      <datalist id="data">
+      <datalist id="startLocationList">
         {filteredStartData.map((op: { stopName: string }, index: number) => (
           <option key={index}>{op.stopName}</option>
         ))}

@@ -3,7 +3,8 @@ import './BusRegistrationPage.css'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import Wheel from './assets/steering-wheel (1).png'
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton'
-import Footer from '../../Components/Footer/Footer'
+import Footer from '../../Components/Footer/footer'
+import { ToastContainer } from 'react-toastify';
 
 function BusRegistrationPage() {
   return (
@@ -17,6 +18,7 @@ function BusRegistrationPage() {
           </div>
           <form action="">
           <div className='row'>
+
           <ToastContainer />
               <div className='col-12 col-md-6 p-3'>
                 <div className="form-group row">

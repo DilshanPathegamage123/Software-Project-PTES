@@ -4,6 +4,8 @@ import EndLocationSelector from "./EndLocationSelector";
 import DatePicker from "./DatePicker";
 import "./TotalBlock2.css";
 import axios from "axios";
+import { useHistory } from "react-router";
+
 export default function TotalBlock2({
   selectedVehicleType,
   setSelectedVehicleType,
@@ -15,6 +17,7 @@ export default function TotalBlock2({
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const history = useHistory();
 
   const handleSearch = async () => {
     if (
@@ -28,7 +31,7 @@ export default function TotalBlock2({
       return;
     }
 
-    if (selectedStartLocation == selectedStartLocation) {
+    if (selectedStartLocation == selectedEndLocation) {
       alert("You Can't Travel Between Same Locations");
       return;
     }
@@ -43,6 +46,13 @@ export default function TotalBlock2({
           TravelDate: selectedDate,
         }
       );
+
+      const searchResults = Response.data;
+
+      history.push({
+        pathname: "/TravelOptionsPage",
+        state: { searchResults: searchResults},
+      }); // Redirect to the TravelOptionsPage with the search results
 
       console.log("Search result:", Response.data);
     } catch (error) {

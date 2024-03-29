@@ -18,6 +18,7 @@ export default function TotalBlock({
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [searchResults, setSearchResults] = useState([]); // Use state to store search results
 
   const handleSearch = async () => {
     if (
@@ -46,8 +47,8 @@ export default function TotalBlock({
           TravelDate: selectedDate,
         }
       );
-
-      console.log("Search result:", Response.data);
+      setSearchResults(Response.data); // Store the search results in the state
+      console.log("Search result:", Response.data); // Log the search results for debugging
     } catch (error) {
       console.error("Error during search:", error);
     }
@@ -57,7 +58,8 @@ export default function TotalBlock({
     <div className="TotalBlock container-fluid py-4  align-items-center col-lg-10 col-8   z-1  ">
       <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-5 align-items-center justify-content-center  ">
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
-          <VehicleType setSelectedVehicleType={setSelectedVehicleType} />
+          <VehicleType setSelectedVehicleType={setSelectedVehicleType as React.Dispatch<React.SetStateAction<string>>} />
+           {/* Pass setSelected as a prop to VehicleType */}
         </div>
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <StartLocationSelector

@@ -32,25 +32,11 @@ function RegisteredBusInfoSec() {
             setData(busDetails);
         }, []);
 
-        const getData = () => {
-                axios.get('https://localhost:7001/api/BusReg')
-                .then((result) => {
-                    setData(result.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            }
-
-            const [showModal, setShowModal] = useState(false);
-
-            const handleModalToggle = () => {
-                setShowModal(!showModal);
-            };
-
-
-        const handleDelete = () => {
-            
+        const handleEdit = (id: number) => {
+            alert(id);
+        }
+        const handleDelete = (id: number) => {
+            alert(id);
         }
         
   return (
@@ -73,20 +59,14 @@ function RegisteredBusInfoSec() {
                                             <img src={BusIcon} alt="BusIcon" />
                                     </div>
                                     <div className='col-lg-6'>
-                                        
-                                                <p key={index}>
-                                                {item.busNo}
-                                                <br />{item.licenNo}
-                                                <br />{item.setsCount}
-                                                <br />{item.aCorNonAC ? "AC" : "Non AC"}
-                                            </p>
-                                        
+                                            <p>{item.BusId}</p>
+                                            <p>{item.BusNo}</p>
+                                            <p>{item.SeatCount}</p>
+                                            <p>{item.ACorNonAC ? "AC" : "Non AC"}</p>
                                     </div>
                                     <div className='col-lg-4'>
-                                    <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
-                                        Edit
-                                    </button>
-                                            <button className='btn btn-primary' onClick={()=>handleDelete()}>Delete</button>
+                                            <button className='btn btn-primary' onClick={()=>handleEdit(item.BusId)}>Edit</button>
+                                            <button className='btn btn-primary' onClick={()=>handleDelete(item.BusId)}>Delete</button>
                                     </div>
                             </div>
                         </div>
@@ -95,32 +75,6 @@ function RegisteredBusInfoSec() {
                 :
                 'Loading...'
         }
-        
-        {showModal && (
-                <div className="modal fade show" tabIndex={-1} role="dialog" style={{ display: 'block' }}>
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">
-                        Do you want to Edit the Bus Details?
-                        </h5>
-                        <button type="button" className="close" onClick={handleModalToggle}>
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div className="modal-body">...</div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={handleModalToggle}>
-                        No
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
-                        Yes
-                        </button>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            )}
     
     </>
   )

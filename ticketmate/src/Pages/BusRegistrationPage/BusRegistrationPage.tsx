@@ -1,57 +1,11 @@
 import React from 'react'
-import { useState } from 'react';
 import './BusRegistrationPage.css'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import Wheel from './assets/steering-wheel (1).png'
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton'
 import Footer from '../../Components/Footer/Footer'
-import axios from 'axios';
 
 function BusRegistrationPage() {
-
-
-  const [data, setData] = useState([]);
-
-  const [BusNo, setBusNo] = useState('');
-  const [LicenceNo, setLicenceNo] = useState('');
-  const [SeatCount, setSeatCount] = useState('');
-  const [ACorNonAC, setACorNonAC] = useState(0);
-
-  const handleACorNonACChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value === 'option1' ? 1 : 0;
-    setACorNonAC(value);
-  };
-
-  const [EditBusNo, setEditBusNo] = useState('');
-  const [EditLicenceNo, setEditLicenceNo] = useState('');
-  const [EditSeatCount, setEditSeatCount] = useState('');
-  const [EditACorNonAC, setEditACorNonAC] = useState(0);
-
-  const handleSave = () => {
-    const url = 'https://localhost:7001/api/BusReg';
-    const data = {
-      "busNo": BusNo,
-      "licenNo": LicenceNo,
-      "setsCount": SeatCount,
-      "aCorNONAC": ACorNonAC
-    }
-    axios.post(url, data)
-    .then((result) =>{
-      clear();
-    })
-  }
-
-  const clear = () => {
-    setBusNo('');
-    setLicenceNo('');
-    setSeatCount('');
-    setACorNonAC(0);
-    setEditBusNo('');
-    setEditLicenceNo('');
-    setEditSeatCount('');
-    setEditACorNonAC(0);
-  }
-
   return (
     <>
       
@@ -223,11 +177,6 @@ function BusRegistrationPage() {
                 </div>
               </div>
             
-          </div>
-          <div className='row'>
-            <div className='col-12 text-center p-3'>
-              <button type="submit" className="btn btn-primary" onClick={()=>handleSave()}>Register</button>
-            </div>
           </div>
           </form>
 

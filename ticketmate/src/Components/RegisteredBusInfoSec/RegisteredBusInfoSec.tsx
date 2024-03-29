@@ -2,19 +2,38 @@ import React, { useState, useEffect } from 'react';
 import './RegisteredBusInfoSec.css'
 import BusIcon from '../../assets/BusIcon.png'
 import PrimaryButton from '../Buttons/PrimaryButton'
-import axios from 'axios';
 
 function RegisteredBusInfoSec() {
-        
 
-        const [data, setData] = useState([]);
+        const busDetails = [
+            {
+                BusId : 1,
+                BusNo : "KJ-1234",
+                SeatCount : 50,
+                ACorNonAC : true
+            },
+            {
+                BusId : 2,
+                BusNo : "KJ-2234",
+                SeatCount : 50,
+                ACorNonAC : false
+            },
+            {
+                BusId : 3,
+                BusNo : "KJ-2234",
+                SeatCount : 50,
+                ACorNonAC : true
+            },
+        ]
+
+        const [data, setData] = useState<{ BusId: number; BusNo: string; SeatCount: number; ACorNonAC: boolean; }[]>([]);
 
         useEffect(() => {
-            getData();
+            setData(busDetails);
         }, []);
 
         const getData = () => {
-                axios.get('https://localhost:7241/api/BusReg')
+                axios.get('https://localhost:7001/api/BusReg')
                 .then((result) => {
                     setData(result.data);
                 })
@@ -36,13 +55,19 @@ function RegisteredBusInfoSec() {
         
   return (
     <>
-        
-
         {
             data && data.length > 0 ?
                 data.map((item, index) => {
                     return (
                         <div key={index}>
+                            import React from 'react';
+
+                            declare module 'react' {
+                                interface JSX.IntrinsicElements {
+                                    div: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+                                }
+                            }
+
                             <div className='row p-5 rounded-4 sec shadow m-4'>
                                     <div className='col-lg-2'>
                                             <img src={BusIcon} alt="BusIcon" />
@@ -50,27 +75,25 @@ function RegisteredBusInfoSec() {
                                     <div className='col-lg-6'>
                                         
                                                 <p key={index}>
-                                                <b>Bus No:</b>  {item.busNo}<br />
-                                                <b>Licen No:</b>  {item.licenNo}<br />
-                                                <b>No of Seats:</b>  {item.setsCount}<br />
-                                                <b>AC or NON A/C:</b>  {item.aCorNonAC ? "AC" : "Non AC"}
+                                                {item.busNo}
+                                                <br />{item.licenNo}
+                                                <br />{item.setsCount}
+                                                <br />{item.aCorNonAC ? "AC" : "Non AC"}
                                             </p>
                                         
                                     </div>
                                     <div className='col-lg-4'>
-                                            <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
-                                                Delete
-                                            </button> <span></span><span></span>
-                                            <button className='btn btn-primary' onClick={()=>handleDelete()}>
-                                                Edit
-                                            </button>
+                                    <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
+                                        Edit
+                                    </button>
+                                            <button className='btn btn-primary' onClick={()=>handleDelete()}>Delete</button>
                                     </div>
                             </div>
                         </div>
                     )
                 })
                 :
-                'Loading...'     
+                'Loading...'
         }
         
         {showModal && (
@@ -79,7 +102,7 @@ function RegisteredBusInfoSec() {
                     <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">
-                        Do you want to Delete the Bus Details?
+                        Do you want to Edit the Bus Details?
                         </h5>
                         <button type="button" className="close" onClick={handleModalToggle}>
                         <span aria-hidden="true">&times;</span>

@@ -1,16 +1,43 @@
 import React from 'react'
 import { useState } from 'react';
+import { useEffect } from 'react';
 import './BusRegistrationPage.css'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import Wheel from './assets/steering-wheel (1).png'
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton'
-import Footer from '../../Components/Footer/Footer'
+import Footer from '../../Components/Footer/footer'
 import axios from 'axios';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function BusRegistrationPage() {
 
 
-  const [data, setData] = useState([]);
+  //---------from REgistered bus info sec-----------
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+      getData();
+    }, []);
+
+    const getData = () => {
+      axios.get('https://localhost:7001/api/BusReg')
+        .then((result) => {
+          setData(result.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleModalToggle = () => {
+        setShowModal(!showModal);
+    };
+//---------from REgistered bus info sec----------- close
 
   const [BusNo, setBusNo] = useState('');
   const [LicenceNo, setLicenceNo] = useState('');
@@ -35,10 +62,15 @@ function BusRegistrationPage() {
       "setsCount": SeatCount,
       "aCorNONAC": ACorNonAC
     }
-    axios.post(url, data)
-    .then((result) =>{
-      clear();
-    })
+    // alert('Bus registered successfully');
+    toast.success('Bus registered successfully');
+    clear();
+    // axios.post(url, data)
+    // .then((result) =>{
+      
+    //   clear();
+    //   toast.success('Bus registered successfully');
+    // })
   }
 
   const clear = () => {
@@ -54,6 +86,7 @@ function BusRegistrationPage() {
 
   return (
     <>
+      
       <PrimaryNavBar/>
       <div className='container-fluid py-4'>
         <div className='col-12 rounded-4 formSec'>
@@ -62,7 +95,7 @@ function BusRegistrationPage() {
           </div>
           <form action="">
           <div className='row'>
-            
+          <ToastContainer />
               <div className='col-12 col-md-6 p-3'>
                 <div className="form-group row">
                     <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
@@ -207,12 +240,12 @@ function BusRegistrationPage() {
                           <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                        <ToggleButton />
-                        <ToggleButton />
-                        <ToggleButton />
-                        <ToggleButton />
-                        <ToggleButton />
-                        <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                       </div>
 
                       </div>
@@ -225,7 +258,7 @@ function BusRegistrationPage() {
           </div>
           <div className='row'>
             <div className='col-12 text-center p-3'>
-              <button type="submit" className="btn btn-primary" onClick={()=>handleSave()}>Register</button>
+              <button type='button' className="btn btn-primary" onClick={()=>handleSave()}>Register</button>
             </div>
           </div>
           </form>
@@ -233,6 +266,7 @@ function BusRegistrationPage() {
         </div>
         
       </div>
+      
       <Footer/>
     </>
   )

@@ -14,7 +14,7 @@ function RegisteredBusInfoSec() {
         }, []);
 
         const getData = () => {
-                axios.get('https://localhost:7001/api/BusReg')
+                axios.get('https://localhost:7241/api/BusReg')
                 .then((result) => {
                     setData(result.data);
                 })
@@ -50,18 +50,20 @@ function RegisteredBusInfoSec() {
                                     <div className='col-lg-6'>
                                         
                                                 <p key={index}>
-                                                {item.busNo}
-                                                <br />{item.licenNo}
-                                                <br />{item.setsCount}
-                                                <br />{item.aCorNonAC ? "AC" : "Non AC"}
+                                                <b>Bus No:</b>  {item.busNo}<br />
+                                                <b>Licen No:</b>  {item.licenNo}<br />
+                                                <b>No of Seats:</b>  {item.setsCount}<br />
+                                                <b>AC or NON A/C:</b>  {item.aCorNonAC ? "AC" : "Non AC"}
                                             </p>
                                         
                                     </div>
                                     <div className='col-lg-4'>
-                                    <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
-                                        Edit
-                                    </button>
-                                            <button className='btn btn-primary' onClick={()=>handleDelete()}>Delete</button>
+                                            <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
+                                                Delete
+                                            </button> <span></span><span></span>
+                                            <button className='btn btn-primary' onClick={()=>handleDelete()}>
+                                                Edit
+                                            </button>
                                     </div>
                             </div>
                         </div>
@@ -77,7 +79,7 @@ function RegisteredBusInfoSec() {
                     <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">
-                        Do you want to Edit the Bus Details?
+                        Do you want to Delete the Bus Details?
                         </h5>
                         <button type="button" className="close" onClick={handleModalToggle}>
                         <span aria-hidden="true">&times;</span>

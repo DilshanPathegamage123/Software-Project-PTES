@@ -4,7 +4,7 @@ import './EditRegisteredBusInfo.css'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import Wheel from '../../Pages/BusRegistrationPage/assets/steering-wheel (1).png'
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton'
-import Footer from '../../Components/Footer/Footer'
+import Footer from '../../Components/Footer/footer'
 
 function EditRegisteredBusInfo() {
 

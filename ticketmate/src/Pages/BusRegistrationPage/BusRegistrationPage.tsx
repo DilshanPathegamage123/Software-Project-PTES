@@ -56,6 +56,12 @@ function BusRegistrationPage() {
       ...formData,
       acOption: value
     });
+
+    // Clear validation error for acOption when a radio button is selected
+    setErrors({
+      ...errors,
+      acOption: ''
+    });
   };
 
   //---- form submit ----
@@ -176,7 +182,7 @@ function BusRegistrationPage() {
                           </label>
                         </div>
                       </div>
-                    
+                      {errors.acOption && <div className="text-danger">{errors.acOption}</div>}
                   </fieldset>
                 </div>
               </div>

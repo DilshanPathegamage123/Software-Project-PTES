@@ -5,6 +5,7 @@ import CreateBusJourneyPage from './Pages/CreateBusJourneyPage/CreateBusJourneyP
 import RegisteredBusInfoSec from './Components/RegisteredBusInfoSec/RegisteredBusInfoSec'
 import { BrowserRouter ,Routes, Route} from 'react-router-dom'
 import BusOwnerPage2 from './Pages/BusOwnerPage2/BusOwnerPage2'
+import FormValidation from './Pages/sample/FormValidation'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,7 +19,7 @@ function App() {
     //   </Routes>
     // </BrowserRouter>
     <>
-      <BusOwnerPage2/>
+      <BusRegistrationPage/>
     </>
   )
 }

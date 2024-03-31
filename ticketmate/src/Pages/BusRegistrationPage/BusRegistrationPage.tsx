@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify'; // Import 'toast' from '
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
 import axios from 'axios';
 import PrimaryButton from '../../Components/Buttons/PrimaryButton';
+import SelectBusSeatStructure from '../../Components/SelectBusSeatStructure/SelectBusSeatStructure';
 
 function BusRegistrationPage() {
 
@@ -29,7 +30,7 @@ function BusRegistrationPage() {
     acOption: ''
   });
 
-  //---- input fiels validation ----
+  //---- input fields validation ----
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -39,15 +40,25 @@ function BusRegistrationPage() {
   };
 
   //---- file upload validation ----
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target;
-    if (files && files.length > 0) {
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, files } = e.target;
+  if (files && files.length > 0) {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']; // Allowed file types
+    const fileType = files[0].type;
+    if (allowedTypes.includes(fileType)) {
       setFormData({
         ...formData,
         [name]: files[0]
       });
+    } else {
+      // Display alert for invalid file type
+      alert('Only JPG, JPEG, PNG, and PDF files are allowed.');
+      // Clear the file input
+      e.target.value = '';
     }
-  };
+  }
+};
+
 
   //---- radio button validation ----
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +76,7 @@ function BusRegistrationPage() {
   };
 
   //---- form submit ----
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formValid = true;
     const newErrors = { ...errors };
@@ -108,19 +119,32 @@ function BusRegistrationPage() {
     setErrors(newErrors);
 
     if (formValid) {
-      // Submit the form
-      // Example: You can make an axios request here
-      toast.success('Form submitted successfully');
+      try {
+        // Submit the form
+        const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
+        await axios.post('https://localhost:7001/api/BusReg', {
+          BusNo: formData.busNum,
+          LicenNo: formData.licenceNum,
+          SetsCount: formData.seatCount,
+          ACorNONAC: acOptionValue
+        });
+        
+        // If successful, show success toast
+        toast.success('Form submitted successfully');
+      } catch (error) {
+        // If there's an error, show error toast
+        toast.error('Form submission failed2');
+      }
     } else {
       // Display error message
-      toast.error('Form submission failed');
+      toast.error('Form submission failed3');
     }
   };
-  
+
   return (
     <>
       {/* // nav bar */}
-      <PrimaryNavBar/>
+      <PrimaryNavBar />
 
       <div className='container-fluid py-4'>
         <div className='col-12 rounded-4 formSec'>
@@ -129,172 +153,69 @@ function BusRegistrationPage() {
           </div>
           <form onSubmit={handleSubmit}>
             {/* input fields */}
-          <div className='row'>
-              <div className='col-12 col-md-6 p-3'>
+            <div className='row'>
+              <div className='col-12 col-lg-6 p-3'>
                 <div className="form-group row">
-                    <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
-                    <div className="">
-                      <input type="text" className="form-control" id="inputbusNum" name="busNum" placeholder="Bus Number" onChange={handleInputChange} />
-                      {errors.busNum && <div className="text-danger">{errors.busNum}</div>}
-                    </div>
+                  <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
+                  <div className="">
+                    <input type="text" className="form-control" id="inputbusNum" name="busNum" placeholder="Bus Number" onChange={handleInputChange} />
+                    {errors.busNum && <div className="text-danger">{errors.busNum}</div>}
+                  </div>
                 </div>
                 <div className="form-group row">
-                    <label htmlFor="inputLicencenum" className="col-form-label">Enter Licence Number</label>
-                    <div className="">
+                  <label htmlFor="inputLicencenum" className="col-form-label">Enter Licence Number</label>
+                  <div className="">
                     <input type="text" className="form-control" id="inputLicencenum" name="licenceNum" placeholder="Licence Number" onChange={handleInputChange} />
                     {errors.licenceNum && <div className="text-danger">{errors.licenceNum}</div>}
-                    </div>
+                  </div>
                 </div>
 
                 <div className="form-group row">
-                    <label htmlFor="exampleFormControlFile1">Attach vehicle licence image</label>
-                    <input type="file" className="form-control-file" id="exampleFormControlFile1" name="selectedFile1" onChange={handleFileChange} />
-                    {errors.selectedFile1 && <div className="text-danger">{errors.selectedFile1}</div>}
+                  <label htmlFor="exampleFormControlFile1">Attach vehicle licence image</label>
+                  <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
+                  <input type="file" className="form-control-file" id="exampleFormControlFile1" name="selectedFile1" onChange={handleFileChange} />
+                  {errors.selectedFile1 && <div className="text-danger">{errors.selectedFile1}</div>}
                 </div>
 
                 <div className="form-group row">
-                    <label htmlFor="exampleFormControlFile2">Attach vehicle Insuarance image</label>
-                    <input type="file" className="form-control-file" id="exampleFormControlFile2" name="selectedFile2" onChange={handleFileChange} />
-                    {errors.selectedFile2 && <div className="text-danger">{errors.selectedFile2}</div>}
+                  <label htmlFor="exampleFormControlFile2">Attach vehicle Insuarance image</label>
+                  <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
+                  <input type="file" className="form-control-file" id="exampleFormControlFile2" name="selectedFile2" onChange={handleFileChange} />
+                  {errors.selectedFile2 && <div className="text-danger">{errors.selectedFile2}</div>}
                 </div>
 
                 <div className="form-group row">
-                    <label htmlFor="inputSeatNo" className="col-form-label">Enter seat Count</label>
-                    <div className="">
-                      <input type="text" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
-                      {errors.seatCount && <div className="text-danger">{errors.seatCount}</div>}
-                    </div>
+                  <label htmlFor="inputSeatNo" className="col-form-label">Enter seat Count</label>
+                  <div className="">
+                    <input type="text" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
+                    {errors.seatCount && <div className="text-danger">{errors.seatCount}</div>}
+                  </div>
                 </div>
                 <div className="row">
                   <fieldset className="form-group">
-                      <legend className="col-form-label pt-0">AC or NoN AC</legend>
-                      <div className="">
-                        <div className="form-check">
+                    <legend className="col-form-label pt-0">AC or NoN AC</legend>
+                    <div className="">
+                      <div className="form-check">
                         <input className="form-check-input" type="radio" name="acOption" id="gridRadios1" value="AC" onChange={handleRadioChange} />
                         <label className="form-check-label" htmlFor="gridRadios1">
-                            AC
+                          AC
                           </label>
-                        </div>
-                        <div className="form-check">
+                      </div>
+                      <div className="form-check">
                         <input className="form-check-input" type="radio" name="acOption" id="gridRadios2" value="Non AC" onChange={handleRadioChange} />
                         <label className="form-check-label" htmlFor="gridRadios2">
-                            Non AC
+                          Non AC
                           </label>
-                        </div>
                       </div>
-                      {errors.acOption && <div className="text-danger">{errors.acOption}</div>}
+                    </div>
+                    {errors.acOption && <div className="text-danger">{errors.acOption}</div>}
                   </fieldset>
                 </div>
               </div>
               {/* Bus seat structure */}
-              {/* <div className='col-12 col-md-6 p-6'>
-              <p>Please select the seat structure</p>
+              <SelectBusSeatStructure />
 
-              <div className='container'>
-                <div className='bg-light rounded-4'>
-                    <div className='row justify-content-center p-3'>
-                      <img src={Wheel} alt="Steering-wheel-img" style={{width : "57px"}}/>
-                    </div>
-                    <div className='row justify-content-center'>
-
-                      <div className="col p-4">
-                        <div className="row justify-content-center">
-                          <ToggleButton id={11}/>
-                          <ToggleButton id={12}/>
-                          <ToggleButton id={13}/>
-                          <ToggleButton id={14}/>
-                          <ToggleButton id={15}/>
-                          <ToggleButton id={16}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={21}/>
-                          <ToggleButton id={22}/>
-                          <ToggleButton id={23}/>
-                          <ToggleButton id={24}/>
-                          <ToggleButton id={25}/>
-                          <ToggleButton id={26}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={31}/>
-                          <ToggleButton id={32}/>
-                          <ToggleButton id={33}/>
-                          <ToggleButton id={34}/>
-                          <ToggleButton id={35}/>
-                          <ToggleButton id={36}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={41}/>
-                          <ToggleButton id={42}/>
-                          <ToggleButton id={43}/>
-                          <ToggleButton id={44}/>
-                          <ToggleButton id={45}/>
-                          <ToggleButton id={46}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={51}/>
-                          <ToggleButton id={52}/>
-                          <ToggleButton id={53}/>
-                          <ToggleButton id={54}/>
-                          <ToggleButton id={55}/>
-                          <ToggleButton id={56}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={61}/>
-                          <ToggleButton id={62}/>
-                          <ToggleButton id={63}/>
-                          <ToggleButton id={64}/>
-                          <ToggleButton id={65}/>
-                          <ToggleButton id={66}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={71}/>
-                          <ToggleButton id={72}/>
-                          <ToggleButton id={73}/>
-                          <ToggleButton id={74}/>
-                          <ToggleButton id={75}/>
-                          <ToggleButton id={76}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={81}/>
-                          <ToggleButton id={82}/>
-                          <ToggleButton id={83}/>
-                          <ToggleButton id={84}/>
-                          <ToggleButton id={85}/>
-                          <ToggleButton id={86}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={91}/>
-                          <ToggleButton id={92}/>
-                          <ToggleButton id={93}/>
-                          <ToggleButton id={94}/>
-                          <ToggleButton id={95}/>
-                          <ToggleButton id={96}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={101}/>
-                          <ToggleButton id={102}/>
-                          <ToggleButton id={103}/>
-                          <ToggleButton id={104}/>
-                          <ToggleButton id={105}/>
-                          <ToggleButton id={106}/>
-                        </div>
-                        <div className="row justify-content-center">
-                          <ToggleButton id={111}/>
-                          <ToggleButton id={112}/>
-                          <ToggleButton id={113}/>
-                          <ToggleButton id={114}/>
-                          <ToggleButton id={115}/>
-                          <ToggleButton id={116}/>
-                      </div>
-
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-            
-          </div>
+            </div>
             <div className='row'>
               <div className='col-12 text-center p-3'>
                 <button type='submit' className='btn btn-primary'>Register</button>
@@ -303,10 +224,10 @@ function BusRegistrationPage() {
           </form>
 
         </div>
-        
+
       </div>
       <ToastContainer /> {/* Add ToastContainer here to display toast messages */}
-      <Footer/>
+      <Footer />
     </>
   )
 }

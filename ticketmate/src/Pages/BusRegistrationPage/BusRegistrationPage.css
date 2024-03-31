@@ -69,3 +69,11 @@
     flex-direction: column;
     /* Add more styles as needed */
 }
+
+.btn-primary2 {
+  background-color: #D9D9D9;
+  color: white;
+}
+.btn-primary2.active {
+  background-color: #1FBF83;
+}

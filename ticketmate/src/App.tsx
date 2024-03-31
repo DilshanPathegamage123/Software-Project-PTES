@@ -6,6 +6,7 @@ import RegisteredBusInfoSec from './Components/RegisteredBusInfoSec/RegisteredBu
 import { BrowserRouter ,Routes, Route} from 'react-router-dom'
 import BusOwnerPage2 from './Pages/BusOwnerPage2/BusOwnerPage2'
 import FormValidation from './Pages/sample/FormValidation'
+import SelectBusSeatStructure from './Components/SelectBusSeatStructure/SelectBusSeatStructure'
 
 function App() {
   const [count, setCount] = useState(0)

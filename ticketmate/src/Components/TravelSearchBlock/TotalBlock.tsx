@@ -7,28 +7,80 @@ import DatePicker from "./DatePicker";
 import SearchButton from "./SearchButton";
 import axios from "axios";
 
-export default function TotalBlock({
+// interface TotalBlockProps {
+//   setSelectedVehicleTypeProp: (value: string) => void;
+//   onSearch: (results: SearchResult[]) => Promise<void>;
+// }
+
+interface TotalBlockProps {
+  selectedVehicleType: string;
+  setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  onSearch: (results: SearchResult[]) => Promise<void>;
+}
+
+interface SearchResult {
+  // Define the properties of a search result
+  vehicleType: string;
+  startLocation: string;
+  departureTime: string;
+  endLocation: string;
+  arrivalTime: string;
+  travelDate: string;
+  arrivalDate: string;
+  regNo: string;
+  comfortability: string;
+  duration: string;
+  ticketPrice: number;
+  bookingClosingDate: string;
+  bookingClosingTime: string;
+}
+
+// export default function TotalBlock({
+//   selectedVehicleType,
+//   setSelectedVehicleType,
+// }: {
+//   selectedVehicleType: string;
+//   setSelectedVehicleType: (value: string) => void;
+// }) {
+//   //const [selectedVehicleType, setSelectedVehicleType] = useState("");
+//   const [selectedStartLocation, setSelectedStartLocation] = useState("");
+//   const [selectedEndLocation, setSelectedEndLocation] = useState("");
+//   const [selectedDate, setSelectedDate] = useState("");
+//   const [searchResults, setSearchResults] = useState([]); // Use state to store search results
+
+const TotalBlock: React.FC<TotalBlockProps> = ({
   selectedVehicleType,
   setSelectedVehicleType,
-}: {
-  selectedVehicleType: string;
-  setSelectedVehicleType: (value: string) => void;
-}) {
+  onSearch,
+}) => {
   //const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const [searchResults, setSearchResults] = useState([]); // Use state to store search results
+
+  // const handleVehicleTypeChange: React.Dispatch<
+  //   React.SetStateAction<string>
+  // > = (type) => {
+  //   setSelectedVehicleType(type);
+  // };
+  console.log(selectedVehicleType);
+  console.log(selectedStartLocation);
+  console.log(selectedEndLocation);
+  console.log(selectedDate);
+
+  React.useEffect(() => {
+    console.log(selectedVehicleType);
+  }, [selectedVehicleType]);
 
   const handleSearch = async () => {
     if (
-      selectedVehicleType === "vehicleType" ||
+      //selectedVehicleType === "vehicleType" ||
       selectedVehicleType === "" ||
       selectedStartLocation === "" ||
       selectedEndLocation === "" ||
       selectedDate === ""
     ) {
-      alert("Please fill in all required fields before searching.");
+      alert("Please fill all required fields before searching.");
       return;
     }
 
@@ -47,7 +99,7 @@ export default function TotalBlock({
           TravelDate: selectedDate,
         }
       );
-      setSearchResults(Response.data); // Store the search results in the state
+      onSearch(Response.data); // Store the search results in the state
       console.log("Search result:", Response.data); // Log the search results for debugging
     } catch (error) {
       console.error("Error during search:", error);
@@ -58,8 +110,14 @@ export default function TotalBlock({
     <div className="TotalBlock container-fluid py-4  align-items-center col-lg-10 col-8   z-1  ">
       <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-5 align-items-center justify-content-center  ">
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
-          <VehicleType setSelectedVehicleType={setSelectedVehicleType as React.Dispatch<React.SetStateAction<string>>} />
-           {/* Pass setSelected as a prop to VehicleType */}
+          <VehicleType
+            selectedVehicleType={selectedVehicleType}
+            setSelectedVehicleType={(value) => setSelectedVehicleType(value)}
+
+            //setSelectedVehicleType={setSelectedVehicleType}
+          />
+
+          {/* Pass setSelected as a prop to VehicleType */}
         </div>
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <StartLocationSelector
@@ -82,4 +140,6 @@ export default function TotalBlock({
       </div>
     </div>
   );
-}
+};
+
+export default TotalBlock;

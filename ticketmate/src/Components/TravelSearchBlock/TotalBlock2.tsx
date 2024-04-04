@@ -4,25 +4,30 @@ import EndLocationSelector from "./EndLocationSelector";
 import DatePicker from "./DatePicker";
 import "./TotalBlock2.css";
 import axios from "axios";
-import { useHistory } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
+import VehicleType from "./VehicleType";
 
+interface TotalBlock2Props {
+  selectedVehicleType: string;
+  setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  onSearch: (handleSearch : () => void) => void; 
+}
 export default function TotalBlock2({
   selectedVehicleType,
-  setSelectedVehicleType,
-}: {
-  selectedVehicleType: string;
-  setSelectedVehicleType: (value: string) => void;
-}) {
+}: //setSelectedVehicleType,
+TotalBlock2Props) {
   // const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
+
+  console.log(selectedVehicleType);
 
   const handleSearch = async () => {
     if (
-      selectedVehicleType === "vehicleType" ||
-      selectedVehicleType === "" ||
+      //selectedVehicleType === "vehicleType" ||
+      // selectedVehicleType === "" ||
       selectedStartLocation === "" ||
       selectedEndLocation === "" ||
       selectedDate === ""
@@ -46,13 +51,13 @@ export default function TotalBlock2({
           TravelDate: selectedDate,
         }
       );
-
+      //console.log(VehicleType);
       const searchResults = Response.data;
 
-      history.push({
-        pathname: "/TravelOptionsPage",
-        state: { searchResults: searchResults},
-      }); // Redirect to the TravelOptionsPage with the search results
+      navigate("/TravelOptionsPage", {
+        state: { searchResults: searchResults },
+      });
+      // Redirect to the TravelOptionsPage with the search results
 
       console.log("Search result:", Response.data);
     } catch (error) {
@@ -63,7 +68,9 @@ export default function TotalBlock2({
   return (
     <div className="TotalBlock2 text-black fs-5 fw-semibold font-family-Poppins h-auto   ">
       <div className="row col-12  m-auto ">
-        <p className="m-0 px-4 py-3 text-white   ">Bus Schedule </p>
+        <p className="m-0 px-4 py-3 text-white   ">
+          {selectedVehicleType === "Train" ? "Bus Schedule" : "Train Schedule"}{" "}
+        </p>
       </div>
 
       <div className="row row   col-12  m-auto pb-3 pt-2  d-sm-flex ">

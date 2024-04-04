@@ -1,4 +1,5 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+
 import "./passenger_form.css";
 import React, { useState } from "react";
 import "../../vars.css";
@@ -10,6 +11,7 @@ import Footer from "../../Components/Footer/Footer";
 
 const  PassengerForm=()=> {
 const [selectedOption, setSelectedOption] = useState("option1");
+
 
   return (
     <div>
@@ -30,6 +32,7 @@ const [selectedOption, setSelectedOption] = useState("option1");
           />
         </svg>
       </a>
+
 
       <div className="row container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded  mx-auto">
         <div className="row">
@@ -98,8 +101,11 @@ const [selectedOption, setSelectedOption] = useState("option1");
       </div>
       <div>
         <Footer />
+
       </div>
     </div>
   );
 }
+
 export default PassengerForm;
+

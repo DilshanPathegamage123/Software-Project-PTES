@@ -4,7 +4,13 @@ import "./loginPage.css";
 // import vars from '../../vars'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+
 import Footer from "../../Components/Footer/Footer";
+
+
+import "./loginPage.css";
+// import vars from '../../vars'
+
 import { BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -63,10 +69,12 @@ const LoginPage = () => {
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
+
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" />
             </div>
+
             {/* <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -90,6 +98,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="      password"
+
               required
             ></input>
             <div className="d-flex justify-content-center ">

@@ -1,3 +1,4 @@
+
 // import React , {useState} from 'react'
 // import './StartLocationSelector.css'
 
@@ -36,12 +37,16 @@
 
 // export default StartLocationSelector
 
+
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import "./StartLocationSelector.css";
 
 function StartLocationSelector() {
-  const [, setValue] = useState("");
+
+  const [value, setValue] = useState("");
+
+
   // I'm hardcoding the data here. We must fetch it from an API later.
   const data = [
     "Colombo",
@@ -96,10 +101,11 @@ function StartLocationSelector() {
         </svg>
       </span>
       <input
-      className="p-sm-3 p-2 align-content-center w-100"
+
+        className="p-sm-3 p-2 align-content-center w-100"
         list="data"
         onChange={(e) => setValue(e.target.value)}
-        
+
         placeholder="Start"
       />
 

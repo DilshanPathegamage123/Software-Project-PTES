@@ -1,5 +1,5 @@
 // import React from 'react'
-import './footer.css'
+import '../Footer/Footer.css'
 import f_logo from '../../assets/icon1.png'
 import i_logo from '../../assets/icon2.png'
 import t_logo from '../../assets/icon3.png'

@@ -1,13 +1,44 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-
-import React from "react";
+import React, { useState } from "react";
 import "./loginPage.css";
 // import vars from '../../vars'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
-import Footer from "../../Components/Footer/footer";
+import Footer from "../../Components/Footer/Footer";
 import { BsFillPersonFill } from "react-icons/bs";
-function LoginPage() {
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+
+const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const history = useNavigate();
+
+  const handlesubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    try {
+      
+      const response = await axios.post(
+        "https://localhost:7224/api/Auth/login",
+        {
+          username,
+          password,
+        }
+      );
+      console.log(response.data.token);
+
+      localStorage.setItem("token", response.data.token);
+      // Redirect to another page or update state to show login success
+      history("/dashboard");//place the path to the dashboard
+    } catch (error) {
+      console.error("There was an error!", error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
+
   return (
     <div>
       <PrimaryNavBar />
@@ -21,12 +52,13 @@ function LoginPage() {
           viewBox="0 0 16 16"
         >
           <path
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"
           />
         </svg>
       </a>
-      <form>
+
+      <form onSubmit={handlesubmit}>
         <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
@@ -45,12 +77,17 @@ function LoginPage() {
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
               placeholder="username"
+              name="username"
               required
-              style={{ paddingLeft: "30px" }} // Add padding for the icon
+              onChange={(e) => setUsername(e.target.value)}
+              style={{ paddingLeft: "30px" }}
+              // Add padding for the icon
             ></input>
 
             <input
               type="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="      password"
               required
@@ -68,7 +105,6 @@ function LoginPage() {
       </form>
       <Footer />
     </div>
-
   );
-}
+};
 export default LoginPage;

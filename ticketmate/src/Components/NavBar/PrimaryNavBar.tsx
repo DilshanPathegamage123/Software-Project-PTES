@@ -4,6 +4,7 @@ import LOGO from "./assest/logo.png";
 import LOGO2 from "./assest/logopart2.png";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
+//import { Link } from "react-router-dom";
 
 function PrimaryNavBar() {
   return (
@@ -11,7 +12,7 @@ function PrimaryNavBar() {
 
 
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
-
+    
         <a className="navbar-brand" href="#">
           {" "}
           <img src={LOGO} alt="LOGO" width="84px" height="37px" />{" "}
@@ -52,23 +53,23 @@ function PrimaryNavBar() {
           </ul>
           <form className="form-inline my-2 my-md-0 ">
             <div className="pr-3">
-
-              <a href="/passenger_form">
+             
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm"
                 >
                   SIGN UP
-                </button> 
-              </a>
+                </button>
+             
             </div>
-           
+
 
             <PrimaryButton
               type="button"
               value="SIGN IN"
               color="third"
               IsSmall={true}
+             // onClick={() => (window.location.href = "/login")}
             />
           </form>
         </div>

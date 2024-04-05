@@ -4,17 +4,9 @@ import "./loginPage.css";
 // import vars from '../../vars'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
-
 import Footer from "../../Components/Footer/Footer";
-
-
-import "./loginPage.css";
-// import vars from '../../vars'
-
-import { BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -26,23 +18,64 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      
+      // console.log("username: " + username + " password: " + password);
       const response = await axios.post(
-        "https://localhost:7224/api/Auth/login",
+        "https://localhost:7196/api/Auth/login",
         {
           username,
           password,
         }
       );
-      console.log(response.data.token);
 
-      localStorage.setItem("token", response.data.token);
-      // Redirect to another page or update state to show login success
-      history("/dashboard");//place the path to the dashboard
+      // if (!response.data.token) {
+      //   console.error("Token not found in response:", response.data);
+      //   alert("Token not found in response. Please check your credentials.");
+      //   return;
+      // }
+
+      const token = response.data.jwtToken;
+      //Fconsole.log("token", token);
+
+      if (token) {
+        localStorage.setItem("token", token);
+
+        //decode the token
+        const tokenParts = token.split(".");
+        const encodedPayload = tokenParts[1];
+        // console.log("encodedPayload", encodedPayload); // Log the encoded payload
+
+        const decodedPayload = JSON.parse(atob(encodedPayload));
+        const userRole =
+          decodedPayload[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ];
+        //console.log("userRole" , userRole);
+
+        switch (userRole) {
+          case "Admin":
+            history("/AdminPage");
+            break;
+          case "Owner":
+            history("#");
+            break;
+          case "Passenger":
+            history("/#");
+            break;
+          case "Driver":
+            history("/#");
+            break;
+          default:
+            //alert("Invalid user name or password");
+            break;
+        }
+      } else {
+        alert("not enter to the if statement");
+      }
     } catch (error) {
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }
+
   };
 
   return (
@@ -69,7 +102,6 @@ const LoginPage = () => {
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
-
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" />
@@ -98,16 +130,16 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="      password"
-
               required
             ></input>
             <div className="d-flex justify-content-center ">
-              <PrimaryButton
+              {/* <PrimaryButton
                 type="submit"
                 value="LOG IN"
                 color="primary"
                 IsSmall={false}
-              />
+              /> */}
+              <input type="submit" value="LOG IN" className="btn btn-primary" />
             </div>
           </div>
         </div>

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import StartLocationSelector from "./StartLocationSelector";
 import EndLocationSelector from "./EndLocationSelector";
 import DatePicker from "./DatePicker";
@@ -9,13 +12,31 @@ import VehicleType from "./VehicleType";
 
 interface TotalBlock2Props {
   selectedVehicleType: string;
-  setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
-  onSearch: (handleSearch : () => void) => void; 
+  //setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  onSearch: (results: SearchResult[]) => Promise<void>;
 }
-export default function TotalBlock2({
+
+interface SearchResult {
+  // Define the properties of a search result
+  vehicleType: string;
+  startLocation: string;
+  departureTime: string;
+  endLocation: string;
+  arrivalTime: string;
+  travelDate: string;
+  arrivalDate: string;
+  regNo: string;
+  comfortability: string;
+  duration: string;
+  ticketPrice: number;
+  bookingClosingDate: string;
+  bookingClosingTime: string;
+}
+
+const TotalBlock2: React.FC<TotalBlock2Props> = ({
   selectedVehicleType,
-}: //setSelectedVehicleType,
-TotalBlock2Props) {
+  onSearch,
+}) => {
   // const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
@@ -23,21 +44,23 @@ TotalBlock2Props) {
   const navigate = useNavigate();
 
   console.log(selectedVehicleType);
+  console.log(selectedStartLocation);
+  console.log(selectedEndLocation);
+  console.log(selectedDate);
 
   const handleSearch = async () => {
     if (
-      //selectedVehicleType === "vehicleType" ||
-      // selectedVehicleType === "" ||
+      selectedVehicleType === "" ||
       selectedStartLocation === "" ||
       selectedEndLocation === "" ||
       selectedDate === ""
     ) {
-      alert("Please fill in all required fields before searching.");
+      toast.warn("Please fill all required fields before searching");
       return;
     }
 
     if (selectedStartLocation == selectedEndLocation) {
-      alert("You Can't Travel Between Same Locations");
+      toast.warn("You Can't Travel Between Same Locations");
       return;
     }
 
@@ -52,11 +75,13 @@ TotalBlock2Props) {
         }
       );
       //console.log(VehicleType);
-      const searchResults = Response.data;
 
-      navigate("/TravelOptionsPage", {
-        state: { searchResults: searchResults },
-      });
+      onSearch(Response.data);
+      // const searchResults = Response.data;
+
+      // navigate("/TravelOptionsPage", {
+      //   state: { searchResults: searchResults },
+      // });
       // Redirect to the TravelOptionsPage with the search results
 
       console.log("Search result:", Response.data);
@@ -69,7 +94,7 @@ TotalBlock2Props) {
     <div className="TotalBlock2 text-black fs-5 fw-semibold font-family-Poppins h-auto   ">
       <div className="row col-12  m-auto ">
         <p className="m-0 px-4 py-3 text-white   ">
-          {selectedVehicleType === "Train" ? "Bus Schedule" : "Train Schedule"}{" "}
+          {selectedVehicleType === "Bus" ? "Bus Schedule" : "Train Schedule"}{" "}
         </p>
       </div>
 
@@ -102,4 +127,6 @@ TotalBlock2Props) {
       </div>
     </div>
   );
-}
+};
+
+export default TotalBlock2;

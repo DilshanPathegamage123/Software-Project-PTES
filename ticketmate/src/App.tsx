@@ -1,6 +1,9 @@
 // App.js
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "./pages/HomePage/Home";
 import TravelOptionsPage from "./pages/TravelOptionsPage/TravelOptionsPage";
 
@@ -29,25 +32,28 @@ function App() {
   const [selectedVehicleType, setSelectedVehicleType] = useState("");
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Home
-            onSearch={setSearchResults}
-            //setSelectedVehicleType={setSelectedVehicleType}
-          />
-        }
-      />
-      {searchResults && (
+    <div>
+      <ToastContainer />
+      <Routes>
         <Route
-          path="/travel-options"
+          path="/"
           element={
-            <TravelOptionsPage selectedVehicleType={selectedVehicleType} />
+            <Home
+              onSearch={setSearchResults}
+              //setSelectedVehicleType={setSelectedVehicleType}
+            />
           }
         />
-      )}
-    </Routes>
+        {searchResults && (
+          <Route
+            path="/travel-options"
+            element={
+              <TravelOptionsPage selectedVehicleType={selectedVehicleType} />
+            }
+          />
+        )}
+      </Routes>
+    </div>
   );
 }
 

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import StartLocationSelector from "./StartLocationSelector";
 import EndLocationSelector from "./EndLocationSelector";
 import "./TotalBlock.css";
@@ -68,24 +71,23 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
   console.log(selectedEndLocation);
   console.log(selectedDate);
 
-  React.useEffect(() => {
-    console.log(selectedVehicleType);
-  }, [selectedVehicleType]);
+  // React.useEffect(() => {
+  //   console.log(selectedVehicleType);
+  // }, [selectedVehicleType]);
 
   const handleSearch = async () => {
     if (
-      //selectedVehicleType === "vehicleType" ||
       selectedVehicleType === "" ||
       selectedStartLocation === "" ||
       selectedEndLocation === "" ||
       selectedDate === ""
     ) {
-      alert("Please fill all required fields before searching.");
+      toast.warn("Please fill all required fields before searching");
       return;
     }
 
     if (selectedStartLocation === selectedEndLocation) {
-      alert("You Can't Travel Between Same Locations");
+      toast.warn("You Can't Travel Between Same Locations");
       return;
     }
 

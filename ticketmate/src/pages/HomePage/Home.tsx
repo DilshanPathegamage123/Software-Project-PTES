@@ -12,7 +12,8 @@ interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
 }
 
-interface SearchResult { // Define the properties of a search result
+interface SearchResult {
+  // Define the properties of a search result
   vehicleType: string;
   startLocation: string;
   departureTime: string;
@@ -36,7 +37,12 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
   // Function to handle search button click
   const handleSearch = async (results: SearchResult[]) => {
     // Navigate to the '/travel-options' route and pass search results as state
-    navigate("/travel-options", { state: { searchResults: results } });
+    navigate("/travel-options", {
+      state: {
+        searchResults: results,
+        selectedVehicleType: selectedVehicleType,
+      },
+    });
 
     onSearch(results);
   };

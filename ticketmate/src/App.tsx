@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Home from "./pages/HomePage/Home";
 import TravelOptionsPage from "./pages/TravelOptionsPage/TravelOptionsPage";
-
+import SeatButton from "./Components/Buttons/SeatButton/SeatButton";
 interface SearchResult {
   // Define the properties of a search result
   vehicleType: string;
@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div>
-      <ToastContainer />
+      {/* <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -52,7 +52,9 @@ function App() {
             }
           />
         )}
-      </Routes>
+      </Routes> */}
+
+      <SeatButton status="available" onClick={() => {}} />
     </div>
   );
 }

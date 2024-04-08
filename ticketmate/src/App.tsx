@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div>
-      {/* <ToastContainer />
+      <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -52,9 +52,9 @@ function App() {
             }
           />
         )}
-      </Routes> */}
+      </Routes>
 
-      <SeatButton status="available" onClick={() => {}} />
+      {/* <SeatButton status="available" onClick={() => {}} /> */}
     </div>
   );
 }

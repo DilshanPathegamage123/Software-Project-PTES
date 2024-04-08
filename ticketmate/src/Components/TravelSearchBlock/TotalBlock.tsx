@@ -93,7 +93,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
 
     try {
       const Response = await axios.post(
-        "https://localhost:7124/api/TravelSearch",
+        "https://localhost:7048/api/TravelSearch",
         {
           VehicleType: selectedVehicleType,
           StartLocation: selectedStartLocation,

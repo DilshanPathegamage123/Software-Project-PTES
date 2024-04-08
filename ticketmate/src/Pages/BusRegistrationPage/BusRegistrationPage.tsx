@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
@@ -145,12 +146,12 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     <>
       {/* // nav bar */}
       <PrimaryNavBar />
-
       <div className='container-fluid py-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
           </div>
+
           <form onSubmit={handleSubmit}>
             {/* input fields */}
             <div className='row'>
@@ -231,6 +232,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     </>
   )
 }
+
 
 
 export default BusRegistrationPage

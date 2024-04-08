@@ -1,9 +1,9 @@
-import React from 'react'
-import './PrimaryNavBar.css'
-import LOGO from './assest/logo.png'
-import LOGO2 from './assest/logopart2.png'
-import PrimaryButton from '../Buttons/PrimaryButton'
-import '../../vars.css'
+import React from "react";
+import "./PrimaryNavBar.css";
+import LOGO from "./assest/logo.png";
+import LOGO2 from "./assest/logopart2.png";
+import PrimaryButton from "../Buttons/PrimaryButton";
+import "../../vars.css";
 
 function PrimaryNavBar() {
   return (
@@ -29,10 +29,15 @@ function PrimaryNavBar() {
                     </div>
                     <PrimaryButton type="button" value="SIGN IN" color="third" IsSmall={true}/>
                 </form>
+
             </div>
-        </nav>
+           
+
+            
+       
+      </nav>
     </>
-  )
+  );
 }
 
-export default PrimaryNavBar
+export default PrimaryNavBar;

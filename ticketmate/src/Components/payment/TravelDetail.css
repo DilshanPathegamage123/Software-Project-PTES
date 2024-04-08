@@ -1,0 +1,15 @@
+.list-inline-item{
+    display: flex;
+    font-family:'Inter';
+    font-size: 18px;
+    font: bold;
+    color: rgb(4, 47, 64);
+}
+.card-body{
+   width: 443.68;
+   height: 204.05;
+   background-color:rgb(246, 246, 246) ;
+}
+.card-body ul {
+    margin-bottom: 4px;
+}

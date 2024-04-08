@@ -1,7 +1,5 @@
-/* Modify your CSS accordingly */
 .seatButton {
   position: relative;
-  border: 0;
   background: none;
 }
 
@@ -36,4 +34,13 @@
 
 .seatImageContainer:hover .hoverEffect {
   opacity: 1;
+}
+
+.seatNo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(0, 0, 0);
+  font-weight: bold;
 }

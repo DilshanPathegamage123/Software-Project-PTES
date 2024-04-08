@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import "./SeatButton.css";
 import SeatAvailable from "./SeatButtonAssests/SeatAvailable.png";
@@ -19,6 +17,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
 
   let SeatImg;
   let SeatId;
+  let SeatNo = "12";
 
   switch (localStatus) {
     case "booked":
@@ -53,7 +52,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
 
   return (
     <button
-      className="seatButton"
+      className="seatButton p-0 m-0 border-0"
       onClick={handleButtonClick}
       disabled={localStatus === "booked"}
     >
@@ -63,6 +62,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
           alt={localStatus}
           className={`seatImage ${localStatus}`}
         ></img>
+        <span className="seatNo">{SeatNo}</span>
         {localStatus === "booked" && <div className="hoverEffect"></div>}
       </div>
     </button>

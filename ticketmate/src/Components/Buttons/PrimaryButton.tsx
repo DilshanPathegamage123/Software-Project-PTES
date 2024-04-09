@@ -34,7 +34,6 @@ function PrimaryButton(props: any) {
           <div>
               <input type={props.type} className={`btn btn-primary ${classColor} ${Block} ${size}`} value={props.value}  style={buttonStyles} onClick={LINK}/>
 
-
           </div>
       </>
   )

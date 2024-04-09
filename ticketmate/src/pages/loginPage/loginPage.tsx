@@ -151,6 +151,7 @@ const LoginPage = () => {
       </form>
       <Footer />
     </div>
+
   );
 };
 export default LoginPage;

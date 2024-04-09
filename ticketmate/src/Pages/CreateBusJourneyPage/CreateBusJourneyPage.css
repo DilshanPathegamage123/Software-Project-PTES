@@ -1,22 +1,22 @@
 @import '../../vars.css';
 
 .container-fluid{
-    padding-left: 72px !important;
-    padding-right: 72px !important;
+    padding-left: 300px !important;
+    padding-right: 300px !important;
 }
 
 @media only screen and (max-width: 600px) {
     .container-fluid {
-      padding-left: 10px !important;
-      padding-right: 10px !important;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
     }
   }
   
   /* Responsive padding for screens between 601px and 1200px */
-  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+  @media only screen and (min-width: 601px) and (max-width: 1000px) {
     .container-fluid {
-        padding-left: 40px !important;
-        padding-right: 40px !important;
+        padding-left: 180px !important;
+        padding-right: 180px !important;
     }
   }
 
@@ -68,14 +68,4 @@
     display: flex;
     flex-direction: column;
     /* Add more styles as needed */
-
-}
-
-.btn-primary2 {
-  background-color: #D9D9D9;
-  color: white;
-}
-.btn-primary2.active {
-  background-color: #1FBF83;
-
 }

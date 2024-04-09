@@ -78,6 +78,7 @@ const LoginPage = () => {
 
   };
 
+
   return (
     <div>
       <PrimaryNavBar />
@@ -98,10 +99,12 @@ const LoginPage = () => {
       </a>
 
       <form onSubmit={handlesubmit}>
+
         <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
+
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" />
@@ -122,6 +125,7 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
               // Add padding for the icon
+
             ></input>
 
             <input
@@ -130,6 +134,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="      password"
+
               required
             ></input>
             <div className="d-flex justify-content-center ">

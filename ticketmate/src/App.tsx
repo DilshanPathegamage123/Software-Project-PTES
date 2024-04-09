@@ -1,6 +1,7 @@
 import React from "react";
 import AppRoutes from "./Routes";
-import AdminPage from "./pages/AdminDashboard/AdminPage";
+import React, { useState } from 'react'
+
 
 
 function App() {
@@ -9,6 +10,8 @@ function App() {
       <AppRoutes/>
       {/* <AdminPage/> */}
     </div>
+      
+
   );
 }
 

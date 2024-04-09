@@ -1,34 +1,83 @@
 import "./passengerFormComponent.css";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 
 import { useFormik } from "formik";
 import { passengerFormValidation } from "./passengerFormValidation";
+import axios from "axios";
+
 
 const initialValues = {
   FirstName: "",
   LastName: "",
   NIC: "",
   Email: "",
+  DOB: "",
+
   ContactNumber: "",
   UserName: "",
   Password: "",
   ConfirmPassword: "",
 };
 
-function PassengerFormComponent() {
+const PassengerFormComponent = () => {
+  const [formValues, setFormValues] = useState({
+    FirstName: "",
+    LastName: "",
+    NIC: "",
+    Email: "",
+    DOB: "",
+    ContactNumber: "",
+    UserName: "",
+    Password: "",
+    ConfirmPassword: "",
+  });
   const [dob, setDob] = useState<Date | null>(null);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormValues((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
-  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+  const { handleBlur, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: passengerFormValidation,
-    onSubmit: (values) => {
-      console.log(values);
+
+    onSubmit: async (FormValues) => {
+      try {
+        // Make POST request using Axios
+        const response = await axios.post(
+          "https://localhost:7196/api/userData",
+          {
+            firstName: formValues.FirstName,
+            lastName: formValues.LastName,
+            email: formValues.Email,
+            dob: dob,
+            nic: formValues.NIC,
+            contactNo: formValues.ContactNumber,
+            userName: formValues.UserName,
+            password: formValues.Password,
+            userType: "Passenger",
+            ownVehicleType: "",
+            drivingLicenseNo: "",
+          }
+        );
+
+        // Handle response if needed
+        console.log(response.data);
+      } catch (error) {
+        // Handle error if request fails
+        console.error("Error:", error);
+      }
     },
   });
-  // console.log('Form values', values);
+
+
   return (
     <div>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
@@ -47,8 +96,10 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your first name"
                 className="col-11 p-3"
-                value={values.FirstName}
-                onChange={handleChange}
+                value={formValues.FirstName}
+                onChange={handleInputChange}
+                //onChange={e => setFirstName(e.target.value)}
+
                 onBlur={handleBlur}
               />
               {errors.FirstName && (
@@ -72,8 +123,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your last name"
                 className="col-11 p-3"
-                value={values.LastName}
-                onChange={handleChange}
+                value={formValues.LastName}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.LastName && (
@@ -99,8 +151,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your NIC number"
                 className="col-11 p-3"
-                value={values.NIC}
-                onChange={handleChange}
+                value={formValues.NIC}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.NIC && (
@@ -124,6 +177,11 @@ function PassengerFormComponent() {
                   scrollableMonthYearDropdown
                   placeholderText="DD/MM/YYYY "
                   className="col-12  p-3"
+                  //value={values.DOB}
+
+                  //onChange={handleChange}
+                  onBlur={handleBlur}
+
                   // value={formik.values.DOB}
                   // // onChange={formik.handleChange}
                   // onBlur={formik.handleBlur}
@@ -145,8 +203,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your email address"
                 className="col-lg-8  p-3"
-                value={values.Email}
-                onChange={handleChange}
+                value={formValues.Email}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.Email && (
@@ -172,8 +231,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your contact number"
                 className="col-lg-8 p-3"
-                value={values.ContactNumber}
-                onChange={handleChange}
+                value={formValues.ContactNumber}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.ContactNumber && (
@@ -199,8 +259,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your user name"
                 className="col-lg-8 p-3"
-                value={values.UserName}
-                onChange={handleChange}
+                value={formValues.UserName}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.UserName && (
@@ -226,8 +287,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Enter your password"
                 className="col-11 p-3"
-                value={values.Password}
-                onChange={handleChange}
+                value={formValues.Password}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.Password && (
@@ -251,8 +313,9 @@ function PassengerFormComponent() {
                 }}
                 placeholder="Confirm your password"
                 className="col-11 p-3"
-                value={values.ConfirmPassword}
-                onChange={handleChange}
+                value={formValues.ConfirmPassword}
+                onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.ConfirmPassword && (
@@ -279,6 +342,8 @@ function PassengerFormComponent() {
       </div>
     </div>
   );
-}
+};
+
+// value={formValues.FirstName}
 
 export default PassengerFormComponent;

@@ -6,14 +6,16 @@ import "../../vars.css";
 import PassengerFormComponent from "./passengerFormComponent";
 import OwnerFormComponent from "./ownerFormComponent";
 import DriverFormComponent from "./driverFormComponent";
-import Footer from "../../Components/Footer/footer";
+import Footer from "../../Components/Footer/Footer";
 
-function PassengerForm() {
-  const [selectedOption, setSelectedOption] = useState("option1");
+
+const  PassengerForm=()=> {
+const [selectedOption, setSelectedOption] = useState("option1");
 
 
   return (
     <div>
+    
       <PrimaryNavBar />
       <a href="#">
         <svg

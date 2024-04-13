@@ -19,8 +19,6 @@ import TravelHistory from "./Passenger/TravelHistory";
 import Passenger2 from "./Passenger/Passenger2";
 import Passenger3 from "./Passenger/Passenger3";
 function App() {
-  
-
   return (
     <>
     <Passenger3/>
@@ -28,4 +26,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

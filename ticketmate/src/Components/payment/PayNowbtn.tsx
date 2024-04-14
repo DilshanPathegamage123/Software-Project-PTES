@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
 
+
 function PayNowbtn(){
     const buttonStyle = {
         backgroundColor: 'rgb(255,199,0)',
@@ -34,6 +35,7 @@ function PayNowbtn(){
     return(
         <div className="d-grid">
             <button className="btn mt-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} >Pay Now</button>
+
         </div>
     )
 }

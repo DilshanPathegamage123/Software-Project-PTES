@@ -12,6 +12,7 @@ function SuccessBox() {
     height: "60%",
   };
   //  const usenavigate = useNavigate();
+
   return (
     <>
       {/* <div className="container">
@@ -67,6 +68,7 @@ function SuccessBox() {
               Receipt
             </button>
           {/* </Link> */}
+
           </div>
         </div>
       </div>

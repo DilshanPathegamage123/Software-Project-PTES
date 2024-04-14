@@ -117,7 +117,7 @@
 
 
 import React, { useState } from 'react';
-import Rec1 from './asset/rec1.png';
+import Rec1 from './asset/Rec1.png';
 import Creditcard from './asset/credit-card.png';
 import Wallet from './asset/wallet.png';
 import Payment1 from '../../pages/loginPage/payment1';

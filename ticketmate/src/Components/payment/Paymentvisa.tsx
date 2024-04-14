@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import './Paymentvisa.css'
 import SelectMonth from './SelectMonth';
 import SelectYear from './SelectYear';
@@ -41,6 +42,7 @@ function Paymentvisa() {
     const validateCVV = (cvv: string) => {
         return /^[0-9]{3}$/.test(cvv);
     };
+
     return(
 <>
 
@@ -58,6 +60,7 @@ function Paymentvisa() {
                            <label> <input type="text"  className={`form-control ${!isCardNumberValid ? 'is-invalid' : ''}`} placeholder="45** **** **** 3947" aria-label="cardno" value={cardNumber} onChange={handleCardNumberChange}/>
                            {!isCardNumberValid && <div className="invalid-feedback">Invalid card number</div>}
                            </label>
+
                         </div>
                         {/* <div className="form-group" style={{ display: 'flex', alignItems: 'center' }}>                        
                            <SelectMonth/>
@@ -83,6 +86,7 @@ function Paymentvisa() {
                                 />
                             <p style={{ width: '162.19px', margin: 0, fontSize:11, color:'grey'}} >3 or 4 digits usually found on the signature strip</p>
                             {!isCVVValid && <div className="invalid-feedback">Invalid CVV</div>}
+
                         </div>
                         <div className="form-check form-switch">
                         <label className="form-check-label ml-0" htmlFor="flexSwitchCheckDefault">SET AS DEFAULT</label> 
@@ -120,6 +124,7 @@ export default Paymentvisa;
 function validateCVV(value: any): React.SetStateAction<boolean> {
     throw new Error('Function not implemented.');
 }
+
 // import './Paymentvisa.css';
 // import SelectMonth from './SelectMonth';
 // import SelectYear from './SelectYear';

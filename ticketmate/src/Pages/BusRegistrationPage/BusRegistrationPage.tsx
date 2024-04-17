@@ -9,6 +9,10 @@ import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
 import axios from 'axios';
 import PrimaryButton from '../../Components/Buttons/PrimaryButton';
 import SelectBusSeatStructure from '../../Components/SelectBusSeatStructure/SelectBusSeatStructure';
+import {FirStorage} from './FirebaseConfig';
+import { v4 } from 'uuid';
+import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+
 
 function BusRegistrationPage() {
 
@@ -30,6 +34,9 @@ function BusRegistrationPage() {
     acOption: ''
   });
 
+
+  const [LicenimgURL, setLicenimgURL] = useState([]);
+
   //---- input fields validation ----
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -46,10 +53,8 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']; // Allowed file types
     const fileType = files[0].type;
     if (allowedTypes.includes(fileType)) {
-      setFormData({
-        ...formData,
-        [name]: files[0]
-      });
+      const updatedFormData = { ...formData, [name]: files[0] };
+      setFormData(updatedFormData);
     } else {
       // Display alert for invalid file type
       alert('Only JPG, JPEG, PNG, and PDF files are allowed.');
@@ -77,68 +82,75 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   //---- form submit ----
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let formValid = true;
-    const newErrors = { ...errors };
+      e.preventDefault();
+      let formValid = true;
+      const newErrors = { ...errors };
 
-    // Check if fields are filled
-    for (const key in formData) {
-      if (formData.hasOwnProperty(key)) {
-        if ((formData as any)[key] === '') {
-          newErrors[key as keyof typeof newErrors] = `${key} is required`;
-          formValid = false;
-        } else {
-          newErrors[key as keyof typeof newErrors] = '';
+      // Check if fields are filled
+      for (const key in formData) {
+        if (formData.hasOwnProperty(key)) {
+          if ((formData as any)[key] === '') {
+            newErrors[key as keyof typeof newErrors] = `${key} is required`;
+            formValid = false;
+          } else {
+            newErrors[key as keyof typeof newErrors] = '';
+          }
         }
       }
-    }
 
-    // Check if files are selected
-    if (formData.selectedFile1 === null) {
-      newErrors.selectedFile1 = 'Attach vehicle licence image is required';
-      formValid = false;
-    } else {
-      newErrors.selectedFile1 = '';
-    }
-
-    if (formData.selectedFile2 === null) {
-      newErrors.selectedFile2 = 'Attach vehicle insurance image is required';
-      formValid = false;
-    } else {
-      newErrors.selectedFile2 = '';
-    }
-
-    // Check if radio button is selected
-    if (formData.acOption === '') {
-      newErrors.acOption = 'Select AC or Non AC option';
-      formValid = false;
-    } else {
-      newErrors.acOption = '';
-    }
-
-    setErrors(newErrors);
-
-    if (formValid) {
-      try {
-        // Submit the form
-        const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
-        await axios.post('https://localhost:7001/api/BusReg', {
-          BusNo: formData.busNum,
-          LicenNo: formData.licenceNum,
-          SetsCount: formData.seatCount,
-          ACorNONAC: acOptionValue
-        });
-        
-        // If successful, show success toast
-        toast.success('Form submitted successfully');
-      } catch (error) {
-        // If there's an error, show error toast
-        toast.error('Form submission failed2');
+      // Check if files are selected
+      if (formData.selectedFile1 === null) {
+        newErrors.selectedFile1 = 'Attach vehicle licence image is required';
+        formValid = false;
+      } else {
+        const fileRef = ref(FirStorage, `LicImgFiles/${v4()}`);
+        await uploadBytes(fileRef, formData.selectedFile1);
+        newErrors.selectedFile1 = '';
       }
-    } else {
-      // Display error message
-      toast.error('Form submission failed3');
-    }
+
+      if (formData.selectedFile2 === null) {
+        newErrors.selectedFile2 = 'Attach vehicle insurance image is required';
+        formValid = false;
+      } else {
+        const fileRef = ref(FirStorage, `InsImgFiles/${v4()}`);
+        await uploadBytes(fileRef, formData.selectedFile2);
+        newErrors.selectedFile2 = '';
+      }
+
+      // Check if radio button is selected
+      if (formData.acOption === '') {
+        newErrors.acOption = 'Select AC or Non AC option';
+        formValid = false;
+      } else {
+        newErrors.acOption = '';
+      }
+
+      setErrors(newErrors);
+
+      if (formValid) {
+        try {
+            const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
+            await axios.post('https://localhost:7001/api/BusReg', {
+              BusNo: formData.busNum,
+              LicenNo: formData.licenceNum,
+              SetsCount: formData.seatCount,
+              ACorNONAC: acOptionValue,
+              LicenseImgURL: "null",
+              InsuranceImgURL: "null"
+            });
+
+            toast.success('Form submitted successfully');
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 4000);
+
+        } catch (error) {
+          toast.error('Form submission failed2');
+        }
+      } else {
+        toast.error('Form submission failed3');
+      }
   };
 
   return (
@@ -218,7 +230,8 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             </div>
             <div className='row'>
               <div className='col-12 text-center p-3'>
-                <button type='submit' className='btn btn-primary'>Register</button>
+                <button type='submit' className='btn btn-primary mx-3 '>Register</button>
+                <button type='button' className='btn btn-outline-primary mx-3 '>Cancel</button>
               </div>
             </div>
           </form>
@@ -226,7 +239,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         </div>
 
       </div>
-      <ToastContainer /> {/* Add ToastContainer here to display toast messages */}
+      <ToastContainer />
       <Footer />
     </>
   )

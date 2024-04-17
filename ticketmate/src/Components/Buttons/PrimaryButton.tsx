@@ -2,9 +2,9 @@ import React from 'react'
 import './Button.css'
 
 function PrimaryButton(props: any) {
-    let color = props.color;
-    let Block = props.IsBlock? "btn-block" : "";
-    let size = props.IsSmall? "btn-sm" : "";
+    const color = props.color;
+    const Block = props.IsBlock? "btn-block" : "";
+    const size = props.IsSmall? "btn-sm" : "";
     let classColor;
 
     if (color == "primary"){
@@ -33,6 +33,7 @@ function PrimaryButton(props: any) {
       <>
           <div>
               <input type={props.type} className={`btn btn-primary ${classColor} ${Block} ${size}`} value={props.value}  style={buttonStyles} onClick={LINK}/>
+
           </div>
       </>
   )

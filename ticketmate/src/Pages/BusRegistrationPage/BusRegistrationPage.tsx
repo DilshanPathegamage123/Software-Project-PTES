@@ -4,7 +4,7 @@ import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import Wheel from './assets/steering-wheel (1).png';
 import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton';
-import Footer from '../../Components/Footer/footer';
+import Footer from '../../Components/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify'; // Import 'toast' from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
 import axios from 'axios';

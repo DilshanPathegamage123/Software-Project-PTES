@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import Wheel from './assets/steering-wheel (1).png';
@@ -36,7 +36,11 @@ function BusRegistrationPage() {
   });
 
 
-  const [LicenimgURL, setLicenimgURL] = useState([]);
+  const [Licenimg, setLicenimg] = useState('');
+  const [InsuaraceImg, setInsuaraceImg] = useState('');
+
+  const [LicenimgURL, setLicenimgURL] = useState('');
+  const [InsuaraceImgURL, setInsuaraceImgURL] = useState('');
 
   //---- input fields validation ----
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,6 +110,10 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       } else {
         const fileRef = ref(FirStorage, `LicImgFiles/${v4()}`);
         await uploadBytes(fileRef, formData.selectedFile1);
+        
+        const uploadedFileUrl = await getDownloadURL(fileRef);
+        setLicenimgURL(uploadedFileUrl);
+        
         newErrors.selectedFile1 = '';
       }
 
@@ -115,6 +123,11 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       } else {
         const fileRef = ref(FirStorage, `InsImgFiles/${v4()}`);
         await uploadBytes(fileRef, formData.selectedFile2);
+
+        const uploadedFileUrl = await getDownloadURL(fileRef);
+        setInsuaraceImgURL(uploadedFileUrl);
+       
+
         newErrors.selectedFile2 = '';
       }
 
@@ -130,21 +143,29 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
       if (formValid) {
         try {
-            const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
-            await axios.post('https://localhost:7001/api/BusReg', {
-              BusNo: formData.busNum,
-              LicenNo: formData.licenceNum,
-              SetsCount: formData.seatCount,
-              ACorNONAC: acOptionValue,
-              LicenseImgURL: "null",
-              InsuranceImgURL: "null"
-            });
+            // const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
+            // await axios.post('https://localhost:7001/api/BusReg', {
+            //   BusNo: formData.busNum,
+            //   LicenNo: formData.licenceNum,
+            //   SetsCount: formData.seatCount,
+            //   ACorNONAC: acOptionValue,
+            //   LicenseImgURL: "LicenimgURL",
+            //   InsuranceImgURL: "InsuaraceImgURL"
+            // });
+
+            useEffect(() => {
+              console.log("LicenimgURL updated: ", LicenimgURL);
+            }, [LicenimgURL]);
+    
+            useEffect(() => {
+              console.log("InsuaraceImgURL updated: ", InsuaraceImgURL);
+            }, [InsuaraceImgURL]);
 
             toast.success('Form submitted successfully');
 
-          setTimeout(() => {
-            window.location.reload();
-          }, 4000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 4000);
 
         } catch (error) {
           toast.error('Form submission failed2');

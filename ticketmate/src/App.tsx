@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react'
+import BusRegistrationPage from './Pages/BusRegistrationPage/BusRegistrationPage';
 
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
     //   </Routes>
     // </BrowserRouter>
     <>
-
+      <BusRegistrationPage/>
     </>
   );
 }

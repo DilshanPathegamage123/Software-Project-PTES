@@ -2,13 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import Wheel from './assets/steering-wheel (1).png';
-import ToggleButton from '../../Components/Buttons/ToggleButton/ToggleButton';
 import Footer from '../../Components/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify'; // Import 'toast' from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
 import axios from 'axios';
-import PrimaryButton from '../../Components/Buttons/PrimaryButton';
 import SelectBusSeatStructure from '../../Components/SelectBusSeatStructure/SelectBusSeatStructure';
 import {FirStorage} from './FirebaseConfig';
 import { v4 } from 'uuid';
@@ -34,13 +31,6 @@ function BusRegistrationPage() {
     selectedFile2: '',
     acOption: ''
   });
-
-
-  const [Licenimg, setLicenimg] = useState('');
-  const [InsuaraceImg, setInsuaraceImg] = useState('');
-
-  const [LicenimgURL, setLicenimgURL] = useState('');
-  const [InsuaraceImgURL, setInsuaraceImgURL] = useState('');
 
   //---- input fields validation ----
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,11 +98,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         newErrors.selectedFile1 = 'Attach vehicle licence image is required';
         formValid = false;
       } else {
-        const fileRef = ref(FirStorage, `LicImgFiles/${v4()}`);
-        await uploadBytes(fileRef, formData.selectedFile1);
         
-        const uploadedFileUrl = await getDownloadURL(fileRef);
-        setLicenimgURL(uploadedFileUrl);
         
         newErrors.selectedFile1 = '';
       }
@@ -121,12 +107,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         newErrors.selectedFile2 = 'Attach vehicle insurance image is required';
         formValid = false;
       } else {
-        const fileRef = ref(FirStorage, `InsImgFiles/${v4()}`);
-        await uploadBytes(fileRef, formData.selectedFile2);
-
-        const uploadedFileUrl = await getDownloadURL(fileRef);
-        setInsuaraceImgURL(uploadedFileUrl);
-       
+        
 
         newErrors.selectedFile2 = '';
       }
@@ -142,30 +123,28 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setErrors(newErrors);
 
       if (formValid) {
+        // Upload files and retrieve download URLs
+        const [licenseUrl, insuranceUrl] = await Promise.all([
+          formData.selectedFile1 ? uploadFileAndGetUrl(formData.selectedFile1) : Promise.resolve(null),
+          formData.selectedFile2 ? uploadFileAndGetUrl(formData.selectedFile2) : Promise.resolve(null)
+        ]);
+       
         try {
-            // const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
-            // await axios.post('https://localhost:7001/api/BusReg', {
-            //   BusNo: formData.busNum,
-            //   LicenNo: formData.licenceNum,
-            //   SetsCount: formData.seatCount,
-            //   ACorNONAC: acOptionValue,
-            //   LicenseImgURL: "LicenimgURL",
-            //   InsuranceImgURL: "InsuaraceImgURL"
-            // });
-
-            useEffect(() => {
-              console.log("LicenimgURL updated: ", LicenimgURL);
-            }, [LicenimgURL]);
-    
-            useEffect(() => {
-              console.log("InsuaraceImgURL updated: ", InsuaraceImgURL);
-            }, [InsuaraceImgURL]);
+            const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
+            await axios.post('https://localhost:7001/api/BusReg', {
+              BusNo: formData.busNum,
+              LicenNo: formData.licenceNum,
+              SetsCount: formData.seatCount,
+              ACorNONAC: acOptionValue,
+              LicenseImgURL: licenseUrl,
+              InsuranceImgURL: insuranceUrl
+            });
 
             toast.success('Form submitted successfully');
 
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 4000);
+          setTimeout(() => {
+            window.location.reload();
+          }, 4000);
 
         } catch (error) {
           toast.error('Form submission failed2');
@@ -173,6 +152,15 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       } else {
         toast.error('Form submission failed3');
       }
+  };
+
+  const uploadFileAndGetUrl = async (file: File) => {
+    if (file) {
+      const fileRef = ref(FirStorage, `Files/${v4()}`);
+      await uploadBytes(fileRef, file);
+      return getDownloadURL(fileRef);
+    }
+    return '';
   };
 
   return (

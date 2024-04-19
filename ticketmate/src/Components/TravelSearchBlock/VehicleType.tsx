@@ -9,8 +9,6 @@ interface VehicleTypeProps {
   setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
 }
 
-//function VehicleType() {
-
 const VehicleType: React.FC<VehicleTypeProps> = ({
   selectedVehicleType,
   setSelectedVehicleType,

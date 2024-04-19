@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./DatePicker.css";
 
 interface DatePickerProps {
@@ -8,7 +8,12 @@ interface DatePickerProps {
 //export default function DatePicker() {
 
 const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
-  const [date, setDate] = useState("");
+  const currentDate = new Date().toISOString().substr(0, 10);
+  const [date, setDate] = useState(currentDate);
+
+  useEffect(() => {
+    setSelectedDate(date);
+  }, []);
 
   // useEffect(() => {
   //   if (date) {
@@ -35,6 +40,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
       <input
         className=" h-100 w-100  p-sm-3 p-0 align-content-center "
         type="date"
+        value={date}
         onChange={(e) => {
           //const formattedDate = formatDate(e.target.value);
           setDate(e.target.value);

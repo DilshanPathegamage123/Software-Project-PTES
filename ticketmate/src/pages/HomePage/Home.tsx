@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
@@ -7,30 +7,33 @@ import Background from "./assests/Home Background.jpg";
 import TotalBlock from "../../Components/TravelSearchBlock/TotalBlock";
 import HomeContent from "../../Components/HomePageContent/HomeContent";
 import Footer from "../../Components/Footer/Footer";
-
+import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
+import { SearchResult } from "../../SearchResult";
 interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
 }
 
-interface SearchResult {
-  // Define the properties of a search result
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
-}
+// interface SearchResult {
+//   // Define the properties of a search result
+//   vehicleType: string;
+//   startLocation: string;
+//   departureTime: string;
+//   endLocation: string;
+//   arrivalTime: string;
+//   travelDate: string;
+//   arrivalDate: string;
+//   regNo: string;
+//   comfortability: string;
+//   duration: string;
+//   ticketPrice: number;
+//   bookingClosingDate: string;
+//   bookingClosingTime: string;
+// }
 
 const Home: React.FC<HomeProps> = ({ onSearch }) => {
-  const [selectedVehicleType, setSelectedVehicleType] = useState("");
+  const { selectedVehicleType, setSelectedVehicleType } = useContext(
+    SelectedVehicleTypeContext
+  );
 
   const navigate = useNavigate();
 

@@ -9,28 +9,12 @@ import "./TotalBlock2.css";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import VehicleType from "./VehicleType";
+import { SearchResult } from "../../SearchResult";
 
 interface TotalBlock2Props {
   selectedVehicleType: string;
   //setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
-}
-
-interface SearchResult {
-  // Define the properties of a search result
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
 }
 
 const TotalBlock2: React.FC<TotalBlock2Props> = ({
@@ -74,17 +58,30 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
           TravelDate: selectedDate,
         }
       );
-      //console.log(VehicleType);
 
-      onSearch(Response.data);
-      // const searchResults = Response.data;
+      if (Array.isArray(Response.data.$values)) {
+        // Store the search results and selected vehicle type in the session storage
+        sessionStorage.setItem(
+          "searchResults",
+          JSON.stringify(Response.data.$values)
+        );
+        sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
 
-      // navigate("/TravelOptionsPage", {
-      //   state: { searchResults: searchResults },
-      // });
-      // Redirect to the TravelOptionsPage with the search results
+        onSearch(Response.data.$values);
 
-      console.log("Search result:", Response.data);
+        console.log("Search result:", Response.data.$values);
+
+        await onSearch(Response.data.$values);
+
+        navigate("/travel-options", {
+          state: {
+            searchResults: Response.data.$values,
+            selectedVehicleType: selectedVehicleType,
+          },
+        });
+      } else {
+        console.error("Search results are not in the expected format");
+      }
     } catch (error) {
       console.error("Error during search:", error);
     }
@@ -118,7 +115,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
             <button
               type="button"
               className=" Modify-Button btn btn-lg text-white fs-5 fw-normal col  m-auto align-content-center justify-content-center"
-              onClick={handleSearch}
+              onClick={() => handleSearch()}
             >
               Search
             </button>

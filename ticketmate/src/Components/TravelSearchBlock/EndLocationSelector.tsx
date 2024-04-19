@@ -23,8 +23,12 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
   setSelectedEndLocation,
 }) => {
   const [endvalue, setEndValue] = useState("");
-  const [endData, setEndData] = useState([]);
-  const [filteredEndData, setFilteredEndData] = useState([]);
+  //const [endData, setEndData] = useState([]);
+  //const [filteredEndData, setFilteredEndData] = useState([]);
+  const [endData, setEndData] = useState<{ stopName: string }[]>([]);
+  const [filteredEndData, setFilteredEndData] = useState<
+    { stopName: string }[]
+  >([]);
 
   useEffect(() => {
     getAllEndLocations();
@@ -36,8 +40,13 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
         "https://localhost:7048/api/EndLocation"
       );
       console.log("Response end (locations) from backend:", response1.data);
-      setEndData(response1.data);
-      setFilteredEndData(response1.data);
+      if (Array.isArray(response1.data.$values)) {
+        setEndData(response1.data.$values);
+        setFilteredEndData(response1.data.$values); // Initialize filteredData with the same data
+      } else {
+        setEndData([]);
+        setFilteredEndData([]);
+      }
     } catch (error) {
       console.error("Error while fetching end locations from backend", error);
     }

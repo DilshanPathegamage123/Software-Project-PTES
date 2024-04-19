@@ -9,6 +9,7 @@ import VehicleType from "./VehicleType";
 import DatePicker from "./DatePicker";
 import SearchButton from "./SearchButton";
 import axios from "axios";
+import { SearchResult } from "../../SearchResult";
 
 // interface TotalBlockProps {
 //   setSelectedVehicleTypeProp: (value: string) => void;
@@ -19,23 +20,6 @@ interface TotalBlockProps {
   selectedVehicleType: string;
   setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
-}
-
-interface SearchResult {
-  // Define the properties of a search result
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
 }
 
 // export default function TotalBlock({
@@ -101,8 +85,20 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
           TravelDate: selectedDate,
         }
       );
-      onSearch(Response.data); // Store the search results in the state
-      console.log("Search result:", Response.data); // Log the search results for debugging
+
+      if (Array.isArray(Response.data.$values)) {
+        // Store the search results and selected vehicle type in the session storage
+        sessionStorage.setItem(
+          "searchResults",
+          JSON.stringify(Response.data.$values)
+        );
+        sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
+
+        onSearch(Response.data.$values); // Store the search results in the state
+        console.log("Search result:", Response.data.$values); // Log the search results for debugging
+      } else {
+        console.error("Search results are not in the expected format");
+      }
     } catch (error) {
       console.error("Error during search:", error);
     }

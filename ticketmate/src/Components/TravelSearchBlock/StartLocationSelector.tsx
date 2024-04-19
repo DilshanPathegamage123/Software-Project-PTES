@@ -11,8 +11,12 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
   setSelectedStartLocation,
 }) => {
   const [startvalue, setStartValue] = useState("");
-  const [startData, setStartData] = useState([]);
-  const [filteredStartData, setFilteredStartData] = useState([]);
+  //const [startData, setStartData] = useState([]);
+  //const [filteredStartData, setFilteredStartData] = useState([]);
+  const [startData, setStartData] = useState<{ stopName: string }[]>([]);
+  const [filteredStartData, setFilteredStartData] = useState<
+    { stopName: string }[]
+  >([]);
 
   useEffect(() => {
     getAllStartLocations();
@@ -24,9 +28,16 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
       const response = await axios.get(
         "https://localhost:7048/api/StartLocation"
       );
+
       console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
-      setStartData(response.data);
-      setFilteredStartData(response.data); // Initialize filteredData with the same data
+      
+      if (Array.isArray(response.data.$values)) {
+        setStartData(response.data.$values);
+        setFilteredStartData(response.data.$values); // Initialize filteredData with the same data
+      } else {
+        setStartData([]);
+        setFilteredStartData([]);
+      }
     } catch (error) {
       console.error("Error while sending start location to backend", error);
     }

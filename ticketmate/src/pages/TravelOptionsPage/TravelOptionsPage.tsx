@@ -8,23 +8,7 @@ import "./TravelOptionsPage.css";
 import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
 import Footer from "../../Components/Footer/Footer";
-
-// Define the SearchResult interface
-interface SearchResult {
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
-}
+import { SearchResult } from "../../SearchResult";
 
 interface TravelOptionsPageProps {
   selectedVehicleType: string;
@@ -33,8 +17,19 @@ interface TravelOptionsPageProps {
 // Define the TravelOptionsPage component
 const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
   const location = useLocation();
-  const searchResults: SearchResult[] = location.state?.searchResults || [];
-  const selectedVehicleType: string = location.state?.selectedVehicleType || "";
+  let searchResults: SearchResult[] = location.state?.searchResults || [];
+  let selectedVehicleType: string = location.state?.selectedVehicleType || "";
+
+  // If location.state is undefined, try to retrieve the data from the session storage
+  if (!location.state) {
+    const storedSearchResults = sessionStorage.getItem("searchResults");
+    const storedSelectedVehicleType = sessionStorage.getItem(
+      "selectedVehicleType"
+    );
+
+    searchResults = storedSearchResults ? JSON.parse(storedSearchResults) : [];
+    selectedVehicleType = storedSelectedVehicleType || "";
+  }
 
   const navigate = useNavigate();
 
@@ -53,6 +48,7 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
   };
   // Output searchResults for debugging
   console.log(searchResults);
+  console.log(selectedVehicleType);
 
   return (
     <>
@@ -60,7 +56,7 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
       <TotalBlock2
         selectedVehicleType={selectedVehicleType}
         //setSelectedVehicleType={setSelectedVehicleType}
-        onSearch={handleSearch}
+        onSearch={onSearch}
         //setSelectedVehicleType={() => {}}
       />
       <div className="Travel-Option-Page-body d-flex ">
@@ -70,19 +66,18 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
             searchResults.map((result: SearchResult, index: number) => (
               <DetailsCard
                 key={index}
-                vehicleType={result.vehicleType}
+                scheduleId={result.scheduleId}
+                busNo={result.busNo}
+                routNo={result.routNo}
                 startLocation={result.startLocation}
-                departureTime={result.departureTime}
                 endLocation={result.endLocation}
+                departureTime={result.departureTime}
                 arrivalTime={result.arrivalTime}
-                travelDate={result.travelDate}
-                arrivalDate={result.arrivalDate}
-                regNo={result.regNo}
                 comfortability={result.comfortability}
                 duration={result.duration}
                 ticketPrice={result.ticketPrice}
-                bookingClosingDate={result.bookingClosingDate}
-                bookingClosingTime={result.bookingClosingTime}
+                selectedBusStands={result.selectedBusStands}
+                scheduledBusDatesList={result.scheduledBusDatesList}
               />
             ))
           ) : (

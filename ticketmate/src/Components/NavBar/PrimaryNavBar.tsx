@@ -77,6 +77,7 @@ function PrimaryNavBar() {
             /> 
           </form>
         </div>
+
       </nav>
     </>
   );

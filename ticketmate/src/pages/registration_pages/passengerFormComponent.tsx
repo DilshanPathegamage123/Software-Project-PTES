@@ -1,5 +1,6 @@
 import "./passengerFormComponent.css";
 import { ChangeEvent, FormEvent, useState } from "react";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
@@ -8,12 +9,14 @@ import { useFormik } from "formik";
 import { passengerFormValidation } from "./passengerFormValidation";
 import axios from "axios";
 
+
 const initialValues = {
   FirstName: "",
   LastName: "",
   NIC: "",
   Email: "",
   DOB: "",
+
   ContactNumber: "",
   UserName: "",
   Password: "",
@@ -103,6 +106,7 @@ const PassengerFormComponent = () => {
     },
   });
 
+
   return (
     <div>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
@@ -150,6 +154,7 @@ const PassengerFormComponent = () => {
                 className="col-11 p-3"
                 value={formValues.LastName}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.LastName && (
@@ -177,6 +182,7 @@ const PassengerFormComponent = () => {
                 className="col-11 p-3"
                 value={formValues.NIC}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.NIC && (
@@ -204,6 +210,7 @@ const PassengerFormComponent = () => {
 
                   //onChange={handleChange}
                   onBlur={handleBlur}
+
                   // value={formik.values.DOB}
                   // // onChange={formik.handleChange}
                   // onBlur={formik.handleBlur}
@@ -227,6 +234,7 @@ const PassengerFormComponent = () => {
                 className="col-lg-8  p-3"
                 value={formValues.Email}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.Email && (
@@ -254,6 +262,7 @@ const PassengerFormComponent = () => {
                 className="col-lg-8 p-3"
                 value={formValues.ContactNumber}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.ContactNumber && (
@@ -281,6 +290,7 @@ const PassengerFormComponent = () => {
                 className="col-lg-8 p-3"
                 value={formValues.UserName}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.UserName && (
@@ -308,6 +318,7 @@ const PassengerFormComponent = () => {
                 className="col-11 p-3"
                 value={formValues.Password}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.Password && (
@@ -333,6 +344,7 @@ const PassengerFormComponent = () => {
                 className="col-11 p-3"
                 value={formValues.ConfirmPassword}
                 onChange={handleInputChange}
+
                 onBlur={handleBlur}
               />
               {errors.ConfirmPassword && (
@@ -362,4 +374,5 @@ const PassengerFormComponent = () => {
 };
 
 // value={formValues.FirstName}
+
 export default PassengerFormComponent;

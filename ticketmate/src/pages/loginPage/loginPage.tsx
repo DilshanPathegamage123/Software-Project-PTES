@@ -55,6 +55,7 @@ const LoginPage = () => {
           case "Admin":
             // history("/AdminPage");
             history(`/AdminPage?username=${username}&password=${password}`);
+
             break;
           case "Owner":
             history("#");
@@ -74,6 +75,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       alert("Invalid user name or password");
+
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }
@@ -153,6 +155,7 @@ const LoginPage = () => {
       </form>
       <Footer />
     </div>
+
   );
 };
 export default LoginPage;

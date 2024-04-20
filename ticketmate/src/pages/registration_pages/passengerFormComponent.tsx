@@ -50,9 +50,12 @@ const PassengerFormComponent = () => {
 
 
     onSubmit: async (FormValues) => {
-      axios
-      .post(`https://localhost:7196/api/userData`, {
-        firstName: formValues.FirstName,
+      try {
+        // Make POST request using Axios
+        const response = await axios.post(
+          "https://localhost:7196/api/userData",
+          {
+            firstName: formValues.FirstName,
             lastName: formValues.LastName,
             email: formValues.Email,
             dob: dob,
@@ -63,46 +66,16 @@ const PassengerFormComponent = () => {
             userType: "Passenger",
             ownVehicleType: "",
             drivingLicenseNo: "",
-            isDeleted: false,
-            requestStatus:true
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
+
+          }
+        );
+
+        // Handle response if needed
+        console.log(response.data);
+      } catch (error) {
+        // Handle error if request fails
         console.error("Error:", error);
-      });
-
-
-
-
-
-
-      // try {
-      //   // Make POST request using Axios
-      //   const response = await axios.post(
-      //     "https://localhost:7196/api/userData",
-      //     {
-      //       firstName: formValues.FirstName,
-      //       lastName: formValues.LastName,
-      //       email: formValues.Email,
-      //       dob: dob,
-      //       nic: formValues.NIC,
-      //       contactNo: formValues.ContactNumber,
-      //       userName: formValues.UserName,
-      //       password: formValues.Password,
-      //       userType: "Passenger",
-      //       ownVehicleType: "",
-      //       drivingLicenseNo: "",
-      //     }
-      //   );
-
-      //   // Handle response if needed
-      //   console.log(response.data);
-      // } catch (error) {
-      //   // Handle error if request fails
-      //   console.error("Error:", error);
-      // }
+      }
     },
   });
 

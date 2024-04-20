@@ -19,8 +19,8 @@ function SquareButton(props: any) {
                         <p>{props.text}</p>
                     </button>
                 </div>
-            </div>
-    </div>
+            </div> 
+    </div> 
     </>
   )
 }

@@ -48,6 +48,7 @@ const PassengerFormComponent = () => {
     initialValues: initialValues,
     validationSchema: passengerFormValidation,
 
+
     onSubmit: async (FormValues) => {
       try {
         // Make POST request using Axios
@@ -65,6 +66,7 @@ const PassengerFormComponent = () => {
             userType: "Passenger",
             ownVehicleType: "",
             drivingLicenseNo: "",
+
           }
         );
 

@@ -7,6 +7,7 @@ import Background from "./assests/Home Background.jpg";
 import TotalBlock from "../../Components/TravelSearchBlock/TotalBlock";
 import HomeContent from "../../Components/HomePageContent/HomeContent";
 import Footer from "../../Components/Footer/Footer";
+const Home = () => {
 
 interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;

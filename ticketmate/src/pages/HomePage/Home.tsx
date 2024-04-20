@@ -4,7 +4,7 @@ import "./Home.css";
 import Background from "./assests/Home Background.jpg";
 import TotalBlock from "../../Components/TravelSearchBlock/TotalBlock";
 import HomeContent from "../../Components/HomePageContent/HomeContent";
-import Footer from "../../Components/Footer/footer";
+import Footer from "../../Components/Footer/Footer";
 const Home = () => {
   return (
     <div className=" HomeBody">

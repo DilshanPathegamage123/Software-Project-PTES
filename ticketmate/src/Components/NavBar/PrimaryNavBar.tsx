@@ -4,6 +4,7 @@ import LOGO from "./assest/logo.png";
 import LOGO2 from "./assest/logopart2.png";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
+import { Link } from "react-router-dom";
 //import { Link } from "react-router-dom";
 
 function PrimaryNavBar() {
@@ -57,20 +58,23 @@ function PrimaryNavBar() {
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm"
+                 
                 >
                   SIGN UP
+                 {/* <Link to="/register">SIGN UP</Link>  */}
                 </button>
              
             </div>
 
 
-            <PrimaryButton
+           <PrimaryButton
               type="button"
               value="SIGN IN"
               color="third"
               IsSmall={true}
-             // onClick={() => (window.location.href = "/login")}
-            />
+             // link="/login"
+            
+            /> 
           </form>
         </div>
       </nav>

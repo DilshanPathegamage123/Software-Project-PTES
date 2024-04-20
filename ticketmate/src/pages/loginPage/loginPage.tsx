@@ -53,7 +53,8 @@ const LoginPage = () => {
 
         switch (userRole) {
           case "Admin":
-            history("/AdminPage");
+            // history("/AdminPage");
+            history(`/AdminPage?username=${username}&password=${password}`);
             break;
           case "Owner":
             history("#");
@@ -69,9 +70,10 @@ const LoginPage = () => {
             break;
         }
       } else {
-        alert("not enter to the if statement");
+        alert("Invalid user name or password");
       }
     } catch (error) {
+      alert("Invalid user name or password");
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }
@@ -80,7 +82,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <PrimaryNavBar />
+      {/* <PrimaryNavBar /> */}
       <a href="#">
         <svg
           xmlns="http://www.w3.org/2000/svg"

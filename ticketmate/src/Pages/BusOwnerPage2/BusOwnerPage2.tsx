@@ -4,7 +4,7 @@ import ProfileSection from '../../Components/ProfileSection/ProfileSection'
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton'
 import PrimaryButton from '../../Components/Buttons/PrimaryButton'
 import './BusOwnerPage2.css'
-import Footer from '../../Components/Footer/footer';
+import Footer from '../../Components/Footer/Footer';
 import { useEffect, useState } from 'react'
 import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo'
 import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec'

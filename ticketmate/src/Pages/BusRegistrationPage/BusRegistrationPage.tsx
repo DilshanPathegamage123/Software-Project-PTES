@@ -11,6 +11,9 @@ import {FirStorage} from './FirebaseConfig';
 import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 
+interface ApiResponse {
+  busId: number;
+}
 
 function BusRegistrationPage() {
 
@@ -131,7 +134,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
        
         try {
             const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
-            await axios.post('https://localhost:7001/api/BusReg', {
+            const response = await axios.post<ApiResponse>('https://localhost:7001/api/BusReg', { // Specify the response type
               BusNo: formData.busNum,
               LicenNo: formData.licenceNum,
               SetsCount: formData.seatCount,
@@ -140,11 +143,18 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               InsuranceImgURL: insuranceUrl
             });
 
+            // Access the BusId from the response data
+            const BusId  = response.data.busId;
+            console.log("Newly generated BusId:", BusId );
+
+            console.log("Response data:", response.data);
+
+            
             toast.success('Form submitted successfully');
 
-          setTimeout(() => {
-            window.location.reload();
-          }, 4000);
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 4000);
 
         } catch (error) {
           toast.error('Form submission failed2');

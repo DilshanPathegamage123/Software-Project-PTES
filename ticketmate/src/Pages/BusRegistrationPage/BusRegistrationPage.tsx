@@ -1,10 +1,9 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import Footer from '../../Components/Footer/Footer';
-import { ToastContainer, toast } from 'react-toastify'; // Import 'toast' from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'; // Import toastify CSS
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import SelectBusSeatStructure from '../../Components/SelectBusSeatStructure/SelectBusSeatStructure';
 import {FirStorage} from './FirebaseConfig';
@@ -16,7 +15,6 @@ interface ApiResponse {
 }
 
 function BusRegistrationPage() {
-
   const [formData, setFormData] = useState({
     busNum: '',
     licenceNum: '',
@@ -35,7 +33,9 @@ function BusRegistrationPage() {
     acOption: ''
   });
 
-  //---- input fields validation ----
+  const [buttonStates, setButtonStates] = useState<{ [key: string]: boolean }>({});
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -44,124 +44,135 @@ function BusRegistrationPage() {
     });
   };
 
-  //---- file upload validation ----
-const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, files } = e.target;
-  if (files && files.length > 0) {
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']; // Allowed file types
-    const fileType = files[0].type;
-    if (allowedTypes.includes(fileType)) {
-      const updatedFormData = { ...formData, [name]: files[0] };
-      setFormData(updatedFormData);
-    } else {
-      // Display alert for invalid file type
-      alert('Only JPG, JPEG, PNG, and PDF files are allowed.');
-      // Clear the file input
-      e.target.value = '';
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (files && files.length > 0) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+      const fileType = files[0].type;
+      if (allowedTypes.includes(fileType)) {
+        const updatedFormData = { ...formData, [name]: files[0] };
+        setFormData(updatedFormData);
+      } else {
+        alert('Only JPG, JPEG, PNG, and PDF files are allowed.');
+        e.target.value = '';
+      }
     }
-  }
-};
+  };
 
-
-  //---- radio button validation ----
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setFormData({
       ...formData,
       acOption: value
     });
-
-    // Clear validation error for acOption when a radio button is selected
     setErrors({
       ...errors,
       acOption: ''
     });
   };
 
-  //---- form submit ----
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      let formValid = true;
-      const newErrors = { ...errors };
+    e.preventDefault();
+    let formValid = true;
+    const newErrors = { ...errors };
 
-      // Check if fields are filled
-      for (const key in formData) {
-        if (formData.hasOwnProperty(key)) {
-          if ((formData as any)[key] === '') {
-            newErrors[key as keyof typeof newErrors] = `${key} is required`;
-            formValid = false;
-          } else {
-            newErrors[key as keyof typeof newErrors] = '';
-          }
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key)) {
+        if ((formData as any)[key] === '') {
+          newErrors[key as keyof typeof newErrors] = `${key} is required`;
+          formValid = false;
+        } else {
+          newErrors[key as keyof typeof newErrors] = '';
         }
       }
+    }
 
-      // Check if files are selected
-      if (formData.selectedFile1 === null) {
-        newErrors.selectedFile1 = 'Attach vehicle licence image is required';
-        formValid = false;
-      } else {
-        
-        
-        newErrors.selectedFile1 = '';
+    if (formData.selectedFile1 === null) {
+      newErrors.selectedFile1 = 'Attach vehicle licence image is required';
+      formValid = false;
+    } else {
+      newErrors.selectedFile1 = '';
+    }
+
+    if (formData.selectedFile2 === null) {
+      newErrors.selectedFile2 = 'Attach vehicle insurance image is required';
+      formValid = false;
+    } else {
+      newErrors.selectedFile2 = '';
+    }
+
+    if (formData.acOption === '') {
+      newErrors.acOption = 'Select AC or Non AC option';
+      formValid = false;
+    } else {
+      newErrors.acOption = '';
+    }
+
+    setErrors(newErrors);
+
+    if (formValid) {
+      const [licenseUrl, insuranceUrl] = await Promise.all([
+        formData.selectedFile1 ? uploadFileAndGetUrl(formData.selectedFile1) : Promise.resolve(null),
+        formData.selectedFile2 ? uploadFileAndGetUrl(formData.selectedFile2) : Promise.resolve(null)
+      ]);
+
+      try {
+        const acOptionValue = formData.acOption === 'AC' ? true : false;
+        const response = await axios.post<ApiResponse>('https://localhost:7001/api/BusReg', {
+          BusNo: formData.busNum,
+          LicenNo: formData.licenceNum,
+          SetsCount: formData.seatCount,
+          ACorNONAC: acOptionValue,
+          LicenseImgURL: licenseUrl,
+          InsuranceImgURL: insuranceUrl
+        });
+
+        const busId = response.data.busId;
+        console.log("Newly generated BusId:", busId );
+
+        await storeButtonData(busId);
+
+        toast.success('Form submitted successfully');
+      } catch (error) {
+        toast.error('Form submission failed2');
       }
+    } else {
+      toast.error('Form submission failed3');
+    }
+  };
 
-      if (formData.selectedFile2 === null) {
-        newErrors.selectedFile2 = 'Attach vehicle insurance image is required';
-        formValid = false;
-      } else {
-        
+  // const storeButtonData = async (busId: number) => {
+  //   try {
+  //     await axios.post(`https://localhost:7001/api/SelectedSeatStr`, {
+  //       seatStructure: Object.entries(buttonStates).map(([seatId, availability]) => ({ 
+  //         RegisteredBusBusId: busId,
+  //         SeatId: seatId, 
+  //         SeatAvailability: availability,
+  //       })),
+  //     });
+  //   } catch (error) {
+  //     console.error('Error storing button data:', error);
+  //   }
+  // };
 
-        newErrors.selectedFile2 = '';
+  const storeButtonData = async (busId: number) => {
+    try {
+      for (const [seatId, availability] of Object.entries(buttonStates)) {
+        const buttonData = {
+          seatId: seatId,
+          seatAvailability: !!availability, // Convert to boolean
+          registeredBusBusId: busId,
+        };
+  
+        console.log("Button Data:", buttonData); // Log button data before sending the request
+  
+        await axios.post(`https://localhost:7001/api/SelectedSeatStr`, buttonData);
+  
+        console.log("Button data stored successfully for BusId:", busId); // Log success message for each seat
       }
-
-      // Check if radio button is selected
-      if (formData.acOption === '') {
-        newErrors.acOption = 'Select AC or Non AC option';
-        formValid = false;
-      } else {
-        newErrors.acOption = '';
-      }
-
-      setErrors(newErrors);
-
-      if (formValid) {
-        // Upload files and retrieve download URLs
-        const [licenseUrl, insuranceUrl] = await Promise.all([
-          formData.selectedFile1 ? uploadFileAndGetUrl(formData.selectedFile1) : Promise.resolve(null),
-          formData.selectedFile2 ? uploadFileAndGetUrl(formData.selectedFile2) : Promise.resolve(null)
-        ]);
-       
-        try {
-            const acOptionValue = formData.acOption === 'AC' ? true : false; // Convert radio button value to boolean
-            const response = await axios.post<ApiResponse>('https://localhost:7001/api/BusReg', { // Specify the response type
-              BusNo: formData.busNum,
-              LicenNo: formData.licenceNum,
-              SetsCount: formData.seatCount,
-              ACorNONAC: acOptionValue,
-              LicenseImgURL: licenseUrl,
-              InsuranceImgURL: insuranceUrl
-            });
-
-            // Access the BusId from the response data
-            const BusId  = response.data.busId;
-            console.log("Newly generated BusId:", BusId );
-
-            console.log("Response data:", response.data);
-
-            
-            toast.success('Form submitted successfully');
-
-          // setTimeout(() => {
-          //   window.location.reload();
-          // }, 4000);
-
-        } catch (error) {
-          toast.error('Form submission failed2');
-        }
-      } else {
-        toast.error('Form submission failed3');
-      }
+    } catch (error) {
+      console.error('Error storing button data:', error);
+    }
   };
 
   const uploadFileAndGetUrl = async (file: File) => {
@@ -175,7 +186,6 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
   return (
     <>
-      {/* // nav bar */}
       <PrimaryNavBar />
       <div className='container-fluid py-4'>
         <div className='col-12 rounded-4 formSec'>
@@ -184,8 +194,8 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* input fields */}
             <div className='row'>
+              
               <div className='col-12 col-lg-6 p-3'>
                 <div className="form-group row">
                   <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
@@ -244,9 +254,9 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                   </fieldset>
                 </div>
               </div>
+              
               {/* Bus seat structure */}
-              <SelectBusSeatStructure />
-
+              <SelectBusSeatStructure setButtonStates={setButtonStates} />
             </div>
             <div className='row'>
               <div className='col-12 text-center p-3'>
@@ -255,16 +265,12 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               </div>
             </div>
           </form>
-
         </div>
-
       </div>
       <ToastContainer />
       <Footer />
     </>
-  )
+  );
 }
 
-
-
-export default BusRegistrationPage
+export default BusRegistrationPage;

@@ -103,9 +103,11 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
               duration: result.duration,
               ticketPrice: result.ticketPrice,
               selectedStands: result.selectedBusStands || result.stopStations,
-              scheduledDatesList: result.scheduledBusDatesList || [result.trainDates],
+              scheduledDatesList: result.scheduledBusDatesList || [
+                result.trainDates,
+              ],
               firstClassTicketPrice: result.firstClassTicketPrice,
-              secondClassTicketPrice: result.secondClassTicketPrice
+              secondClassTicketPrice: result.secondClassTicketPrice,
             };
             // If the vehicle type is "Train", include the two types of ticket prices
             unifiedResult.firstClassTicketPrice =
@@ -153,11 +155,13 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
         </div>
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <StartLocationSelector
+            selectedVehicleType={selectedVehicleType}
             setSelectedStartLocation={setSelectedStartLocation}
           />
         </div>
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <EndLocationSelector
+            selectedVehicleType={selectedVehicleType}
             setSelectedEndLocation={setSelectedEndLocation}
           />
         </div>

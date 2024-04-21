@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+
 import "./DatePicker.css";
 
 interface DatePickerProps {
@@ -42,9 +44,17 @@ const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
         type="date"
         value={date}
         onChange={(e) => {
-          //const formattedDate = formatDate(e.target.value);
-          setDate(e.target.value);
-          setSelectedDate(e.target.value);
+          const selectedDate = new Date(e.target.value);
+          const now = new Date();
+          now.setHours(0, 0, 0, 0);
+          if (selectedDate < now) {
+            toast.error("The selected date is in the past.");
+            setDate(currentDate);
+            setSelectedDate(currentDate);
+          } else {
+            setDate(e.target.value);
+            setSelectedDate(e.target.value);
+          }
         }}
       />
     </div>

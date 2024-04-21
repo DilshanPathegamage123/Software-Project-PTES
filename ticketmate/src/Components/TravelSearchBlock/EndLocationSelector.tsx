@@ -1,25 +1,26 @@
-//   //I'm hardcoding the data here. We must fetch it from an API later.
-//   const data = [
-//     "Colombo",
-//     "Gampaha",
-//     "Wattala",
-//     "Negombo",
-//     "Anuradhapura",
-//     "Jaffna",
-//     "Ja-Ela",
-//     "Galle",
-//   ];
 import React, { useEffect, useState } from "react";
 import "./EndLocationSelector.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast} from 'react-toastify';
+
 import axios from "axios";
 
 interface EndLocationSelectorProps {
+  selectedVehicleType: string;
   setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface BusStand {
+  standName: string;
+}
+
+interface TrainStation {
+  trainStationName: string;
 }
 
 //function EndLocationSelector() {
 const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
+  selectedVehicleType,
   setSelectedEndLocation,
 }) => {
   const [endvalue, setEndValue] = useState("");
@@ -31,18 +32,31 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
   >([]);
 
   useEffect(() => {
-    getAllEndLocations();
-  }, []);
+    if (selectedVehicleType === "Bus") {
+      getAllBusStands();
+    } else if (selectedVehicleType === "Train") {
+      getAllTrainStations();
+    }
+  }, [selectedVehicleType]);
 
-  const getAllEndLocations = async () => {
+  const getAllBusStands = async () => {
     try {
       const response1 = await axios.get(
-        "https://localhost:7048/api/EndLocation"
+        "https://localhost:7048/api/GetBusStands"
       );
       console.log("Response end (locations) from backend:", response1.data);
       if (Array.isArray(response1.data.$values)) {
-        setEndData(response1.data.$values);
-        setFilteredEndData(response1.data.$values); // Initialize filteredData with the same data
+      
+          setEndData(
+            response1.data.$values.map((item: BusStand) => ({
+              stopName: item.standName,
+            }))
+          );
+          setFilteredEndData(
+            response1.data.$values.map((item: BusStand) => ({
+              stopName: item.standName,
+            }))
+          );
       } else {
         setEndData([]);
         setFilteredEndData([]);
@@ -51,6 +65,35 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
       console.error("Error while fetching end locations from backend", error);
     }
   };
+
+
+  const getAllTrainStations = async () => {
+    try {
+      const response1 = await axios.get(
+        "https://localhost:7048/api/GetTrainStations"
+      );
+      console.log("Response end (locations) from backend:", response1.data);
+      if (Array.isArray(response1.data.$values)) {
+      
+          setEndData(
+            response1.data.$values.map((item:TrainStation ) => ({
+              stopName: item.trainStationName,
+            }))
+          );
+          setFilteredEndData(
+            response1.data.$values.map((item: TrainStation) => ({
+              stopName: item.trainStationName,
+            }))
+          );
+      } else {
+        setEndData([]);
+        setFilteredEndData([]);
+      }
+    } catch (error) {
+      console.error("Error while fetching end locations from backend", error);
+    }
+  };
+  
 
   const filterEndLocations = (input: string) => {
     const filteredLocations = endData.filter(
@@ -62,7 +105,13 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
   };
 
   return (
-    <div className="selector d-flex ">
+    <div className="selector d-flex "
+    onClick={() => {
+      if (!selectedVehicleType) {
+        toast.error('Please select a vehicle type first.');
+      }
+    }}
+    >
       <span className="">
         <svg
           xmlns="http://www.w3.org/2000/svg"

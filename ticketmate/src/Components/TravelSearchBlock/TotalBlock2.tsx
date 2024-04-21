@@ -60,7 +60,6 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
       );
 
       if (Array.isArray(Response.data.$values)) {
-
         const unifiedSearchResults: SearchResult[] = Response.data.$values.map(
           (result: any) => {
             const unifiedResult: SearchResult = {
@@ -76,9 +75,11 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
               duration: result.duration,
               ticketPrice: result.ticketPrice,
               selectedStands: result.selectedBusStands || result.stopStations,
-              scheduledDatesList: result.scheduledBusDatesList || [result.trainDates],
+              scheduledDatesList: result.scheduledBusDatesList || [
+                result.trainDates,
+              ],
               firstClassTicketPrice: result.firstClassTicketPrice,
-              secondClassTicketPrice: result.secondClassTicketPrice
+              secondClassTicketPrice: result.secondClassTicketPrice,
             };
 
             // If the vehicle type is "Train", include the two types of ticket prices
@@ -133,11 +134,13 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
         <div className=" class col col-12  m-auto d-md-flex">
           <div className="col  pb-1  ">
             <StartLocationSelector
+              selectedVehicleType={selectedVehicleType}
               setSelectedStartLocation={setSelectedStartLocation}
             />
           </div>
           <div className="col pb-1 ">
             <EndLocationSelector
+              selectedVehicleType={selectedVehicleType}
               setSelectedEndLocation={setSelectedEndLocation}
             />
           </div>

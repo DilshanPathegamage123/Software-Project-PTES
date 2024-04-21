@@ -16,3 +16,8 @@
   background-color: #00757c;
   color: white;
 }
+
+.btn:hover {
+  background-color: #d17b0a;
+  cursor: pointer;
+}

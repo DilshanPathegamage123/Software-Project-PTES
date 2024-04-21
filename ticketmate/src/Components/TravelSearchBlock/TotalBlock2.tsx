@@ -60,22 +60,56 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
       );
 
       if (Array.isArray(Response.data.$values)) {
+
+        const unifiedSearchResults: SearchResult[] = Response.data.$values.map(
+          (result: any) => {
+            const unifiedResult: SearchResult = {
+              ...result,
+              scheduleId: result.scheduleId || result.schedulId,
+              vehicleNo: result.busNo || result.trainRoutNo,
+              routNo: result.routNo || result.trainRoutNo,
+              startLocation: result.startLocation || result.startStation,
+              endLocation: result.endLocation || result.endStation,
+              departureTime: result.departureTime || result.trainDepartureTime,
+              arrivalTime: result.arrivalTime || result.trainArrivalTime,
+              comfortability: result.comfortability || result.trainType,
+              duration: result.duration,
+              ticketPrice: result.ticketPrice,
+              selectedStands: result.selectedBusStands || result.stopStations,
+              scheduledDatesList: result.scheduledBusDatesList || [result.trainDates],
+              firstClassTicketPrice: result.firstClassTicketPrice,
+              secondClassTicketPrice: result.secondClassTicketPrice
+            };
+
+            // If the vehicle type is "Train", include the two types of ticket prices
+            unifiedResult.firstClassTicketPrice =
+              selectedVehicleType === "Train"
+                ? result.firstClassTicketPrice
+                : 0;
+            unifiedResult.secondClassTicketPrice =
+              selectedVehicleType === "Train"
+                ? result.secondClassTicketPrice
+                : 0;
+
+            return unifiedResult;
+          }
+        );
         // Store the search results and selected vehicle type in the session storage
         sessionStorage.setItem(
           "searchResults",
-          JSON.stringify(Response.data.$values)
+          JSON.stringify(unifiedSearchResults)
         );
         sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
 
-        onSearch(Response.data.$values);
+        onSearch(unifiedSearchResults);
 
-        console.log("Search result:", Response.data.$values);
+        console.log("Search result:", unifiedSearchResults);
 
-        await onSearch(Response.data.$values);
+        await onSearch(unifiedSearchResults);
 
         navigate("/travel-options", {
           state: {
-            searchResults: Response.data.$values,
+            searchResults: unifiedSearchResults,
             selectedVehicleType: selectedVehicleType,
           },
         });

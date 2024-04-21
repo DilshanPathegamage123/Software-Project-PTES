@@ -64,10 +64,13 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
           {/* Render DetailsCard components for each search result */}
           {searchResults.length > 0 ? (
             searchResults.map((result: SearchResult, index: number) => (
+
+              
+              
               <DetailsCard
                 key={index}
                 scheduleId={result.scheduleId}
-                busNo={result.busNo}
+                vehicleNo={result.vehicleNo}
                 routNo={result.routNo}
                 startLocation={result.startLocation}
                 endLocation={result.endLocation}
@@ -76,15 +79,22 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
                 comfortability={result.comfortability}
                 duration={result.duration}
                 ticketPrice={result.ticketPrice}
-                selectedBusStands={result.selectedBusStands}
-                scheduledBusDatesList={result.scheduledBusDatesList}
+                selectedStands={result.selectedStands}
+                scheduledDatesList={result.scheduledDatesList}
+                firstClassTicketPrice={result.firstClassTicketPrice}
+                secondClassTicketPrice={result.secondClassTicketPrice}
+
+                
               />
+             
             ))
           ) : (
             <div className=" h-auto mt-5 mb-5 p-4  ">
               No matching travel options found! Search another destination...
             </div>
           )}
+
+          
         </div>
       </div>
       <Footer />

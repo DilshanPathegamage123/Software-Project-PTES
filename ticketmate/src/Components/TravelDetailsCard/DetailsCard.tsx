@@ -5,9 +5,8 @@ import "./DetailsCard.css";
 import { SearchResult } from "../../SearchResult";
 import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
 
-
 const DetailsCard: React.FC<SearchResult> = ({
-  busNo,
+  vehicleNo,
   routNo,
   startLocation,
   endLocation,
@@ -16,28 +15,55 @@ const DetailsCard: React.FC<SearchResult> = ({
   comfortability,
   duration,
   ticketPrice,
-  selectedBusStands,
-  scheduledBusDatesList,
-
+  selectedStands,
+  scheduledDatesList,
+  firstClassTicketPrice,
+  secondClassTicketPrice,
 }) => {
   const { selectedVehicleType } = useContext(SelectedVehicleTypeContext);
+  let departureDate, arrivalDate;
+
   console.log(selectedVehicleType);
+  console.log(vehicleNo);
+  console.log(startLocation);
+  console.log(endLocation);
+  console.log(ticketPrice);
+  console.log(routNo);
+
+  console.log(scheduledDatesList);
+  console.log(scheduledDatesList.$values);
+  console.log(scheduledDatesList);
   // Check if there are any scheduled bus dates
-  if (scheduledBusDatesList.$values.length > 0) {
+  if (
+    scheduledDatesList &&
+    scheduledDatesList.$values &&
+    scheduledDatesList.$values.length > 0
+  ) {
     // Get the first scheduled bus date
-    const firstScheduledBusDate = scheduledBusDatesList.$values[0];
 
-    // Now you can access the departureDate and arrivalDate properties
-    const departureDate = firstScheduledBusDate.departureDate;
-    const arrivalDate = firstScheduledBusDate.arrivalDate;
+    const firstScheduledDate = scheduledDatesList.$values[0];
+    // To access the departureDate and arrivalDate properties
+    departureDate = firstScheduledDate.departureDate;
+    arrivalDate = firstScheduledDate.arrivalDate;
+  } else if (scheduledDatesList && Array.isArray(scheduledDatesList)) {
+    // For "Train" can access the departureDate and arrivalDate properties directly
+    if (scheduledDatesList.length > 0) {
+      departureDate = scheduledDatesList[0].departureDate;
+      arrivalDate = scheduledDatesList[0].arrivalDate;
+    }
+  }
 
+  if (departureDate && arrivalDate) {
     return (
       <div className=" DetailsCard row col-lg-11 col-11 rounded-3 justify-content-center font-family-Poppins mt-2 mb-2 h-auto w-100  ">
         {/* column 1 */}
         <div className="col col-lg-3 col-md-10 col-12  p-0 d-flex   ">
           <div className="col ms-xl-0 ms-5 mt-xl-5 mt-3    ps-0  ">
             <img
-              src={selectedVehicleType === "Bus" ? Bus1 : train1}
+              src={(() => {
+                if (selectedVehicleType === "Bus") return Bus1;
+                if (selectedVehicleType === "Train") return train1;
+              })()}
               alt="VehicleIcon"
               className="VehicleImg align-content-center d-flex "
             />
@@ -49,7 +75,7 @@ const DetailsCard: React.FC<SearchResult> = ({
               </p>
 
               <p className=" fw-bolder  m-auto px-3 align-content-center">
-                {busNo}
+                {vehicleNo}
               </p>
             </div>
 
@@ -81,7 +107,7 @@ const DetailsCard: React.FC<SearchResult> = ({
           <div className=" col d-md-flex d-lg-block m-auto ">
             <div className=" d-grid mb-2 ">
               <p className="fw-normal m-auto  px-3 align-content-center  ">
-                Depature
+                Departure
               </p>
               <p className="fw-bolder m-auto px-3 align-content-center">
                 {/* Colombo */}
@@ -143,7 +169,18 @@ const DetailsCard: React.FC<SearchResult> = ({
           <div className="row mb-2">
             <div className="col d-grid  ">
               <p className="fw-normal m-auto   ">Ticket Price</p>
-              <p className="fw-bolder m-auto ">LKR {ticketPrice}</p>
+              {selectedVehicleType === "Train" ? (
+                <>
+                  <p className="fw-bolder m-auto ">
+                    First Class: LKR {firstClassTicketPrice}
+                  </p>
+                  <p className="fw-bolder m-auto ">
+                    Second Class: LKR {secondClassTicketPrice}
+                  </p>
+                </>
+              ) : (
+                <p className="fw-bolder m-auto ">LKR {ticketPrice}</p>
+              )}
             </div>
           </div>
           <div className="row rounded-1  align-content-center col-6 m-auto mb-2    ">

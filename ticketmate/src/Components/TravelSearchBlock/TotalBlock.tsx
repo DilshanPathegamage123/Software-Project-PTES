@@ -87,15 +87,49 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
       );
 
       if (Array.isArray(Response.data.$values)) {
+        // Map the response data to the UnifiedSearchResult interface
+        const unifiedSearchResults: SearchResult[] = Response.data.$values.map(
+          (result: any) => {
+            const unifiedResult: SearchResult = {
+              ...result,
+              scheduleId: result.scheduleId || result.schedulId,
+              vehicleNo: result.busNo || result.trainRoutNo,
+              routNo: result.routNo || result.trainRoutNo,
+              startLocation: result.startLocation || result.startStation,
+              endLocation: result.endLocation || result.endStation,
+              departureTime: result.departureTime || result.trainDepartureTime,
+              arrivalTime: result.arrivalTime || result.trainArrivalTime,
+              comfortability: result.comfortability || result.trainType,
+              duration: result.duration,
+              ticketPrice: result.ticketPrice,
+              selectedStands: result.selectedBusStands || result.stopStations,
+              scheduledDatesList: result.scheduledBusDatesList || [result.trainDates],
+              firstClassTicketPrice: result.firstClassTicketPrice,
+              secondClassTicketPrice: result.secondClassTicketPrice
+            };
+            // If the vehicle type is "Train", include the two types of ticket prices
+            unifiedResult.firstClassTicketPrice =
+              selectedVehicleType === "Train"
+                ? result.firstClassTicketPrice
+                : 0;
+            unifiedResult.secondClassTicketPrice =
+              selectedVehicleType === "Train"
+                ? result.secondClassTicketPrice
+                : 0;
+
+            return unifiedResult;
+          }
+        );
+
         // Store the search results and selected vehicle type in the session storage
         sessionStorage.setItem(
           "searchResults",
-          JSON.stringify(Response.data.$values)
+          JSON.stringify(unifiedSearchResults)
         );
         sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
 
-        onSearch(Response.data.$values); // Store the search results in the state
-        console.log("Search result:", Response.data.$values); // Log the search results for debugging
+        onSearch(unifiedSearchResults); // Store the search results in the state
+        console.log("Search result:", unifiedSearchResults); // Log the search results for debugging
       } else {
         console.error("Search results are not in the expected format");
       }

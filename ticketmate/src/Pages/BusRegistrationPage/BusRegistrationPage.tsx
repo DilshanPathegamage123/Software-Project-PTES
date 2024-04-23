@@ -9,6 +9,9 @@ import SelectBusSeatStructure from '../../Components/SelectBusSeatStructure/Sele
 import {FirStorage} from './FirebaseConfig';
 import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface ApiResponse {
   busId: number;
@@ -35,13 +38,25 @@ function BusRegistrationPage() {
 
   const [buttonStates, setButtonStates] = useState<{ [key: string]: boolean }>({});
 
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    if (name === 'seatCount' && !/^\d+$/.test(value)) {
+      setErrors({
+        ...errors,
+        [name]: 'Only numbers are allowed for seat count'
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,6 +126,13 @@ function BusRegistrationPage() {
     setErrors(newErrors);
 
     if (formValid) {
+      Swal.fire({
+        title: 'Uploading...',
+        allowOutsideClick: false,
+        showConfirmButton: false
+      });
+      Swal.showLoading();
+
       const [licenseUrl, insuranceUrl] = await Promise.all([
         formData.selectedFile1 ? uploadFileAndGetUrl(formData.selectedFile1) : Promise.resolve(null),
         formData.selectedFile2 ? uploadFileAndGetUrl(formData.selectedFile2) : Promise.resolve(null)
@@ -132,28 +154,36 @@ function BusRegistrationPage() {
 
         await storeButtonData(busId);
 
-        toast.success('Form submitted successfully');
+        Swal.close();
+
+        Swal.fire({
+          icon: "success",
+          title: "Your Bus Successfully Registered",
+          showConfirmButton: false,
+          timer: 3500
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 3500);
+
+        //toast.success('Form submitted successfully');
       } catch (error) {
-        toast.error('Form submission failed2');
+        Swal.fire({
+          icon: "error",  
+          title: "Form submission failed",
+          showConfirmButton: false,
+          timer: 2500
+        });
       }
     } else {
-      toast.error('Form submission failed3');
+      Swal.fire({
+        icon: "error",  
+        title: "Form submission failed",
+        showConfirmButton: false,
+        timer: 2500
+      });
     }
   };
-
-  // const storeButtonData = async (busId: number) => {
-  //   try {
-  //     await axios.post(`https://localhost:7001/api/SelectedSeatStr`, {
-  //       seatStructure: Object.entries(buttonStates).map(([seatId, availability]) => ({ 
-  //         RegisteredBusBusId: busId,
-  //         SeatId: seatId, 
-  //         SeatAvailability: availability,
-  //       })),
-  //     });
-  //   } catch (error) {
-  //     console.error('Error storing button data:', error);
-  //   }
-  // };
 
   const storeButtonData = async (busId: number) => {
     try {
@@ -184,10 +214,27 @@ function BusRegistrationPage() {
     return '';
   };
 
+  const CancelButton = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Go Back!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/');
+      }
+    });
+  }
+
+
   return (
     <>
       <PrimaryNavBar />
-      <div className='container-fluid py-4'>
+      <div className='container py-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
@@ -260,8 +307,8 @@ function BusRegistrationPage() {
             </div>
             <div className='row'>
               <div className='col-12 text-center p-3'>
-                <button type='submit' className='btn btn-primary mx-3 '>Register</button>
-                <button type='button' className='btn btn-outline-primary mx-3 '>Cancel</button>
+                <button type='submit' className='btn primary mx-3 '>Register</button>
+                <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
               </div>
             </div>
           </form>

@@ -1,15 +1,21 @@
-import React from 'react'
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import ProfileSection from '../../Components/ProfileSection/ProfileSection'
-import SquareButton from '../../Components/Buttons/SquareButton/SquareButton'
-import PrimaryButton from '../../Components/Buttons/PrimaryButton'
-import './BusOwnerPage.css'
-import Footer from '../../Components/Footer/footer';
-import { useEffect, useState } from 'react'
-import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo'
+import React, { useState, useEffect } from 'react';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import ProfileSection from '../../Components/ProfileSection/ProfileSection';
+import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
+import './BusOwnerPage.css';
+import Footer from '../../Components/Footer/Footer';
+import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
+import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
+import { Link } from 'react-router-dom';
 
 function BusOwnerPage() {
-  const [divWidth, setDivWidth] = useState<number>(0);
+  const [divWidth, setDivWidth] = useState(0);
+  const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses');
+  const [buttonStates, setButtonStates] = useState({
+    ScheduledBuses: true,
+    RegisteredBuses: false,
+    Reports: false
+  });
 
   useEffect(() => {
     function handleResize() {
@@ -25,42 +31,74 @@ function BusOwnerPage() {
     };
   }, []);
 
+  const handleButtonClick = (componentName: string) => {
+    setSelectedComponent(componentName);
+    // Update button states
+    setButtonStates((prevState) => ({
+      ...prevState,
+      [componentName]: true
+    }));
+    // Reset other button states
+    for (let key in buttonStates) {
+      if (key !== componentName) {
+        setButtonStates((prevState) => ({
+          ...prevState,
+          [key]: false
+        }));
+      }
+    }
+  };
+
+  const renderSelectedComponent = () => {
+    switch (selectedComponent) {
+      case 'ScheduledBuses':
+        return <ScheduledBusInfo />;
+      case 'RegisteredBuses':
+        return <RegisteredBusInfoSec />;
+      case 'Reports':
+        return <RegisteredBusInfoSec />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
-        <PrimaryNavBar/>
-        <div className='container-fluid pt-3'>
-          <div>
-            <ProfileSection/>
-          </div>
-          <div className='row'>
-
-            <div className='col-lg-2 col-sm-4 m-0'id="getWidth">
-              <div>
-                <SquareButton text="Register a Bus" link="/BusRegistrationPage" bwidth={divWidth}/>
-              </div>
-              <div>
-                <SquareButton text="Schedule a new travel journey" link="/BusRegistrationPage" bwidth={divWidth}/>
-              </div>  
-            </div>
-            <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>
-              <div className='d-flex flex-row'>
-                <PrimaryButton value="Scheduled buses" color="primary"></PrimaryButton>
-                <PrimaryButton value="Registered Buses" color="secondary"></PrimaryButton>
-                <PrimaryButton value="Reports" color="secondary"></PrimaryButton>
-              </div>
-              <div className='p-4 rounded-4' style={{background:"#F1F1F1"}}>
-                <ScheduledBusInfo/>
-                <ScheduledBusInfo/>
-                <ScheduledBusInfo/>
-              </div>
-            </div>
-          </div>
-
+      <PrimaryNavBar />
+      <div className='container pt-3'>
+        <div>
+          <ProfileSection />
         </div>
-        <Footer/>
-        
+        <div className='row'>
+          <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
+            <div>
+              <Link to='/BusRegistrationPage'><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
+            </div>
+            <div>
+              <Link to='BusRegistrationPage'><SquareButton text='Schedule a new travel journey'bwidth={divWidth} /></Link>
+            </div>
+          </div>
+          <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>
+            <div className='d-flex flex-row'>
+              <button className={`btn btn-primary secButton ${buttonStates.ScheduledBuses ? 'active' : ''}`} onClick={() => handleButtonClick('ScheduledBuses')}>
+                Scheduled buses
+              </button>
+              <button className={`btn btn-primary secButton ${buttonStates.RegisteredBuses ? 'active' : ''}`} onClick={() => handleButtonClick('RegisteredBuses')}>
+                Registered Buses
+              </button>
+              {/* <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
+                Reports
+              </button> */}
+            </div>
+            <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
+              {renderSelectedComponent()}
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default BusOwnerPage
+export default BusOwnerPage;

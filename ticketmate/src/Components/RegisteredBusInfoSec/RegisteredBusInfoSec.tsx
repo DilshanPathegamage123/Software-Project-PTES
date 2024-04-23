@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios
 import './RegisteredBusInfoSec.css';
 import BusIcon from '../../assets/BusIcon.png';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 function RegisteredBusInfoSec() {
 
@@ -21,15 +23,36 @@ function RegisteredBusInfoSec() {
         });
     }
 
-
-    const [showModal, setShowModal] = useState(false);
-
-    const handleModalToggle = () => {
-        setShowModal(!showModal);
-    };
-
-    const handleDelete = () => {
-        // Implement delete functionality here
+    const handleDelete = (busId: any) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#00757C",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios.delete(`https://localhost:7001/api/BusReg/${busId}`)
+              .then(() => {
+                Swal.fire({
+                  title: "Deleted!",
+                  text: "Your file has been deleted.",
+                  icon: "success"
+                });
+                getData(); // Refresh data after deletion
+              })
+              .catch((error) => {
+                console.log(error);
+                Swal.fire({
+                  title: "Error!",
+                  text: "Failed to delete.",
+                  icon: "error"
+                });
+              });
+            }
+          });
     }
 
     return (
@@ -54,10 +77,8 @@ function RegisteredBusInfoSec() {
                                         
                                     </div>
                                     <div className='col-lg-4'>
-                                    <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
-                                        Edit
-                                    </button>
-                                            <button className='btn btn-primary' onClick={()=>handleDelete()}>Delete</button>
+                                    <Link to={`/RegisteredBusPage?busId=${item.busId}`}><button type="button" className="btn primary mx-1 "> See More </button></Link>
+                                            <button className='btn primary mx-1 ' onClick={()=>handleDelete(item.busId)}>Delete</button>
                                     </div>
                             </div>
                         </div>
@@ -66,32 +87,6 @@ function RegisteredBusInfoSec() {
                 :
                 'Loading...'     
             }
-
-            {showModal && (
-                <div className="modal fade show" tabIndex={-1} role="dialog" style={{ display: 'block' }}>
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">
-                                    Do you want to Edit the Bus Details?
-                                </h5>
-                                <button type="button" className="close" onClick={handleModalToggle}>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div className="modal-body">...</div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleModalToggle}>
-                                    No
-                                </button>
-                                <button type="button" className="btn btn-primary" onClick={handleModalToggle}>
-                                    Yes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
         </>
     )
 }

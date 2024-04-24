@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './ScheduledBusInfo.css'
 import BusIcon from '../../assets/fa6-solid_bus.png'
 import BusIcon2 from '../../assets/Group 391.png'
-import PrimaryButton from '../Buttons/PrimaryButton'
 import axios from 'axios'
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom'
 
 function ScheduledBusInfo() {
 
@@ -63,7 +63,7 @@ function ScheduledBusInfo() {
                         <p>{busInfo.arrivalTime}</p>
                     </div>
                     <div className='col-lg-4'>
-                        <button className='btn primary mx-1'>See More</button>
+                        <Link to={`/ScheduledBusPage?scheduleId=${busInfo.scheduleId}`}><button className='btn primary mx-1'>See More</button></Link>
                         <button className='btn primary mx-1'onClick={()=>handleDelete()}>Delete</button>
                     </div>
                 </div>

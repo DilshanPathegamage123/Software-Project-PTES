@@ -164,8 +164,9 @@ function BusRegistrationPage() {
         })
         setTimeout(() => {
             window.location.reload();
-        }, 3500);
+        }, 4000);
 
+        navigate('/');
         //toast.success('Form submitted successfully');
       } catch (error) {
         Swal.fire({

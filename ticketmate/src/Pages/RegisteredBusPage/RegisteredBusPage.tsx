@@ -4,8 +4,10 @@ import Footer from '../../Components/Footer/Footer'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import BusImg from '../../assets/RegBusImg.png'
 import Wheel from '../../assets/steering-wheel (1).png'
-import { useLocation } from 'react-router-dom';
+import BackIcon from '../../assets/ion_arrow-back-circle.png'
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios'
+
 
 function RegisteredBusPage() {
 
@@ -91,12 +93,15 @@ function RegisteredBusPage() {
         <PrimaryNavBar/>
         <div className='container'>
             <div className='row'>
-                <div className='col-md-6'>
+                <div className='col-lg-6'>
                     <div className='m-4 InfoSec rounded-4'>
-                        <div className='row d-flex justify-content-center'>
-                            <img src={BusImg} alt="BusImg" className='p-5 col-6'/>
+                        <div className='row d-flex justify-content-left pl-5 pt-4'>
+                            <Link to='/'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
                         <div className='row d-flex justify-content-center'>
+                            <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
+                        </div>
+                        <div className='row d-flex justify-content-center mt-2'>
                             <p className='p2'>Bus Id:  {data.busId} </p>
                             <p className='p2'>Bus No:  {data.busNo} </p>
                             <p className='p2'>License No:  {data.licenNo} </p>
@@ -107,15 +112,15 @@ function RegisteredBusPage() {
                         </div>
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
-                                <button className='btn white mx-3'>Edit</button>
-                                <button className='btn white mx-3'>Delete</button>
+                                <button className='btn white m-2'>Edit</button>
+                                <button className='btn white m-2'>Delete</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='col-md-6'>
+                <div className='col-lg-6'>
                     <div className='container m-4'>
-                        <div className='bg-light rounded-4 p-5'>
+                        <div className='bg-light2 rounded-4 p-5'>
                             <div className='row justify-content-center pb-3'>
                             <img src={Wheel} alt='Steering-wheel-img' style={{ width: '57px' }} />
                             </div>

@@ -1,11 +1,20 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Bus1 from "./TravelDetailsCardAssests/bus1.png";
 import train1 from "./TravelDetailsCardAssests/train1.png";
 import "./DetailsCard.css";
 import { SearchResult } from "../../SearchResult";
 import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
+import Arrow from "./TravelDetailsCardAssests/Arrow.svg";
+type DetailsCardProps = SearchResult & {
+  isBookingPage?: boolean;
+  onBookNow: (VehicleId: number) => void;
+};
 
-const DetailsCard: React.FC<SearchResult> = ({
+const DetailsCard: React.FC<DetailsCardProps> = ({
+  isBookingPage,
+  onBookNow,
+  VehicleId,
   vehicleNo,
   routNo,
   startLocation,
@@ -20,6 +29,31 @@ const DetailsCard: React.FC<SearchResult> = ({
   firstClassTicketPrice,
   secondClassTicketPrice,
 }) => {
+  const navigate = useNavigate();
+  const cardClass = `${
+    isBookingPage ? "DetailsCard BookingPage" : "DetailsCard"
+  } row col-lg-11 col-11 rounded-3 justify-content-center font-family-Poppins mt-2 mb-2 h-auto w-100`;
+  const handleBookNow = () => {
+    navigate("/bus-booking", {
+      state: {
+        VehicleId,
+        vehicleNo,
+        routNo,
+        startLocation,
+        endLocation,
+        departureTime,
+        arrivalTime,
+        comfortability,
+        duration,
+        ticketPrice,
+        selectedStands,
+        scheduledDatesList,
+        firstClassTicketPrice,
+        secondClassTicketPrice,
+      },
+    });
+  };
+
   const { selectedVehicleType } = useContext(SelectedVehicleTypeContext);
   let departureDate, arrivalDate;
 
@@ -29,6 +63,8 @@ const DetailsCard: React.FC<SearchResult> = ({
   console.log(endLocation);
   console.log(ticketPrice);
   console.log(routNo);
+
+  console.log(VehicleId);
 
   console.log(scheduledDatesList);
   console.log(scheduledDatesList.$values);
@@ -55,7 +91,7 @@ const DetailsCard: React.FC<SearchResult> = ({
 
   if (departureDate && arrivalDate) {
     return (
-      <div className=" DetailsCard row col-lg-11 col-11 rounded-3 justify-content-center font-family-Poppins mt-2 mb-2 h-auto w-100  ">
+      <div className={cardClass}>
         {/* column 1 */}
         <div className="col col-lg-3 col-md-10 col-12  p-0 d-flex   ">
           <div className="col ms-xl-0 ms-5 mt-xl-5 mt-3    ps-0  ">
@@ -90,9 +126,7 @@ const DetailsCard: React.FC<SearchResult> = ({
             </div>
 
             <div className=" d-grid mb-2">
-              <p className="fw-normal m-auto px-3 align-content-center">
-                Type{" "}
-              </p>
+              <p className="fw-normal m-auto px-3 align-content-center">Type</p>
 
               <p className="fw-bolder m-auto px-3 align-content-center ">
                 {comfortability}
@@ -110,7 +144,6 @@ const DetailsCard: React.FC<SearchResult> = ({
                 Departure
               </p>
               <p className="fw-bolder m-auto px-3 align-content-center">
-                {/* Colombo */}
                 {startLocation}
               </p>
             </div>
@@ -119,7 +152,6 @@ const DetailsCard: React.FC<SearchResult> = ({
                 Date
               </p>
               <p className="fw-bolder m-auto  px-3 align-content-center">
-                {/* 2023-05-12 */}
                 {departureDate}
               </p>
             </div>
@@ -139,16 +171,17 @@ const DetailsCard: React.FC<SearchResult> = ({
               fill="none"
               className="Arrow align-content-center m-auto d-flex "
             >
-              <path d="M3 2L22 37.6301L3 69" stroke="Black" stroke-width="5" />
+              <path
+                d="M3 2L22 37.6301L3 69"
+                stroke={isBookingPage ? "White" : "Black"}
+                stroke-width="5"
+              />
             </svg>
           </div>
           <div className="col d-md-flex d-lg-block m-auto ">
             <div className=" d-grid mb-2 ">
               <p className="fw-normal m-auto  px-3 ">Arrival</p>
-              <p className="fw-bolder m-auto  px-3 ">
-                {/* Jaffna */}
-                {endLocation}
-              </p>
+              <p className="fw-bolder m-auto  px-3 ">{endLocation}</p>
             </div>
             <div className=" d-grid mb-2 ">
               <p className="fw-normal m-auto  px-3 ">Date</p>
@@ -156,10 +189,7 @@ const DetailsCard: React.FC<SearchResult> = ({
             </div>
             <div className=" d-grid mb-2">
               <p className="fw-normal m-auto  px-3 ">Time</p>
-              <p className="fw-bolder m-auto  px-3">
-                {/* 02 : 45 am */}
-                {arrivalTime}
-              </p>
+              <p className="fw-bolder m-auto  px-3">{arrivalTime}</p>
             </div>
           </div>
         </div>
@@ -172,55 +202,30 @@ const DetailsCard: React.FC<SearchResult> = ({
               {selectedVehicleType === "Train" ? (
                 <>
                   <p className="fw-bolder m-auto ">
-                    First Class: LKR {firstClassTicketPrice}
+                    First Class: LKR {firstClassTicketPrice}.00
                   </p>
                   <p className="fw-bolder m-auto ">
-                    Second Class: LKR {secondClassTicketPrice}
+                    Second Class: LKR {secondClassTicketPrice}.00
                   </p>
                 </>
               ) : (
-                <p className="fw-bolder m-auto ">LKR {ticketPrice}</p>
+                <p className="fw-bolder m-auto ">LKR {ticketPrice}.00</p>
               )}
             </div>
           </div>
           <div className="row rounded-1  align-content-center col-6 m-auto mb-2    ">
             <button
               type="button"
-              className="btn SignUpNow btn-sm fw-semibold  fs-5 text-dark  "
+              className={`btn SignUpNow btn-sm fw-semibold fs-5 ${
+                isBookingPage ? "text-white " : "text-dark"
+              }`}
+              onClick={handleBookNow}
+              disabled={isBookingPage}
             >
               Book Now
             </button>
           </div>
         </div>
-
-        {/* column 3 */}
-        {/* <div className="col col-lg-4 col-md-10 col-12 p-0  mt-3 ">
-        <div className="row mb-2">
-          <div className="col d-grid  ">
-            <p className="fw-normal m-auto   ">Booking Closing Date</p>
-            <p className="fw-bolder m-auto ">
-              2023-05-12
-              {bookingClosingDate}
-            </p>
-          </div>
-          <div className="col d-grid   ">
-            <p className="fw-normal m-auto p-0  ">Booking Closing Time</p>
-            <p className="fw-bolder m-auto ">
-              04 : 45 pm
-              {bookingClosingTime}
-            </p>
-          </div>
-        </div>
-        <div className="row rounded-1  align-content-center col-6 m-auto mb-2  ">
-          <button
-            type="button"
-            className="btn SignUpNow btn-sm fw-bold fs-5  text-success "
-          >
-            LKR 2255.00
-            {ticketPrice}
-          </button>
-        </div>
-      </div> */}
       </div>
     );
   }

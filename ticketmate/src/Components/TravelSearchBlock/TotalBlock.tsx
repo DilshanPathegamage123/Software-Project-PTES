@@ -11,29 +11,11 @@ import SearchButton from "./SearchButton";
 import axios from "axios";
 import { SearchResult } from "../../SearchResult";
 
-// interface TotalBlockProps {
-//   setSelectedVehicleTypeProp: (value: string) => void;
-//   onSearch: (results: SearchResult[]) => Promise<void>;
-// }
-
 interface TotalBlockProps {
   selectedVehicleType: string;
   setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
 }
-
-// export default function TotalBlock({
-//   selectedVehicleType,
-//   setSelectedVehicleType,
-// }: {
-//   selectedVehicleType: string;
-//   setSelectedVehicleType: (value: string) => void;
-// }) {
-//   //const [selectedVehicleType, setSelectedVehicleType] = useState("");
-//   const [selectedStartLocation, setSelectedStartLocation] = useState("");
-//   const [selectedEndLocation, setSelectedEndLocation] = useState("");
-//   const [selectedDate, setSelectedDate] = useState("");
-//   const [searchResults, setSearchResults] = useState([]); // Use state to store search results
 
 const TotalBlock: React.FC<TotalBlockProps> = ({
   selectedVehicleType,
@@ -45,19 +27,10 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
 
-  // const handleVehicleTypeChange: React.Dispatch<
-  //   React.SetStateAction<string>
-  // > = (type) => {
-  //   setSelectedVehicleType(type);
-  // };
   console.log(selectedVehicleType);
   console.log(selectedStartLocation);
   console.log(selectedEndLocation);
   console.log(selectedDate);
-
-  // React.useEffect(() => {
-  //   console.log(selectedVehicleType);
-  // }, [selectedVehicleType]);
 
   const handleSearch = async () => {
     if (
@@ -92,6 +65,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
           (result: any) => {
             const unifiedResult: SearchResult = {
               ...result,
+              VehicleId: result.registeredBusBusId,
               scheduleId: result.scheduleId || result.schedulId,
               vehicleNo: result.busNo || result.trainRoutNo,
               routNo: result.routNo || result.trainRoutNo,
@@ -136,6 +110,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
         console.error("Search results are not in the expected format");
       }
     } catch (error) {
+      window.confirm("Error during search!");
       console.error("Error during search:", error);
     }
   };

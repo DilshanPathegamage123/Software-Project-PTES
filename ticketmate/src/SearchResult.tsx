@@ -1,4 +1,5 @@
 export interface SearchResult {
+  VehicleId: number;
   scheduleId: string;
   vehicleNo: string;
   routNo: string;
@@ -44,24 +45,3 @@ export interface TrainDates {
   arrivalDate: string;
   departureDate: string;
 }
-
-// export interface SearchResult {
-//   scheduleId: string;
-//   busNo: string;
-//   routNo: string;
-//   startLocation: string;
-//   endLocation: string;
-//   departureTime: string;
-//   arrivalTime: string;
-//   comfortability: string;
-//   duration: string;
-//   ticketPrice: number;
-//   selectedBusStands: {
-//     $id: string;
-//     $values: BusStand[];
-//   };
-//   scheduledBusDatesList: {
-//     $id: string;
-//     $values: ScheduledBusDates[];
-//   };
-// }

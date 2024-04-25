@@ -1,6 +1,5 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React , {useState} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./TravelOptionsPage.css";
@@ -19,8 +18,9 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
   const location = useLocation();
   let searchResults: SearchResult[] = location.state?.searchResults || [];
   let selectedVehicleType: string = location.state?.selectedVehicleType || "";
-
-  // If location.state is undefined, try to retrieve the data from the session storage
+  
+  // location.state is used to pass state data from one route to another 
+  // If location.state is un defined, try to retrieve the data from the session storage
   if (!location.state) {
     const storedSearchResults = sessionStorage.getItem("searchResults");
     const storedSelectedVehicleType = sessionStorage.getItem(
@@ -46,9 +46,14 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
       },
     });
   };
-  // Output searchResults for debugging
-  console.log(searchResults);
-  console.log(selectedVehicleType);
+ 
+  const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
+
+  const handleBookNow = (VehicleId: number) => {
+    setSelectedVehicleId(VehicleId);
+  };
+
+
 
   return (
     <>
@@ -69,6 +74,8 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
               
               <DetailsCard
                 key={index}
+                onBookNow={handleBookNow}
+                VehicleId={result.VehicleId}
                 scheduleId={result.scheduleId}
                 vehicleNo={result.vehicleNo}
                 routNo={result.routNo}

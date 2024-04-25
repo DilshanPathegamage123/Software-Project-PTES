@@ -4,20 +4,20 @@ import "./SeatButton.css";
 import SeatAvailable from "./SeatButtonAssests/SeatAvailable.png";
 import SeatBooked from "./SeatButtonAssests/SeatBooked.png";
 import SeatSelected from "./SeatButtonAssests/SeatSelected.png";
+import SeatNotAvailable from "./SeatButtonAssests/WhiteRectangle.png";
 
 interface SeatButtonProps {
-  status: "booked" | "available";
-  onClick: () => void;
+  status: "booked" | "available" | "not-available";
+  onClick: (isSelected: boolean) => void;
 }
-
 const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
   const [localStatus, setLocalStatus] = useState<
-    "booked" | "available" | "selected"
+    "booked" | "available" | "selected" | "not-available"
   >(status);
 
   let SeatImg;
   let SeatId;
-  let SeatNo = "12";
+  //let SeatNo = "12";
 
   switch (localStatus) {
     case "booked":
@@ -26,13 +26,15 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
       break;
     case "available":
       SeatImg = SeatAvailable;
-
       SeatId = "Available";
       break;
     case "selected":
       SeatImg = SeatSelected;
-
       SeatId = "Selected";
+      break;
+    case "not-available":
+      SeatImg = SeatNotAvailable;
+      SeatId = "Not Available";
       break;
     default:
       SeatImg = SeatAvailable;
@@ -42,27 +44,32 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
   const handleButtonClick = () => {
     if (localStatus === "available") {
       setLocalStatus("selected");
+      onClick(true);
     }
 
     if (localStatus === "selected") {
       setLocalStatus("available");
+      onClick(false);
     }
-    onClick();
   };
 
   return (
     <button
       className="seatButton p-0 m-0 border-0"
       onClick={handleButtonClick}
-      disabled={localStatus === "booked"}
+      disabled={localStatus === "booked" || localStatus === "not-available"}
     >
       <div className="seatImageContainer">
-        <img
-          src={SeatImg}
-          alt={localStatus}
-          className={`seatImage ${localStatus}`}
-        ></img>
-        <span className="seatNo">{SeatNo}</span>
+        {SeatImg ? (
+          <img
+            src={SeatImg}
+            alt={localStatus}
+            className={`seatImage ${localStatus}`}
+          ></img>
+        ) : (
+          <div className="not-available-seat"></div>
+        )}
+        {/* <span className="seatNo">{SeatNo}</span> */}
         {localStatus === "booked" && <div className="hoverEffect"></div>}
       </div>
     </button>

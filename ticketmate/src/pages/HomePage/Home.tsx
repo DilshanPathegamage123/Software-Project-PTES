@@ -13,23 +13,6 @@ interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
 }
 
-// interface SearchResult {
-//   // Define the properties of a search result
-//   vehicleType: string;
-//   startLocation: string;
-//   departureTime: string;
-//   endLocation: string;
-//   arrivalTime: string;
-//   travelDate: string;
-//   arrivalDate: string;
-//   regNo: string;
-//   comfortability: string;
-//   duration: string;
-//   ticketPrice: number;
-//   bookingClosingDate: string;
-//   bookingClosingTime: string;
-// }
-
 const Home: React.FC<HomeProps> = ({ onSearch }) => {
   const { selectedVehicleType, setSelectedVehicleType } = useContext(
     SelectedVehicleTypeContext

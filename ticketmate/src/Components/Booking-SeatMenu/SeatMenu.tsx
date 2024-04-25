@@ -5,7 +5,7 @@ import YellowSquare from "./SeatMenuAssests/YellowSquare.png";
 
 const SeatMenu = () => {
   return (
-    <div className="Menu row col-12 pt-3 pb-4 ">
+    <div className="Menu row col-lg-11 pt-3 pb-4 d-flex m-auto  ">
       <div className="col col-8 col-md-3 col-4 booked">
         <div className="col col-1 d-inline">
           <img className="m-0 " src={RedSquare} alt="Booked" />

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import Footer from "../../Components/Footer/Footer";
@@ -7,22 +9,94 @@ import SeatMenu from "../../Components/Booking-SeatMenu/SeatMenu";
 import TravelLable from "../../Components/Booking-TravelLable/TravelLable";
 import TotalPriceLable from "../../Components/Booking-TotalPriceLable/TotalPriceLable";
 import SeatStructure from "../../Components/Booking-SeatStructure/SeatStructure";
+import { SearchResult } from "../../SearchResult";
 
-const BusBookingPage = () => {
+const BusBookingPage: React.FC = () => {
+  const location = useLocation();
+  const busDetails = location.state as SearchResult;
+  console.log(busDetails.VehicleId);
+
+  const [busDetailsWithSeats, setBusDetailsWithSeats] = useState<any>(null);
+
+  const [selectedSeats, setSelectedSeats] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchBusDetails = async () => {
+      try {
+        const response = await axios.get(
+          `https://localhost:7048/api/GetBusDetails/${busDetails.VehicleId}`
+        );
+        setBusDetailsWithSeats(response.data);
+      } catch (error) {
+        console.error("Error fetching bus details:", error);
+      }
+    };
+
+    fetchBusDetails();
+  }, [busDetails.VehicleId]);
+
+  console.log(busDetailsWithSeats);
+
   return (
     <div className="BusBooking">
       <PrimaryNavBar />
-      <DetailsCard />
-      <SeatMenu/>
-      
+      <div className=" d-flex justify-content-center align-items-center pt-3">
+        <DetailsCard
+          isBookingPage
+          onBookNow={() => {}} //Provide empty function because Book now button is disabled in this page.
+          VehicleId={busDetails.VehicleId}
+          scheduleId={busDetails.scheduleId}
+          vehicleNo={busDetails.vehicleNo}
+          routNo={busDetails.routNo}
+          startLocation={busDetails.startLocation}
+          endLocation={busDetails.endLocation}
+          departureTime={busDetails.departureTime}
+          arrivalTime={busDetails.arrivalTime}
+          comfortability={busDetails.comfortability}
+          duration={busDetails.duration}
+          ticketPrice={busDetails.ticketPrice}
+          selectedStands={busDetails.selectedStands}
+          scheduledDatesList={busDetails.scheduledDatesList}
+          firstClassTicketPrice={busDetails.firstClassTicketPrice}
+          secondClassTicketPrice={busDetails.secondClassTicketPrice}
+        />
+      </div>
+      <SeatMenu />
 
-      <div className="BusBookingBody row col-12 align-items-center justify-content-center   ">
-        <div className="BusBookingBodyLeft col col-lg-6 col-12  align-items-center justify-content-center  ">
-         <SeatStructure/> 
+      <div className="BusBooking d-flex m-auto justify-content-center align-content-center ">
+        <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-10  m-auto  ">
+          {/* Pass the seat structure to the SeatStructure component */}
+          {busDetailsWithSeats && (
+            <SeatStructure
+            seatStructure={busDetailsWithSeats.selectedSeatStructures.$values}
+            onSeatSelected={(isSelected) => {
+              setSelectedSeats((prev) => prev + (isSelected ? 1 : -1));
+            }}
+          />
+          )}
         </div>
-        <div className="BusBookingBodyRight col col-lg-6 col-12  align-items-center justify-content-center ">
-          <TravelLable />
-          <TotalPriceLable />
+        <div className="BusBookingBodyRight  col col-lg-6 col-md-12 col-10  align-items-center justify-content-center m-auto  mt-0  ">
+          <div className=" mb-4 ">
+            <TravelLable
+              availableSeats={
+                busDetailsWithSeats
+                  ? busDetailsWithSeats.registeredBus.setsCount
+                  : 0
+              }
+              isAC={
+                busDetailsWithSeats
+                  ? busDetailsWithSeats.registeredBus.aCorNONAC
+                  : false
+              }
+              ticketPrice={busDetails.ticketPrice}
+            />
+          </div>
+          <div className=" mt-4 ">
+            <TotalPriceLable 
+             passengers={selectedSeats}
+             totalPrice={selectedSeats * busDetails.ticketPrice}
+             />
+          </div>
         </div>
       </div>
       <Footer />

@@ -26,6 +26,7 @@ function ScheduledBusPage() {
       });
 
 
+      // Extracting scheduleId from query parameters
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const scheduleId = searchParams.get('scheduleId');
@@ -33,12 +34,14 @@ function ScheduledBusPage() {
   //const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Fetching data on component mount or when scheduleId changes
   useEffect(() => {
     if (scheduleId) {
       getData(scheduleId);
     }
   }, [scheduleId]);
-
+  
+// Function to fetch bus data from API
 const getData = (scheduleId: string) => {
     axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`)
         .then((response) => {

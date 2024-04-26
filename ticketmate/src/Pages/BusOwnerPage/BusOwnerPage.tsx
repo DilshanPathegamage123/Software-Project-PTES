@@ -9,15 +9,16 @@ import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/Register
 import { Link } from 'react-router-dom';
 
 function BusOwnerPage() {
-  const [divWidth, setDivWidth] = useState(0);
-  const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses');
-  const [buttonStates, setButtonStates] = useState({
+  const [divWidth, setDivWidth] = useState(0); // State to store div width
+  const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
+  const [buttonStates, setButtonStates] = useState({ // State to track button states
     ScheduledBuses: true,
     RegisteredBuses: false,
     Reports: false
   });
 
   useEffect(() => {
+    // Function to handle window resize
     function handleResize() {
       const width = document.getElementById('getWidth')?.offsetWidth;
       setDivWidth(width || 0);
@@ -31,6 +32,7 @@ function BusOwnerPage() {
     };
   }, []);
 
+  // Function to handle button click
   const handleButtonClick = (componentName: string) => {
     setSelectedComponent(componentName);
     // Update button states
@@ -49,6 +51,7 @@ function BusOwnerPage() {
     }
   };
 
+  // Function to render selected component based on state
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
       case 'ScheduledBuses':

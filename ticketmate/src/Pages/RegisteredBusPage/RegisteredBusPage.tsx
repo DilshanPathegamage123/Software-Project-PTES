@@ -7,31 +7,45 @@ import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 
 function RegisteredBusPage() {
 
+    // Using react-router-dom's useLocation hook to get query parameters
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const busId = queryParams.get('busId');
 
     console.log(busId);
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState({
+        busId: '',
+        busNo: '',
+        licenNo: '',
+        setsCount: '',
+        aCorNONAC: '',
+        licenseImgURL: '',
+        insuranceImgURL: '',
+      });
+
     const [buttonStates, setButtonStates] = useState({});
     
 
+    // Fetching data and button states on component mount
     useEffect(() => {
         const busId = getBusIdFromQueryParams();
         getData(busId);
         getButtonStates(busId);
     }, []);
     
+    // Function to extract busId from query parameters
     const getBusIdFromQueryParams = () => {
         const queryParams = new URLSearchParams(window.location.search);
         return queryParams.get('busId');
     };
 
+    // Function to fetch bus data from API
     const getData = (busId: any) => {
         axios.get(`https://localhost:7001/api/BusReg/${busId}`)
         .then((result) => {
@@ -43,6 +57,7 @@ function RegisteredBusPage() {
     }
 
 
+    // Function to fetch button states from API
     const getButtonStates = (busId: any) => {
             axios
                 .get(`https://localhost:7001/api/SelectedSeatStr/bus/${busId}`)
@@ -58,6 +73,7 @@ function RegisteredBusPage() {
                 });
         };
     
+        // Function to render seat structure
       const renderSeatStructure = () => {
         const seatStructure = [];
         for (let rowIndex = 0; rowIndex < 11; rowIndex++) {
@@ -85,8 +101,29 @@ function RegisteredBusPage() {
       };
 
     const handleClick = () => {
-        // You can add logic to handle button clicks here if needed
+        // can add logic to handle button clicks here if needed
     };
+
+    // Function to handle delete action
+    const handleDelete = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#00757C",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            }
+          });
+    }
 
   return (
     <>
@@ -102,6 +139,7 @@ function RegisteredBusPage() {
                             <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
+                            {/* Displaying bus information */}
                             <p className='p2'>Bus Id:  {data.busId} </p>
                             <p className='p2'>Bus No:  {data.busNo} </p>
                             <p className='p2'>License No:  {data.licenNo} </p>
@@ -113,7 +151,7 @@ function RegisteredBusPage() {
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
                                 <button className='btn white m-2'>Edit</button>
-                                <button className='btn white m-2'>Delete</button>
+                                <button className='btn white m-2'onClick={()=>handleDelete()}>Delete</button>
                             </div>
                         </div>
                     </div>
@@ -124,7 +162,7 @@ function RegisteredBusPage() {
                             <div className='row justify-content-center pb-3'>
                             <img src={Wheel} alt='Steering-wheel-img' style={{ width: '57px' }} />
                             </div>
-                            {renderSeatStructure()}
+                            {renderSeatStructure()} {/* Render seat structure */}
                         </div>
                     </div>
                 </div>

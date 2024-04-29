@@ -22,15 +22,9 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
   setSelectedVehicleType,
   onSearch,
 }) => {
-  //const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
-
-  console.log(selectedVehicleType);
-  console.log(selectedStartLocation);
-  console.log(selectedEndLocation);
-  console.log(selectedDate);
 
   const handleSearch = async () => {
     if (
@@ -110,7 +104,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
         console.error("Search results are not in the expected format");
       }
     } catch (error) {
-      window.confirm("Error during search!");
+      window.confirm("Error during search! Please try again.");
       console.error("Error during search:", error);
     }
   };
@@ -122,11 +116,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
           <VehicleType
             selectedVehicleType={selectedVehicleType}
             setSelectedVehicleType={(value) => setSelectedVehicleType(value)}
-
-            //setSelectedVehicleType={setSelectedVehicleType}
           />
-
-          {/* Pass setSelected as a prop to VehicleType */}
         </div>
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <StartLocationSelector

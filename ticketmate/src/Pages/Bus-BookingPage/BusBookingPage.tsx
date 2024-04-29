@@ -20,8 +20,15 @@ const BusBookingPage: React.FC = () => {
 
   const [selectedSeats, setSelectedSeats] = useState<number>(0);
 
+  const [selectedSeatNumbers, setSelectedSeatNumbers] = useState<number[]>([]);
+
   useEffect(() => {
     const fetchBusDetails = async () => {
+      if (!busDetails || !busDetails.VehicleId) {
+        console.error("Bus details or VehicleId is undefined");
+        return;
+      }
+
       try {
         const response = await axios.get(
           `https://localhost:7048/api/GetBusDetails/${busDetails.VehicleId}`
@@ -33,9 +40,22 @@ const BusBookingPage: React.FC = () => {
     };
 
     fetchBusDetails();
-  }, [busDetails.VehicleId]);
+  }, [busDetails]);
 
   console.log(busDetailsWithSeats);
+
+  const handleSeatSelected = (isSelected: boolean, seatNumber: number) => {
+    if (isSelected) {
+      setSelectedSeatNumbers((prevSelectedSeatNumbers) => [
+        ...prevSelectedSeatNumbers,
+        seatNumber,
+      ]);
+    } else {
+      setSelectedSeatNumbers((prevSelectedSeatNumbers) =>
+        prevSelectedSeatNumbers.filter((num) => num !== seatNumber)
+      );
+    }
+  };
 
   return (
     <div className="BusBooking">
@@ -43,7 +63,7 @@ const BusBookingPage: React.FC = () => {
       <div className=" d-flex justify-content-center align-items-center pt-3">
         <DetailsCard
           isBookingPage
-          onBookNow={() => {}} //Provide empty function because Book now button is disabled in this page.
+          onBookNow={() => {}} //empty function because Book now button is disabled in this page.
           VehicleId={busDetails.VehicleId}
           scheduleId={busDetails.scheduleId}
           vehicleNo={busDetails.vehicleNo}
@@ -68,11 +88,12 @@ const BusBookingPage: React.FC = () => {
           {/* Pass the seat structure to the SeatStructure component */}
           {busDetailsWithSeats && (
             <SeatStructure
-            seatStructure={busDetailsWithSeats.selectedSeatStructures.$values}
-            onSeatSelected={(isSelected) => {
-              setSelectedSeats((prev) => prev + (isSelected ? 1 : -1));
-            }}
-          />
+              seatStructure={busDetailsWithSeats.selectedSeatStructures.$values}
+              onSeatSelected={handleSeatSelected}
+              // onSeatSelected={(isSelected) => {
+              //   setSelectedSeats((prev) => prev + (isSelected ? 1 : -1));
+              // }}
+            />
           )}
         </div>
         <div className="BusBookingBodyRight  col col-lg-6 col-md-12 col-10  align-items-center justify-content-center m-auto  mt-0  ">
@@ -92,10 +113,17 @@ const BusBookingPage: React.FC = () => {
             />
           </div>
           <div className=" mt-4 ">
-            <TotalPriceLable 
-             passengers={selectedSeats}
-             totalPrice={selectedSeats * busDetails.ticketPrice}
-             />
+            <TotalPriceLable
+              passengers={selectedSeatNumbers.length}
+              totalPrice={selectedSeatNumbers.length * busDetails.ticketPrice}
+            />
+            {/* Display selected seat numbers */}
+            <div>
+              Selected Seats:{" "}
+              {selectedSeatNumbers.length > 0
+                ? selectedSeatNumbers.join(", ")
+                : "None"}
+            </div>
           </div>
         </div>
       </div>

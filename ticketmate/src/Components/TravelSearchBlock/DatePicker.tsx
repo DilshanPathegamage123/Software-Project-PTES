@@ -7,8 +7,6 @@ interface DatePickerProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
 }
 
-//export default function DatePicker() {
-
 const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
   const currentDate = new Date().toISOString().substr(0, 10);
   const [date, setDate] = useState(currentDate);
@@ -16,26 +14,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
   useEffect(() => {
     setSelectedDate(date);
   }, []);
-
-  // useEffect(() => {
-  //   if (date) {
-  //     sendDateToBackend();
-  //   }
-  // }, [date]);
-
-  // const sendDateToBackend = async () => {
-  //   try {
-  //     // Api call for send selected date to backend
-  //     await axios.post("Url", { selectedDate: date });
-  //   } catch (error) {
-  //     console.error("Error while sending date to backend", error);
-  //   }
-  // };
-
-  // const formatDate = (selectedDate: string) => {
-  //   const [month, day, year] = selectedDate.split("/");
-  //   return "${day}-${month}-${year}";
-  // };
 
   return (
     <div className="datepicker  d-flex ">

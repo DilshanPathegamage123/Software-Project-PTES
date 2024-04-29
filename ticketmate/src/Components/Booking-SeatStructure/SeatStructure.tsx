@@ -9,7 +9,7 @@ type Seat = {
 
 type SeatStructureProps = {
   seatStructure: Seat[];
-  onSeatSelected: (isSelected: boolean) => void;
+  onSeatSelected: (isSelected: boolean, seatNumber: number) => void;
 };
 
 function SeatStructure({ seatStructure, onSeatSelected }: SeatStructureProps) {
@@ -23,6 +23,7 @@ function SeatStructure({ seatStructure, onSeatSelected }: SeatStructureProps) {
   const busStructure: JSX.Element[][] = [];
 
   let currentSeatIndex = 0;
+  let seatNumber = 1;
 
   // Mapping through the rows
   for (let i = 0; i < rows; i++) {
@@ -36,18 +37,21 @@ function SeatStructure({ seatStructure, onSeatSelected }: SeatStructureProps) {
           row.push(
             <SeatButton
               key={seat.seatId}
+              seatNumber={seatNumber}
               status="available"
               onClick={(isSelected) => {
                 handleClick(seat.seatId);
-                onSeatSelected(isSelected);
+                onSeatSelected(isSelected, seatNumber);
               }}
             />
           );
+          seatNumber++; //Increment seat number by 1
         } else {
           // If the seat is not available, render a "not available" seat
           row.push(
             <SeatButton
               key={seat.seatId}
+              seatNumber={null} // Set seat number to 0 for not available seats
               status="not-available"
               onClick={() => {}}
             />

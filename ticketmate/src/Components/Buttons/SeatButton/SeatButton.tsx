@@ -9,15 +9,19 @@ import SeatNotAvailable from "./SeatButtonAssests/WhiteRectangle.png";
 interface SeatButtonProps {
   status: "booked" | "available" | "not-available";
   onClick: (isSelected: boolean) => void;
+  seatNumber: number | null;
 }
-const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
+const SeatButton: React.FC<SeatButtonProps> = ({
+  seatNumber,
+  status,
+  onClick,
+}) => {
   const [localStatus, setLocalStatus] = useState<
     "booked" | "available" | "selected" | "not-available"
   >(status);
 
   let SeatImg;
   let SeatId;
-  //let SeatNo = "12";
 
   switch (localStatus) {
     case "booked":
@@ -44,12 +48,10 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
   const handleButtonClick = () => {
     if (localStatus === "available") {
       setLocalStatus("selected");
-      onClick(true);
-    }
-
-    if (localStatus === "selected") {
+      onClick(true); // Pass isSelected as true
+    } else if (localStatus === "selected") {
       setLocalStatus("available");
-      onClick(false);
+      onClick(false); // Pass isSelected as false
     }
   };
 
@@ -59,7 +61,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
       onClick={handleButtonClick}
       disabled={localStatus === "booked" || localStatus === "not-available"}
     >
-      <div className="seatImageContainer">
+      <div className="seatImageContainer d-flex justify-content-center align-items-center">
         {SeatImg ? (
           <img
             src={SeatImg}
@@ -69,7 +71,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({ status, onClick }) => {
         ) : (
           <div className="not-available-seat"></div>
         )}
-        {/* <span className="seatNo">{SeatNo}</span> */}
+        <span className="seatNo">{seatNumber}</span>
         {localStatus === "booked" && <div className="hoverEffect"></div>}
       </div>
     </button>

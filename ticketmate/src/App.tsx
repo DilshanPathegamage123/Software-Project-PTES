@@ -7,8 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/HomePage/Home";
 import TravelOptionsPage from "./pages/TravelOptionsPage/TravelOptionsPage";
 import BusBookingPage from "./pages/Bus-BookingPage/BusBookingPage";
-import SeatButton from "./Components/Buttons/SeatButton/SeatButton";
-import TravelLable from "./Components/Booking-TravelLable/TravelLable";
 import SelectedVehicleTypeContext from "./SelectedVehicleTypeContext";
 import { SearchResult } from "./SearchResult";
 

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./Home.css";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import Background from "./assests/Home Background.jpg";
 import TotalBlock from "../../Components/TravelSearchBlock/TotalBlock";
 import HomeContent from "../../Components/HomePageContent/HomeContent";
@@ -39,13 +39,11 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
       <div className="HomeBackground container-fluid p-0   z-0   ">
         <img className="img" src={Background} alt="Background1" />
       </div>
-
       <TotalBlock
         selectedVehicleType={selectedVehicleType}
         setSelectedVehicleType={setSelectedVehicleType}
         onSearch={handleSearch}
       />
-
       <HomeContent />
 
       <Footer />

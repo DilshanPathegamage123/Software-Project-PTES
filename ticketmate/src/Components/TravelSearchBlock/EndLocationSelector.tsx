@@ -18,14 +18,11 @@ interface TrainStation {
   trainStationName: string;
 }
 
-//function EndLocationSelector() {
 const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
   selectedVehicleType,
   setSelectedEndLocation,
 }) => {
   const [endvalue, setEndValue] = useState("");
-  //const [endData, setEndData] = useState([]);
-  //const [filteredEndData, setFilteredEndData] = useState([]);
   const [endData, setEndData] = useState<{ stopName: string }[]>([]);
   const [filteredEndData, setFilteredEndData] = useState<
     { stopName: string }[]

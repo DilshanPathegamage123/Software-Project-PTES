@@ -8,12 +8,10 @@ import DatePicker from "./DatePicker";
 import "./TotalBlock2.css";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import VehicleType from "./VehicleType";
 import { SearchResult } from "../../SearchResult";
 
 interface TotalBlock2Props {
   selectedVehicleType: string;
-  //setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
 }
 
@@ -21,16 +19,10 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
   selectedVehicleType,
   onSearch,
 }) => {
-  // const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
-
-  console.log(selectedVehicleType);
-  console.log(selectedStartLocation);
-  console.log(selectedEndLocation);
-  console.log(selectedDate);
 
   const handleSearch = async () => {
     if (

@@ -22,12 +22,9 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
   setSelectedStartLocation,
 }) => {
   const [startvalue, setStartValue] = useState("");
-  //const [startData, setStartData] = useState([]);
-  //const [filteredStartData, setFilteredStartData] = useState([]);
   const [startData, setStartData] = useState<{ stopName: string }[]>([]);
   const [filteredStartData, setFilteredStartData] = useState<
-    { stopName: string }[]
-  >([]);
+    { stopName: string }[]>([]);
 
   useEffect(() => {
     if (selectedVehicleType === "Bus") {
@@ -39,11 +36,10 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
 
   const getAllBusStands = async () => {
     try {
-      // Api call for fetching start locations
+      // Api call for fetching bus stands
       const response = await axios.get(
         "https://localhost:7048/api/GetBusStands"
       );
-
       console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
 
       if (Array.isArray(response.data.$values)) {
@@ -68,7 +64,7 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
 
   const getAllTrainStations = async () => {
     try {
-      // Api call for fetching start locations
+      // Api call for fetching train stations
       const response = await axios.get(
         "https://localhost:7048/api/GetTrainStations"
       );

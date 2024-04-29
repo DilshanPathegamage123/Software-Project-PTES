@@ -5,7 +5,7 @@ import train1 from "./TravelDetailsCardAssests/train1.png";
 import "./DetailsCard.css";
 import { SearchResult } from "../../SearchResult";
 import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
-import Arrow from "./TravelDetailsCardAssests/Arrow.svg";
+
 type DetailsCardProps = SearchResult & {
   isBookingPage?: boolean;
   onBookNow: (VehicleId: number) => void;
@@ -57,17 +57,6 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
   const { selectedVehicleType } = useContext(SelectedVehicleTypeContext);
   let departureDate, arrivalDate;
 
-  console.log(selectedVehicleType);
-  console.log(vehicleNo);
-  console.log(startLocation);
-  console.log(endLocation);
-  console.log(ticketPrice);
-  console.log(routNo);
-
-  console.log(VehicleId);
-
-  console.log(scheduledDatesList);
-  console.log(scheduledDatesList.$values);
   console.log(scheduledDatesList);
   // Check if there are any scheduled bus dates
   if (
@@ -76,8 +65,8 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
     scheduledDatesList.$values.length > 0
   ) {
     // Get the first scheduled bus date
-
     const firstScheduledDate = scheduledDatesList.$values[0];
+
     // To access the departureDate and arrivalDate properties
     departureDate = firstScheduledDate.departureDate;
     arrivalDate = firstScheduledDate.arrivalDate;

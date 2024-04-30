@@ -50,6 +50,7 @@ const PassengerFormComponent = () => {
 
 
     onSubmit: async (FormValues) =>{
+
       console.log({
         FirstName: formValues.FirstName,
         LastName: formValues.LastName,
@@ -59,7 +60,7 @@ const PassengerFormComponent = () => {
         ContactNumber: formValues.ContactNumber,
         UserName: formValues.UserName,
         Password: formValues.Password,
-        ConfirmPassword: formValues.ConfirmPassword,
+        
       
       })
       axios

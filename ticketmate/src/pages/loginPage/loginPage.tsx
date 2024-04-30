@@ -73,7 +73,7 @@ const LoginPage = () => {
         alert("Invalid user name or password");
       }
     } catch (error) {
-      alert("Invalid user name or password");
+      alert("Invalid Username or password");
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }

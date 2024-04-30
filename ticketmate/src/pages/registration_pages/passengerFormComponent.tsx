@@ -49,7 +49,19 @@ const PassengerFormComponent = () => {
     validationSchema: passengerFormValidation,
 
 
-    onSubmit: async (FormValues) => {
+    onSubmit: async (FormValues) =>{
+      console.log({
+        FirstName: formValues.FirstName,
+        LastName: formValues.LastName,
+        NIC: formValues.NIC,
+        Email: formValues.Email,
+        DOB: dob,
+        ContactNumber: formValues.ContactNumber,
+        UserName: formValues.UserName,
+        Password: formValues.Password,
+        ConfirmPassword: formValues.ConfirmPassword,
+      
+      })
       axios
       .post(`https://localhost:7196/api/userData`, {
         firstName: formValues.FirstName,

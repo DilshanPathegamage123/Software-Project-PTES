@@ -10,8 +10,8 @@ import Home from "./pages/HomePage/Home";
 function App() {
   return (
     <div className="App" id="app">
-      <AppRoutes/>
-      {/* <PassengerForm/> */}
+      {/* <AppRoutes/> */}
+      <PassengerForm/>
      {/* <Home/> */}
     </div>
       

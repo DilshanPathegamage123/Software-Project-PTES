@@ -100,7 +100,7 @@ const RegistrationRequests = () => {
                   <td>{user.ownVehicleType}</td>
                   <td>
                     <button className="btn " onClick={()=>AcceptOwner(user.id)} >Accept</button>&nbsp;&nbsp;
-                    <button className="btn " onClick={()=>rejectOwner(user.id)}>Reject</button>
+                    <button className="btn " onClick={()=>rejectOwner(user.id)}>Reject</button>&nbsp;&nbsp;
                   </td>
                   <td>
                   {/* onClick={() => toggleModel1(user)} */}

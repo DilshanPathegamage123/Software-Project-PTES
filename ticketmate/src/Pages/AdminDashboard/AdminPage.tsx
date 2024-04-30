@@ -5,7 +5,7 @@ import ProfileSection from "../../Components/ProfileSection/ProfileSection";
 import SquareButton from "../../Components/Buttons/SquareButton/SquareButton";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import "./AdminPage.css";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer/footer";
 import profileIcon from "../../../src/Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
 import { BiFontColor } from "react-icons/bi";
 import UserManage from "./UserManage";

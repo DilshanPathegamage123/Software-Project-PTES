@@ -5,7 +5,7 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import Creditcard from '../../Components/payment/asset/creditcard.png';
 import TravelDetails from '../../Components/payment/TravelDetail';
 import VisaMasterBtn from '../../Components/payment/VisaMasterBtn';
-import Footer from '../../Components/Footer/Footer';
+import Footer from '../../Components/Footer/footer';
 import Selection from '../../Components/payment/Selection';
 import Back from '../../Components/payment/Backbutton';
 import Payment1 from './payment1';

@@ -6,7 +6,7 @@ import "../../vars.css";
 import PassengerFormComponent from "./passengerFormComponent";
 import OwnerFormComponent from "./ownerFormComponent";
 import DriverFormComponent from "./driverFormComponent";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer/footer";
 
 
 const  PassengerForm=()=> {

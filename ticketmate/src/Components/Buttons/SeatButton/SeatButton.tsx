@@ -8,7 +8,7 @@ import SeatNotAvailable from "./SeatButtonAssests/WhiteRectangle.png";
 
 interface SeatButtonProps {
   status: "booked" | "available" | "not-available";
-  onClick: (isSelected: boolean) => void;
+  onClick: (isSelected: boolean, seatNumber: number | null) => void;
   seatNumber: number | null;
 }
 const SeatButton: React.FC<SeatButtonProps> = ({
@@ -48,10 +48,10 @@ const SeatButton: React.FC<SeatButtonProps> = ({
   const handleButtonClick = () => {
     if (localStatus === "available") {
       setLocalStatus("selected");
-      onClick(true); // Pass isSelected as true
+      onClick(true, seatNumber); // Pass isSelected as true
     } else if (localStatus === "selected") {
       setLocalStatus("available");
-      onClick(false); // Pass isSelected as false
+      onClick(false, seatNumber); // Pass isSelected as false
     }
   };
 

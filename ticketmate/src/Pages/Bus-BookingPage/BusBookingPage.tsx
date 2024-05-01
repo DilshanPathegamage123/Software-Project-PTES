@@ -34,6 +34,7 @@ const BusBookingPage: React.FC = () => {
           `https://localhost:7048/api/GetBusDetails/${busDetails.VehicleId}`
         );
         setBusDetailsWithSeats(response.data);
+        console.log(response);
       } catch (error) {
         console.error("Error fetching bus details:", error);
       }
@@ -43,19 +44,24 @@ const BusBookingPage: React.FC = () => {
   }, [busDetails]);
 
   console.log(busDetailsWithSeats);
+  console.log("Location State:", location.state);
 
   const handleSeatSelected = (isSelected: boolean, seatNumber: number) => {
     if (isSelected) {
+      // If seat is selected, add it to the selectedSeatNumbers array
       setSelectedSeatNumbers((prevSelectedSeatNumbers) => [
         ...prevSelectedSeatNumbers,
         seatNumber,
       ]);
     } else {
+      // If seat is deselected, remove only the deselected seat number from the array
       setSelectedSeatNumbers((prevSelectedSeatNumbers) =>
         prevSelectedSeatNumbers.filter((num) => num !== seatNumber)
       );
     }
   };
+
+  console.log("Selected Seats:", selectedSeatNumbers);
 
   return (
     <div className="BusBooking">

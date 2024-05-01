@@ -32,7 +32,10 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
 
   const navigate = useNavigate();
 
-  const onSearch = async (results: SearchResult[]) => {};
+  const onSearch = async (results: SearchResult[]) => {
+    searchResults = results;
+  };
+
   const handleSearch = async (results: SearchResult[]) => {
     // Wait for the search operation to complete
     await onSearch(results);
@@ -49,9 +52,20 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
   const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(
     null
   );
-
   const handleBookNow = (VehicleId: number) => {
-    setSelectedVehicleId(VehicleId);
+    const selectedBus = searchResults.find(
+      (result) => result.VehicleId === VehicleId
+    );
+    if (selectedBus) {
+      navigate("/bus-booking", {
+        state: {
+          ...selectedBus,
+          VehicleId: VehicleId,
+        },
+      });
+    } else {
+      console.error("Selected bus details not found.");
+    }
   };
 
   return (
@@ -59,7 +73,7 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
       <PrimaryNavBar />
       <TotalBlock2
         selectedVehicleType={selectedVehicleType}
-        onSearch={onSearch}
+        onSearch={handleSearch}
       />
       <div className="Travel-Option-Page-body d-flex ">
         <div className=" details-card-container d-flex flex-wrap justify-content-center  ">

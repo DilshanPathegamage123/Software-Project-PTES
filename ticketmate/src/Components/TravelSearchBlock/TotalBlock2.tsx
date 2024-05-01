@@ -56,6 +56,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
           (result: any) => {
             const unifiedResult: SearchResult = {
               ...result,
+              VehicleId: result.registeredBusBusId,
               scheduleId: result.scheduleId || result.schedulId,
               vehicleNo: result.busNo || result.trainRoutNo,
               routNo: result.routNo || result.trainRoutNo,

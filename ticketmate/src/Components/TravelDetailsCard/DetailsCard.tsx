@@ -34,6 +34,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
     isBookingPage ? "DetailsCard BookingPage" : "DetailsCard"
   } row col-lg-11 col-11 rounded-3 justify-content-center font-family-Poppins mt-2 mb-2 h-auto w-100`;
   const handleBookNow = () => {
+    onBookNow(VehicleId);
     navigate("/bus-booking", {
       state: {
         VehicleId,

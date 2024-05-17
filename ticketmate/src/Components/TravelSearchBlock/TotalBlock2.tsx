@@ -12,15 +12,21 @@ import { SearchResult } from "../../SearchResult";
 
 interface TotalBlock2Props {
   selectedVehicleType: string;
+  selectedStartLocation: string;
+  setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
+  selectedEndLocation: string;
+  setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
 }
 
 const TotalBlock2: React.FC<TotalBlock2Props> = ({
   selectedVehicleType,
+  selectedStartLocation,
+  setSelectedStartLocation,
+  selectedEndLocation,
+  setSelectedEndLocation,
   onSearch,
 }) => {
-  const [selectedStartLocation, setSelectedStartLocation] = useState("");
-  const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 

@@ -6,19 +6,19 @@ import YellowSquare from "./SeatMenuAssests/YellowSquare.png";
 const SeatMenu = () => {
   return (
     <div className="Menu row col-lg-11 pt-3 pb-4 d-flex m-auto  ">
-      <div className="col col-8 col-md-3 col-4 booked">
+      <div className="col col-md-2 col-4 booked">
         <div className="col col-1 d-inline">
-          <img className="m-0 " src={RedSquare} alt="Booked" />
+          <img src={RedSquare} alt="Booked" />
         </div>
         <div className="col col-2 d-inline">Booked Seats</div>
       </div>
-      <div className="col col-8 col-md-3 col-4 Available">
+      <div className="col col-md-2 col-4 Available">
         <div className="col d-inline">
           <img src={GreenSquare} alt="Availabe" />
         </div>
         <div className="col  d-inline">Available Seats</div>
       </div>
-      <div className="col col-8 col-md-4 col-4 Selected">
+      <div className="col col-md-2 col-4 Selected">
         <div className="col  d-inline">
           <img src={YellowSquare} alt="Selected" />
         </div>

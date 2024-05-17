@@ -19,6 +19,9 @@ export interface SearchResult {
     $values: ScheduledBusDates[] | TrainDates[]; // Add TrainDates[] for train dates
   };
 
+  startStand?: BusStand | TrainStopStation;
+  endStand?: BusStand | TrainStopStation;
+  
   //Optional fields
   trainType?: string;
   firstClassTicketPrice?: number;

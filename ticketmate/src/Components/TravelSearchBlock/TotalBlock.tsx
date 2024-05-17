@@ -14,16 +14,23 @@ import { SearchResult } from "../../SearchResult";
 interface TotalBlockProps {
   selectedVehicleType: string;
   setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  selectedStartLocation: string;
+  setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
+  selectedEndLocation: string;
+  setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
 }
 
 const TotalBlock: React.FC<TotalBlockProps> = ({
   selectedVehicleType,
   setSelectedVehicleType,
+  selectedStartLocation,
+  setSelectedStartLocation,
+  selectedEndLocation,
+  setSelectedEndLocation,
   onSearch,
 }) => {
-  const [selectedStartLocation, setSelectedStartLocation] = useState("");
-  const [selectedEndLocation, setSelectedEndLocation] = useState("");
+  
   const [selectedDate, setSelectedDate] = useState("");
 
   const handleSearch = async () => {

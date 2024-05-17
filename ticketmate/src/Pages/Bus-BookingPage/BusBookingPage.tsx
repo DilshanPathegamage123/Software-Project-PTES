@@ -1,7 +1,15 @@
+// // Now my problem is selectedStartLocation, startStandTime, selectedEndLocation and endStandTime are display correctly
+// //  in the BusBookingPage but only when I reload it and go back one time. Why? I think they are not updated immediately.
+// //   First that 4 variables are came as empty string and after the reload and clickback button one time they have correct
+// //    values. Can you fix it? Please give complete updated codes. Below is current codes.
+
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+import BoardinPoint from "./BusBookingPageAssests/BoardingPoint.png";
+import DroppingPoint from "./BusBookingPageAssests/DroppingPoint.png";
+import ProgresLine from "./BusBookingPageAssests/ProgressLine.png";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import Footer from "../../Components/Footer/Footer";
 import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
@@ -13,14 +21,37 @@ import { SearchResult } from "../../SearchResult";
 
 const BusBookingPage: React.FC = () => {
   const location = useLocation();
-  const busDetails = location.state as SearchResult;
-  console.log(busDetails.VehicleId);
 
   const [busDetailsWithSeats, setBusDetailsWithSeats] = useState<any>(null);
 
-  const [selectedSeats, setSelectedSeats] = useState<number>(0);
-
   const [selectedSeatNumbers, setSelectedSeatNumbers] = useState<number[]>([]);
+
+  const [selectedSeatLocations, setSelectedSeatLocations] = useState<number[]>(
+    []
+  );
+
+  const [busDetails, setBusDetails] = useState<SearchResult>(
+    location.state as SearchResult
+  );
+  const [startStandTime, setStartStandTime] = useState<string>("");
+  const [endStandTime, setEndStandTime] = useState<string>("");
+  const [selectedStartLocation, setSelectedStartLocation] =
+    useState<string>("");
+  const [selectedEndLocation, setSelectedEndLocation] = useState<string>("");
+  console.log(busDetails.VehicleId);
+
+  useEffect(() => {
+    if (location.state) {
+      const stateData = location.state as any;
+      console.log(stateData);
+      setBusDetails(stateData as SearchResult);
+
+      setStartStandTime(stateData.startStandTime || "");
+      setEndStandTime(stateData.endStandTime || "");
+      setSelectedStartLocation(stateData.selectedStartLocation || "");
+      setSelectedEndLocation(stateData.selectedEndLocation || "");
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const fetchBusDetails = async () => {
@@ -46,22 +77,26 @@ const BusBookingPage: React.FC = () => {
   console.log(busDetailsWithSeats);
   console.log("Location State:", location.state);
 
+  console.log(selectedStartLocation);
+  console.log(selectedEndLocation);
+  console.log(startStandTime);
+  console.log(endStandTime);
+
   const handleSeatSelected = (isSelected: boolean, seatNumber: number) => {
     if (isSelected) {
-      // If seat is selected, add it to the selectedSeatNumbers array
-      setSelectedSeatNumbers((prevSelectedSeatNumbers) => [
-        ...prevSelectedSeatNumbers,
-        seatNumber,
-      ]);
+      setSelectedSeatNumbers([...selectedSeatNumbers, seatNumber]);
+      setSelectedSeatLocations([...selectedSeatLocations, seatNumber]);
     } else {
-      // If seat is deselected, remove only the deselected seat number from the array
-      setSelectedSeatNumbers((prevSelectedSeatNumbers) =>
-        prevSelectedSeatNumbers.filter((num) => num !== seatNumber)
+      setSelectedSeatNumbers(
+        selectedSeatNumbers.filter((number) => number !== seatNumber)
+      );
+      setSelectedSeatLocations(
+        selectedSeatLocations.filter((location) => location !== seatNumber)
       );
     }
   };
 
-  console.log("Selected Seats:", selectedSeatNumbers);
+  console.log("Selected Seat Locations:", selectedSeatLocations);
 
   return (
     <div className="BusBooking">
@@ -96,9 +131,7 @@ const BusBookingPage: React.FC = () => {
             <SeatStructure
               seatStructure={busDetailsWithSeats.selectedSeatStructures.$values}
               onSeatSelected={handleSeatSelected}
-              // onSeatSelected={(isSelected) => {
-              //   setSelectedSeats((prev) => prev + (isSelected ? 1 : -1));
-              // }}
+              selectedSeatNumbers={selectedSeatNumbers}
             />
           )}
         </div>
@@ -118,18 +151,50 @@ const BusBookingPage: React.FC = () => {
               ticketPrice={busDetails.ticketPrice}
             />
           </div>
+          {/* Display boarding and dropping points */}
+          <div className="BDPoints row col-12 h-auto d-flex pt-5 pb-5  mt-5   ">
+            <div className="BDPointsStart Left col-2 justify-content-center align-items-center m-auto d-grid  ">
+              <div className="BoardingPoint justify-content-center align-items-center m-auto p-2">
+                <img src={BoardinPoint} alt="Icon" />
+              </div>
+              <div className="BDPointsStartLocation justify-content-center align-items-center m-auto fs-5 fw-medium ">
+                {selectedStartLocation}
+              </div>
+              <div className="BDPointsStartTime justify-content-center align-items-center m-auto fs-6 fw-medium  ">
+                {startStandTime}
+              </div>
+            </div>
+            <div className="Middle col-5 justify-content-center align-items-center m-auto d-grid ">
+              <img
+                src={ProgresLine}
+                alt="icon"
+                className="justify-content-center align-items-center p-0 "
+              />
+            </div>
+            <div className="BDPointsEnd Right col-2 justify-content-center align-items-center m-auto d-grid">
+              <div className="DroppingPoint justify-content-center align-items-center m-auto p-2">
+                <img src={DroppingPoint} alt="icon" />
+              </div>
+              <div className="BDPointsEndLocation justify-content-center align-items-center m-auto fs-5 fw-medium">
+                {selectedEndLocation}
+              </div>
+              <div className="BDPointsEndTime justify-content-center align-items-center m-auto fs-6 fw-medium ">
+                {endStandTime}
+              </div>
+            </div>
+          </div>
+          {/* Display selected seat numbers */}
+          <div className=" d-flex justify-content-center pt-5 fs-5 ">
+            Selected Seats:{" "}
+            {selectedSeatLocations.length > 0
+              ? selectedSeatLocations.sort((a, b) => a - b).join(", ") // Sort the seat locations in ascending order
+              : "None"}
+          </div>
           <div className=" mt-4 ">
             <TotalPriceLable
               passengers={selectedSeatNumbers.length}
               totalPrice={selectedSeatNumbers.length * busDetails.ticketPrice}
             />
-            {/* Display selected seat numbers */}
-            <div>
-              Selected Seats:{" "}
-              {selectedSeatNumbers.length > 0
-                ? selectedSeatNumbers.join(", ")
-                : "None"}
-            </div>
           </div>
         </div>
       </div>
@@ -139,3 +204,122 @@ const BusBookingPage: React.FC = () => {
 };
 
 export default BusBookingPage;
+
+// import React, { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
+// import axios from "axios";
+// import { useTravelContext } from "../../SelectedVehicleTypeContext";
+// import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+// import Footer from "../../Components/Footer/Footer";
+// import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
+// import SeatMenu from "../../Components/Booking-SeatMenu/SeatMenu";
+// import TravelLable from "../../Components/Booking-TravelLable/TravelLable";
+// import TotalPriceLable from "../../Components/Booking-TotalPriceLable/TotalPriceLable";
+// import SeatStructure from "../../Components/Booking-SeatStructure/SeatStructure";
+
+// const BusBookingPage = () => {
+//   const { startStandTime, endStandTime, selectedStartLocation, selectedEndLocation } = useTravelContext();
+//   const [busDetailsWithSeats, setBusDetailsWithSeats] = useState<any>(null); // Updated type to any
+//   const [selectedSeatNumbers, setSelectedSeatNumbers] = useState<number[]>([]);
+//   const [selectedSeatLocations, setSelectedSeatLocations] = useState<string[]>([]);
+//   const { state } = useLocation();
+
+//   useEffect(() => {
+//     const fetchBusDetails = async () => {
+//       if (!state || !state.selectedVehicle || !state.selectedVehicle.VehicleId) {
+//         console.error("Bus details or VehicleId is undefined");
+//         return;
+//       }
+
+//       try {
+//         const response = await axios.get(
+//           `https://localhost:7048/api/GetBusDetails/${state.selectedVehicle.VehicleId}`
+//         );
+//         setBusDetailsWithSeats(response.data);
+//       } catch (error) {
+//         console.error("Error fetching bus details:", error);
+//       }
+//     };
+
+//     fetchBusDetails();
+//   }, [state]);
+
+//   const handleSeatSelected = (isSelected: boolean, seatNumber: string) => {
+//     if (isSelected) {
+//       setSelectedSeatNumbers([...selectedSeatNumbers, parseInt(seatNumber)]); // Parse seatNumber to number
+//       setSelectedSeatLocations([...selectedSeatLocations, seatNumber]);
+//     } else {
+//       setSelectedSeatNumbers(
+//         selectedSeatNumbers.filter((number) => number !== parseInt(seatNumber)) // Parse seatNumber to number
+//       );
+//       setSelectedSeatLocations(
+//         selectedSeatLocations.filter((location) => location !== seatNumber)
+//       );
+//     }
+//   };
+
+//   return (
+//     <div className="BusBooking">
+//       <PrimaryNavBar />
+//       <div className="d-flex justify-content-center align-items-center pt-3">
+//         <DetailsCard
+//           isBookingPage
+//           onBookNow={() => {}} // empty function because Book now button is disabled in this page.
+//           {...state.selectedVehicle}
+//         />
+//       </div>
+//       <SeatMenu />
+
+//       <div className="BusBooking d-flex m-auto justify-content-center align-content-center ">
+//         <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-10  m-auto  ">
+//           {busDetailsWithSeats && (
+//             <SeatStructure
+//               seatStructure={busDetailsWithSeats.selectedSeatStructures.$values}
+//               onSeatSelected={handleSeatSelected}
+//               selectedSeatNumbers={selectedSeatNumbers}
+//             />
+//           )}
+//         </div>
+//         <div className="BusBookingBodyRight col col-lg-6 col-md-12 col-10 align-items-center justify-content-center m-auto mt-0">
+//           <div className="mb-4">
+//             <TravelLable
+//               availableSeats={
+//                 busDetailsWithSeats
+//                   ? busDetailsWithSeats.registeredBus.setsCount
+//                   : 0
+//               }
+//               isAC={
+//                 busDetailsWithSeats
+//                   ? busDetailsWithSeats.registeredBus.aCorNONAC
+//                   : false
+//               }
+//               ticketPrice={state.selectedVehicle.ticketPrice}
+//             />
+//           </div>
+//           <div className="d-flex justify-content-center pt-5 fs-5">
+//             Selected Seats:{" "}
+//             {selectedSeatLocations.length > 0
+//               ? selectedSeatLocations.sort((a, b) => +a - +b).join(", ") // Sort the seat locations in ascending order
+//               : "None"}
+//           </div>
+//           <div className="mt-4">
+//             <TotalPriceLable
+//               passengers={selectedSeatNumbers.length}
+//               totalPrice={selectedSeatNumbers.length * state.selectedVehicle.ticketPrice}
+//             />
+//           </div>
+
+//           <div>
+//             Start Location: {selectedStartLocation} <br />
+//             Start Stand Time: {startStandTime} <br />
+//             End Location: {selectedEndLocation} <br />
+//             End Stand Time: {endStandTime} <br />
+//           </div>
+//         </div>
+//       </div>
+//       <Footer />
+//     </div>
+//   );
+// };
+
+// export default BusBookingPage;

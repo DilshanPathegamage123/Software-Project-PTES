@@ -10,15 +10,17 @@ interface SeatButtonProps {
   status: "booked" | "available" | "not-available";
   onClick: (isSelected: boolean, seatNumber: number | null) => void;
   seatNumber: number | null;
+  isSelected: boolean;
 }
 const SeatButton: React.FC<SeatButtonProps> = ({
   seatNumber,
   status,
   onClick,
+  isSelected,
 }) => {
   const [localStatus, setLocalStatus] = useState<
     "booked" | "available" | "selected" | "not-available"
-  >(status);
+  >(isSelected ? "selected" : status);
 
   let SeatImg;
   let SeatId;
@@ -55,9 +57,11 @@ const SeatButton: React.FC<SeatButtonProps> = ({
     }
   };
 
+  console.log(seatNumber);
+
   return (
     <button
-      className="seatButton p-0 m-0 border-0"
+      className="seatButton p-0 m-0 border-0 mt-2 "
       onClick={handleButtonClick}
       disabled={localStatus === "booked" || localStatus === "not-available"}
     >

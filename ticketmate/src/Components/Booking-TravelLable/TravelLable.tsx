@@ -53,7 +53,7 @@ const TravelLable: React.FC<TravelLableProps> = ({
           />
           <div className=" d-inline"> {isAC ? "AC" : "Non AC"}</div>
         </div>
-        <div className="col col-4 d-flex align-items-center justify-content-center fs-4 fw-semibold">
+        <div className="col col-4 d-flex align-items-center justify-content-end fs-4 fw-semibold">
           LKR {ticketPrice}.00
         </div>
       </div>

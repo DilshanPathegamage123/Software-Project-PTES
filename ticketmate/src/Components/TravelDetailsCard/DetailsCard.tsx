@@ -8,7 +8,11 @@ import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
 
 type DetailsCardProps = SearchResult & {
   isBookingPage?: boolean;
-  onBookNow: (VehicleId: number) => void;
+  onBookNow: (
+    VehicleId: number,
+    startLocation: string,
+    endLocation: string
+  ) => void;
 };
 
 const DetailsCard: React.FC<DetailsCardProps> = ({
@@ -34,7 +38,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
     isBookingPage ? "DetailsCard BookingPage" : "DetailsCard"
   } row col-lg-11 col-11 rounded-3 justify-content-center font-family-Poppins mt-2 mb-2 h-auto w-100`;
   const handleBookNow = () => {
-    onBookNow(VehicleId);
+    onBookNow(VehicleId, startLocation, endLocation);
     navigate("/bus-booking", {
       state: {
         VehicleId,

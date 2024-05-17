@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Home.css";
@@ -11,12 +11,17 @@ import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
 import { SearchResult } from "../../SearchResult";
 interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
+  setSelectedStartLocation: Dispatch<SetStateAction<string>>;
+  setSelectedEndLocation: Dispatch<SetStateAction<string>>;
 }
 
 const Home: React.FC<HomeProps> = ({ onSearch }) => {
   const { selectedVehicleType, setSelectedVehicleType } = useContext(
     SelectedVehicleTypeContext
   );
+
+  const [selectedStartLocation, setSelectedStartLocation] = useState("");
+  const [selectedEndLocation, setSelectedEndLocation] = useState("");
 
   const navigate = useNavigate();
 
@@ -27,6 +32,8 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
       state: {
         searchResults: results,
         selectedVehicleType: selectedVehicleType,
+        selectedStartLocation: selectedStartLocation,
+        selectedEndLocation: selectedEndLocation,
       },
     });
 
@@ -42,6 +49,10 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
       <TotalBlock
         selectedVehicleType={selectedVehicleType}
         setSelectedVehicleType={setSelectedVehicleType}
+        selectedStartLocation={selectedStartLocation}
+        setSelectedStartLocation={setSelectedStartLocation}
+        selectedEndLocation={selectedEndLocation}
+        setSelectedEndLocation={setSelectedEndLocation}
         onSearch={handleSearch}
       />
       <HomeContent />

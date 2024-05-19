@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/HomePage/Home";
 import TravelOptionsPage from "./pages/TravelOptionsPage/TravelOptionsPage";
 import BusBookingPage from "./pages/Bus-BookingPage/BusBookingPage";
+import TrainBookingPage from "./pages/Bus-BookingPage/TrainBookingPage";
 import SelectedVehicleTypeContext from "./SelectedVehicleTypeContext";
 import { SearchResult } from "./SearchResult";
 
@@ -48,14 +49,9 @@ function App() {
             />
           }
         />
-        <Route
-          path="/bus-booking"
-          element={
-            <BusBookingPage
+        <Route path="/bus-booking" element={<BusBookingPage />} />
 
-            />
-          }
-        />
+        <Route path="/train-booking" element={<TrainBookingPage />} />
       </Routes>
     </SelectedVehicleTypeContext.Provider>
     // <TravelLable/>

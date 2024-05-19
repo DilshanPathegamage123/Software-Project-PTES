@@ -6,7 +6,7 @@ import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
 import Footer from "../../Components/Footer/Footer";
-import { BusStand, TrainStopStation, SearchResult } from "../../SearchResult";
+import { SearchResult } from "../../SearchResult";
 
 interface TravelOptionsPageProps {
   selectedVehicleType: string;
@@ -66,12 +66,17 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
     });
   };
 
+  useEffect(() => {
+    sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
+  }, [selectedVehicleType]);
+
   console.log(selectedVehicleType);
 
   console.log(selectedStartLocation);
   console.log(selectedEndLocation);
 
-  const handleBookNow = (VehicleId: number) => {
+  
+  const handleBookNow = (VehicleId: number, selectedVehicleType: string) => {
     const selectedVehicle = searchResults.find(
       (result) => result.VehicleId === VehicleId
     );
@@ -102,22 +107,25 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
             ? endStand.standArrivalTime
             : endStand.trainDepartureTime;
 
+        sessionStorage.setItem("startStandTime", startStandTime);
+        sessionStorage.setItem("endStandTime", endStandTime);
+        sessionStorage.setItem("selectedStartLocation", selectedStartLocation);
+        sessionStorage.setItem("selectedEndLocation", selectedEndLocation);
+
         console.log(selectedStartLocation);
         console.log(selectedEndLocation);
 
         console.log("Start Stand Arrival Time", startStandTime);
         console.log("End Stand Arrival Time", endStandTime);
         console.log(selectedVehicle);
-        // Pass the startStand and endStand to the booking page
+        console.log(selectedVehicleType);
+
+        // Pass the selectedVehicle, startStandTime, endStandTime, selectedStartLocation and
+        //selectedEndLocation to the booking page
+
         navigate("/bus-booking", {
           state: {
             ...selectedVehicle,
-            //startStand,
-            // endStand,
-            startStandTime,
-            endStandTime,
-            selectedStartLocation,
-            selectedEndLocation,
           },
         });
       } else {
@@ -127,6 +135,13 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
       console.error("Selected vehicle details not found.");
     }
   };
+
+  // console.log(selectedStartLocation);
+  // console.log(selectedEndLocation);
+
+  // console.log("Start Stand Arrival Time", startStandTime);
+  // console.log("End Stand Arrival Time", endStandTime);
+  // console.log(selectedVehicle);
 
   return (
     <>
@@ -146,7 +161,9 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
             searchResults.map((result: SearchResult, index: number) => (
               <DetailsCard
                 key={index}
-                onBookNow={handleBookNow}
+                onBookNow={(VehicleId) =>
+                  handleBookNow(VehicleId, selectedVehicleType)
+                }
                 VehicleId={result.VehicleId}
                 scheduleId={result.scheduleId}
                 vehicleNo={result.vehicleNo}
@@ -177,81 +194,3 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
 };
 
 export default TravelOptionsPage;
-
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import { useTravelContext } from "../../SelectedVehicleTypeContext";
-// import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-// import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
-// import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
-// import Footer from "../../Components/Footer/Footer";
-// import { SearchResult } from "../../SearchResult";
-// import "./TravelOptionsPage.css";
-
-// interface TravelOptionsPageProps {
-//   searchResults: SearchResult[];
-// }
-
-// const TravelOptionsPage: React.FC<TravelOptionsPageProps> = ({ searchResults }) => {
-//   const navigate = useNavigate();
-//   const {
-//     selectedVehicleType,
-//     setSelectedVehicleType,
-//     setStartStandTime,
-//     setEndStandTime,
-//     setSelectedStartLocation,
-//     setSelectedEndLocation,
-//   } = useTravelContext();
-
-//   const handleBookNow = (VehicleId: number) => {
-//     // Function implementation
-//   };
-
-//   const handleSearch = async (results: SearchResult[]) => {
-//     // Function implementation
-//   };
-
-//   return (
-//     <>
-//       <PrimaryNavBar />
-//       <TotalBlock2
-//         selectedVehicleType={selectedVehicleType}
-//         onSearch={handleSearch} // Add this line
-//       />
-//       <div className="Travel-Option-Page-body d-flex">
-//         <div className="details-card-container d-flex flex-wrap justify-content-center">
-//           {searchResults.length > 0 ? (
-//             searchResults.map((result, index) => (
-//               <DetailsCard
-//                 key={index}
-//                 onBookNow={handleBookNow}
-//                 VehicleId={result.VehicleId}
-//                 scheduleId={result.scheduleId}
-//                 vehicleNo={result.vehicleNo}
-//                 routNo={result.routNo}
-//                 startLocation={result.startLocation}
-//                 endLocation={result.endLocation}
-//                 departureTime={result.departureTime}
-//                 arrivalTime={result.arrivalTime}
-//                 comfortability={result.comfortability}
-//                 duration={result.duration}
-//                 ticketPrice={result.ticketPrice}
-//                 selectedStands={result.selectedStands}
-//                 scheduledDatesList={result.scheduledDatesList}
-//                 firstClassTicketPrice={result.firstClassTicketPrice}
-//                 secondClassTicketPrice={result.secondClassTicketPrice}
-//               />
-//             ))
-//           ) : (
-//             <div className="h-auto mt-5 mb-5 p-4">
-//               No matching travel options found! Search another destination...
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//       <Footer />
-//     </>
-//   );
-// };
-
-// export default TravelOptionsPage;

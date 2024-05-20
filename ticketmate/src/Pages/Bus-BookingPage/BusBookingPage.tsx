@@ -26,7 +26,7 @@ const BusBookingPage: React.FC = () => {
     []
   );
 
-  const [selectedClass, setSelectedClass] = useState<string>("1st"); //To keep tracking which class is selected in the trains
+  //const [selectedClass, setSelectedClass] = useState<string>("1st"); //To keep tracking which class is selected in the trains
 
   const [busDetails, setBusDetails] = useState<SearchResult>(
     location.state as SearchResult
@@ -48,7 +48,18 @@ const BusBookingPage: React.FC = () => {
     sessionStorage.getItem("selectedVehicleType") || ""
   );
 
+  // const [scheduleId, setScheduleId] = useState<string>(
+  //   sessionStorage.getItem("scheduleId") || ""
+  // );
+
+  // const [TicketPrice, setTicketPrice] = useState<number>(
+  //   busDetails.ticketPrice
+  // );
+  // Set ticket price is according to selected vehicle type and selected class (Only for trains)
+  //const [isAC, setIsAC] = useState<boolean>(false);
+
   console.log(busDetails.VehicleId);
+
   console.log(selectedvehicleType);
 
   useEffect(() => {
@@ -80,6 +91,32 @@ const BusBookingPage: React.FC = () => {
     fetchBusDetails();
   }, [busDetails]);
 
+  // useEffect(() => {
+  //   const fetchVehicleDetails = async () => {
+  //     if (!busDetails || (!busDetails.VehicleId && !scheduleId)) {
+  //       console.error("Vehicle details, VehicleId or scheduleId is undefined");
+  //       return;
+  //     }
+
+  //     let url = '';
+  //     if (selectedvehicleType === 'Train') {
+  //       url = `https://localhost:7048/api/GetTrainDetails/${scheduleId}`;
+  //     } else {
+  //       url = `https://localhost:7048/api/GetBusDetails/${busDetails.VehicleId}`;
+  //     }
+
+  //     try {
+  //       const response = await axios.get(url);
+  //       setBusDetailsWithSeats(response.data);
+  //       console.log(response);
+  //     } catch (error) {
+  //       console.error("Error fetching vehicle details:", error);
+  //     }
+  //   };
+
+  //   fetchVehicleDetails();
+  // }, [busDetails]);
+
   console.log(busDetailsWithSeats);
   console.log("Location State:", location.state);
 
@@ -103,6 +140,23 @@ const BusBookingPage: React.FC = () => {
   };
 
   console.log("Selected Seat Locations:", selectedSeatLocations);
+
+  // useEffect(() => {
+
+  //   if (selectedvehicleType === "Train") {
+  //     if (selectedClass === "1st") {
+  //       setTicketPrice(busDetails.firstClassTicketPrice || 0);
+  //       setIsAC(true);
+  //     } else if (selectedClass === "2nd") {
+  //       setTicketPrice(busDetails.secondClassTicketPrice || 0);
+  //       setIsAC(false);
+  //     }
+  //   } else if (selectedvehicleType === "Bus") {
+  //     setTicketPrice(busDetails.ticketPrice);
+  //     setIsAC(busDetailsWithSeats ? busDetailsWithSeats.registeredBus.aCorNONAC : false);
+
+  //   }
+  // }, [selectedClass, selectedvehicleType, busDetailsWithSeats]);
 
   return (
     <div className="BusBooking">
@@ -133,7 +187,7 @@ const BusBookingPage: React.FC = () => {
       <div className="BusBooking d-flex m-auto justify-content-center align-content-center ">
         <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-10  m-auto  ">
           {/* Render only for trains */}
-          {selectedvehicleType === "Train" && (
+          {/* {selectedvehicleType === "Train" && (
             <div className="d-flex justify-content-start align-items-center">
               <button
                 className={`classbtn btn SignUpNow btn-sm fw-semibold fs-5 m-2 ${
@@ -152,7 +206,7 @@ const BusBookingPage: React.FC = () => {
                 2nd Class
               </button>
             </div>
-          )}
+          )} */}
 
           {/* Pass the seat structure to the SeatStructure component */}
           {busDetailsWithSeats && (

@@ -263,6 +263,7 @@ const TravelOptionsPage: React.FC = () => {
   const handleSearch = async (results: SearchResult[]) => {
     await onSearch(results);
     sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
+
     navigate("/travel-options", {
       state: {
         searchResults: results,
@@ -344,6 +345,7 @@ const TravelOptionsPage: React.FC = () => {
       />
       <div className="Travel-Option-Page-body d-flex">
         <div className="details-card-container d-flex flex-wrap justify-content-center">
+
           {searchResults.length > 0 ? (
             searchResults.map((result: SearchResult, index: number) => (
               <DetailsCard
@@ -355,6 +357,7 @@ const TravelOptionsPage: React.FC = () => {
             ))
           ) : (
             <div className="h-auto mt-5 mb-5 p-4">
+
               No matching travel options found! Search another destination...
             </div>
           )}

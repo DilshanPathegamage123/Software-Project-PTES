@@ -33,6 +33,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
   
   const [selectedDate, setSelectedDate] = useState("");
 
+
   const handleSearch = async () => {
     if (
       selectedVehicleType === "" ||
@@ -112,6 +113,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
       }
     } catch (error) {
       window.confirm("Error during search! Please try again.");
+
       console.error("Error during search:", error);
     }
   };
@@ -128,12 +130,14 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <StartLocationSelector
             selectedVehicleType={selectedVehicleType}
+
             setSelectedStartLocation={setSelectedStartLocation}
           />
         </div>
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4">
           <EndLocationSelector
             selectedVehicleType={selectedVehicleType}
+
             setSelectedEndLocation={setSelectedEndLocation}
           />
         </div>

@@ -476,6 +476,8 @@ const DetailsCard: React.FC<DetailsCardProps> = ({
       </div>
     );
   }
+
+
 };
 
 export default DetailsCard;

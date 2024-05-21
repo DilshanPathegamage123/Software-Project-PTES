@@ -1,6 +1,6 @@
 import React, { useState, useContext, Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./Home.css";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import Background from "./assests/Home Background.jpg";
@@ -23,6 +23,7 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
 
+
   const navigate = useNavigate();
 
   // Function to handle search button click
@@ -34,6 +35,7 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
         selectedVehicleType: selectedVehicleType,
         selectedStartLocation: selectedStartLocation,
         selectedEndLocation: selectedEndLocation,
+
       },
     });
 
@@ -55,6 +57,7 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
         setSelectedEndLocation={setSelectedEndLocation}
         onSearch={handleSearch}
       />
+
       <HomeContent />
 
       <Footer />

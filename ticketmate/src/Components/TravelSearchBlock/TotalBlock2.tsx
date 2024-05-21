@@ -30,6 +30,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
   const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
+
   const handleSearch = async () => {
     if (
       selectedVehicleType === "" ||
@@ -116,6 +117,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
       } else {
         console.error("Search results are not in the expected format");
       }
+
     } catch (error) {
       console.error("Error during search:", error);
     }
@@ -134,12 +136,14 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
           <div className="col  pb-1  ">
             <StartLocationSelector
               selectedVehicleType={selectedVehicleType}
+
               setSelectedStartLocation={setSelectedStartLocation}
             />
           </div>
           <div className="col pb-1 ">
             <EndLocationSelector
               selectedVehicleType={selectedVehicleType}
+
               setSelectedEndLocation={setSelectedEndLocation}
             />
           </div>
@@ -152,6 +156,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
               type="button"
               className=" Modify-Button btn btn-lg text-white fs-5 fw-normal col  m-auto align-content-center justify-content-center"
               onClick={() => handleSearch()}
+
             >
               Search
             </button>

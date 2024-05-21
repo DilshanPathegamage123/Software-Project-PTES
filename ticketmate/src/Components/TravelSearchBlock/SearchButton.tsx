@@ -5,6 +5,7 @@ interface SearchButtonProps {
   onClick: () => Promise<void>;
 }
 
+
 const SearchButton: React.FC<SearchButtonProps> = ({ onClick }) => {
   return (
     <div className="search d-flex p-0">

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-
 import "./DatePicker.css";
 
 interface DatePickerProps {
@@ -14,6 +13,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
   useEffect(() => {
     setSelectedDate(date);
   }, []);
+
 
   return (
     <div className="datepicker  d-flex ">
@@ -33,6 +33,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
             setDate(e.target.value);
             setSelectedDate(e.target.value);
           }
+
         }}
       />
     </div>

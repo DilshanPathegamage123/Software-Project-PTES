@@ -4,6 +4,7 @@ import "./SeatButton.css";
 import SeatAvailable from "./SeatButtonAssests/SeatAvailable.png";
 import SeatBooked from "./SeatButtonAssests/SeatBooked.png";
 import SeatSelected from "./SeatButtonAssests/SeatSelected.png";
+
 import SeatNotAvailable from "./SeatButtonAssests/WhiteRectangle.png";
 
 interface SeatButtonProps {
@@ -25,6 +26,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({
   let SeatImg;
   let SeatId;
 
+
   switch (localStatus) {
     case "booked":
       SeatImg = SeatBooked;
@@ -32,6 +34,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({
       break;
     case "available":
       SeatImg = SeatAvailable;
+
       SeatId = "Available";
       break;
     case "selected":
@@ -42,6 +45,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({
       SeatImg = SeatNotAvailable;
       SeatId = "Not Available";
       break;
+
     default:
       SeatImg = SeatAvailable;
       SeatId = "Available";
@@ -76,6 +80,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({
           <div className="not-available-seat"></div>
         )}
         <span className="seatNo">{seatNumber}</span>
+
         {localStatus === "booked" && <div className="hoverEffect"></div>}
       </div>
     </button>

@@ -10,11 +10,12 @@ import profileIcon from "../../../src/Components/ProfileSection/assets/iconamoon
 import { BiFontColor } from "react-icons/bi";
 import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
+import ReportAnlysis from "./ReportAdmin";
 
 function AdminPage() {
   const location = useLocation();
   const username = new URLSearchParams(location.search).get("username");
- const password = new URLSearchParams(location.search).get("password");
+  const password = new URLSearchParams(location.search).get("password");
   const [selectedOption, setSelectedOption] = useState("option1");
 
   return (
@@ -48,12 +49,19 @@ function AdminPage() {
       <div className="row" style={{ marginLeft: "8%", marginRight: "8%" }}>
         <div
           className="col-xl-4 col-md-6 col-12 rounded-top-4 border border-3 border-white p-2 text-center"
-          style={{ backgroundColor: selectedOption==="option1"?"#00757C":"#D9D9D9"}}
+          style={{
+            backgroundColor:
+              selectedOption === "option1" ? "#00757C" : "#D9D9D9",
+          }}
         >
           <div>
-          
             <button
-              style={{ border: "none", background: "none" , color:selectedOption==="option1"? "#D9D9D9":"#00757C" ,fontWeight:"bold"}}
+              style={{
+                border: "none",
+                background: "none",
+                color: selectedOption === "option1" ? "#D9D9D9" : "#00757C",
+                fontWeight: "bold",
+              }}
               value="option1"
               onClick={() => setSelectedOption("option1")}
             >
@@ -63,27 +71,43 @@ function AdminPage() {
         </div>
         <div
           className="col-xl-4 col-md-6 col-12 rounded-top-4 border border-3 border-white p-2 text-center"
-          style={{ backgroundColor:selectedOption==="option2"?"#00757C":"#D9D9D9" }}
+          style={{
+            backgroundColor:
+              selectedOption === "option2" ? "#00757C" : "#D9D9D9",
+          }}
         >
           <button
-              style={{ border: "none", background: "none" , color: selectedOption==="option2"? "#D9D9D9":"#00757C",fontWeight:"bold"}}
-              value="option2"
-              onClick={() => setSelectedOption("option2")}
-            >
-              User Management
-            </button>
+            style={{
+              border: "none",
+              background: "none",
+              color: selectedOption === "option2" ? "#D9D9D9" : "#00757C",
+              fontWeight: "bold",
+            }}
+            value="option2"
+            onClick={() => setSelectedOption("option2")}
+          >
+            User Management
+          </button>
         </div>
         <div
           className=" col-xl-4 col-md-6 col-12 rounded-top-4 border border-3 border-white p-2 text-center "
-          style={{ backgroundColor:selectedOption==="option3"?"#00757C":"#D9D9D9"}}
+          style={{
+            backgroundColor:
+              selectedOption === "option3" ? "#00757C" : "#D9D9D9",
+          }}
         >
           <button
-              style={{ border: "none", background: "none", color: selectedOption==="option3"? "#D9D9D9":"#00757C",fontWeight:"bold" }}
-              value="option1"
-              onClick={() => setSelectedOption("option3")}
-            >
-              Reporting & Analysis
-            </button>
+            style={{
+              border: "none",
+              background: "none",
+              color: selectedOption === "option3" ? "#D9D9D9" : "#00757C",
+              fontWeight: "bold",
+            }}
+            value="option1"
+            onClick={() => setSelectedOption("option3")}
+          >
+            Reporting & Analysis
+          </button>
         </div>
       </div>
 
@@ -95,14 +119,11 @@ function AdminPage() {
         </div>
       </div> */}
 
-<div className="row">
+      <div className="row">
         {selectedOption === "option1" && <RegistrationRequests />}
         {selectedOption === "option2" && <UserManage />}
-        {/* {selectedOption === "option3" && < ReportAnlysis/>} */}
+        {selectedOption === "option3" && <ReportAnlysis />}
       </div>
-
-
-
 
       <Footer />
     </div>

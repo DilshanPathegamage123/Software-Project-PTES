@@ -6,6 +6,7 @@ import BusOwnerPage from './Pages/BusOwnerPage/BusOwnerPage';
 import CreateBusJourneyPage from './Pages/CreateBusJourneyPage/CreateBusJourneyPage';
 import RegisteredBusPage from './Pages/RegisteredBusPage/RegisteredBusPage';
 import ScheduledBusPage from './Pages/ScheduledBusPage/ScheduledBusPage';
+import BusSchedulePage from './Pages/BusSchedulePage/BusSchedulePage';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path='/CreateBusJourneyPage' element={<CreateBusJourneyPage/>}></Route>
         <Route path='/RegisteredBusPage' element={<RegisteredBusPage/>}></Route>
         <Route path='/ScheduledBusPage' element={<ScheduledBusPage/>}></Route>
+        <Route path='/BusSchedulePage' element={<BusSchedulePage/>}></Route>
       </Routes>
     </BrowserRouter>
     // <>

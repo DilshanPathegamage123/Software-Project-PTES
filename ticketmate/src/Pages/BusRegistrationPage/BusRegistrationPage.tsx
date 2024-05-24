@@ -20,6 +20,7 @@ interface ApiResponse {
 function BusRegistrationPage() {
   const [formData, setFormData] = useState({
     busNum: '',
+    busName: '',
     licenceNum: '',
     seatCount: '',
     selectedFile1: null,
@@ -29,6 +30,7 @@ function BusRegistrationPage() {
 
   const [errors, setErrors] = useState({
     busNum: '',
+    busName: '',
     licenceNum: '',
     seatCount: '',
     selectedFile1: '',
@@ -146,7 +148,8 @@ function BusRegistrationPage() {
           SetsCount: formData.seatCount,
           ACorNONAC: acOptionValue,
           LicenseImgURL: licenseUrl,
-          InsuranceImgURL: insuranceUrl
+          InsuranceImgURL: insuranceUrl,
+          BusName: formData.busName
         });
 
         const busId = response.data.busId;
@@ -250,6 +253,13 @@ function BusRegistrationPage() {
                   <div className="">
                     <input type="text" className="form-control" id="inputbusNum" name="busNum" placeholder="Bus Number" onChange={handleInputChange} />
                     {errors.busNum && <div className="text-danger">{errors.busNum}</div>}
+                  </div>
+                </div>
+                <div className="form-group row">
+                  <label htmlFor="inputBusName" className="col-form-label">Enter Bus Name</label>
+                  <div className="">
+                    <input type="text" className="form-control" id="inputBusName" name="busName" placeholder="Bus Name" onChange={handleInputChange} />
+                    {errors.busName && <div className="text-danger">{errors.busName}</div>}
                   </div>
                 </div>
                 <div className="form-group row">

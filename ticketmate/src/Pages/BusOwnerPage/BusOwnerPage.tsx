@@ -78,7 +78,7 @@ function BusOwnerPage() {
               <Link to='/BusRegistrationPage'><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
             </div>
             <div>
-              <Link to='BusRegistrationPage'><SquareButton text='Schedule a new travel journey'bwidth={divWidth} /></Link>
+              <Link to='/BusSchedulePage'><SquareButton text='Schedule a new travel journey'bwidth={divWidth} /></Link>
             </div>
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>

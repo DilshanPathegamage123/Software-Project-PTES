@@ -214,7 +214,7 @@ import "./TravelOptionsPage.css";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer/footer";
 import { SearchResult } from "../../SearchResult";
 
 const TravelOptionsPage: React.FC = () => {

@@ -45,13 +45,13 @@ function RegisteredBusInfoSec() {
                                     </div>
                                     <div className='col-lg-6'>
                                         
-                                        <p key={index}>
+                                        {/* <p key={index}>
                                         <b>Bus No: </b>  {item.busNo}<br />
                                         <b>Licen No: </b>  {item.licenNo}<br />
                                         <b>No of Seats: </b>  {item.setsCount}<br />
                                         <b>AC or NON A/C: </b>  {item.aCorNonAC === 1 ? "AC" : "Non AC"}
                                         </p>
-                                        
+                                         */}
                                     </div>
                                     <div className='col-lg-4'>
                                     <button type="button" className="btn btn-primary" onClick={handleModalToggle}>

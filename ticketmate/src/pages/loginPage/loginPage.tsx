@@ -75,6 +75,7 @@ const LoginPage = () => {
       }
     } catch (error) {
       alert("Invalid user name or password");
+
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }
@@ -154,6 +155,7 @@ const LoginPage = () => {
       </form>
       <Footer />
     </div>
+
   );
 };
 export default LoginPage;

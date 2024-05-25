@@ -10,7 +10,7 @@ function AppRoutes  ()  {
   return (
     <Router>
       <Routes>
-       
+
       <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<PassengerForm />} />
         <Route path="/AdminPage" element={<AdminPage/>} />

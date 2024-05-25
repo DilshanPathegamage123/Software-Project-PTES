@@ -6,15 +6,20 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
 import { Link } from "react-router-dom";
 //import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 function PrimaryNavBar() {
+  const history = useNavigate();
+
+
   return (
     <>
 
 
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
     
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           {" "}
           <img src={LOGO} alt="LOGO" width="84px" height="37px" />{" "}
           <img src={LOGO2} alt="LOGO2" width="156px" height="22px" />
@@ -55,26 +60,36 @@ function PrimaryNavBar() {
           <form className="form-inline my-2 my-md-0 ">
             <div className="pr-3">
              
-                <button
+                {/* <button
                   type="button"
                   className="btn btn-outline-primary btn-sm"
+                  onClick={() => {<Link to="/register" />}}
                  
                 >
                   SIGN UP
-                 {/* <Link to="/register">SIGN UP</Link>  */}
+                
                 </button>
-             
+              */}
+              <button
+                type="button"
+                className="btn btn-outline-primary btn-sm"
+                onClick={() => history("/register")}
+              >
+                SIGN UP
+              </button>
             </div>
 
 
-           <PrimaryButton
+           <button
               type="button"
               value="SIGN IN"
               color="third"
-              IsSmall={true}
-             // link="/login"
+              className="btn btn-outline-primary btn-sm"
+          
+            onClick={() => history("/login")}
             
-            /> 
+            > SIGN IN
+            </button>
           </form>
         </div>
 

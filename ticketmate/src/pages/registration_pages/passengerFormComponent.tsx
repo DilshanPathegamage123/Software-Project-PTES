@@ -8,6 +8,9 @@ import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
 import { passengerFormValidation } from "./passengerFormValidation";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 const initialValues = {
@@ -24,54 +27,65 @@ const initialValues = {
 };
 
 const PassengerFormComponent = () => {
-  const [formValues, setFormValues] = useState({
-    FirstName: "",
-    LastName: "",
-    NIC: "",
-    Email: "",
-    DOB: "",
-    ContactNumber: "",
-    UserName: "",
-    Password: "",
-    ConfirmPassword: "",
-  });
+  const history = useNavigate();
+  // const [values, setvalues] = useState({
+  //   FirstName: "",
+  //   LastName: "",
+  //   NIC: "",
+  //   Email: "",
+  //   DOB: "",
+  //   ContactNumber: "",
+  //   UserName: "",
+  //   Password: "",
+  //   ConfirmPassword: "",
+  // });
   const [dob, setDob] = useState<Date | null>(null);
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value, type, checked } = e.target;
+  //   setFormValues((prevState) => ({
+  //     ...prevState,
+  //     [name]: type === "checkbox" ? checked : value,
+  //   }));
+  // };
 
-  const { handleBlur, handleSubmit, errors } = useFormik({
+  const {values, handleChange,handleBlur, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: passengerFormValidation,
 
 
-    onSubmit: async (FormValues) =>{
-      console.log({
-        FirstName: formValues.FirstName,
-        LastName: formValues.LastName,
-        NIC: formValues.NIC,
-        Email: formValues.Email,
+    onSubmit: async (values) =>{
+      alert({
+        // FirstName: formValues.FirstName,
+        // LastName: formValues.LastName,
+        // NIC: formValues.NIC,
+        // Email: formValues.Email,
+        // DOB: dob,
+        // ContactNumber: formValues.ContactNumber,
+        // UserName: formValues.UserName,
+        // Password: formValues.Password,
+        // ConfirmPassword: formValues.ConfirmPassword,
+        FirstName: values.FirstName,
+        LastName: values.LastName,
+        NIC: values.NIC,
+        Email: values.Email,
         DOB: dob,
-        ContactNumber: formValues.ContactNumber,
-        UserName: formValues.UserName,
-        Password: formValues.Password,
-        ConfirmPassword: formValues.ConfirmPassword,
+        ContactNumber: values.ContactNumber,
+        UserName: values.UserName,
+        Password: values.Password,
+       
+
       
-      })
+      });
       axios
       .post(`https://localhost:7196/api/userData`, {
-        firstName: formValues.FirstName,
-            lastName: formValues.LastName,
-            email: formValues.Email,
+        firstName: values.FirstName,
+            lastName: values.LastName,
+            email: values.Email,
             dob: dob,
-            nic: formValues.NIC,
-            contactNo: formValues.ContactNumber,
-            userName: formValues.UserName,
-            password: formValues.Password,
+            nic: values.NIC,
+            contactNo: values.ContactNumber,
+            userName: values.UserName,
+            password: values.Password,
             userType: "Passenger",
             ownVehicleType: "",
             drivingLicenseNo: "",
@@ -79,14 +93,20 @@ const PassengerFormComponent = () => {
             requestStatus:true
       })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+
+        if(response.status === 200){
+          history("/login");
+          alert(response.data);
+          
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
 
 
-
+      
 
 
 
@@ -116,13 +136,15 @@ const PassengerFormComponent = () => {
       //   console.error("Error:", error);
       // }
     },
+
+
   });
 
 
   return (
     <div>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
-        <form className="container display-4" onSubmit={handleSubmit}>
+        <form className="container display-4" onSubmit={handleSubmit} method="post">
           <div className="row  mt-3">
             <div className="col-12 col-lg-6">
               <p className="fw-regular">First Name</p>
@@ -137,8 +159,8 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your first name"
                 className="col-11 p-3"
-                value={formValues.FirstName}
-                onChange={handleInputChange}
+                value={values.FirstName}
+                onChange={handleChange}
                 //onChange={e => setFirstName(e.target.value)}
 
                 onBlur={handleBlur}
@@ -164,9 +186,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your last name"
                 className="col-11 p-3"
-                value={formValues.LastName}
-                onChange={handleInputChange}
-
+                value={values.LastName}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.LastName && (
@@ -192,9 +214,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your NIC number"
                 className="col-11 p-3"
-                value={formValues.NIC}
-                onChange={handleInputChange}
-
+                value={values.NIC}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.NIC && (
@@ -244,9 +266,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your email address"
                 className="col-lg-8  p-3"
-                value={formValues.Email}
-                onChange={handleInputChange}
-
+                value={values.Email}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.Email && (
@@ -272,9 +294,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your contact number"
                 className="col-lg-8 p-3"
-                value={formValues.ContactNumber}
-                onChange={handleInputChange}
-
+                value={values.ContactNumber}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.ContactNumber && (
@@ -300,9 +322,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your user name"
                 className="col-lg-8 p-3"
-                value={formValues.UserName}
-                onChange={handleInputChange}
-
+                value={values.UserName}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.UserName && (
@@ -328,9 +350,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your password"
                 className="col-11 p-3"
-                value={formValues.Password}
-                onChange={handleInputChange}
-
+                value={values.Password}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.Password && (
@@ -354,9 +376,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Confirm your password"
                 className="col-11 p-3"
-                value={formValues.ConfirmPassword}
-                onChange={handleInputChange}
-
+                value={values.ConfirmPassword}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.ConfirmPassword && (

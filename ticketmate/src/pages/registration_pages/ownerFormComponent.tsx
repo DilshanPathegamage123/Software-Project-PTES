@@ -3,10 +3,10 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
-import {useFormik} from "formik";
-import {ownerFormValidation} from "./ownerFormValidation";
-
-
+import { useFormik } from "formik";
+import { ownerFormValidation } from "./ownerFormValidation";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const initialValues = {
   firstName: "",
@@ -21,16 +21,55 @@ const initialValues = {
 };
 
 
+
 function ownerFormComponent() {
   const [dob, setDob] = useState<Date | null>(null);
   const [vehicleType, setVehicleType] = useState("busType");
-  
+  const history = useNavigate();
+
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: ownerFormValidation,
     onSubmit: (values) => {
       console.log(values);
+//start of the api call
+axios
+.post(`https://localhost:7196/api/userData`, {
+  firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      dob: dob,
+      nic: values.nic,
+      contactNo: values.contactNumber,
+      userName: values.userName,
+      password: values.password,
+      userType: "Owner",
+      ownVehicleType: vehicleType,
+      drivingLicenseNo: "",
+      isDeleted: false,
+      requestStatus:false
+})
+.then((response) => {
+  console.log(response.data);
+
+  if(response.status === 200){
+    history("/BusOwnerPage");
+    alert(response.data);
+    
+  }
+})
+.catch((error) => {
+  console.error("Error:", error);
+});
+
+
+
+
+
+//end of the api call
+
+
     },
   });
   return (
@@ -55,7 +94,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.firstName && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.firstName}</p></small>)}
+              {errors.firstName && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.firstName}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-6">
               <p className="fw-regular">Last Name</p>
@@ -74,7 +119,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.lastName && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.lastName}</p></small>)}
+              {errors.lastName && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.lastName}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <div className="row mt-4">
@@ -95,7 +146,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.nic && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.nic}</p></small>)}
+              {errors.nic && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.nic}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-6">
               <p className="fw-regular ">Date of Birth</p>
@@ -132,7 +189,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.email && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.email}</p></small>)}
+              {errors.email && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.email}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-4">
               <p className="fw-regular">Own Vehicle Type</p>
@@ -185,7 +248,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.contactNumber && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.contactNumber}</p></small>)}
+              {errors.contactNumber && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.contactNumber}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <div className="row mt-4">
@@ -206,7 +275,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.userName && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.userName}</p></small>)}
+              {errors.userName && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.userName}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <div className="row mt-4">
@@ -227,7 +302,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.password && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.password}</p></small>)}
+              {errors.password && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.password}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-6">
               <p className="fw-regular">Confirm Password</p>
@@ -246,7 +327,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.confirmPassword && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.confirmPassword}</p></small>)}
+              {errors.confirmPassword && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.confirmPassword}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <br />

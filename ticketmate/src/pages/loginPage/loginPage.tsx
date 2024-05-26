@@ -56,6 +56,7 @@ const LoginPage = () => {
             // history("/AdminPage");
             //history(`/AdminPage?username=${username}&password=${password}`);
             history("/AdminPage", { state: { username, password } });
+
             break;
           case "Owner":
             history("/BusOwnerPage", { state: { username, password } });
@@ -86,6 +87,7 @@ const LoginPage = () => {
   return (
     <div className="loginpage-body">
       <PrimaryNavBar />
+
       <a href="#">
         <svg
           xmlns="http://www.w3.org/2000/svg"

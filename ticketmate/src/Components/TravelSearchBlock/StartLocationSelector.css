@@ -19,11 +19,10 @@ input {
 }
 
 @media (max-width: 768px) {
-  /* Adjust the max-width value based on when you want to hide the placeholder */
   .selector input::placeholder {
     display: none;
   }
   .selector input {
-    padding-left: 0; /* Remove left padding to make room for the icon */
+    padding-left: 0;
   }
 }

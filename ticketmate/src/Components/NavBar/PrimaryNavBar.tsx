@@ -67,6 +67,7 @@ function PrimaryNavBar() {
                   className="btn btn-outline-primary btn-sm"
                   onClick={() => {<Link to="/register" />}}
                  
+
                 >
                   SIGN UP
                 
@@ -92,6 +93,7 @@ function PrimaryNavBar() {
             
             > SIGN IN
             </button>
+
           </form>
         </div>
 

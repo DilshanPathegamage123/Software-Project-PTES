@@ -12,11 +12,12 @@ import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
 
 function AdminPage() {
-  let location = useLocation();
+let location = useLocation();
 let { username, password } = location.state;
 //   const location = useLocation();
 //   const username = new URLSearchParams(location.search).get("username");
 //  const password = new URLSearchParams(location.search).get("password");
+
   const [selectedOption, setSelectedOption] = useState("option1");
 
   return (

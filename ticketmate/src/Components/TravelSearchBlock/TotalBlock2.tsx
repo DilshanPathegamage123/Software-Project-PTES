@@ -8,45 +8,28 @@ import DatePicker from "./DatePicker";
 import "./TotalBlock2.css";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import VehicleType from "./VehicleType";
+import { SearchResult } from "../../SearchResult";
 
 interface TotalBlock2Props {
   selectedVehicleType: string;
-  //setSelectedVehicleType: React.Dispatch<React.SetStateAction<string>>;
+  selectedStartLocation: string;
+  setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
+  selectedEndLocation: string;
+  setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
   onSearch: (results: SearchResult[]) => Promise<void>;
-}
-
-interface SearchResult {
-  // Define the properties of a search result
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
 }
 
 const TotalBlock2: React.FC<TotalBlock2Props> = ({
   selectedVehicleType,
+  selectedStartLocation,
+  setSelectedStartLocation,
+  selectedEndLocation,
+  setSelectedEndLocation,
   onSearch,
 }) => {
-  // const [selectedVehicleType, setSelectedVehicleType] = useState("");
-  const [selectedStartLocation, setSelectedStartLocation] = useState("");
-  const [selectedEndLocation, setSelectedEndLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
-  console.log(selectedVehicleType);
-  console.log(selectedStartLocation);
-  console.log(selectedEndLocation);
-  console.log(selectedDate);
 
   const handleSearch = async () => {
     if (
@@ -74,17 +57,67 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
           TravelDate: selectedDate,
         }
       );
-      //console.log(VehicleType);
 
-      onSearch(Response.data);
-      // const searchResults = Response.data;
+      if (Array.isArray(Response.data.$values)) {
+        const unifiedSearchResults: SearchResult[] = Response.data.$values.map(
+          (result: any) => {
+            const unifiedResult: SearchResult = {
+              ...result,
+              VehicleId: result.registeredBusBusId,
+              scheduleId: result.scheduleId || result.schedulId,
+              vehicleNo: result.busNo || result.trainRoutNo,
+              routNo: result.routNo || result.trainRoutNo,
+              startLocation: result.startLocation || result.startStation,
+              endLocation: result.endLocation || result.endStation,
+              departureTime: result.departureTime || result.trainDepartureTime,
+              arrivalTime: result.arrivalTime || result.trainArrivalTime,
+              comfortability: result.comfortability || result.trainType,
+              duration: result.duration,
+              ticketPrice: result.ticketPrice,
+              selectedStands: result.selectedBusStands || result.stopStations,
+              scheduledDatesList: result.scheduledBusDatesList || [
+                result.trainDates,
+              ],
+              firstClassTicketPrice: result.firstClassTicketPrice,
+              secondClassTicketPrice: result.secondClassTicketPrice,
+            };
 
-      // navigate("/TravelOptionsPage", {
-      //   state: { searchResults: searchResults },
-      // });
-      // Redirect to the TravelOptionsPage with the search results
+            // If the vehicle type is "Train", include the two types of ticket prices
+            unifiedResult.firstClassTicketPrice =
+              selectedVehicleType === "Train"
+                ? result.firstClassTicketPrice
+                : 0;
+            unifiedResult.secondClassTicketPrice =
+              selectedVehicleType === "Train"
+                ? result.secondClassTicketPrice
+                : 0;
 
-      console.log("Search result:", Response.data);
+            return unifiedResult;
+          }
+        );
+        // Store the search results and selected vehicle type in the session storage
+        sessionStorage.setItem(
+          "searchResults",
+          JSON.stringify(unifiedSearchResults)
+        );
+        sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
+
+        onSearch(unifiedSearchResults);
+
+        console.log("Search result:", unifiedSearchResults);
+
+        await onSearch(unifiedSearchResults);
+
+        navigate("/travel-options", {
+          state: {
+            searchResults: unifiedSearchResults,
+            selectedVehicleType: selectedVehicleType,
+          },
+        });
+      } else {
+        console.error("Search results are not in the expected format");
+      }
+
     } catch (error) {
       console.error("Error during search:", error);
     }
@@ -102,11 +135,15 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
         <div className=" class col col-12  m-auto d-md-flex">
           <div className="col  pb-1  ">
             <StartLocationSelector
+              selectedVehicleType={selectedVehicleType}
+
               setSelectedStartLocation={setSelectedStartLocation}
             />
           </div>
           <div className="col pb-1 ">
             <EndLocationSelector
+              selectedVehicleType={selectedVehicleType}
+
               setSelectedEndLocation={setSelectedEndLocation}
             />
           </div>
@@ -118,7 +155,8 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
             <button
               type="button"
               className=" Modify-Button btn btn-lg text-white fs-5 fw-normal col  m-auto align-content-center justify-content-center"
-              onClick={handleSearch}
+              onClick={() => handleSearch()}
+
             >
               Search
             </button>

@@ -17,7 +17,7 @@ const UserManage = () => {
   };
   const [userData, setUserData] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-//now commented
+
   useEffect(() => {
 
     

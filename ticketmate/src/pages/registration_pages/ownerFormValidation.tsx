@@ -8,5 +8,5 @@ export const ownerFormValidation = yup.object().shape({
     contactNumber:yup.string().length(10).required('Contact number is required*'),
     userName:yup.string().min(5).required('User Name is required*'),
     password:yup.string().min(8).required('Password is required*'),
-    confirmPassword:yup.string().oneOf([yup.ref('Password')], 'Passwords must match')
+    confirmPassword:yup.string().oneOf([yup.ref('password')], 'Passwords must match')
 })

@@ -1,18 +1,18 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import React, { useState } from "react";
 import "./loginPage.css";
-// import vars from '../../vars'
+ //import vars from '../../vars.css'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";//import use navigate
 import axios from "axios";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const history = useNavigate();
+  const history = useNavigate();//************** */
 
   const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -54,11 +54,12 @@ const LoginPage = () => {
         switch (userRole) {
           case "Admin":
             // history("/AdminPage");
-            history(`/AdminPage?username=${username}&password=${password}`);
+            //history(`/AdminPage?username=${username}&password=${password}`);
+            history("/AdminPage", { state: { username, password } });
 
             break;
           case "Owner":
-            history("#");
+            history("/BusOwnerPage", { state: { username, password } });
             break;
           case "Passenger":
             history("/#");
@@ -84,8 +85,9 @@ const LoginPage = () => {
 
 
   return (
-    <div>
-      {/* <PrimaryNavBar /> */}
+    <div className="loginpage-body">
+      <PrimaryNavBar />
+
       <a href="#">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +104,7 @@ const LoginPage = () => {
         </svg>
       </a>
 
-      <form onSubmit={handlesubmit}>
+      <form onSubmit={handlesubmit} method="post">
 
         <div className=" d-flex justify-content-center ">
           <div

@@ -2,13 +2,16 @@ import React, { useState, useContext, Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./Home.css";
-//import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import "../../vars.css";
 import Background from "./assests/Home Background.jpg";
 import TotalBlock from "../../Components/TravelSearchBlock/TotalBlock";
 import HomeContent from "../../Components/HomePageContent/HomeContent";
 import Footer from "../../Components/Footer/footer";
 import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
 import { SearchResult } from "../../SearchResult";
+
+const Home = () => {
+
 interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
   setSelectedStartLocation: Dispatch<SetStateAction<string>>;
@@ -43,10 +46,10 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className=" HomeBody">
+    <div className="Homebody">
       <PrimaryNavBar />
       <div className="HomeBackground container-fluid p-0   z-0   ">
-        <img className="img" src={Background} alt="Background1" />
+        <img className="home-img" src={Background} alt="Background1" />
       </div>
       <TotalBlock
         selectedVehicleType={selectedVehicleType}

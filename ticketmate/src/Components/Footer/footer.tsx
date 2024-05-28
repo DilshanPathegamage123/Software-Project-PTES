@@ -7,7 +7,7 @@ import t_logo from '../../assets/icon3.png'
 function Footer() {
   return (
 
-      <div className='futter'>
+      <div className='futter mt-3'>
         <div className="container">
         <footer className="py-3 my-0">
             <div className='row'>

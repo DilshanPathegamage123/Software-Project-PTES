@@ -1,6 +1,16 @@
+
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useRef } from "react";
+
 import "./Reporting&Analysis.css";
+
+import { Bar, Line } from "react-chartjs-2";
+import "chart.js/auto";
+
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import html2canvas from "html2canvas";
 
 const ReportAnlysis = () => {
   type Vehicle = {
@@ -19,6 +29,10 @@ const ReportAnlysis = () => {
   const [selectedVehicleType, setSelectedVehicleType] = useState<string>("");
   const [selectedDateFilter, setSelectedDateFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const barChartRef = useRef<HTMLDivElement>(null);
+  const lineChartRef = useRef<HTMLDivElement>(null);
+
   // const [serchByRate, setSerchByRate] = useState<string>("");
 
   useEffect(() => {
@@ -125,50 +139,177 @@ const ReportAnlysis = () => {
     // setSerchByRate(event.target.value);
   }
 
-  //add a chart to the report with x axis as vehicle number and y axis as income
-  // using chart.js
+  // Prepare data for the bar chart
+  // Calculate average rate for each vehicle owner
+  const barChartData = {
+    labels: filteredData.map((vehicle) => vehicle.vehicleOwner),
+    datasets: [
+      {
+        label: "Rate",
+        data: filteredData.map((vehicle) => vehicle.rate),
+        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        borderWidth: 1,
+      },
+    ],
+  };
 
-  // function chart() {
-  //   const ctx = document.getElementById("myChart");
-  //   const myChart = new Chart(ctx, {
-  //     type: "bar",
-  //     data: {
-  //       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-  //       datasets: [
-  //         {
-  //           label: "# of Votes",
-  //           data: [12, 19, 3, 5, 2, 3],
-  //           backgroundColor: [
-  //   "rgba(255, 99, 132, 0.2)",
-  //   "rgba(54, 162, 235, 0.2)",
-  //   "rgba(255, 206, 86, 0.2)",
-  //   "rgba(75, 192, 192, 0.2)",
-  //   "rgba(153, 102, 255, 0.2)",
-  //   "rgba(255, 159, 64, 0.2)",
-  // ],
-  // borderColor: [
-  //   "rgba(255, 99, 132, 1)",
-  //   "rgba(54, 162, 235, 1)",
-  //   "rgba(255, 206, 86, 1)",
-  //   "rgba(75, 192, 192, 1)",
-  //   "rgba(153, 102, 255, 1)",
-  //   "rgba(255, 159, 64, 1)",
-  // ],
+  // Prepare data for the line chart
+  const lineChartData = {
+    labels: filteredData.map((vehicle) => vehicle.vehicleOwner),
+    datasets: [
+      {
+        label: "Income",
+        data: filteredData.map((vehicle) => vehicle.income),
+        borderColor: "rgba(75, 192, 192, 0.6)", // Aqua color
+        borderWidth: 1,
+        fill: false,
+      },
+      {
+        label: "Predicted Income",
+        data: filteredData.map((vehicle) => vehicle.predictedIncome),
+        borderColor: "rgba(255, 99, 132, 0.6)", // Red color
+        borderWidth: 1,
+        fill: false,
+      },
+    ],
+  };
 
-  //           borderWidth: 1,
-  //         },
-  //       ],
-  //     },
-  //     options: {
-  //       scales: {
-  //         y: {
-  //           beginAtZero: true,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-  // chart();
+  //the pdf download function
+  async function downloadPDF() {
+    const doc = new jsPDF();
+
+    // Capture bar chart as image
+    const barChartElement = barChartRef.current;
+    const barChartCanvas = barChartElement?.querySelector("canvas");
+    let barChartImage = "";
+
+    if (barChartCanvas instanceof HTMLCanvasElement) {
+      barChartImage = await html2canvas(barChartCanvas).then((canvas) =>
+        canvas.toDataURL("image/png")
+      );
+    }
+
+    // Capture line chart as image
+    const lineChartElement = lineChartRef.current;
+    const lineChartCanvas = lineChartElement?.querySelector("canvas");
+    let lineChartImage = "";
+
+    if (lineChartCanvas instanceof HTMLCanvasElement) {
+      lineChartImage = await html2canvas(lineChartCanvas).then((canvas) =>
+        canvas.toDataURL("image/png")
+      );
+    }
+
+    // Add the table to the PDF first
+    doc.autoTable({
+      head: [
+        [
+          "Vehicle Owner",
+          "Vehicle No",
+          "Income",
+          "No of Passengers",
+          "Predicted Income",
+          "Rate",
+        ],
+      ],
+      body: filteredData.map((vehicle) => [
+        vehicle.vehicleOwner,
+        vehicle.vehicleNo,
+        vehicle.income,
+        vehicle.totalPassengers,
+        vehicle.predictedIncome,
+        vehicle.rate,
+      ]),
+      startY: 10, // Start from a bit below the top
+    });
+
+    // Get the current height of the document
+    const tableHeight = doc.autoTable.previous.finalY;
+
+    // Determine if there's enough space for both charts on the same page
+    const chartHeight = 80; // Height of each chart
+    const remainingSpace = doc.internal.pageSize.getHeight() - tableHeight;
+
+    // Add the charts to the PDF
+    if (barChartImage && lineChartImage) {
+      if (remainingSpace >= 2 * chartHeight) {
+        // Enough space for both charts on the same page
+        doc.addImage(
+          barChartImage,
+          "PNG",
+          10,
+          tableHeight + 10,
+          190,
+          chartHeight
+        );
+        doc.addImage(
+          lineChartImage,
+          "PNG",
+          10,
+          tableHeight + chartHeight + 20,
+          190,
+          chartHeight
+        );
+      } else if (remainingSpace >= chartHeight) {
+        // Enough space for one chart on the current page
+        doc.addImage(
+          barChartImage,
+          "PNG",
+          10,
+          tableHeight + 10,
+          190,
+          chartHeight
+        );
+        doc.addPage();
+        doc.addImage(lineChartImage, "PNG", 10, 10, 190, chartHeight);
+      } else {
+        // Not enough space for any chart on the current page
+        doc.addPage();
+        doc.addImage(barChartImage, "PNG", 10, 10, 190, chartHeight);
+        doc.addImage(
+          lineChartImage,
+          "PNG",
+          10,
+          20 + chartHeight,
+          190,
+          chartHeight
+        );
+      }
+    } else if (barChartImage) {
+      // Only the bar chart is available
+      if (remainingSpace >= chartHeight) {
+        doc.addImage(
+          barChartImage,
+          "PNG",
+          10,
+          tableHeight + 10,
+          190,
+          chartHeight
+        );
+      } else {
+        doc.addPage();
+        doc.addImage(barChartImage, "PNG", 10, 10, 190, chartHeight);
+      }
+    } else if (lineChartImage) {
+      // Only the line chart is available
+      if (remainingSpace >= chartHeight) {
+        doc.addImage(
+          lineChartImage,
+          "PNG",
+          10,
+          tableHeight + 10,
+          190,
+          chartHeight
+        );
+      } else {
+        doc.addPage();
+        doc.addImage(lineChartImage, "PNG", 10, 10, 190, chartHeight);
+      }
+    }
+
+    // Save the PDF
+    doc.save("report.pdf");
+  }
 
   return (
     <>
@@ -275,9 +416,75 @@ const ReportAnlysis = () => {
             </tbody>
           </table>
         </div>
-        {/* <div className="row mt-3">
-          <canvas id="myChart" width="400" height="400"></canvas>
-        </div>  */}
+      </div>
+
+      {/* bar chart & line charts*/}
+      <div
+        className="container shadow col-10 justify-center p-3 mb-5 rounded "
+        style={{ backgroundColor: "#FFFFFF" }}
+        ref={barChartRef}
+      >
+        <div className="container-fluid">
+          <Bar
+            data={barChartData}
+            options={{
+              responsive: true,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Vehicle Owner",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Rate",
+                  },
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+
+      <div
+        className="container shadow col-10 justify-center p-3 mb-5 rounded "
+        style={{ backgroundColor: "#FFFFFF" }}
+        ref={lineChartRef}
+      >
+        <div className="container-fluid">
+          <Line
+            data={lineChartData}
+            options={{
+              responsive: true,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Vehicle Owner",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Income",
+                  },
+                  min: 0,
+                },
+              },
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="row mt-3 p-5 d-flex justify-content-center align-items-center">
+        <button
+          onClick={downloadPDF}
+          className="btn btn-primary px-3 custom-button"
+        >
+          Download as PDF
+        </button>
       </div>
     </>
   );

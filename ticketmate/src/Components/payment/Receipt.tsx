@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Rec3 from "./asset/rec3.png";
 import Rec4 from "./asset/rec4.png";
 import StartEndLocation from "./StartEnd";
+import { useLocation } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
 function Receipt() {
+  
+ const pdfRef= useRef();
+
+  let location = useLocation();
+  //let { userId, tripId } = location.state;//pass userId and tripId
   const buttonStyle1 = {
     backgroundColor: "rgba(0, 117, 124,1)",
     color: "white", // Optionally change text color to ensure readability

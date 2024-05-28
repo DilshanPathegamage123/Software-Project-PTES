@@ -1,7 +1,7 @@
 import React from 'react';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import TravelDetails from '../../Components/payment/TravelDetail';
-import Footer from '../../Components/Footer/footer';
+
 import Selection from '../../Components/payment/Selection';
 import Back from '../../Components/payment/Backbutton';
 import Paassenger from '../../Components/payment/Passenger';

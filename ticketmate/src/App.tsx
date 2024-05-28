@@ -16,12 +16,24 @@ import Paymentvisa from "./Components/payment/Paymentvisa";
 import Paassenger from "./Components/payment/Passenger";
 import Passenger1 from "./Passenger/passenger1";
 import TravelHistory from "./Passenger/TravelHistory";
-import Passenger2 from "./Passenger/Passenger2";
-import Passenger3 from "./Passenger/Passenger3";
+import Driver2 from "./Driver/Driver2";
+import Driver1 from "./Driver/Driver1";
+import PayNowbtn from "./Components/payment/PayNowbtn";
+import MyBookings from "./Passenger/MyBookings";
+import Routers from "./Routes/Routes";
+
 function App() {
   return (
     <>
-    <Passenger3/>
+    {/* <Payment1/> */}
+    {/* <Paymentmain/> */}
+    {/* <Payment3/> */}
+    {/* <Payment4/> */}
+     {/* <Passenger1/>  */}
+    {/* <Driver1/> */}
+    {/* <Paymentvisa/> */}
+   <Routers/>
+
     </>
   );
 }

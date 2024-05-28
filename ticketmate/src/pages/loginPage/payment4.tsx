@@ -1,19 +1,19 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-import Footer from "../../Components/Footer/footer";
+import Footer from "../../Components/Footer/Footer1";
 import "./payment4.css";
 import Receipt from "../../Components/payment/Receipt";
 
-function Payment4(){
-    return(
-        <>
-          <div className="d-flex flex-column min-vh-100">
-            <PrimaryNavBar />
-            <Receipt/>
-            <div className="mt-auto">
-                <Footer />
-            </div>
+function Payment4() {
+  return (
+    <>
+      <div className="d-flex flex-column min-vh-100" id="payment4_body">
+        <PrimaryNavBar />
+        <Receipt />
+        <div className="mt-auto">
+          <Footer />
         </div>
-        </>
-    )
+      </div>
+    </>
+  );
 }
 export default Payment4;

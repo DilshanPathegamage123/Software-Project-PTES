@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import './Paymentvisa.css'
 import SelectMonth from './SelectMonth';
 import SelectYear from './SelectYear';
 import Passenger from './Passenger';
 import PayNowbtn from './PayNowbtn';
+
 function Paymentvisa() {
     const [cardNumber, setCardNumber] = useState('');
     const [cvv, setCVV] = useState('');
     const [isCardNumberValid, setIsCardNumberValid] = useState(true);
     const [isCVVValid, setIsCVVValid] = useState(true);
 
+
+  
 
     const handleCardNumberChange = (event: { target: { value: any; }; }) => {
         const { value } = event.target;
@@ -100,9 +104,9 @@ function Paymentvisa() {
         </div>
         
         <div className="col-6 mt-5">
-          <Passenger/>
-          <PayNowbtn/>
-          </div>
+            <Passenger/>
+            <PayNowbtn /> 
+            </div>
           
     </div>
 </div>

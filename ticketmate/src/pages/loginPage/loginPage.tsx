@@ -4,7 +4,7 @@ import "./loginPage.css";
 // import vars from '../../vars'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
-import Footer from "../../Components/Footer/footer";
+import Footer from "../../Components/Footer/Footer";
 
 function LoginPage() {
   return (

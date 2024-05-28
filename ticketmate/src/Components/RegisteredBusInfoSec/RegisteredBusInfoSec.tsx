@@ -5,6 +5,7 @@ import BusIcon from '../../assets/BusIcon.png';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 
+
 function RegisteredBusInfoSec() {
 
     const [data, setData] = useState([]);
@@ -67,18 +68,21 @@ function RegisteredBusInfoSec() {
                                             <img src={BusIcon} alt="BusIcon" />
                                     </div>
                                     <div className='col-lg-6'>
-                                        
+                                       
                                         <p key={index}>
+
                                         <b>Bus No: </b>  {item.busNo}<br />
                                         <b>Licen No: </b>  {item.licenNo}<br />
                                         <b>No of Seats: </b>  {item.setsCount}<br />
                                         <b>AC or NON A/C: </b>  {item.aCorNonAC === 1 ? "AC" : "Non AC"}
                                         </p>
-                                        
+
+            
                                     </div>
                                     <div className='col-lg-4'>
                                     <Link to={`/RegisteredBusPage?busId=${item.busId}`}><button type="button" className="btn primary mx-1 "> See More </button></Link>
                                             <button className='btn primary mx-1 ' onClick={()=>handleDelete(item.busId)}>Delete</button>
+
                                     </div>
                             </div>
                         </div>
@@ -87,6 +91,7 @@ function RegisteredBusInfoSec() {
                 :
                 'Loading...'     
             }
+
         </>
     )
 }

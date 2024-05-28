@@ -1,20 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import ProfileSection from '../../Components/ProfileSection/ProfileSection';
-import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
-import './BusOwnerPage.css';
-import Footer from '../../Components/Footer/Footer';
-import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
-import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import ProfileSection from "../../Components/ProfileSection/ProfileSection";
+import SquareButton from "../../Components/Buttons/SquareButton/SquareButton";
+import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+import "./BusOwnerPage.css";
+import Footer from "../../Components/Footer/footer";
+import { useEffect, useState } from "react";
+import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo";
+import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import axios from "axios";
+
+interface OwnerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 
 function BusOwnerPage() {
-  const location = useLocation();
-  const { username } = location.state || { username: 'Guest' }; // Default to 'Guest' if no username is passed
-
-  const [divWidth, setDivWidth] = useState(0); // State to store div width
-  const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
+  const [divWidth, setDivWidth] = useState<number>(0);
+  let location = useLocation();
+  let { username, password } = location.state;
+  const [ownerdata, setOwnerdata] = useState<OwnerData[]>([]);
   const [buttonStates, setButtonStates] = useState({ // State to track button states
     ScheduledBuses: true,
     RegisteredBuses: false,
@@ -22,25 +40,50 @@ function BusOwnerPage() {
   });
 
   useEffect(() => {
-    console.log(`Logged in as: ${username}`);
-  }, [username]);
-
-  useEffect(() => {
-    // Function to handle window resize
     function handleResize() {
-      const width = document.getElementById('getWidth')?.offsetWidth;
+      const width = document.getElementById("getWidth")?.offsetWidth;
+
       setDivWidth(width || 0);
     }
 
     handleResize(); // Get initial width
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  // Function to handle button click
+  useEffect(() => {
+    axios
+      .get(`https://localhost:7196/api/userData/${username}/${password}`)
+      .then((response) => {
+        console.log(response.data);
+        setOwnerdata(response.data);
+        setOwnerdata(
+          response.data.map((owner: any) => ({
+            Id: owner.id,
+            firstName: owner.firstName,
+            lastName: owner.lastName,
+            email: owner.email,
+            dob: owner.dob,
+            nic: owner.nic,
+            contactNo: owner.contactNo,
+            userName: owner.userName,
+            password: owner.password,
+            userType: owner.userType,
+            ownVehicleType: owner.ownVehicleType,
+            drivingLicenseNo: owner.drivingLicenseNo,
+            isDeleted: owner.isDeleted,
+            requestStatus: owner.requestStatus,
+          }))
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+      
+       // Function to handle button click
   const handleButtonClick = (componentName: string) => {
     setSelectedComponent(componentName);
     // Update button states
@@ -73,14 +116,39 @@ function BusOwnerPage() {
     }
   };
 
+
   return (
     <>
       <PrimaryNavBar />
-      <div className='container pt-3'>
+
+      <div className="container-fluid pt-3">
         <div>
-          <ProfileSection />
+          {/* <ProfileSection /> */}
+          {/* here added the profile section manually insted of importing the component */}
+          <div className="container-fluid rounded-4 proSec">
+            <div className="row align-items-center">
+              <div className="col-lg-3 col-sm-6 col-12 text-center">
+                <h5 className="text-white pt-4">Bus Owner</h5>
+                <img src={profileIcon} alt="profileIcon" className="pb-3" />
+              </div>
+
+              <div className="col-lg-4 col-sm-6 p-4">
+                <div className="">
+                  <p className="text-white">
+                  {ownerdata[0] ? ownerdata[0].firstName : 'Loading...'}&nbsp;{ownerdata[0] ? ownerdata[0].lastName : 'Loading...'}
+                    <br />
+                    Owner Id : {ownerdata[0]?ownerdata[0].Id:'Loading...'} <br />
+                  {ownerdata[0] ? ownerdata[0].email : 'Loading...'}
+                    <br />
+                  </p>
+                </div>
+                <PrimaryButton type="button" value="Update" color="third" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className='row'>
+        
+       <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>
               <Link to='/BusRegistrationPage'><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
@@ -103,6 +171,7 @@ function BusOwnerPage() {
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}
+
             </div>
           </div>
         </div>

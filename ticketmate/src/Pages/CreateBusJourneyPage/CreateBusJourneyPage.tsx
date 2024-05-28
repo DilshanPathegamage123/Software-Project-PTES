@@ -1,6 +1,6 @@
 import React from 'react'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import Footer from '../../Components/Footer/Footer'
+import Footer from '../../Components/Footer/footer'
 import './CreateBusJourneyPage.css'
 import PrimaryButton from '../../Components/Buttons/PrimaryButton'
 

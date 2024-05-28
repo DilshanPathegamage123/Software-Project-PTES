@@ -4,6 +4,7 @@ import './ProfileSection.css'
 import PrimaryButton from '../Buttons/PrimaryButton'
 
 function ProfileSection() {
+    
   return (
     <>
     <div className='container rounded-4 proSec'>
@@ -15,7 +16,7 @@ function ProfileSection() {
 
             <div className='col-lg-4 col-sm-6 p-4'>
                 <div className=''>
-                    <p className='text-white'>S.M.L.K. Jayasooriya <br />
+                    <p className='text-white'>username <br />
                     32-14253.09 <br />
                     jayasooriyasmlk@971 <br />
                     </p>

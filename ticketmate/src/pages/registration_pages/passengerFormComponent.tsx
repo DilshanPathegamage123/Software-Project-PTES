@@ -1,38 +1,151 @@
 import "./passengerFormComponent.css";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 
 import { useFormik } from "formik";
 import { passengerFormValidation } from "./passengerFormValidation";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const initialValues = {
   FirstName: "",
   LastName: "",
   NIC: "",
   Email: "",
+  DOB: "",
+
   ContactNumber: "",
   UserName: "",
   Password: "",
   ConfirmPassword: "",
 };
 
-function PassengerFormComponent() {
+const PassengerFormComponent = () => {
+  const history = useNavigate();
+  // const [values, setvalues] = useState({
+  //   FirstName: "",
+  //   LastName: "",
+  //   NIC: "",
+  //   Email: "",
+  //   DOB: "",
+  //   ContactNumber: "",
+  //   UserName: "",
+  //   Password: "",
+  //   ConfirmPassword: "",
+  // });
   const [dob, setDob] = useState<Date | null>(null);
+  // const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value, type, checked } = e.target;
+  //   setFormValues((prevState) => ({
+  //     ...prevState,
+  //     [name]: type === "checkbox" ? checked : value,
+  //   }));
+  // };
 
-  const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
+  const {values, handleChange,handleBlur, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: passengerFormValidation,
-    onSubmit: (values) => {
-      console.log(values);
+
+
+    onSubmit: async (values) =>{
+      alert({
+        // FirstName: formValues.FirstName,
+        // LastName: formValues.LastName,
+        // NIC: formValues.NIC,
+        // Email: formValues.Email,
+        // DOB: dob,
+        // ContactNumber: formValues.ContactNumber,
+        // UserName: formValues.UserName,
+        // Password: formValues.Password,
+        // ConfirmPassword: formValues.ConfirmPassword,
+        FirstName: values.FirstName,
+        LastName: values.LastName,
+        NIC: values.NIC,
+        Email: values.Email,
+        DOB: dob,
+        ContactNumber: values.ContactNumber,
+        UserName: values.UserName,
+        Password: values.Password,
+       
+
+      
+      });
+      axios
+      .post(`https://localhost:7196/api/userData`, {
+        firstName: values.FirstName,
+            lastName: values.LastName,
+            email: values.Email,
+            dob: dob,
+            nic: values.NIC,
+            contactNo: values.ContactNumber,
+            userName: values.UserName,
+            password: values.Password,
+            userType: "Passenger",
+            ownVehicleType: "",
+            drivingLicenseNo: "",
+            isDeleted: false,
+            requestStatus:true
+      })
+      .then((response) => {
+
+        console.log(response.data);
+
+        if(response.status === 200){
+          history("/login");
+          alert(response.data);
+          
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+
+      
+
+
+
+      // try {
+      //   // Make POST request using Axios
+      //   const response = await axios.post(
+      //     "https://localhost:7196/api/userData",
+      //     {
+      //       firstName: formValues.FirstName,
+      //       lastName: formValues.LastName,
+      //       email: formValues.Email,
+      //       dob: dob,
+      //       nic: formValues.NIC,
+      //       contactNo: formValues.ContactNumber,
+      //       userName: formValues.UserName,
+      //       password: formValues.Password,
+      //       userType: "Passenger",
+      //       ownVehicleType: "",
+      //       drivingLicenseNo: "",
+      //     }
+      //   );
+
+      //   // Handle response if needed
+      //   console.log(response.data);
+      // } catch (error) {
+      //   // Handle error if request fails
+      //   console.error("Error:", error);
+      // }
     },
+
+
   });
-  // console.log('Form values', values);
+
+
   return (
     <div>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
-        <form className="container display-4" onSubmit={handleSubmit}>
+        <form className="container display-4" onSubmit={handleSubmit} method="post">
           <div className="row  mt-3">
             <div className="col-12 col-lg-6">
               <p className="fw-regular">First Name</p>
@@ -49,6 +162,8 @@ function PassengerFormComponent() {
                 className="col-11 p-3"
                 value={values.FirstName}
                 onChange={handleChange}
+                //onChange={e => setFirstName(e.target.value)}
+
                 onBlur={handleBlur}
               />
               {errors.FirstName && (
@@ -73,6 +188,7 @@ function PassengerFormComponent() {
                 placeholder="Enter your last name"
                 className="col-11 p-3"
                 value={values.LastName}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -100,6 +216,7 @@ function PassengerFormComponent() {
                 placeholder="Enter your NIC number"
                 className="col-11 p-3"
                 value={values.NIC}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -124,6 +241,11 @@ function PassengerFormComponent() {
                   scrollableMonthYearDropdown
                   placeholderText="DD/MM/YYYY "
                   className="col-12  p-3"
+                  //value={values.DOB}
+
+                  //onChange={handleChange}
+                  onBlur={handleBlur}
+
                   // value={formik.values.DOB}
                   // // onChange={formik.handleChange}
                   // onBlur={formik.handleBlur}
@@ -146,6 +268,7 @@ function PassengerFormComponent() {
                 placeholder="Enter your email address"
                 className="col-lg-8  p-3"
                 value={values.Email}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -173,6 +296,7 @@ function PassengerFormComponent() {
                 placeholder="Enter your contact number"
                 className="col-lg-8 p-3"
                 value={values.ContactNumber}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -200,6 +324,7 @@ function PassengerFormComponent() {
                 placeholder="Enter your user name"
                 className="col-lg-8 p-3"
                 value={values.UserName}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -227,6 +352,7 @@ function PassengerFormComponent() {
                 placeholder="Enter your password"
                 className="col-11 p-3"
                 value={values.Password}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -252,6 +378,7 @@ function PassengerFormComponent() {
                 placeholder="Confirm your password"
                 className="col-11 p-3"
                 value={values.ConfirmPassword}
+                //onChange={handleInputChange}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
@@ -279,6 +406,8 @@ function PassengerFormComponent() {
       </div>
     </div>
   );
-}
+};
+
+// value={formValues.FirstName}
 
 export default PassengerFormComponent;

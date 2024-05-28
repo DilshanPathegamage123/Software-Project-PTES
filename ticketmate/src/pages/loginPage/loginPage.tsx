@@ -1,30 +1,96 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-import Footer from "../../Components/Footer/Footer";
-import loginimage from "../../assets/Ellipse 628.svg";
+import React, { useState } from "react";
 import "./loginPage.css";
-import "../../vars.css";
-import { Link } from "react-router-dom";
+ //import vars from '../../vars.css'
+import loginimage from "../../assets/Ellipse 628.svg";
+import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+import Footer from "../../Components/Footer/footer";
+import { useNavigate } from "react-router-dom";//import use navigate
+import axios from "axios";
 
-function LoginPage() {
+const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
 
-  const handleLogin = (e: any) => {
+  const history = useNavigate();//************** */
+
+  const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (username && password) {
-      // Redirect to BusOwnerPage with username
-      navigate("/", { state: { username } });
-    } else {
-      alert("Please enter both username and password.");
+
+    try {
+      // console.log("username: " + username + " password: " + password);
+      const response = await axios.post(
+        "https://localhost:7196/api/Auth/login",
+        {
+          username,
+          password,
+        }
+      );
+
+      // if (!response.data.token) {
+      //   console.error("Token not found in response:", response.data);
+      //   alert("Token not found in response. Please check your credentials.");
+      //   return;
+      // }
+
+      const token = response.data.jwtToken;
+      //Fconsole.log("token", token);
+
+      if (token) {
+        localStorage.setItem("token", token);
+
+        //decode the token
+        const tokenParts = token.split(".");
+        const encodedPayload = tokenParts[1];
+        // console.log("encodedPayload", encodedPayload); // Log the encoded payload
+
+        const decodedPayload = JSON.parse(atob(encodedPayload));
+        const userRole =
+          decodedPayload[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ];
+        //console.log("userRole" , userRole);
+
+        switch (userRole) {
+          case "Admin":
+            // history("/AdminPage");
+            //history(`/AdminPage?username=${username}&password=${password}`);
+            history("/AdminPage", { state: { username, password } });
+
+            break;
+          case "Owner":
+            history("/BusOwnerPage", { state: { username, password } });
+            break;
+          case "Passenger":
+            history("/#");
+            break;
+          case "Driver":
+            history("/#");
+            break;
+          default:
+            //alert("Invalid user name or password");
+            break;
+        }
+      } else {
+        alert("Invalid user name or password");
+      }
+    } catch (error) {
+      alert("Invalid user name or password");
+
+      console.error("There was an error!", error);
+      // Handle error (e.g., show error message to user)
     }
+
   };
 
+
   return (
-    <>
+    <div className="loginpage-body">
+
       <PrimaryNavBar />
+
       <a href="#">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,8 +106,9 @@ function LoginPage() {
           />
         </svg>
       </a>
-      <form onSubmit={handleLogin}>
-        <div className="d-flex justify-content-center">
+
+      <form onSubmit={handlesubmit} method="post">
+        <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center"
             id="login-form"
@@ -54,14 +121,18 @@ function LoginPage() {
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
               placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="username"
               required
-              style={{ paddingLeft: "30px" }} // Add padding for the icon
-            />
+              onChange={(e) => setUsername(e.target.value)}
+              style={{ paddingLeft: "30px" }}
+              // Add padding for the icon
+            >
+
 
             <input
               type="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="password"
               value={password}
@@ -77,8 +148,8 @@ function LoginPage() {
         </div>
       </form>
       <Footer />
-    </>
+    </div>
   );
-}
+};
 
 export default LoginPage;

@@ -95,6 +95,7 @@ function EditRegisteredBusInfo() {
 
                       <div className="col p-4">
                         <div className="row justify-content-center">
+
                           <ToggleButton />
                           <ToggleButton />
                           <ToggleButton />
@@ -181,6 +182,7 @@ function EditRegisteredBusInfo() {
                         <ToggleButton />
                         <ToggleButton />
                         <ToggleButton />
+
                       </div>
 
                       </div>

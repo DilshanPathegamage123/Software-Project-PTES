@@ -14,3 +14,4 @@ if (rootElement) {
     rootElement
   );
 }
+

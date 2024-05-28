@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import React, { useState } from "react";
 import "./loginPage.css";
@@ -86,6 +88,7 @@ const LoginPage = () => {
 
   return (
     <div className="loginpage-body">
+
       <PrimaryNavBar />
 
       <a href="#">
@@ -105,23 +108,15 @@ const LoginPage = () => {
       </a>
 
       <form onSubmit={handlesubmit} method="post">
-
         <div className=" d-flex justify-content-center ">
           <div
-            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
+            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center"
             id="login-form"
-
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" />
             </div>
 
-            {/* <input
-              className="form-control col-8 mx-auto m-4 custom-bg-color"
-              type="text"
-              placeholder=" <><BsFillPersonFill />    username"
-              required
-            ></input> */}
             <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -131,33 +126,30 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
               // Add padding for the icon
+            >
 
-            ></input>
 
             <input
               type="password"
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="      password"
-
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
-            ></input>
-            <div className="d-flex justify-content-center ">
-              {/* <PrimaryButton
-                type="submit"
-                value="LOG IN"
-                color="primary"
-                IsSmall={false}
-              /> */}
-              <input type="submit" value="LOG IN" className="btn btn-primary" />
+            />
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn primary">
+                LOG IN
+              </button>
             </div>
           </div>
         </div>
       </form>
       <Footer />
     </div>
-
   );
 };
+
 export default LoginPage;

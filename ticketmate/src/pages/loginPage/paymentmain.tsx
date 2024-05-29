@@ -23,11 +23,10 @@ function Payment(){
             <div className="row">
               <Selection/>
             </div>
-
             {/* <div className="row">
               <Payment1/>
             </div> */}
-
+          
            
    
    

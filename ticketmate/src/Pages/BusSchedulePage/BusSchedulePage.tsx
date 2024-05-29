@@ -33,7 +33,7 @@ function BusSchedulePage() {
     <>
       <PrimaryNavBar />
       <div className='container py-4'>
-        <div className='rounded-4 formSec2'>
+        <div className='rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to Schedule a bus</h3>
           </div>

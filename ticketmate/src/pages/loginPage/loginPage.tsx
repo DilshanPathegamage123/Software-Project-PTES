@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-import Footer from "../../Components/Footer/footer";
+import Footer from "../../Components/Footer/Footer";
 import loginimage from "../../assets/Ellipse 628.svg";
 import "./loginPage.css";
 import "../../vars.css";
@@ -12,11 +12,11 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e:any) => {
+  const handleLogin = (e: any) => {
     e.preventDefault();
     if (username && password) {
-      // Redirect to BusOwnerPage with username and password
-      navigate("/BusOwnerPage", { state: { username, password } });
+      // Redirect to BusOwnerPage with username
+      navigate("/", { state: { username } });
     } else {
       alert("Please enter both username and password.");
     }

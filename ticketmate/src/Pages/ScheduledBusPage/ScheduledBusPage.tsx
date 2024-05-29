@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ScheduledBusPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import Footer from '../../Components/Footer/footer';
+import Footer from '../../Components/Footer/Footer';
 import MainImg from '../../assets/ScheduledBusPageimg.png';
 import SchePageIcon from '../../assets/SchePageIcon.png';
 import axios from 'axios';

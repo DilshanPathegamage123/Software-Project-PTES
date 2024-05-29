@@ -1,45 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import './ScheduledBusInfo.css';
-import BusIcon from '../../assets/fa6-solid_bus.png';
-import BusIcon2 from '../../assets/Group 391.png';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import './ScheduledBusInfo.css'
+import BusIcon from '../../assets/fa6-solid_bus.png'
+import BusIcon2 from '../../assets/Group 391.png'
+import axios from 'axios'
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-interface BusInfo {
-    startLocation: string;
-    departureTime: string;
-    endLocation: string;
-    arrivalTime: string;
-    scheduleId: string;
-    deleteState: boolean;
-}
+function ScheduledBusInfo() {
 
-function ScheduledBusInfo({ id }: { id: string }) {
-    const [data, setData] = useState<BusInfo[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        if (id) {
-            getData();
-        }
-    }, [id]);
+        getData();
+    }, []);
 
     const getData = () => {
-        setLoading(true);
-        axios.get(`https://localhost:7001/api/ScheduledBus/user/${id}`)
-            .then((result) => {
-                const filteredData = result.data.filter((busInfo: BusInfo) => busInfo.deleteState === true);
-                setData(filteredData);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error);
-                setLoading(false);
-            });
+        axios.get('https://localhost:7001/api/ScheduledBus')
+        .then((result) => {
+            setData(result.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
-    const handleDelete = (scheduleId: string) => {
+    const handleDelete = () => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -48,31 +33,15 @@ function ScheduledBusInfo({ id }: { id: string }) {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#00757C",
             confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
+          }).then((result) => {
             if (result.isConfirmed) {
-                // Fetch the current bus info
-                const busInfo = data.find(bus => bus.scheduleId === scheduleId);
-                if (busInfo) {
-                    const updatedBusInfo = { ...busInfo, deleteState: false };
-                    axios.put(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, updatedBusInfo)
-                        .then(() => {
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                icon: "success"
-                            });
-                            setData(prevData => prevData.filter(bus => bus.scheduleId !== scheduleId));
-                        })
-                        .catch(error => {
-                            console.error("There was an error updating the delete state!", error);
-                        });
-                }
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
             }
-        });
-    }
-
-    if (loading) {
-        return <div>Loading...</div>;
+          });
     }
 
     return (
@@ -95,12 +64,12 @@ function ScheduledBusInfo({ id }: { id: string }) {
                     </div>
                     <div className='col-lg-4'>
                         <Link to={`/ScheduledBusPage?scheduleId=${busInfo.scheduleId}`}><button className='btn primary mx-1'>See More</button></Link>
-                        <button className='btn primary mx-1' onClick={() => handleDelete(busInfo.scheduleId)}>Delete</button>
+                        <button className='btn primary mx-1'onClick={()=>handleDelete()}>Delete</button>
                     </div>
                 </div>
             ))}
         </>
-    );
+    )
 }
 
-export default ScheduledBusInfo;
+export default ScheduledBusInfo

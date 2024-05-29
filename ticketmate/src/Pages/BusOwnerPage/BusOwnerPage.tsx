@@ -4,14 +4,14 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
 import './BusOwnerPage.css';
-import Footer from '../../Components/Footer/footer';
+import Footer from '../../Components/Footer/Footer';
 import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
 import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
 import { Link } from 'react-router-dom';
 
 function BusOwnerPage() {
   const location = useLocation();
-  const { username, password } = location.state || { username: 'Guest', password: '' }; // Default to 'Guest' and empty password if not passed
+  const { username } = location.state || { username: 'Guest' }; // Default to 'Guest' if no username is passed
 
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
@@ -21,41 +21,9 @@ function BusOwnerPage() {
     Reports: false
   });
 
-  const [userData, setUserData] = useState({
-    id: '',
-    firstName: '',
-    lastName: '',
-    email: ''
-  });
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     console.log(`Logged in as: ${username}`);
-    console.log(`Password: ${password}`);
-
-    // Function to fetch user data
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setUserData({
-          id: data.id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email
-        });
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [username, password]);
+  }, [username]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -73,7 +41,7 @@ function BusOwnerPage() {
   }, []);
 
   // Function to handle button click
-  const handleButtonClick = (componentName:any) => {
+  const handleButtonClick = (componentName: string) => {
     setSelectedComponent(componentName);
     // Update button states
     setButtonStates((prevState) => ({
@@ -95,30 +63,23 @@ function BusOwnerPage() {
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
       case 'ScheduledBuses':
-        return <ScheduledBusInfo id={userData.id} />;
+        return <ScheduledBusInfo />;
       case 'RegisteredBuses':
-        return <RegisteredBusInfoSec id={userData.id} />;
+        return <RegisteredBusInfoSec />;
       case 'Reports':
-        // return <RegisteredBusInfoSec />;
+        return <RegisteredBusInfoSec />;
       default:
         return null;
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <PrimaryNavBar />
       <div className='container pt-3'>
-        <ProfileSection
-          id={userData.id}
-          firstName={userData.firstName}
-          lastName={userData.lastName}
-          email={userData.email}
-        />
+        <div>
+          <ProfileSection />
+        </div>
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>

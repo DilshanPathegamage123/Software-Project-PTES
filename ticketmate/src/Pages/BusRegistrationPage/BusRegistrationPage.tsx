@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import Footer from '../../Components/Footer/footer';
+import Footer from '../../Components/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -169,7 +169,7 @@ function BusRegistrationPage() {
             window.location.reload();
         }, 4000);
 
-        navigate('/BusOwnerPage');
+        navigate('/');
         //toast.success('Form submitted successfully');
       } catch (error) {
         Swal.fire({
@@ -229,7 +229,7 @@ function BusRegistrationPage() {
       confirmButtonText: "Yes, Go Back!"
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/BusOwnerPage');
+        navigate('/');
       }
     });
   }

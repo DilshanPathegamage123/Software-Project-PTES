@@ -1,8 +1,5 @@
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-
-import React from "react";
-import "./loginPage.css";
-// import vars from '../../vars'
+import Footer from "../../Components/Footer/footer";
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
@@ -16,6 +13,20 @@ import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
 import { BsFillPersonFill } from "react-icons/bs";
 function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = (e:any) => {
+    e.preventDefault();
+    if (username && password) {
+      // Redirect to BusOwnerPage with username and password
+      navigate("/BusOwnerPage", { state: { username, password } });
+    } else {
+      alert("Please enter both username and password.");
+    }
+  };
+
   return (
     <div>
       <PrimaryNavBar />

@@ -3,7 +3,7 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
 import './BusOwnerPage.css';
-import Footer from '../../Components/Footer/Footer';
+import Footer from '../../Components/Footer/footer';
 import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
 import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
 import { Link } from 'react-router-dom';
@@ -33,7 +33,7 @@ function BusOwnerPage() {
   }, []);
 
   // Function to handle button click
-  const handleButtonClick = (componentName: string) => {
+  const handleButtonClick = (componentName:any) => {
     setSelectedComponent(componentName);
     // Update button states
     setButtonStates((prevState) => ({
@@ -55,23 +55,30 @@ function BusOwnerPage() {
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
       case 'ScheduledBuses':
-        return <ScheduledBusInfo />;
+        return <ScheduledBusInfo id={userData.id} />;
       case 'RegisteredBuses':
-        return <RegisteredBusInfoSec />;
+        return <RegisteredBusInfoSec id={userData.id} />;
       case 'Reports':
-        return <RegisteredBusInfoSec />;
+        // return <RegisteredBusInfoSec />;
       default:
         return null;
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <PrimaryNavBar />
       <div className='container pt-3'>
-        <div>
-          <ProfileSection />
-        </div>
+        <ProfileSection
+          id={userData.id}
+          firstName={userData.firstName}
+          lastName={userData.lastName}
+          email={userData.email}
+        />
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>

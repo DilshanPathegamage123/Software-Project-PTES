@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
@@ -10,9 +9,6 @@ import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/Register
 import { Link } from 'react-router-dom';
 
 function BusOwnerPage() {
-  const location = useLocation();
-  const { username } = location.state || { username: 'Guest' }; // Default to 'Guest' if no username is passed
-
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
   const [buttonStates, setButtonStates] = useState({ // State to track button states
@@ -20,10 +16,6 @@ function BusOwnerPage() {
     RegisteredBuses: false,
     Reports: false
   });
-
-  useEffect(() => {
-    console.log(`Logged in as: ${username}`);
-  }, [username]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -86,7 +78,7 @@ function BusOwnerPage() {
               <Link to='/BusRegistrationPage'><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
             </div>
             <div>
-              <Link to='/BusSchedulePage'><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
+              <Link to='/BusSchedulePage'><SquareButton text='Schedule a new travel journey'bwidth={divWidth} /></Link>
             </div>
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>

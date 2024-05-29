@@ -1,13 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import ProfileSection from '../../Components/ProfileSection/ProfileSection';
-import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
-import './BusOwnerPage.css';
-import Footer from '../../Components/Footer/Footer';
-import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
-import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import ProfileSection from "../../Components/ProfileSection/ProfileSection";
+import SquareButton from "../../Components/Buttons/SquareButton/SquareButton";
+import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+import "./BusOwnerPage.css";
+import Footer from "../../Components/Footer/footer";
+import { useEffect, useState } from "react";
+import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo";
+import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import axios from "axios";
+
+interface OwnerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 
 function BusOwnerPage() {
   const location = useLocation();
@@ -60,15 +79,16 @@ function BusOwnerPage() {
   useEffect(() => {
     // Function to handle window resize
     function handleResize() {
-      const width = document.getElementById('getWidth')?.offsetWidth;
+      const width = document.getElementById("getWidth")?.offsetWidth;
+
       setDivWidth(width || 0);
     }
 
     handleResize(); // Get initial width
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -142,6 +162,7 @@ function BusOwnerPage() {
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}
+
             </div>
           </div>
         </div>

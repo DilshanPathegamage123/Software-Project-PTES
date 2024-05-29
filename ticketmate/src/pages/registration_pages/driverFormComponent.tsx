@@ -7,15 +7,15 @@ import { useFormik } from "formik";
 import { driverFormValidation } from "./driverFormValidation";
 
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  nic: "",
-  email: "",
-  contactNumber: "",
-  userName: "",
-  password: "",
-  confirmPassword: "",
-  licenceNumber: "",
+    firstName: "",
+    lastName: "",
+    nic: "",
+    email: "",
+    contactNumber: "",
+    userName: "",
+    password: "",
+    confirmPassword: "",
+    licenceNumber: "",
 };
 
 function driverFormComponent() {

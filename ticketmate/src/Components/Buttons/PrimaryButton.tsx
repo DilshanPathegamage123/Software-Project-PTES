@@ -1,10 +1,13 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import './Button.css'
 
+//const history = useNavigate();
 function PrimaryButton(props: any) {
     const color = props.color;
     const Block = props.IsBlock? "btn-block" : "";
     const size = props.IsSmall? "btn-sm" : "";
+    // const history = useHistory();
     let classColor;
 
     if (color == "primary"){
@@ -28,6 +31,10 @@ function PrimaryButton(props: any) {
     const LINK = () => {
       window.location.href = props.link;
     }
+
+    // const handleClick=()=>{
+    //   history(props.link)
+    // }
 
     return (
       <>

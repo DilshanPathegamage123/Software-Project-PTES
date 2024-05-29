@@ -56,7 +56,6 @@ const SelectBusSeatStructure: React.FC<SelectBusSeatStructureProps> = ({ setButt
                     onClick={() => handleClick(buttonId)}
                   >
                     {buttonStates[buttonId] ? '-' : '+'}
-
                   </button>
                 );
               })}
@@ -67,6 +66,5 @@ const SelectBusSeatStructure: React.FC<SelectBusSeatStructureProps> = ({ setButt
     </div>
   );
 };
-
 
 export default SelectBusSeatStructure;

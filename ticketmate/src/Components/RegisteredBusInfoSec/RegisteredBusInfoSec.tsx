@@ -117,7 +117,6 @@ function RegisteredBusInfoSec({ id }: { id: string }) { // Pass id as props
                     :
                     'Loading...'
             }
-
         </>
     )
 }

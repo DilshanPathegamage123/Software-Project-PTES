@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import BusRegistrationPage from './Pages/BusRegistrationPage/BusRegistrationPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import BusOwnerPage from './Pages/BusOwnerPage/BusOwnerPage';
-import CreateBusJourneyPage from './Pages/CreateBusJourneyPage/CreateBusJourneyPage';
 import RegisteredBusPage from './Pages/RegisteredBusPage/RegisteredBusPage';
 import ScheduledBusPage from './Pages/ScheduledBusPage/ScheduledBusPage';
 import BusSchedulePage from './Pages/BusSchedulePage/BusSchedulePage';
@@ -20,7 +19,6 @@ function App() {
         <Route path='/LoginPage' element={<LoginPage/>}></Route>
         <Route path='/BusOwnerPage' element={<BusOwnerPage/>}></Route>
         <Route path='/BusRegistrationPage' element={<BusRegistrationPage/>}></Route>
-        <Route path='/CreateBusJourneyPage' element={<CreateBusJourneyPage/>}></Route>
         <Route path='/RegisteredBusPage' element={<RegisteredBusPage/>}></Route>
         <Route path='/ScheduledBusPage' element={<ScheduledBusPage/>}></Route>
         <Route path='/BusSchedulePage' element={<BusSchedulePage/>}></Route>
@@ -29,7 +27,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     // <>
-    //   <BusOwnerPage/>
+    //   <BusSchedulePage/>
     // </>
   );
 }

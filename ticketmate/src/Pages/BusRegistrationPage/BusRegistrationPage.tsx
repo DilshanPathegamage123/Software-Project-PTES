@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import Footer from '../../Components/Footer/Footer';
+import Footer from '../../Components/Footer/footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -76,20 +76,17 @@ function BusRegistrationPage() {
     }
   };
 
-
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setFormData({
       ...formData,
       acOption: value
     });
-
     setErrors({
       ...errors,
       acOption: ''
     });
   };
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -242,15 +239,14 @@ function BusRegistrationPage() {
     <>
       <PrimaryNavBar />
       <div className='container py-4'>
-
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
           </div>
 
           <form onSubmit={handleSubmit}>
-
             <div className='row'>
+              
               <div className='col-12 col-lg-6 p-3'>
                 <div className="form-group row">
                   <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
@@ -267,7 +263,6 @@ function BusRegistrationPage() {
                   </div>
                 </div>
                 <div className="form-group row">
-
                   <label htmlFor="inputLicencenum" className="col-form-label">Enter Licence Number</label>
                   <div className="">
                     <input type="text" className="form-control" id="inputLicencenum" name="licenceNum" placeholder="Licence Number" onChange={handleInputChange} />
@@ -325,7 +320,6 @@ function BusRegistrationPage() {
               <div className='col-12 text-center p-3'>
                 <button type='submit' className='btn primary mx-3 '>Register</button>
                 <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
-
               </div>
             </div>
           </form>
@@ -337,6 +331,4 @@ function BusRegistrationPage() {
   );
 }
 
-
 export default BusRegistrationPage;
-

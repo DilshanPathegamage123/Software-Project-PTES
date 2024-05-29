@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 function BusOwnerPage() {
   const location = useLocation();
-  const { username } = location.state || { username: 'Guest' }; // Default to 'Guest' if no username is passed
+  const { username, password } = location.state || { username: 'Guest', password: '' }; // Default to 'Guest' and empty password if not passed
 
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
@@ -21,9 +21,41 @@ function BusOwnerPage() {
     Reports: false
   });
 
+  const [userData, setUserData] = useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     console.log(`Logged in as: ${username}`);
-  }, [username]);
+    console.log(`Password: ${password}`);
+
+    // Function to fetch user data
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setUserData({
+          id: data.id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [username, password]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -41,7 +73,7 @@ function BusOwnerPage() {
   }, []);
 
   // Function to handle button click
-  const handleButtonClick = (componentName: string) => {
+  const handleButtonClick = (componentName:any) => {
     setSelectedComponent(componentName);
     // Update button states
     setButtonStates((prevState) => ({
@@ -63,23 +95,30 @@ function BusOwnerPage() {
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
       case 'ScheduledBuses':
-        return <ScheduledBusInfo />;
+        return <ScheduledBusInfo id={userData.id} />;
       case 'RegisteredBuses':
-        return <RegisteredBusInfoSec />;
+        return <RegisteredBusInfoSec id={userData.id} />;
       case 'Reports':
-        return <RegisteredBusInfoSec />;
+        // return <RegisteredBusInfoSec />;
       default:
         return null;
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <PrimaryNavBar />
       <div className='container pt-3'>
-        <div>
-          <ProfileSection />
-        </div>
+        <ProfileSection
+          id={userData.id}
+          firstName={userData.firstName}
+          lastName={userData.lastName}
+          email={userData.email}
+        />
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>

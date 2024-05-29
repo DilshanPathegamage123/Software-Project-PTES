@@ -11,7 +11,7 @@ function PrimaryNavBar() {
     <>
         <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
 
-            <Link to="/LoginPage"><a className="navbar-brand" href="#"> <img src={LOGO} alt="LOGO" width="84px" height="37px" /> <img src={LOGO2} alt="LOGO2" width= "156px" height= "22px" /></a></Link>
+            <Link to="/"><a className="navbar-brand" href="#"> <img src={LOGO} alt="LOGO" width="84px" height="37px" /> <img src={LOGO2} alt="LOGO2" width= "156px" height= "22px" /></a></Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>

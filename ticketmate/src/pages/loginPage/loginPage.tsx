@@ -12,11 +12,11 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e: any) => {
+  const handleLogin = (e:any) => {
     e.preventDefault();
     if (username && password) {
-      // Redirect to BusOwnerPage with username
-      navigate("/", { state: { username } });
+      // Redirect to BusOwnerPage with username and password
+      navigate("/BusOwnerPage", { state: { username, password } });
     } else {
       alert("Please enter both username and password.");
     }

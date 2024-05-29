@@ -169,7 +169,7 @@ function BusRegistrationPage() {
             window.location.reload();
         }, 4000);
 
-        navigate('/');
+        navigate('/BusOwnerPage');
         //toast.success('Form submitted successfully');
       } catch (error) {
         Swal.fire({
@@ -229,7 +229,7 @@ function BusRegistrationPage() {
       confirmButtonText: "Yes, Go Back!"
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/');
+        navigate('/BusOwnerPage');
       }
     });
   }

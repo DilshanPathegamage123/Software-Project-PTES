@@ -27,7 +27,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     // <>
-    //   <BusSchedulePage/>
+    //   <BusOwnerPage/>
     // </>
   );
 }

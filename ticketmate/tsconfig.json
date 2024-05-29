@@ -7,7 +7,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -18,7 +18,12 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["react", "react-dom"],
+
+    /* Additional Options */
+    "allowSyntheticDefaultImports": true, // Allows default imports for modules with 'export ='
+    "esModuleInterop": true // Enables compatibility with CommonJS modules
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

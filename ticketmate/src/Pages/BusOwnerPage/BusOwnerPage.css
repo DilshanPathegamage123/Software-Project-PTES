@@ -20,7 +20,6 @@
     }
   }
 
-
   .btn.secButton.active {
     background-color: #00757c !important; 
     color: white !important;
@@ -32,3 +31,4 @@
     color: #00757c !important; 
     border: 0px !important;
   }
+

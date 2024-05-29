@@ -133,7 +133,7 @@ function RegisteredBusPage() {
                 <div className='col-lg-6'>
                     <div className='m-4 InfoSec rounded-4'>
                         <div className='row d-flex justify-content-left pl-5 pt-4'>
-                            <Link to='/'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
+                            <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
                         <div className='row d-flex justify-content-center'>
                             <img src={BusImg} alt="BusImg" className='p-3 col-6'/>

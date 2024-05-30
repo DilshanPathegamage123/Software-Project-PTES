@@ -4,7 +4,7 @@ import ProfileSection from '../../Components/ProfileSection/ProfileSection'
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton'
 import PrimaryButton from '../../Components/Buttons/PrimaryButton'
 import './AdminPage.css'
-import Footer from '../../Components/Footer/Footer';
+import Footer from '../../Components/Footer/footer';
 import { useEffect, useState } from 'react'
 
 function AdminPage() {

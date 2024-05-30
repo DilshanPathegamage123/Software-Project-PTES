@@ -11,6 +11,7 @@ function AppRoutes  ()  {
       <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<PassengerForm />} />
         <Route path="/AdminPage" element={<AdminPage />} />
+      
       </Routes>
     </Router>
   );

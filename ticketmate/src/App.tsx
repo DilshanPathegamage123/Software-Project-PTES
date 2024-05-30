@@ -10,6 +10,7 @@ import LoginPage from './Pages/loginPage/loginPage';
 import Home from './Pages/HomePage/Home';
 
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -26,9 +27,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
-    // <>
-    //   <BusSchedulePage/>
-    // </>
+    
   );
 }
 

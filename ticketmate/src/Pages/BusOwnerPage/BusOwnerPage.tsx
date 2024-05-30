@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
@@ -9,6 +10,9 @@ import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/Register
 import { Link } from 'react-router-dom';
 
 function BusOwnerPage() {
+  const location = useLocation();
+  const { username, password } = location.state || { username: 'Guest', password: '' }; // Default to 'Guest' and empty password if not passed
+
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
   const [buttonStates, setButtonStates] = useState({ // State to track button states
@@ -16,6 +20,42 @@ function BusOwnerPage() {
     RegisteredBuses: false,
     Reports: false
   });
+
+  const [userData, setUserData] = useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    console.log(`Logged in as: ${username}`);
+    console.log(`Password: ${password}`);
+
+    // Function to fetch user data
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setUserData({
+          id: data.id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [username, password]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -85,7 +125,7 @@ function BusOwnerPage() {
               <Link to='/BusRegistrationPage'><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
             </div>
             <div>
-              <Link to='/BusSchedulePage'><SquareButton text='Schedule a new travel journey'bwidth={divWidth} /></Link>
+              <Link to='/BusSchedulePage'><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
             </div>
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>

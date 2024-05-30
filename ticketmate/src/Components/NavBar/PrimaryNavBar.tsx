@@ -4,6 +4,7 @@ import LOGO from "./assest/logo.png";
 import LOGO2 from "./assest/logopart2.png";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
+import { Link } from "react-router-dom";
 
 function PrimaryNavBar() {
   return (

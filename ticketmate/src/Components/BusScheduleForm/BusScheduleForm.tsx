@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function BusScheduleForm({ handleNext }: { handleNext: any }) {
-  const [busNum, setBusNum] = useState('');
+  const [busId, setBusId] = useState('');
   const [driId, setDriId] = useState('');
   const [startLoc, setStartLoc] = useState('');
   const [endLoc, setEndLoc] = useState('');
@@ -13,7 +13,7 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
   const [ticketPrice, setTicketPrice] = useState('');
 
   const [errors, setErrors] = useState({
-    busNum: '',
+    busId: '',
     driId: '',
     startLoc: '',
     endLoc: '',
@@ -26,11 +26,11 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
 
   const validateInput = () => {
     const newErrors: any = {};
-    if (!busNum) newErrors.busNum = 'Bus Number is required';
-    if (!driId) newErrors.driId = 'Driver Id is required';
+    if (!busId) newErrors.busId = 'Bus ID is required';
+    if (!driId) newErrors.driId = 'Driver ID is required';
     if (!startLoc) newErrors.startLoc = 'Start Location is required';
     if (!endLoc) newErrors.endLoc = 'End Location is required';
-    if (!routNo) newErrors.routNo = 'Rout No is required';
+    if (!routNo) newErrors.routNo = 'Route No is required';
     if (!depTime) newErrors.depTime = 'Departure Time is required';
     if (!arrTime) newErrors.arrTime = 'Arrival Time is required';
     if (!duration) newErrors.duration = 'Duration is required';
@@ -42,7 +42,7 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
 
   const handleNextClick = () => {
     if (validateInput()) {
-      handleNext({ busNum, driId, startLoc, endLoc, routNo, depTime, arrTime, duration, comportability, ticketPrice });
+      handleNext({ busId, driId, startLoc, endLoc, routNo, depTime, arrTime, duration, comportability, ticketPrice });
     }
   };
 
@@ -51,18 +51,18 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
       <div className='row'>
         <div className='col-12 p-3'>
           <div className="form-group row">
-            <label htmlFor="inputbusNum" className="col-form-label">Bus Number</label>
+            <label htmlFor="inputBusId" className="col-form-label">Bus ID</label>
             <div className="">
               <input 
                 type="text" 
                 className="form-control" 
-                id="inputbusNum" 
-                name="busNum" 
-                placeholder="Enter Bus Number" 
-                value={busNum} 
-                onChange={(e) => setBusNum(e.target.value)} 
+                id="inputBusId" 
+                name="busId" 
+                placeholder="Enter Bus ID" 
+                value={busId} 
+                onChange={(e) => setBusId(e.target.value)} 
               />
-              {errors.busNum && <div className='text-danger'>{errors.busNum}</div>}
+              {errors.busId && <div className='text-danger'>{errors.busId}</div>}
             </div>
           </div>
 
@@ -116,14 +116,14 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
           </div>
 
           <div className="form-group row">
-            <label htmlFor="inputRoutNo" className="col-form-label">Rout No</label>
+            <label htmlFor="inputRoutNo" className="col-form-label">Route No</label>
             <div className="">
               <input 
                 type="text" 
                 className="form-control" 
                 id="inputRoutNo" 
                 name="RoutNo" 
-                placeholder="Enter Rout No" 
+                placeholder="Enter Route No" 
                 value={routNo} 
                 onChange={(e) => setRoutNo(e.target.value)} 
               />
@@ -198,14 +198,14 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
           </div>
 
           <div className="form-group row">
-            <label htmlFor="inputTicketprice" className="col-form-label">Ticket price</label>
+            <label htmlFor="inputTicketPrice" className="col-form-label">Ticket Price</label>
             <div className="">
               <input 
                 type="text" 
                 className="form-control" 
-                id="inputTicketprice" 
-                name="Ticketprice" 
-                placeholder="Enter Ticket price" 
+                id="inputTicketPrice" 
+                name="TicketPrice" 
+                placeholder="Enter Ticket Price" 
                 value={ticketPrice} 
                 onChange={(e) => setTicketPrice(e.target.value)} 
               />

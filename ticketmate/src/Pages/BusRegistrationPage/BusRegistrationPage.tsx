@@ -10,7 +10,7 @@ import {FirStorage} from './FirebaseConfig';
 import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 interface ApiResponse {
@@ -18,6 +18,13 @@ interface ApiResponse {
 }
 
 function BusRegistrationPage() {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get('id');
+  console.log("user id " + userId);
+
+    
   const [formData, setFormData] = useState({
     busNum: '',
     busName: '',
@@ -149,7 +156,8 @@ function BusRegistrationPage() {
           ACorNONAC: acOptionValue,
           LicenseImgURL: licenseUrl,
           InsuranceImgURL: insuranceUrl,
-          BusName: formData.busName
+          BusName: formData.busName,
+          userId: userId
         });
 
         const busId = response.data.busId;

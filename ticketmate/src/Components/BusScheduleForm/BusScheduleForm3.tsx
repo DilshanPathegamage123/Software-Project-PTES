@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function BusScheduleForm3() {
+function BusScheduleForm3({ userId }: { userId: string | null }) {
   const [dates, setDates] = useState<string[]>([]);
   const [currentDate, setCurrentDate] = useState<string>('');
 

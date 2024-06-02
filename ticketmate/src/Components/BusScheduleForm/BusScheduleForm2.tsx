@@ -5,7 +5,7 @@ interface BusScheduleForm2Props {
   handleNext: () => void;
 }
 
-const BusScheduleForm2: React.FC<BusScheduleForm2Props> = ({ standNames, handleNext }) => {
+function BusScheduleForm2({ standNames, handleNext, userId }: { standNames: string[], handleNext: any, userId: string | null }){
   return (
     <>
       <p>Select the Bus Stations.</p>

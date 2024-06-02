@@ -5,6 +5,7 @@ import BusScheduleForm from '../../Components/BusScheduleForm/BusScheduleForm';
 import BusScheduleForm2 from '../../Components/BusScheduleForm/BusScheduleForm2';
 import BusScheduleForm3 from '../../Components/BusScheduleForm/BusScheduleForm3';
 import { useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 function BusSchedulePage() {
   const [showForm2, setShowForm2] = useState(false);
@@ -29,10 +30,10 @@ function BusSchedulePage() {
         const standResponse = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${data.routId}`);
         if (standResponse.ok) {
           const standData = await standResponse.json();
-          const standNames = standData.map((stand: { standName: any; }) => stand.standName);
+          const standNames = standData.map((stand: { standName: string; }) => stand.standName);
           console.log('Stand Names:', standNames.join(', '));
 
-          // After fetching and logging the data, store stand names and show the second form
+          // Store stand names and show the second form
           setStandNames(standNames);
           setShowForm2(true);
         } else {
@@ -40,7 +41,11 @@ function BusSchedulePage() {
         }
       } else {
         console.error('Route number is unavailable.');
-        alert('Route number is unavailable.');
+        Swal.fire({
+          title: "Route number Not Found",
+          text: "The entered Route number is not available. Please check and try again.",
+          icon: "error"
+        });
       }
     } catch (error) {
       console.error('Error fetching route number:', error);
@@ -61,11 +66,11 @@ function BusSchedulePage() {
           </div>
 
           {showForm3 ? (
-            <BusScheduleForm3 />
+            <BusScheduleForm3 userId={userId} />
           ) : showForm2 ? (
-            <BusScheduleForm2 standNames={standNames} handleNext={handleForm2Next} />
+            <BusScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} />
           ) : (
-            <BusScheduleForm handleNext={handleNext} />
+            <BusScheduleForm handleNext={handleNext} userId={userId} />
           )}
         </div>
       </div>

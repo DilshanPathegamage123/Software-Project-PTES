@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import swal from 'sweetalert2';
+import axios from 'axios';
+import BusScheduleForm2 from './BusScheduleForm2';
 
-function BusScheduleForm({ handleNext }: { handleNext: any }) {
+function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: string | null }) {
   const [busId, setBusId] = useState('');
   const [driId, setDriId] = useState('');
   const [startLoc, setStartLoc] = useState('');
@@ -11,6 +14,8 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
   const [duration, setDuration] = useState('');
   const [comportability, setComportability] = useState('Luxury');
   const [ticketPrice, setTicketPrice] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scheduleId, setScheduleId] = useState('');
 
   const [errors, setErrors] = useState({
     busId: '',
@@ -40,11 +45,129 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleNextClick = () => {
-    if (validateInput()) {
-      handleNext({ busId, driId, startLoc, endLoc, routNo, depTime, arrTime, duration, comportability, ticketPrice });
+  const checkBusIdAvailability = async () => {
+    try {
+      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`);
+      if (response.data && response.data.deleteState === true) {
+        console.log("Bus Number:", response.data.busNo);
+        return response.data.busNo;
+      } else {
+        swal.fire({
+          icon: 'error',
+          title: 'Bus ID Not Valid',
+          text: 'The entered Bus ID is not valid or the bus is not available. Please check and try again.'
+        });
+        return null;
+      }
+    } catch (error) {
+      swal.fire({
+        icon: 'error',
+        title: 'Bus ID Not Found',
+        text: 'The entered Bus ID is not available. Please check and try again.'
+      });
+      return null;
     }
   };
+
+  const checkDriverIdAvailability = async () => {
+    try {
+      const response = await axios.get(`https://localhost:7001/api/userData/${driId}`);
+      if (response.data && response.data.userType === 'Driver') {
+        return true;
+      } else {
+        swal.fire({
+          icon: 'error',
+          title: 'Invalid Driver ID',
+          text: 'The entered Driver ID is not available or the user is not a Driver. Please check and try again.'
+        });
+        return false;
+      }
+    } catch (error) {
+      swal.fire({
+        icon: 'error',
+        title: 'Driver ID Not Found',
+        text: 'The entered Driver ID is not available. Please check and try again.'
+      });
+      return false;
+    }
+  };
+
+  const checkRoutNoAvailability = async () => {
+    try {
+      const response = await axios.get(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
+      if (response.status === 200) {
+        const data = response.data;
+        return data.routId;
+      } else {
+        swal.fire({
+          icon: 'error',
+          title: 'Invalid Route Number',
+          text: 'The entered Route Number is not available. Please check and try again.'
+        });
+        return null;
+      }
+    } catch (error) {
+      swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while checking the Route Number. Please try again.'
+      });
+      return null;
+    }
+  };
+
+  const handleNextClick = async () => {
+    if (validateInput()) {
+      setIsSubmitting(true);
+      const busNo = await checkBusIdAvailability();
+      if (!busNo) {
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const isDriverIdAvailable = await checkDriverIdAvailability();
+      if (!isDriverIdAvailable) {
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const routeId = await checkRoutNoAvailability();
+      if (!routeId) {
+        setIsSubmitting(false);
+        return;
+      }
+
+      const newBusSchedule = {
+        registeredBusBusId: busId,
+        busNo: busNo,
+        driverId: driId,
+        routNo: routNo,
+        startLocation: startLoc,
+        endLocation: endLoc,
+        departureTime: depTime,
+        arrivalTime: arrTime,
+        comfortability: comportability,
+        duration: duration,
+        ticketPrice: ticketPrice,
+        userId: userId
+      };
+
+      try {
+        const response = await axios.post('https://localhost:7001/api/ScheduledBus', newBusSchedule);
+        const { scheduleId } = response.data; // Extract scheduleId from response
+        setScheduleId(scheduleId); // Set scheduleId state
+        handleNext(newBusSchedule);
+      } catch (error) {
+        swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while saving the schedule. Please try again.'
+        });
+      }
+      setIsSubmitting(false);
+    }
+  };
+
 
   return (
     <form>
@@ -136,7 +259,7 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
               <label htmlFor="inputDepTime" className="col-form-label">Departure Time</label>
               <div className="">
                 <input 
-                  type="text" 
+                  type="time" 
                   className="form-control" 
                   id="inputDepTime" 
                   name="DepTime" 
@@ -151,7 +274,7 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
               <label htmlFor="inputArrTime" className="col-form-label">Arrival Time</label>
               <div className="">
                 <input 
-                  type="text" 
+                  type="time" 
                   className="form-control" 
                   id="inputArrTime" 
                   name="ArrTime" 
@@ -172,7 +295,7 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
                 className="form-control" 
                 id="inputDuration" 
                 name="Duration" 
-                placeholder="Enter Duration" 
+                placeholder="Enter Duration : Ex: 2h 30m" 
                 value={duration} 
                 onChange={(e) => setDuration(e.target.value)} 
               />
@@ -218,7 +341,8 @@ function BusScheduleForm({ handleNext }: { handleNext: any }) {
       <div className='row'>
         <div className='col-12 text-center p-3'>
           <button type='button' className='btn white mx-3'>Cancel</button>
-          <button type='button' className='btn primary mx-3' onClick={handleNextClick}>Next</button>
+          <button type='button' className='btn primary mx-3' onClick={handleNextClick} disabled={isSubmitting}>Next</button>
+
         </div>
       </div>
     </form>

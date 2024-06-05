@@ -8,6 +8,9 @@ import BusSchedulePage from './Pages/BusSchedulePage/BusSchedulePage';
 import LoginPage from './Pages/loginPage/loginPage';
 import Home from './Pages/HomePage/Home';
 import Test from './Pages/Test/test';
+import TrainOwnerPage from './Pages/TrainOwnerPage/TrainOwnerPage';
+import ScheduledBusInfo from './Components/ScheduledBusInfo/ScheduledBusInfo';
+
 
 function App() {
   return (
@@ -20,12 +23,14 @@ function App() {
         <Route path='/RegisteredBusPage' element={<RegisteredBusPage />} />
         <Route path='/ScheduledBusPage' element={<ScheduledBusPage />} />
         <Route path='/BusSchedulePage' element={<BusSchedulePage />} />
+        <Route path='/TrainOwnerPage' element={<TrainOwnerPage />} />
       </Routes>
     </BrowserRouter>
 
-    // <>
-    //   <Test/>
-    // </>
+    
+        // <>
+        //   <ScheduledBusInfo/>
+        // </>
   );
 }
 

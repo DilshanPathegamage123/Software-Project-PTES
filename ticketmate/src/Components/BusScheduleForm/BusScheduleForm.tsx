@@ -109,7 +109,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     } catch (error) {
       swal.fire({
         icon: 'error',
-        title: 'Error',
+        title: 'Invalid Route Number',
         text: 'An error occurred while checking the Route Number. Please try again.'
       });
       return null;
@@ -156,7 +156,9 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
         const response = await axios.post('https://localhost:7001/api/ScheduledBus', newBusSchedule);
         const { scheduleId } = response.data; // Extract scheduleId from response
         setScheduleId(scheduleId); // Set scheduleId state
-        handleNext(newBusSchedule);
+        console.log('Schedule ID: ', scheduleId);
+        handleNext(newBusSchedule ,scheduleId);
+
       } catch (error) {
         swal.fire({
           icon: 'error',

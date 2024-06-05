@@ -11,14 +11,17 @@ function BusSchedulePage() {
   const [showForm2, setShowForm2] = useState(false);
   const [showForm3, setShowForm3] = useState(false);
   const [standNames, setStandNames] = useState<string[]>([]);
+  const [scheduleId, setScheduleId] = useState<string>('');
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get('id');
   console.log("user id " + userId);
 
-  const handleNext = async (formData: any) => {
+  const handleNext = async (formData: any, scheduleId: any) => {
     const { routNo } = formData;
+    setScheduleId(scheduleId);
+    console.log('ScheduleId:', scheduleId);
 
     try {
       const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
@@ -35,6 +38,7 @@ function BusSchedulePage() {
 
           // Store stand names and show the second form
           setStandNames(standNames);
+
           setShowForm2(true);
         } else {
           console.error('Failed to fetch stand names');
@@ -66,9 +70,9 @@ function BusSchedulePage() {
           </div>
 
           {showForm3 ? (
-            <BusScheduleForm3 userId={userId} />
+            <BusScheduleForm3 userId={userId} scheduleId={scheduleId}/>
           ) : showForm2 ? (
-            <BusScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} />
+            <BusScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} scheduleId={scheduleId}/>
           ) : (
             <BusScheduleForm handleNext={handleNext} userId={userId} />
           )}

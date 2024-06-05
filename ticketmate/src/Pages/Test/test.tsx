@@ -2,53 +2,78 @@ import React, { useState } from 'react';
 import '../../vars.css';
 
 function Test() {
-  const [dates, setDates] = useState<string[]>([]);
-  const [currentDate, setCurrentDate] = useState<string>('');
+  const [dates, setDates] = useState<{ arrivalDate: string, departureDate: string }[]>([]);
+  const [arrivalDate, setArrivalDate] = useState<string>('');
+  const [departureDate, setDepartureDate] = useState<string>('');
 
   const handleAddDate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form submission
-    if (currentDate) {
-      setDates([...dates, currentDate]);
-      setCurrentDate('');
+    if (arrivalDate && departureDate) {
+      setDates([...dates, { arrivalDate, departureDate }]);
+      setArrivalDate('');
+      setDepartureDate('');
     }
   };
 
-  const handleRemoveDate = (dateToRemove: string) => {
-    setDates(dates.filter(date => date !== dateToRemove));
+  const handleRemoveDate = (indexToRemove: number) => {
+    setDates(dates.filter((_, index) => index !== indexToRemove));
   };
 
   return (
     <form onSubmit={handleAddDate}>
       <div className='form-group'>
-        <div className='row'><label htmlFor="scheduleDate">Schedule Date :</label> <br /></div>
- 
-        <div className='row'>
-            <div className='col-sm-6'>
-                <input 
+        <div className='row align-items-end'>
+          <div className='col-sm-4'>
+            
+            <label htmlFor="arrivalDate">Arrival Date :</label> <br />
+            
+            <div className=''>
+              <input 
                 type="date" 
                 className='form-control '
-                id="scheduleDate" 
-                name="scheduleDate"
-                value={currentDate}
-                onChange={(e) => setCurrentDate(e.target.value)}
-                />
+                id="arrivalDate" 
+                name="arrivalDate"
+                value={arrivalDate}
+                onChange={(e) => setArrivalDate(e.target.value)}
+              />
             </div>
 
-            <div className='col'>
-                <button type="submit" className='btn btn-primary'>Add</button>
-            </div>
+          </div>
+  
+
+          <div className='col-sm-4'>
             
+            <label htmlFor="departureDate">Departure Date :</label> <br />
+            
+            <div className=''>
+              <input 
+                type="date" 
+                className='form-control '
+                id="departureDate" 
+                name="departureDate"
+                value={departureDate}
+                onChange={(e) => setDepartureDate(e.target.value)}
+              />
+            </div>
+
+          </div>
+
+          <div className='col-sm-4'>
+            <div className=''>
+              <button type="submit" className='btn btn-primary'>Add</button>
+            </div>
+          </div>
         </div>
         
+        
         <ul>
-          {dates.map((date, index) => (
-            <div className='p-1'>
-                <li key={index} className='p-2'>
-                    {date}
-                    &nbsp; &nbsp; <button className='btn btn-primary p-2' onClick={() => handleRemoveDate(date)}>Remove</button>
-                </li>
+          {dates.map((datePair, index) => (
+            <div className='p-1' key={index}>
+              <li className='p-2'>
+                Arrival: {datePair.arrivalDate}, &nbsp; &nbsp; Departure: {datePair.departureDate}
+                &nbsp; &nbsp; <button className='btn primary p-2' onClick={() => handleRemoveDate(index)}>Remove</button>
+              </li>
             </div>
-            
           ))}
         </ul>
 

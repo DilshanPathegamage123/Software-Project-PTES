@@ -10,6 +10,7 @@ import Home from './Pages/HomePage/Home';
 import Test from './Pages/Test/test';
 import TrainOwnerPage from './Pages/TrainOwnerPage/TrainOwnerPage';
 import ScheduledBusInfo from './Components/ScheduledBusInfo/ScheduledBusInfo';
+import TrainRegistrationPage from './Pages/TrainRegistrationPage/TrainRegistrationPage';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path='/ScheduledBusPage' element={<ScheduledBusPage />} />
         <Route path='/BusSchedulePage' element={<BusSchedulePage />} />
         <Route path='/TrainOwnerPage' element={<TrainOwnerPage />} />
+        <Route path='/TrainRegistrationPage' element={<TrainRegistrationPage />} />
       </Routes>
     </BrowserRouter>
 

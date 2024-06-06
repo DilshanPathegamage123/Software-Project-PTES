@@ -5,20 +5,19 @@ import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
 import './TrainOwnerPage.css';
 import Footer from '../../Components/Footer/footer';
-import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
 import RegLocomotiveInfoSec from '../../Components/RegLocomotiveInfoSec/RegLocomotiveInfoSec';
 import { Link } from 'react-router-dom';
 import RegCarriagesInfoSec from '../../Components/RegCarriagesInfoSec/RegCarriagesInfoSec';
+import ScheduledTrainInfo from '../../Components/ScheduledTrainInfo/ScheduledTrainInfo';
 
 function TrainOwnerPage() {
   const location = useLocation();
   const { username, password } = location.state || { username: 'Guest', password: '' }; // Default to 'Guest' and empty password if not passed
 
   const [divWidth, setDivWidth] = useState(0); // State to store div width
-  const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
+  const [selectedComponent, setSelectedComponent] = useState('ScheduledTrains'); // State to track selected component
   const [buttonStates, setButtonStates] = useState({ // State to track button states
-    
-    ScheduledBuses: true,
+    ScheduledTrains: true,
     RegLocomotives: false,
     RegCarriages: false
   });
@@ -96,8 +95,8 @@ function TrainOwnerPage() {
   // Function to render selected component based on state
   const renderSelectedComponent = () => {
     switch (selectedComponent) {
-      case 'ScheduledBuses':
-        return <ScheduledBusInfo id={userData.id} />;
+      case 'ScheduledTrains':
+        return <ScheduledTrainInfo id={userData.id} />;
       case 'RegLocomotives':
         return <RegLocomotiveInfoSec id={userData.id} />;
       case 'RegCarriages':
@@ -124,7 +123,7 @@ function TrainOwnerPage() {
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>
-              <Link to={`/BusRegistrationPage?id=${userData.id}`}><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>                                  
+              <Link to={`/TrainRegistrationPage?id=${userData.id}`}><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>                                  
             </div>
             <div>
               <Link to={`/BusSchedulePage?id=${userData.id}`}><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
@@ -132,7 +131,7 @@ function TrainOwnerPage() {
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>
             <div className='d-flex flex-row'>
-              <button className={`btn btn-primary secButton ${buttonStates.ScheduledBuses ? 'active' : ''}`} onClick={() => handleButtonClick('ScheduledBuses')}>
+              <button className={`btn btn-primary secButton ${buttonStates.ScheduledTrains ? 'active' : ''}`} onClick={() => handleButtonClick('ScheduledTrains')}>
                 Scheduled Trains
               </button>
               <button className={`btn btn-primary secButton ${buttonStates.RegLocomotives ? 'active' : ''}`} onClick={() => handleButtonClick('RegLocomotives')}>

@@ -1,13 +1,21 @@
 import React from 'react';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import TravelDetails from '../../Components/payment/TravelDetail';
-
-import Selection from '../../Components/payment/Selection';
-import Back from '../../Components/payment/Backbutton';
 import Paassenger from '../../Components/payment/Passenger';
-import ConfirmButton from '../../Components/payment/ConfirmButton';
+import PayNowbtn from '../../Components/payment/PayNowbtn';
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 
 function Payment2(){
+
+    // let location = useLocation();
+    // let { userId, tripId } = location.state;
+    // console.log(userId, tripId);
+    // const history = useNavigate();
+
+
+ 
     return(
         <>
         
@@ -45,9 +53,12 @@ function Payment2(){
             </div>
             </div>
             <div className="row mt-4 justify-content-center">
-            <div className="col-2"></div>
-            <div className="col-10">
-                  <ConfirmButton/> 
+           
+            <div className="col-2"> </div>
+            <div className="col-10"><PayNowbtn/>
+            <div className="d-grid">
+
+        </div>
                   </div>
             </div>
    

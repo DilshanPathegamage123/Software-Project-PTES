@@ -149,7 +149,7 @@ function CarriageRegistrationForm() {
       for (const [seatId, availability] of Object.entries(buttonStates)) {
         const buttonData = {
           seatId: seatId,
-          seatAvailability: !!availability, // Convert to boolean
+          avalability: !!availability, // Convert to boolean
           registeredCarriageCarriageId: carriageId,
         };
 

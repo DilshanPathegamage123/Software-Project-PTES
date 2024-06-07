@@ -11,6 +11,8 @@ import Test from './Pages/Test/test';
 import TrainOwnerPage from './Pages/TrainOwnerPage/TrainOwnerPage';
 import ScheduledBusInfo from './Components/ScheduledBusInfo/ScheduledBusInfo';
 import TrainRegistrationPage from './Pages/TrainRegistrationPage/TrainRegistrationPage';
+import RegisteredLocomitivePage from './Pages/RegisteredLocomitivePage/RegisteredLocomitivePage';
+import RegisteredCarriagePage from './Pages/RegisteredCarriagePage/RegisteredCarriagePage'
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
         <Route path='/BusSchedulePage' element={<BusSchedulePage />} />
         <Route path='/TrainOwnerPage' element={<TrainOwnerPage />} />
         <Route path='/TrainRegistrationPage' element={<TrainRegistrationPage />} />
+        <Route path='RegisteredLocomitivePage' element={<RegisteredLocomitivePage />}/>
+        <Route path='/RegisteredCarriagePage' element={<RegisteredCarriagePage />} />
       </Routes>
     </BrowserRouter>
 

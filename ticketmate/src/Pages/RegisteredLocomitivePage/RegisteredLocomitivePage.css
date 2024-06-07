@@ -1,7 +1,8 @@
 @import '../../vars.css';
 
-.InfoSec{
-    background-color: var(--color-primary) !important;
+
+.InfoSec2{
+    background-color: rgba(4,47,64) !important;
 }
 
 .p2{
@@ -25,4 +26,27 @@
 
   .BackIcon{
     width: 57px;
+  }
+
+  .containerLocPage{
+    background-image: url("../../assets/TrainBack1.jpg");
+    background-size: cover;
+    padding-left: 80px !important;
+    padding-right: 0px !important;
+  }
+
+
+@media only screen and (max-width: 600px) {
+    .containerLocPage {
+      padding-left: 10px !important;
+      padding-right: 0px !important;
+    }
+  }
+  
+
+  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+    .containerLocPage {
+        padding-left: 40px !important;
+        padding-right: 0px !important;
+    }
   }

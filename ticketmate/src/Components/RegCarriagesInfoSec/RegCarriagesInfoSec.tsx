@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './RegCarriagesInfoSec.css';
-import BusIcon from '../../assets/BusIcon.png';
+import BusIcon from '../../assets/CarriageIcon.png';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 
@@ -105,22 +105,22 @@ function RegCarriagesInfoSec({ id }: { id: string }) { // Pass id as props
                 data.length > 0 ?
                     data.map((item) => (
                         <div key={item.carriageId}>
-                            <div className='row p-5 rounded-4 sec shadow m-3'>
-                                <div className='col-lg-2'>
+                            <div className='row p-4 rounded-4 sec shadow m-3'>
+                                <div className='col-lg-3 d-flex justify-content-end align-items-center'>
                                     <img src={BusIcon} alt="BusIcon" />
                                 </div>
-                                <div className='col-lg-6'>
-                                    <p>
+                                <div className='col-lg-5 d-flex justify-content-center align-items-center'>
+                                    <p style={{ margin: 0 }}>
                                         <b>Carriage No : </b>  {item.carriageNo}<br />
                                         <b>Carriage Class : </b>  {item.carriageClass}<br />
                                         <b>Carriage seatsCount : </b>  {item.seatsCount}<br />
-                                        <b>Carriage length : </b>  {item.length}<br />
+                                        {/* <b>Carriage length : </b>  {item.length}<br />
                                         <b>Carriage width : </b>  {item.width}<br />
-                                        <b>Carriage height : </b>  {item.height}<br />
+                                        <b>Carriage height : </b>  {item.height}<br /> */}
                                     </p>
                                 </div>
-                                <div className='col-lg-4'>
-                                    <Link to={`/RegisteredBusPage?busId=${item.carriageId}`}><button type="button" className="btn primary mx-1 "> See More </button></Link>
+                                <div className='col-lg-4 d-flex justify-content-center align-items-center'>
+                                    <Link to={`/RegisteredCarriagePage?carriageId=${item.carriageId}`}><button type="button" className="btn primary mx-1 "> See More </button></Link>
                                     <button className='btn primary mx-1 ' onClick={() => handleDelete(item.carriageId)}>Delete</button>
                                 </div>
                             </div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import './RegisteredBusPage.css'
+import './RegisteredLocomitivePage.css'
 import Footer from '../../Components/Footer/footer'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import BusImg from '../../assets/RegBusImg.png'
+import TrainImg from '../../assets/Train Icon.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
 import { Link, useLocation } from 'react-router-dom';
@@ -15,39 +15,36 @@ function RegisteredLocomitivePage() {
     // Using react-router-dom's useLocation hook to get query parameters
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const busId = queryParams.get('busId');
+    const locomotiveId = queryParams.get('locomotiveId');
 
-    console.log(busId);
+    console.log(locomotiveId);
 
     const [data, setData] = useState({
-        busId: '',
-        busNo: '',
-        licenNo: '',
-        setsCount: '',
-        aCorNONAC: '',
+        locomotiveId: '',
+        locomotiveNumber: '',
+        locomotiveType: '',
+        locomotiveModel: '',
+        locomotiveCapacity: '',
+        locomotiveSpeed: '',
+        userId: '',
         licenseImgURL: '',
-        insuranceImgURL: '',
       });
-
-    const [buttonStates, setButtonStates] = useState({});
-    
 
     // Fetching data and button states on component mount
     useEffect(() => {
-        const busId = getBusIdFromQueryParams();
-        getData(busId);
-        getButtonStates(busId);
+        const locomotiveId = getBusIdFromQueryParams();
+        getData(locomotiveId);
     }, []);
     
     // Function to extract busId from query parameters
     const getBusIdFromQueryParams = () => {
         const queryParams = new URLSearchParams(window.location.search);
-        return queryParams.get('busId');
+        return queryParams.get('locomotiveId');
     };
 
     // Function to fetch bus data from API
     const getData = (busId: any) => {
-        axios.get(`https://localhost:7001/api/BusReg/${busId}`)
+        axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`)
         .then((result) => {
             setData(result.data);
         })
@@ -56,49 +53,6 @@ function RegisteredLocomitivePage() {
         });
     }
 
-
-    // Function to fetch button states from API
-    const getButtonStates = (busId: any) => {
-            axios
-                .get(`https://localhost:7001/api/SelectedSeatStr/bus/${busId}`)
-                .then((result) => {
-                    const fetchedButtonStates: { [key: string]: boolean } = {}; // Provide type annotation for fetchedButtonStates
-                    result.data.forEach((seat: any) => {
-                        fetchedButtonStates[seat.seatId] = seat.seatAvailability;
-                    });
-                    setButtonStates(fetchedButtonStates);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        };
-    
-        // Function to render seat structure
-      const renderSeatStructure = () => {
-        const seatStructure = [];
-        for (let rowIndex = 0; rowIndex < 11; rowIndex++) {
-          const row = (
-            <div key={rowIndex} className='row justify-content-center'>
-            {[...Array(6)].map((_, colIndex) => {
-                const buttonId = String(rowIndex * 10 + colIndex + 1);
-                return (
-                    <button
-                        key={buttonId}
-                        type='button'
-                        className={`btn btn-primary2 toggleButton ${buttonStates[buttonId as keyof typeof buttonStates] ? 'active' : ''}`}
-                        aria-pressed={buttonStates[buttonId as keyof typeof buttonStates] ? 'true' : 'false'}
-                        onClick={() => handleClick()} // Remove the argument from handleClick function call
-                    >
-                        {buttonStates[buttonId as keyof typeof buttonStates] ? '-' : '+'}
-                    </button>
-                );
-            })}
-            </div>
-          );
-          seatStructure.push(row);
-        }
-        return seatStructure;
-      };
 
     const handleClick = () => {
         // can add logic to handle button clicks here if needed
@@ -128,25 +82,25 @@ function RegisteredLocomitivePage() {
   return (
     <>
         <PrimaryNavBar/>
-        <div className='container'>
+        <div className='containerLocPage'>
             <div className='row'>
                 <div className='col-lg-6'>
-                    <div className='m-4 InfoSec rounded-4'>
+                    <div className='m-4 InfoSec2 rounded-4'>
                         <div className='row d-flex justify-content-left pl-5 pt-4'>
                             <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
                         <div className='row d-flex justify-content-center'>
-                            <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
+                            <img src={TrainImg} alt="BusImg" className='p-3 col-6'/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
                             {/* Displaying bus information */}
-                            <p className='p2'>Bus Id:  {data.busId} </p>
-                            <p className='p2'>Bus No:  {data.busNo} </p>
-                            <p className='p2'>License No:  {data.licenNo} </p>
-                            <p className='p2'>Seat Count:  {data.setsCount} </p>
-                            <p className='p2'>AC or Non AC:  {data.aCorNONAC ? 'AC' : 'Non AC'} </p>
-                            <p className='p2'>License Img:  <a href={data.licenseImgURL} target="_blank">License Image</a> </p>
-                            <p className='p2'>Insurance Img:  <a href={data.insuranceImgURL} target="_blank">Insurance Image</a> </p>
+                            <p className='p2'>Bus Id :  {data.locomotiveId} </p>
+                            <p className='p2'>Bus No :  {data.locomotiveNumber} </p>
+                            <p className='p2'>License No :  {data.locomotiveType} </p>
+                            <p className='p2'>Seat Count :  {data.locomotiveModel} </p>
+                            <p className='p2'>AC or Non AC :  {data.locomotiveCapacity} </p>
+                            <p className='p2'>AC or Non AC :  {data.locomotiveSpeed} </p>
+                            <p className='p2'>License Img :  <a href={data.licenseImgURL} target="_blank">License Image</a> </p>
                         </div>
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
@@ -157,14 +111,7 @@ function RegisteredLocomitivePage() {
                     </div>
                 </div>
                 <div className='col-lg-6'>
-                    <div className='container m-4'>
-                        <div className='bg-light2 rounded-4 p-5'>
-                            <div className='row justify-content-center pb-3'>
-                            <img src={Wheel} alt='Steering-wheel-img' style={{ width: '57px' }} />
-                            </div>
-                            {renderSeatStructure()} {/* Render seat structure */}
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

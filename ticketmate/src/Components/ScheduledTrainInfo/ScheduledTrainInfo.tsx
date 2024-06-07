@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ScheduledTrainInfo.css';
-import BusIcon from '../../assets/fa6-solid_bus.png';
+import BusIcon from '../../assets/trainIcon.png';
 import BusIcon2 from '../../assets/Group 391.png';
 import axios from 'axios';
 import Swal from 'sweetalert2';

@@ -94,7 +94,7 @@ function ScheduledTrainInfo({ id }: { id: string }) {
                         <p>{busInfo.trainArrivalTime}</p>
                     </div>
                     <div className='col-lg-4'>
-                        <Link to={`/ScheduledBusPage?scheduleId=${busInfo.schedulId}`}><button className='btn primary mx-1'>See More</button></Link>
+                        <Link to={`/ScheduledTrainPage?schedulId=${busInfo.schedulId}`}><button className='btn primary mx-1'>See More</button></Link>
                         <button className='btn primary mx-1' onClick={() => handleDelete(busInfo.schedulId)}>Delete</button>
                     </div>
                 </div>

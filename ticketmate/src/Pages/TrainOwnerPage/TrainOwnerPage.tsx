@@ -147,7 +147,10 @@ function TrainOwnerPage() {
           </div>
         </div>
       </div>
-      <Footer />
+      <div className='pt-3'>
+        <Footer />
+      </div>
+      
     </>
   );
 }

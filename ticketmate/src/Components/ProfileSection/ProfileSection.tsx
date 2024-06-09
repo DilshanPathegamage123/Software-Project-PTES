@@ -3,12 +3,12 @@ import profileIcon from './assets/iconamoon_profile-circle-fill.png';
 import './ProfileSection.css';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
-function ProfileSection({ id, firstName, lastName, email }: { id: string, firstName: string, lastName: string, email: string }) {
+function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehicleType }: { id: string, firstName: string, lastName: string, email: string, backgroundImage: string, vehicleType:string }) {
   return (
-    <div className='container rounded-4 proSec'>
+    <div className='container rounded-4 proSec' style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div className='row align-items-center'>
         <div className='col-lg-3 col-sm-6 col-12 text-center'>
-          <h5 className='text-white pt-4'>Bus Owner</h5>
+          <h5 className='text-white pt-4'>{vehicleType} Owner</h5>
           <img src={profileIcon} alt="profileIcon" className='pb-3' />
         </div>
         <div className='col-lg-4 col-sm-6 p-4'>

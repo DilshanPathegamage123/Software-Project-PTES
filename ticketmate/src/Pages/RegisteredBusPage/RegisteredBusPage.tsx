@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './RegisteredBusPage.css'
 import Footer from '../../Components/Footer/footer'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import BusImg from '../../assets/RegBusImg.png'
+import BusImg from '../../assets/busImgBack2.jpg'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
 import { Link, useLocation } from 'react-router-dom';

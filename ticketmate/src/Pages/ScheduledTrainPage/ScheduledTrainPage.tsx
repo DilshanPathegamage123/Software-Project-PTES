@@ -36,6 +36,14 @@ interface ScheduleDate {
     departureDate: string;
 }
 
+interface LocomotiveData {
+    registeredLocomotiveLocomotiveId: string;
+}
+
+interface CarriageData {
+    registeredCarriageCarriageId: string;
+}
+
 function ScheduledTrainPage() {
     const [data, setData] = useState<TrainData>({
         schedulId: '',
@@ -55,6 +63,8 @@ function ScheduledTrainPage() {
 
     const [stations, setStations] = useState<StationData[]>([]);
     const [scheduledDates, setScheduledDates] = useState<ScheduleDate[]>([]);
+    const [locomotives, setLocomotives] = useState<LocomotiveData[]>([]);
+    const [carriages, setCarriages] = useState<CarriageData[]>([]);
     const [loading, setLoading] = useState(true);
 
     // Extracting scheduleId from query parameters
@@ -68,6 +78,8 @@ function ScheduledTrainPage() {
             getData(schedulId);
             getStationData(schedulId);
             getScheduledDates(schedulId);
+            getLocomotiveData(schedulId);
+            getCarriageData(schedulId);
         }
     }, [schedulId]);
 
@@ -100,6 +112,28 @@ function ScheduledTrainPage() {
         axios.get(`https://localhost:7001/api/ScheduledTrainDate/ByScheduledTrainSchedulId/${schedulId}`)
             .then((response) => {
                 setScheduledDates(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    // Function to fetch locomotive data from API
+    const getLocomotiveData = (schedulId: string) => {
+        axios.get(`https://localhost:7001/api/ScheduledLocomotive/by-train-schedule/${schedulId}`)
+            .then((response) => {
+                setLocomotives(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    // Function to fetch carriage data from API
+    const getCarriageData = (schedulId: string) => {
+        axios.get(`https://localhost:7001/api/ScheduledCarriage/ByTrainSchedule/${schedulId}`)
+            .then((response) => {
+                setCarriages(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -153,7 +187,7 @@ function ScheduledTrainPage() {
                                 <div className='col-lg-6 detailSec'>
                                     <div className='row'>
                                         <p className='para'>Train Stations :</p>
-                                        <ul className=' pl-5'>
+                                        <ul className='pl-5'>
                                             {stations.map((station, index) => (
                                                 <li key={index} className='station-info'>
                                                     <p className='para'>
@@ -165,7 +199,7 @@ function ScheduledTrainPage() {
                                     </div>
                                     <div className='row'>
                                         <p className='para'>Scheduled Dates :</p>
-                                        <ul className=' pl-5'>
+                                        <ul className='pl-5'>
                                             {scheduledDates.map((date, index) => (
                                                 <li key={index} className='date-info'>
                                                     <p className='para'>
@@ -176,6 +210,35 @@ function ScheduledTrainPage() {
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
+                            <div className='row bg-light m-3 pb-3 rounded-4'>
+                                <div className='col-sm-6 detailSec'>
+                                    <p>Selected Locomotive IDs</p>
+                                    <ul>
+                                        {locomotives.map((locomotive, index) => (
+                                            <li key={index} className='locomotive-info'>
+                                                <p className=''>
+                                                    {locomotive.registeredLocomotiveLocomotiveId}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className='col-sm-6 detailSec'>
+                                    <p>Selected Carriages IDs</p>
+                                    <ul>
+                                        {carriages.map((carriage, index) => (
+                                            <li key={index} className='carriage-info'>
+                                                <p className=''>
+                                                    {carriage.registeredCarriageCarriageId}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className='row p-1'>
+
                             </div>
                         </div>
                     )}

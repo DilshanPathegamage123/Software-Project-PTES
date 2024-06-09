@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
 import BusScheduleForm2 from './BusScheduleForm2';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: string | null }) {
   const [busId, setBusId] = useState('');
@@ -44,6 +46,8 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  const navigate = useNavigate();
 
   const checkBusIdAvailability = async () => {
     try {
@@ -169,6 +173,22 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
       setIsSubmitting(false);
     }
   };
+
+  const CancelButton = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Go Back!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/BusOwnerPage');
+      }
+    });
+  }
 
 
   return (
@@ -342,7 +362,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
       </div>
       <div className='row'>
         <div className='col-12 text-center p-3'>
-          <button type='button' className='btn white mx-3'>Cancel</button>
+          <button type='button' className='btn white mx-3' onClick={() => CancelButton()}>Cancel</button>
           <button type='button' className='btn primary mx-3' onClick={handleNextClick} disabled={isSubmitting}>Next</button>
 
         </div>

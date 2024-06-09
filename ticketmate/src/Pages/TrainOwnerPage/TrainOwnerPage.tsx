@@ -9,11 +9,16 @@ import RegLocomotiveInfoSec from '../../Components/RegLocomotiveInfoSec/RegLocom
 import { Link } from 'react-router-dom';
 import RegCarriagesInfoSec from '../../Components/RegCarriagesInfoSec/RegCarriagesInfoSec';
 import ScheduledTrainInfo from '../../Components/ScheduledTrainInfo/ScheduledTrainInfo';
+import BgImg from '../../assets/trainProImg.png';
 
 function TrainOwnerPage() {
   const location = useLocation();
-  const { username, password } = location.state || { username: 'Guest', password: '' }; // Default to 'Guest' and empty password if not passed
-
+  const storedUsername = localStorage.getItem('username');
+  const storedPassword = localStorage.getItem('password');
+  const locationState = location.state || { username: 'Guest', password: '' };
+  const [username, setUsername] = useState(storedUsername || locationState.username);
+  const [password, setPassword] = useState(storedPassword || locationState.password);
+  
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledTrains'); // State to track selected component
   const [buttonStates, setButtonStates] = useState({ // State to track button states
@@ -115,10 +120,12 @@ function TrainOwnerPage() {
       <PrimaryNavBar />
       <div className='container pt-3'>
         <ProfileSection
+          vehicleType='Train'
           id={userData.id}
           firstName={userData.firstName}
           lastName={userData.lastName}
           email={userData.email}
+          backgroundImage={BgImg}
         />
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
@@ -126,7 +133,7 @@ function TrainOwnerPage() {
               <Link to={`/TrainRegistrationPage?id=${userData.id}`}><SquareButton text='Register a Train' bwidth={divWidth} /></Link>                                  
             </div>
             <div>
-              <Link to={`/BusSchedulePage?id=${userData.id}`}><SquareButton text='Schedule a new Train journey' bwidth={divWidth} /></Link>
+              <Link to={`/TrainSchedulePage?id=${userData.id}`}><SquareButton text='Schedule a new Train journey' bwidth={divWidth} /></Link>
             </div>
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>

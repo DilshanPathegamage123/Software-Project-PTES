@@ -5,6 +5,7 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import BusImg from '../../assets/RegBusImg.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
+import '../../vars.css'
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -136,10 +137,10 @@ function RegisteredCarriagePage() {
                 <div className='col-lg-6'>
                     <div className='m-4 InfoSec rounded-4'>
                         <div className='row d-flex justify-content-left pl-5 pt-4'>
-                            <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
+                            <Link to='/TrainOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
                         <div className='row d-flex justify-content-center'>
-                            <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
+                            <img src={BusImg} alt="BusImg" className='p-3 col-6 custom-width'/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
                             {/* Displaying bus information */}
@@ -155,7 +156,7 @@ function RegisteredCarriagePage() {
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
                                 <button className='btn white m-2'>Edit</button>
-                                <button className='btn white m-2'onClick={()=>handleDelete()}>Delete</button>
+                                <button className='btn secondary m-2'onClick={()=>handleDelete()}>Delete</button>
                             </div>
                         </div>
                     </div>

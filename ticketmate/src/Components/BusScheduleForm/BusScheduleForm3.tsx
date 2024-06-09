@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import '../../vars.css';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, scheduleId: string; }) {
 
   console.log('ScheduleId:', scheduleId);
+  const navigate = useNavigate();
 
   const [dates, setDates] = useState<{ arrivalDate: string, departureDate: string }[]>([]);
   const [arrivalDate, setArrivalDate] = useState<string>('');
@@ -55,7 +57,10 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
         icon: 'success',
         title: 'Success',
         text: 'Data submitted successfully',
+        timer: 2500,
       });
+
+      navigate('/BusOwnerPage');
     } catch (error) {
       console.error('Error submitting data:', error);
       Swal.fire({
@@ -84,19 +89,22 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
   
           if (!response.ok) {
             console.error('Failed to delete schedule', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to delete the schedule.',
-            });
+            // Swal.fire({
+            //   icon: 'error',
+            //   title: 'Error',
+            //   text: 'Failed to delete the schedule.',
+            // });
+            navigate('/BusOwnerPage');
             return;
           }
   
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted',
-            text: 'The schedule has been successfully deleted.',
-          });
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Deleted',
+          //   text: 'The schedule has been successfully deleted.',
+          // });
+          navigate('/BusOwnerPage');
+
         } catch (error) {
           console.error('Error deleting schedule', error);
           Swal.fire({

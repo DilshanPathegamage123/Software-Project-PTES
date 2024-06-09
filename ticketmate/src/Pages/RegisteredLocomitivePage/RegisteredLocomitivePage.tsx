@@ -70,11 +70,38 @@ function RegisteredLocomitivePage() {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+                axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`)
+                .then((res) => {
+                    const busData = res.data;
+                    // Update deleteState to false
+                    busData.deleteState = false;
+                    // Send the updated data back to the server
+                    axios.put(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`, busData)
+                        .then(() => {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "The bus has been marked as deleted.",
+                                icon: "success"
+                            });
+                            //getData(); // Refresh data after updating deleteState
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Failed to mark as deleted.",
+                                icon: "error"
+                            });
+                        });
+                })
+                .catch((error) => {
+                    console.log(error);
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to fetch bus data.",
+                        icon: "error"
+                    });
+                });
             }
           });
     }
@@ -87,20 +114,20 @@ function RegisteredLocomitivePage() {
                 <div className='col-lg-6'>
                     <div className='m-4 InfoSec2 rounded-4'>
                         <div className='row d-flex justify-content-left pl-5 pt-4'>
-                            <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
+                            <Link to='/TrainOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
                         <div className='row d-flex justify-content-center'>
                             <img src={TrainImg} alt="BusImg" className='p-3 col-6'/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
                             {/* Displaying bus information */}
-                            <p className='p2'>Bus Id :  {data.locomotiveId} </p>
-                            <p className='p2'>Bus No :  {data.locomotiveNumber} </p>
-                            <p className='p2'>License No :  {data.locomotiveType} </p>
-                            <p className='p2'>Seat Count :  {data.locomotiveModel} </p>
-                            <p className='p2'>AC or Non AC :  {data.locomotiveCapacity} </p>
-                            <p className='p2'>AC or Non AC :  {data.locomotiveSpeed} </p>
-                            <p className='p2'>License Img :  <a href={data.licenseImgURL} target="_blank">License Image</a> </p>
+                            <p className='p2'>Locomotive Id :  {data.locomotiveId} </p>
+                            <p className='p2'>Locomotive No :  {data.locomotiveNumber} </p>
+                            <p className='p2'>Locomotive Type :  {data.locomotiveType} </p>
+                            <p className='p2'>Locomotive Model :  {data.locomotiveModel} </p>
+                            <p className='p2'>Locomotive Capacity :  {data.locomotiveCapacity} </p>
+                            <p className='p2'>Locomotive Speed :  {data.locomotiveSpeed} </p>
+                            <p className='p2'>Locomotive Licen :  <a href={data.licenseImgURL} target="_blank">License Image</a> </p>
                         </div>
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>

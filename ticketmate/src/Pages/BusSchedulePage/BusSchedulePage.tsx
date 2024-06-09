@@ -6,6 +6,8 @@ import BusScheduleForm2 from '../../Components/BusScheduleForm/BusScheduleForm2'
 import BusScheduleForm3 from '../../Components/BusScheduleForm/BusScheduleForm3';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import backgroundImage from '../../assets/busschedupageBG.jpg';
+import Footer from '../../Components/Footer/footer';
 
 function BusSchedulePage() {
   const [showForm2, setShowForm2] = useState(false);
@@ -17,6 +19,7 @@ function BusSchedulePage() {
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get('id');
   console.log("user id " + userId);
+  
 
   const handleNext = async (formData: any, scheduleId: any) => {
     const { routNo } = formData;
@@ -63,21 +66,32 @@ function BusSchedulePage() {
   return (
     <>
       <PrimaryNavBar />
-      <div className='container py-4'>
-        <div className='rounded-4 formSec2'>
-          <div className='row'>
-            <h3 className='h3Style text-center'>Fill this form to Schedule a bus</h3>
-          </div>
+      <div className='BusScheBack' style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <div className='container py-4'>
+          <div className='rounded-4 formSec2'>
+            <div className='row'>
+              <h3 className='h3Style text-center'>Fill this form to Schedule a bus</h3>
+            </div>
 
-          {showForm3 ? (
-            <BusScheduleForm3 userId={userId} scheduleId={scheduleId}/>
-          ) : showForm2 ? (
-            <BusScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} scheduleId={scheduleId}/>
-          ) : (
-            <BusScheduleForm handleNext={handleNext} userId={userId} />
-          )}
+            {showForm3 ? (
+              <BusScheduleForm3 userId={userId} scheduleId={scheduleId}/>
+            ) : showForm2 ? (
+              <BusScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} scheduleId={scheduleId}/>
+            ) : (
+              <BusScheduleForm handleNext={handleNext} userId={userId} />
+            )}
+          </div>
         </div>
+        <div className="row align-items-end">
+          <div className='col'>
+            <Footer/>
+          </div>
+          
+        </div>
+        
       </div>
+      
+      
     </>
   );
 }

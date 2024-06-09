@@ -73,6 +73,8 @@ function LoginPage() {
                 LOG IN
               </button>
             </div>
+            <p>johndoe   password123</p>
+            <p>alicejohnson   password789</p>
           </div>
         </div>
       </form>

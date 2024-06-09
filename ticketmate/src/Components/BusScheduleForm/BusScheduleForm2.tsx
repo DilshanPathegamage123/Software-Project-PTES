@@ -101,16 +101,17 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
             Swal.fire({
               icon: 'error',
               title: 'Error',
-              text: 'Failed to delete the schedule.',
+              text: 'Error Going Back',
             });
+            navigate('/BusOwnerPage');
             return;
           }
   
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted',
-            text: 'The schedule has been successfully deleted.',
-          });
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'Deleted',
+          //   text: 'The schedule has been successfully deleted.',
+          // });
 
           navigate('/BusOwnerPage');
 
@@ -119,7 +120,7 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error deleting the schedule.',
+            text: 'Error Going Back',
           });
         }
       }

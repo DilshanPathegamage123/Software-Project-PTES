@@ -8,10 +8,16 @@ import Footer from '../../Components/Footer/footer';
 import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
 import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import BgImg from '../../assets/busProImg.png'
 
 function BusOwnerPage() {
   const location = useLocation();
-  const { username, password } = location.state || { username: 'Guest', password: '' }; // Default to 'Guest' and empty password if not passed
+  const storedUsername = localStorage.getItem('username');
+  const storedPassword = localStorage.getItem('password');
+  const locationState = location.state || { username: 'Guest', password: '' };
+  const [username, setUsername] = useState(storedUsername || locationState.username);
+  const [password, setPassword] = useState(storedPassword || locationState.password);
 
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
@@ -30,32 +36,60 @@ function BusOwnerPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(`Logged in as: ${username}`);
-    console.log(`Password: ${password}`);
-
-    // Function to fetch user data
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+    if (loading) {
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we fetch your data.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
         }
-        const data = await response.json();
-        setUserData({
-          id: data.id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email
-        });
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        setLoading(false);
-      }
-    };
+      });
+    }
 
-    fetchUserData();
-  }, [username, password]);
+    if (username !== 'Guest' && password !== '') {
+      console.log(`Logged in as: ${username}`);
+      console.log(`Password: ${password}`);
+
+      // Function to fetch user data
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setUserData({
+            id: data.id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email
+          });
+          setLoading(false);
+          Swal.close();
+
+          // Store username and password in local storage
+          localStorage.setItem('username', username);
+          localStorage.setItem('password', password);
+        } catch (error) {
+          console.error('Failed to fetch user data:', error);
+          setLoading(false);
+          Swal.fire({
+            title: 'Error',
+            text: 'Failed to fetch user data.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      };
+
+      fetchUserData();
+    } else {
+      setLoading(false);
+      Swal.close();
+    }
+  }, [username, password, loading]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -105,27 +139,25 @@ function BusOwnerPage() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <PrimaryNavBar />
       <div className='container pt-3'>
         <ProfileSection
+          vehicleType='Bus'
           id={userData.id}
           firstName={userData.firstName}
           lastName={userData.lastName}
           email={userData.email}
+          backgroundImage={BgImg}
         />
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>
-              <Link to={`/BusRegistrationPage?id=${userData.id}`}><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>                                  
+              <Link to={`/BusRegistrationPage?id=${userData.id, username, password}`}><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
             </div>
             <div>
-              <Link to={`/BusSchedulePage?id=${userData.id}`}><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
+              <Link to={`/BusSchedulePage?id=${userData.id, username, password}`}><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
             </div>
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>

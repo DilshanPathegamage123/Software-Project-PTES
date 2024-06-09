@@ -7,13 +7,14 @@ import ScheduledBusPage from './Pages/ScheduledBusPage/ScheduledBusPage';
 import BusSchedulePage from './Pages/BusSchedulePage/BusSchedulePage';
 import LoginPage from './Pages/loginPage/loginPage';
 import Home from './Pages/HomePage/Home';
-import Test from './Pages/Test/test';
 import TrainOwnerPage from './Pages/TrainOwnerPage/TrainOwnerPage';
 import ScheduledBusInfo from './Components/ScheduledBusInfo/ScheduledBusInfo';
 import TrainRegistrationPage from './Pages/TrainRegistrationPage/TrainRegistrationPage';
 import RegisteredLocomitivePage from './Pages/RegisteredLocomitivePage/RegisteredLocomitivePage';
 import RegisteredCarriagePage from './Pages/RegisteredCarriagePage/RegisteredCarriagePage'
 import ScheduledTrainPage from './Pages/ScheduledTrainPage/ScheduledTrainPage';
+import TrainSchedulePage from './Pages/TrainSchedulePage/TrainSchedulePage';
+import Test from './Pages/Test/test';
 
 
 function App() {
@@ -32,12 +33,13 @@ function App() {
         <Route path='RegisteredLocomitivePage' element={<RegisteredLocomitivePage />}/>
         <Route path='/RegisteredCarriagePage' element={<RegisteredCarriagePage />} />
         <Route path='/ScheduledTrainPage' element={<ScheduledTrainPage />} />
+        <Route path='/TrainSchedulePage' element={<TrainSchedulePage />} />
       </Routes>
     </BrowserRouter>
 
     
         // <>
-        //   <ScheduledBusInfo/>
+        //   <Test/>
         // </>
   );
 }

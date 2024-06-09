@@ -124,7 +124,7 @@ function CarriageRegistrationForm() {
           window.location.reload();
         }, 4000);
 
-        //navigate('/CarriageOwnerPage');
+        navigate('/TrainOwnerPage');
       } catch (error) {
         console.log("Error:", error);
         Swal.fire({
@@ -184,7 +184,7 @@ function CarriageRegistrationForm() {
       confirmButtonText: "Yes, Go Back!"
     }).then((result) => {
       if (result.isConfirmed) {
-        //navigate('/CarriageOwnerPage');
+        navigate('/TrainOwnerPage');
       }
     });
   };

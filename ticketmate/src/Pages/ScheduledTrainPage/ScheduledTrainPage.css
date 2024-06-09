@@ -35,13 +35,19 @@
         margin-left: 0px;
         margin-right: 0px;
     }
+    .detailSec{
+        padding-left: 25px;
+    }
   }
   
   /* Responsive padding for screens between 601px and 1200px */
   @media only screen and (min-width: 601px) and (max-width: 1200px) {
     .SchBusInfoSec {
-        margin-left: 100px;
-        margin-right: 100px;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    .detailSec{
+        padding-left: 45px;
     }
   }
 

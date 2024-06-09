@@ -138,7 +138,7 @@ function LocomotiveRegistrationForm() {
             window.location.reload();
         }, 4000);
 
-        //navigate('/LocomotiveOwnerPage');
+        navigate('/TrainOwnerPage');
       } catch (error) {
         Swal.fire({
           icon: "error",  
@@ -177,7 +177,7 @@ function LocomotiveRegistrationForm() {
       confirmButtonText: "Yes, Go Back!"
     }).then((result) => {
       if (result.isConfirmed) {
-        //navigate('/LocomotiveOwnerPage');
+        navigate('/TrainOwnerPage');
       }
     });
   };

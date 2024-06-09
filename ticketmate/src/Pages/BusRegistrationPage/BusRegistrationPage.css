@@ -79,3 +79,7 @@
   background-color: #1FBF83;
 
 }
+
+.BusRegBack{
+    background-color: var(--color-secondary);
+}

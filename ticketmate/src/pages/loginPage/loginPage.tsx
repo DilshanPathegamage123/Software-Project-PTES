@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-import React, { useState } from "react";
 import "./loginPage.css";
  //import vars from '../../vars.css'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
-import { useNavigate } from "react-router-dom";//import use navigate
 import axios from "axios";
 
 const LoginPage = () => {
@@ -126,7 +124,7 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
               // Add padding for the icon
-            >
+            />
 
 
             <input
@@ -136,7 +134,7 @@ const LoginPage = () => {
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+        
               required
             />
             <div className="d-flex justify-content-center">

@@ -20,57 +20,90 @@ const initialValues = {
   confirmPassword: "",
 };
 
-
-
 function ownerFormComponent() {
   const [dob, setDob] = useState<Date | null>(null);
-  const [vehicleType, setVehicleType] = useState("busType");
+  const [vehicleType, setVehicleType] = useState("bus");
   const history = useNavigate();
-
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: ownerFormValidation,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
-//start of the api call
-axios
-.post(`https://localhost:7196/api/userData`, {
-  firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      dob: dob,
-      nic: values.nic,
-      contactNo: values.contactNumber,
-      userName: values.userName,
-      password: values.password,
-      userType: "Owner",
-      ownVehicleType: vehicleType,
-      drivingLicenseNo: "",
-      isDeleted: false,
-      requestStatus:false
-})
-.then((response) => {
-  console.log(response.data);
 
-  if(response.status === 200){
-    history("/BusOwnerPage");
-    alert(response.data);
-    
-  }
-})
-.catch((error) => {
-  console.error("Error:", error);
-});
+      const userData = {
+        id: 0,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        dob: dob,
+        nic: values.nic,
+        contactNo: values.contactNumber,
+        userName: values.userName,
+        password: values.password,
+        userType: "Owner",
+        ownVehicleType: vehicleType,
+        drivingLicenseNo: "",
+        isDeleted: false,
+        requestStatus: false,
+      };
 
+      const authData = {
+        username: values.userName,
+        password: values.password,
+        roles: ["Owner"],
+      };
 
+      try {
+        const userResponse = await axios.post(
+          `https://localhost:7196/api/userData`,
+          userData
+        );
 
+        const authResponse = await axios.post(
+          `https://localhost:7196/api/Auth/register`,
+          authData
+        );
 
-
-//end of the api call
-
-
+        if (authResponse.status === 200 && userResponse.status === 200) {
+          history("/BusOwnerPage");
+        }
+        console.log(authResponse.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
+
+    //start of the api call
+    // axios
+    // .post(`https://localhost:7196/api/userData`, {
+    //       id:0,
+    //       firstName: values.firstName,
+    //       lastName: values.lastName,
+    //       email: values.email,
+    //       dob: dob,
+    //       nic: values.nic,
+    //       contactNo: values.contactNumber,
+    //       userName: values.userName,
+    //       password: values.password,
+    //       userType: "Owner",
+    //       ownVehicleType: vehicleType,
+    //       drivingLicenseNo: "",
+    //       isDeleted: false,
+    //       requestStatus:false
+    // })
+    // .then((response) => {
+    //   console.log(response.data);
+
+    //   if(response.status === 200){
+    //     history("/BusOwnerPage");
+    //     alert(response.data);
+
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error("Error:", error);
+    // });
   });
   return (
     <div>
@@ -199,30 +232,26 @@ axios
             </div>
             <div className="col-12 col-lg-4">
               <p className="fw-regular">Own Vehicle Type</p>
-              <label
-                onClick={() => setVehicleType("busType")}
-                className="d-inline-flex align-items-center"
-              >
+              <label className="d-inline-flex align-items-center">
                 <input
                   type="radio"
                   name="vehicleType"
-                  value="busType"
-                  checked={vehicleType === "busType"}
+                  value="bus"
+                  onClick={() => setVehicleType("bus")}
+                  checked={vehicleType === "bus"}
 
                   // onChange={handleOptionChange}
                 />
                 Bus
               </label>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <label
-                onClick={() => setVehicleType("trainType")}
-                className="d-inline-flex align-items-center"
-              >
+              <label className="d-inline-flex align-items-center">
                 <input
                   type="radio"
                   name="vehicleType"
-                  value="trainType"
-                  checked={vehicleType === "trainType"}
+                  value="train"
+                  onClick={() => setVehicleType("train")}
+                  checked={vehicleType === "train"}
 
                   // onChange={handleOptionChange}
                 />
@@ -337,13 +366,13 @@ axios
             </div>
           </div>
           <br />
-          <div className="row text-center">
-            <PrimaryButton
+          <div className="row justify-content-center text-center">
+            <button
               type="submit"
-              value="SIGN UP"
-              color="primary"
-              IsSmall={false}
-            />
+              className=" btn-outline-primary btn-sm btn-width"
+            >
+              SIGN UP
+            </button>
             <br />
             {/* <GoogleSignInButton/> */}
           </div>

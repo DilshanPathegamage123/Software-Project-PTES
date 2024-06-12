@@ -34,6 +34,10 @@ function BusOwnerPage() {
   let { username, password } = location.state;
   const [ownerdata, setOwnerdata] = useState<OwnerData[]>([]);
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  }
+
   useEffect(() => {
     function handleResize() {
       const width = document.getElementById("getWidth")?.offsetWidth;
@@ -49,7 +53,14 @@ function BusOwnerPage() {
   }, []);
   useEffect(() => {
     axios
-      .get(`https://localhost:7196/api/userData/${username}/${password}`)
+      //.get(`https://localhost:7196/api/userData/${username}/${password}`, {
+
+      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}
+`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
       .then((response) => {
         console.log(response.data);
         setOwnerdata(response.data);
@@ -71,6 +82,7 @@ function BusOwnerPage() {
             requestStatus: owner.requestStatus,
           }))
         );
+        console.log(ownerdata);
       })
       .catch((error) => {
         console.log(error);

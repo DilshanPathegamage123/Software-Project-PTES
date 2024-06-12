@@ -33,11 +33,18 @@ function BusOwnerPage() {
   let location = useLocation();
   let { username, password } = location.state;
   const [ownerdata, setOwnerdata] = useState<OwnerData[]>([]);
+
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  }
+
   const [buttonStates, setButtonStates] = useState({ // State to track button states
     ScheduledBuses: true,
     RegisteredBuses: false,
     Reports: false
   });
+
 
   useEffect(() => {
     function handleResize() {
@@ -55,7 +62,15 @@ function BusOwnerPage() {
   }, []);
   useEffect(() => {
     axios
-      .get(`https://localhost:7196/api/userData/${username}/${password}`)
+      //.get(`https://localhost:7196/api/userData/${username}/${password}`, {
+
+      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}
+`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+
       .then((response) => {
         console.log(response.data);
         setOwnerdata(response.data);
@@ -77,11 +92,13 @@ function BusOwnerPage() {
             requestStatus: owner.requestStatus,
           }))
         );
+
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
       
        // Function to handle button click
   const handleButtonClick = (componentName: string) => {
@@ -117,10 +134,10 @@ function BusOwnerPage() {
   };
 
 
+
   return (
     <>
       <PrimaryNavBar />
-
       <div className="container-fluid pt-3">
         <div>
           {/* <ProfileSection /> */}
@@ -131,7 +148,6 @@ function BusOwnerPage() {
                 <h5 className="text-white pt-4">Bus Owner</h5>
                 <img src={profileIcon} alt="profileIcon" className="pb-3" />
               </div>
-
               <div className="col-lg-4 col-sm-6 p-4">
                 <div className="">
                   <p className="text-white">
@@ -175,6 +191,7 @@ function BusOwnerPage() {
             </div>
           </div>
         </div>
+
       </div>
       <Footer />
     </>

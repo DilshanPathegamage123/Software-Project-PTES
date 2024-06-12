@@ -13,8 +13,8 @@ import axios from "axios";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useNavigate();
 
-  const history = useNavigate();//************** */
 
   const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -29,17 +29,12 @@ const LoginPage = () => {
         }
       );
 
-      // if (!response.data.token) {
-      //   console.error("Token not found in response:", response.data);
-      //   alert("Token not found in response. Please check your credentials.");
-      //   return;
-      // }
-
+ 
       const token = response.data.jwtToken;
       //Fconsole.log("token", token);
 
       if (token) {
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
 
         //decode the token
         const tokenParts = token.split(".");
@@ -64,10 +59,10 @@ const LoginPage = () => {
             history("/BusOwnerPage", { state: { username, password } });
             break;
           case "Passenger":
-            history("/#");
+            history("/passenger", { state: { username, password } });
             break;
           case "Driver":
-            history("/#");
+            history("/driver", { state: { username, password } });
             break;
           default:
             //alert("Invalid user name or password");
@@ -88,7 +83,6 @@ const LoginPage = () => {
 
   return (
     <div className="loginpage-body">
-
       <PrimaryNavBar />
 
       <a href="#">
@@ -108,6 +102,7 @@ const LoginPage = () => {
       </a>
 
       <form onSubmit={handlesubmit} method="post">
+
         <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center"

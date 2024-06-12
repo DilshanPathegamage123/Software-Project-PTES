@@ -105,11 +105,13 @@ function PrimaryNavBar() {
               </button>
             </div>
 
+
            <button
               type="button"
               value="SIGN IN"
               color="third"
               className="btn btn-outline-primary btn-sm"
+
             onClick={() => history("/login")}
             
             > SIGN IN

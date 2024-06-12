@@ -67,5 +67,5 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
     </div>
   );
 };
-
+}
 export default Home;

@@ -9,7 +9,7 @@ function Footer() {
 
       <div className='futter mt-3'>
         <div className="container">
-        <footer className="py-3 my-0">
+        <footer className="py-3 mb-0 mt-4">
             <div className='row'>
             <div className='col'>
             <ul className="nav justify-content-left pb-3 mb-3">

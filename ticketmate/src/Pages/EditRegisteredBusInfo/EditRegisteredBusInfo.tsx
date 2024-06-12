@@ -95,92 +95,94 @@ function EditRegisteredBusInfo() {
 
                       <div className="col p-4">
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                        <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                        <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
-                          <ToggleButton id={0} />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
+                          <ToggleButton />
                         </div>
                         <div className="row justify-content-center">
-                        <ToggleButton id={0} />
-                        <ToggleButton id={0} />
-                        <ToggleButton id={0} />
-                        <ToggleButton id={0} />
-                        <ToggleButton id={0} />
-                        <ToggleButton id={0} />
+                        <ToggleButton />
+                        <ToggleButton />
+                        <ToggleButton />
+                        <ToggleButton />
+                        <ToggleButton />
+                        <ToggleButton />
+
                       </div>
 
                       </div>

@@ -11,7 +11,6 @@ import EndRideButton from "./Components/Buttons/MapButton/EndRideButton";
 
 
 
-
 function App() {
   const rideId = 1;
   return (
@@ -23,12 +22,8 @@ function App() {
             <VehicleLocation rideId={1} /> */}
        <AppRoutes/>
 
-
-    
-      
     </div>
       
-
   );
 }
 

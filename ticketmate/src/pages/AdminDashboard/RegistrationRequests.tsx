@@ -134,6 +134,7 @@ const getToken = () => {
                       Reject
                     </button>
                     &nbsp;&nbsp;
+
                   </td>
                   <td>
                     {/* onClick={() => toggleModel1(user)} */}

@@ -9,7 +9,7 @@ import "./Reporting&Analysis.css";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import html2canvas from "html2canvas";
-import TrainOwners from './Reporting&AnalysisTrain'
+import TrainOwners from './ReportingAnalysisTrain'
 
 interface ReportData {
   vehicleOwner: string;
@@ -26,7 +26,7 @@ interface ReportData {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [vehicleType, setVehicleType] = useState<string>('Bus');
 
-  const [loading, setLoading] = useState<boolean>(false);
+//   const [loading, setLoading] = useState<boolean>(false);
 
 
   const contentRef = useRef<HTMLDivElement>(null); // Ref for the content to be downloaded

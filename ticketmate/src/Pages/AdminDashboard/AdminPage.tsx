@@ -10,7 +10,7 @@ import profileIcon from "../../../src/Components/ProfileSection/assets/iconamoon
 import { BiFontColor } from "react-icons/bi";
 import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
-import ReportAnlysis from "./Reporting&AnalysisBus";
+import ReportAnlysis from "./ReportingAnalysisBus";
 
 function AdminPage() {
   const location = useLocation();

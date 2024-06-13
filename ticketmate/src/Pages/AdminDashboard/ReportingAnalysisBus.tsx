@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import "./ReportingAnalysis.css";
+import TrainOwners from "./ReportingAnalysisTrain";
 
 import { Bar, Line } from "react-chartjs-2";
 import "chart.js/auto";
 
-import "./Reporting&Analysis.css";
-
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+// import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
-import TrainOwners from './ReportingAnalysisTrain'
 
 interface ReportData {
   vehicleOwner: string;
@@ -19,55 +20,63 @@ interface ReportData {
   predictedIncome?: number; // Add this if predictedIncome is part of your data
 }
 
-  const ReportTable: React.FC = () => {
-  const [reportType, setReportType] = useState<string>('daily');
+const ReportTable: React.FC = () => {
+  const [reportType, setReportType] = useState<string>("daily");
   const [busOwners, setBusOwners] = useState<string[]>([]);
   const [reportData, setReportData] = useState<ReportData[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [vehicleType, setVehicleType] = useState<string>('Bus');
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [vehicleType, setVehicleType] = useState<string>("Bus");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentDate, setCurrentDate] = useState<string>("");
 
-//   const [loading, setLoading] = useState<boolean>(false);
 
-
-  const contentRef = useRef<HTMLDivElement>(null); // Ref for the content to be downloaded
   const barChartRef = useRef<HTMLDivElement>(null);
   const lineChartRef = useRef<HTMLDivElement>(null);
 
-
   // Fetch all bus owners when component mounts
+
   useEffect(() => {
-    axios.get('http://localhost:5050/api/AdminReport/busowners')
-      .then(response => {
-        console.log('Bus Owners:', response.data);
+    // Set the current date when the component mounts
+    const date = new Date().toLocaleDateString();
+    setCurrentDate(date);
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5050/api/AdminReport/busowners")
+      .then((response) => {
+        console.log("Bus Owners:", response.data);
+        // Extract the user IDs from the response
         const ownerIds = response.data.$values;
         setBusOwners(ownerIds);
       })
-      .catch(error => {
-        console.error('There was an error fetching the bus owners!', error);
+      .catch((error) => {
+        console.error("There was an error fetching the bus owners!", error);
       });
   }, []);
 
-  // Fetch report data whenever reportType or busOwners changes
+  // Fetch report data whenever reportType changes
   useEffect(() => {
-    if (vehicleType === 'Bus') {
+    if (vehicleType === "Bus") {
       const fetchReportData = async () => {
+        setLoading(true);
         let allData: ReportData[] = [];
         for (const ownerId of busOwners) {
           let data: ReportData | undefined;
-          if (reportType === 'daily') {
+          if (reportType === "daily") {
             data = await fetchDailyStatistics(ownerId);
-          } else if (reportType === 'monthly') {
+          } else if (reportType === "monthly") {
             data = await fetchMonthlyStatistics(ownerId);
-          } else if (reportType === '3months') {
+          } else if (reportType === "3months") {
             data = await fetchThreeMonthsStatistics(ownerId);
-          } else if (reportType === 'yearly') {
+          } else if (reportType === "yearly") {
             data = await fetchYearlyStatistics(ownerId);
           }
           if (data) {
             allData.push(data);
           }
         }
-        console.log('Fetched Report Data:', allData);
+        console.log("Fetched Report Data:", allData);
         setReportData(allData);
         setLoading(false);
       };
@@ -76,26 +85,39 @@ interface ReportData {
         fetchReportData();
       }
     }
-  }, [reportType, busOwners, vehicleType]);
+    // handleSearchInputChange;
+  }, [reportType, busOwners, searchTerm, vehicleType]);
 
   // Functions to fetch statistics for each date filter
   const fetchDailyStatistics = async (userId: string): Promise<ReportData> => {
-    const response = await axios.get(`http://localhost:5050/api/AdminReport/daily/${userId}`);
+    const response = await axios.get(
+      `http://localhost:5050/api/AdminReport/daily/${userId}`
+    );
     return mapResponseToReportData(response.data);
   };
 
-  const fetchMonthlyStatistics = async (userId: string): Promise<ReportData> => {
-    const response = await axios.get(`http://localhost:5050/api/AdminReport/monthly/${userId}`);
+  const fetchMonthlyStatistics = async (
+    userId: string
+  ): Promise<ReportData> => {
+    const response = await axios.get(
+      `http://localhost:5050/api/AdminReport/monthly/${userId}`
+    );
     return mapResponseToReportData(response.data);
   };
 
-  const fetchThreeMonthsStatistics = async (userId: string): Promise<ReportData> => {
-    const response = await axios.get(`http://localhost:5050/api/AdminReport/3months/${userId}`);
+  const fetchThreeMonthsStatistics = async (
+    userId: string
+  ): Promise<ReportData> => {
+    const response = await axios.get(
+      `http://localhost:5050/api/AdminReport/3months/${userId}`
+    );
     return mapResponseToReportData(response.data);
   };
 
   const fetchYearlyStatistics = async (userId: string): Promise<ReportData> => {
-    const response = await axios.get(`http://localhost:5050/api/AdminReport/yearly/${userId}`);
+    const response = await axios.get(
+      `http://localhost:5050/api/AdminReport/yearly/${userId}`
+    );
     return mapResponseToReportData(response.data);
   };
 
@@ -105,7 +127,6 @@ interface ReportData {
       totalPassengers: data.totalPassengers,
       totalIncome: data.totalIncome,
       averageRate: data.averageRate,
-      predictedIncome: data.predictedIncome, // Ensure this matches your data structure
     };
   };
 
@@ -121,36 +142,46 @@ interface ReportData {
     setVehicleType(event.target.value);
   }
 
-  const filteredReportData = reportData.filter(data =>
+  const filteredReportData = reportData.filter((data) =>
     data.vehicleOwner.includes(searchTerm)
   );
 
   const barChartData = {
-    labels: filteredReportData.map(data => data.vehicleOwner),
+    labels: filteredReportData.map((data) => data.vehicleOwner),
     datasets: [
       {
-        label: 'Average Rate',
-        data: filteredReportData.map(data => data.averageRate),
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        label: "Rate",
+        data: filteredReportData.map((data) => data.averageRate),
+        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        borderWidth: 1,
       },
     ],
   };
 
   const lineChartData = {
-    labels: filteredReportData.map(data => data.vehicleOwner),
+    labels: filteredReportData.map((data) => data.vehicleOwner),
     datasets: [
       {
-        label: 'Total Income',
-        data: filteredReportData.map(data => data.totalIncome),
+        label: "Income",
+        data: filteredReportData.map((data) => data.totalIncome),
+        borderColor: "rgba(75, 192, 192, 0.6)", // Aqua color
+        borderWidth: 1,
         fill: false,
-        borderColor: 'rgba(75, 192, 192, 1)',
       },
     ],
   };
-   //the pdf download function
-   async function downloadPDF() {
-    const doc = new jsPDF();
 
+  async function downloadPDF() {
+    // Change the type of 'doc' to 'any'
+    const doc: any = new jsPDF(); //corrected the error in line 228 the autotable error
+
+    doc.setFontSize(8);
+
+  // Add the current date at the top
+  doc.text(`Date: ${currentDate}`, 14, 20);
+
+  // Reset the font size for the table
+  doc.setFontSize(12);
     // Capture bar chart as image
     const barChartElement = barChartRef.current;
     const barChartCanvas = barChartElement?.querySelector("canvas");
@@ -161,8 +192,6 @@ interface ReportData {
         canvas.toDataURL("image/png")
       );
     }
-
-    // Capture line chart as image
     const lineChartElement = lineChartRef.current;
     const lineChartCanvas = lineChartElement?.querySelector("canvas");
     let lineChartImage = "";
@@ -174,25 +203,29 @@ interface ReportData {
     }
 
     // Add the table to the PDF first
-    doc.autoTable({
+    autoTable(doc, {
       head: [
         [
           "Vehicle Owner",
           "Total Passengers",
-          "Total Income",
           "Average Rate",
-          "predictedIncome",
+          "Total Income",
+          "Predicted Income",
         ],
       ],
       body: filteredReportData.map((data) => [
         data.vehicleOwner,
         data.totalPassengers,
-        data.totalIncome,
         data.averageRate,
-        data.predictedIncome,
-       
+        data.totalIncome,
+        // data.predictedincome
       ]),
-      startY: 10, // Start from a bit below the top
+      // startY: 10, // Start from a bit below the top
+      // styles: { halign: 'center' }, // Add this line
+      startY: 30, // Start the table below the date
+    margin: { left: 14 }, // Align with the date
+    styles: { halign: 'center' }, // Center align the table content
+
     });
 
     // Get the current height of the document
@@ -283,92 +316,95 @@ interface ReportData {
     doc.save("report.pdf");
   }
 
-
-
   return (
     <>
-      <div
-        className="container shadow col-10 justify-center p-3 mb-5 rounded"
-        style={{ backgroundColor: "#D9D9D9" }}
-      >
-        <div>
-        <div className="row">
-          <div className="clo-lg-8 col-12 col-md-6">
-            {/* Vehicle type radio buttons */}
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="radioOptions"
-                id="radioOptionBus"
-                value="Bus"
-                checked={vehicleType === 'Bus'}
-                onChange={handleVehicleTypeChange}
-              />
-              <label className="form-check-label" htmlFor="radioOptionBus">
-                Bus
-              </label>
+      <div>
+        <div
+          className="container shadow col-10 justify-center p-3  rounded-top"
+          style={{ backgroundColor: "#D9D9D9" }}
+        >
+          <div className="row">
+            <div className="clo-lg-8 col-12 col-md-6">
+              {/* Vehicle type radio buttons */}
+
+              <div className="form-check form-check-inline">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="radioOptions"
+                  id="radioOption1"
+                  value="Bus"
+                  checked={vehicleType === "Bus"}
+                  onChange={handleVehicleTypeChange}
+                />
+                <label className="form-check-label" htmlFor="radioOption1">
+                  Bus
+                </label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="radioOptions"
+                  id="radioOption2"
+                  value="Train"
+                  checked={vehicleType === "Train"}
+                  onChange={handleVehicleTypeChange}
+                />
+                <label className="form-check-label" htmlFor="radioOption2">
+                  Train
+                </label>
+              </div>
             </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="radioOptions"
-                id="radioOptionTrain"
-                value="Train"
-                checked={vehicleType === 'Train'}
-                onChange={handleVehicleTypeChange}
-              />
-              <label className="form-check-label" htmlFor="radioOptionTrain">
-                Train
-              </label>
+            {vehicleType === "Bus" && (
+              <>
+                <div className="col-lg-3 col-12 col-md-6">
+                  {/* Search input */}
+                  <input
+                    type="text"
+                    placeholder="Search Bus Owner ID"
+                    name="search"
+                    id="search"
+                    className="form-control border rounded-5"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </div>
+                <div className="col-lg-3 col-12 col-md-6">
+                  {/* Date filter select */}
+                  <select value={reportType} onChange={handleDateFilterChange}>
+                    <option value="daily">Daily</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="3months">Three Months</option>
+                    <option value="yearly">Yearly</option>
+                  </select>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-
-         
-          {vehicleType === 'Bus' && (
-            <>
-              <div className="col-lg-3 col-12 col-md-6">
-                {/* Search input */}
-                <input
-                  type="text"
-                  placeholder="Search Bus Owner ID"
-                  name="search"
-                  id="search"
-                  className="form-control border rounded-5"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-              </div>
-              <div className="col-lg-3 col-12 col-md-6">
-                {/* Date filter select */}
-                <select value={reportType} onChange={handleDateFilterChange}>
-                  <option value="daily">Daily</option>
-                  <option value="monthly">Monthly</option>
-                  <option value="3months">Three Months</option>
-                  <option value="yearly">Yearly</option>
-                </select>
-              </div>
-            </>
-          )}
-        </div>
-        </div>
-
-        
-        {vehicleType === 'Bus' ? (
+        ) : vehicleType === "Bus" ? (
           <>
-          
-            <div ref={contentRef}>
+            <div
+              className="container  col-10 justify-center p-3 mt-0 mb-5 rounded-bottom bottom-shadow"
+              style={{ backgroundColor: "#D9D9D9" }}
+            >
               <div className="row  ml-2 mt-3 table-responsive table-container">
                 {/* Table */}
-                <table >
+                <table>
                   <thead>
                     <tr>
-                    <th className="text-center">Vehicle No</th>
-                    <th className="text-center">Total Passengers</th>
-                    <th className="text-center">Average Rate</th>
-                    <th className="text-center">Total Income</th>
-                    <th className="text-center">Predicted Income</th>
+                      <th className="text-center">Vehicle Owner</th>
+                      <th className="text-center">Total Passengers</th>
+                      <th className="text-center">Average Rate</th>
+                      <th className="text-center">Total Income</th>
+                      <th className="text-center">Predicted Income</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -378,71 +414,70 @@ interface ReportData {
                         <td className="text-center">{data.totalPassengers}</td>
                         <td className="text-center">{data.averageRate}</td>
                         <td className="text-center">{data.totalIncome}</td>
-                        <td className="text-center">{data.predictedIncome}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
+            </div>
 
-              {/* Charts */}
-              <div
-                className="container shadow col-10 justify-center p-3 mb-5 rounded "
-                style={{ backgroundColor: "#FFFFFF" }}
-                ref={barChartRef}
-              >
-                <div className="container-fluid">
-                  <Bar
-                    data={barChartData}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          title: {
-                            display: true,
-                            text: "Vehicle Owner",
-                          },
-                        },
-                        y: {
-                          title: {
-                            display: true,
-                            text: "Rate",
-                          },
+            {/* Charts */}
+            <div
+              className="container shadow col-10 justify-center p-3 mb-5 rounded "
+              style={{ backgroundColor: "#FFFFFF" }}
+              ref={barChartRef}
+            >
+              <div className="container-fluid">
+                <Bar
+                  data={barChartData}
+                  options={{
+                    responsive: true,
+                    scales: {
+                      x: {
+                        title: {
+                          display: true,
+                          text: "Vehicle Owner",
                         },
                       },
-                    }}
-                  />
-                </div>
+                      y: {
+                        title: {
+                          display: true,
+                          text: "Rate",
+                        },
+                      },
+                    },
+                  }}
+                />
               </div>
+            </div>
 
-              <div
-                className="container shadow col-10 justify-center p-3 mb-5 rounded "
-                style={{ backgroundColor: "#FFFFFF" }}
-                ref={lineChartRef}
-              >
-                <div className="container-fluid">
-                  <Line
-                    data={lineChartData}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          title: {
-                            display: true,
-                            text: "Vehicle Owner",
-                          },
-                        },
-                        y: {
-                          title: {
-                            display: true,
-                            text: "Income",
-                          },
-                          min: 0,
+            <div
+              className="container shadow col-10 justify-center p-3 mb-5 rounded "
+              style={{ backgroundColor: "#FFFFFF" }}
+              ref={lineChartRef}
+            >
+              <div className="container-fluid">
+                <Line
+                  data={lineChartData}
+                  options={{
+                    responsive: true,
+                    scales: {
+                      x: {
+                        title: {
+                          display: true,
+                          text: "Vehicle Owner",
                         },
                       },
-                    }}
-                  />
-                </div>
+                      y: {
+                        title: {
+                          display: true,
+                          text: "Income",
+                        },
+                        min: 0,
+                      },
+                    },
+                  }}
+                />
               </div>
             </div>
 

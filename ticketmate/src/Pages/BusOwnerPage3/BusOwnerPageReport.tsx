@@ -54,7 +54,7 @@ useEffect(() => {
       const timeoutId = setTimeout(() => {
         setErrorMessage('The server is not connected. Please check your connection.');
         setLoading(false);
-      }, 120000); // 30 seconds
+      }, 120000); // 120 seconds
 
       try {
         let data: ReportData[] = [];

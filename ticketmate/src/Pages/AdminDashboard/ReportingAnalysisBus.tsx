@@ -220,8 +220,7 @@ const ReportTable: React.FC = () => {
         data.totalIncome,
         // data.predictedincome
       ]),
-      // startY: 10, // Start from a bit below the top
-      // styles: { halign: 'center' }, // Add this line
+     
       startY: 30, // Start the table below the date
     margin: { left: 14 }, // Align with the date
     styles: { halign: 'center' }, // Center align the table content

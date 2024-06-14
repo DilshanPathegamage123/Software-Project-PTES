@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 
@@ -18,12 +19,13 @@ function PayNowbtn(){
         height: '60%',
       };
       const handlePayNowClick = async () => {
-        
+
         // Display an alert when the "Pay Now" button is clicked
         // alert("Your payment is successfully done.Your email has been received tickets.");
 
         try{
             const response = await axios.post(`https://localhost:7296/api/Email/SendEmails/${PassengerId}`, 
+
             {
                 to: "",
                 message: ""
@@ -63,6 +65,7 @@ function PayNowbtn(){
         }catch(error){
             alert("Error in sending email");
            
+
         }
     };
       
@@ -73,6 +76,7 @@ function PayNowbtn(){
         <div className="d-grid">
             <button className="btn mt-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} >Pay Now</button>
             {/* <button className="btn mt-5" type="button" style={buttonStyle}   onClick={() => history("/payment3",{state:{userId,tripId}})} >Pay Now</button> */}
+
         </div>
     )
 }

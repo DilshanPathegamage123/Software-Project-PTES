@@ -1,3 +1,4 @@
+
 // import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
 // import ProfileSection from "./ProfileSection";
 // import Footer from "../Components/Footer/Footer1";
@@ -100,6 +101,28 @@ import MyBookings from "./MyBookings";
 import { useEffect, useState } from "react";
 import TravelHistory from "./TravelHistory";
 import Notifications from "./Notification";
+import axios from "axios";
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import PrimaryButton from "../Components/Buttons/PrimaryButton";
+import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+
+
+interface PassengerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 
 function Passenger() {
   const [divWidth, setDivWidth] = useState(0);
@@ -107,6 +130,11 @@ function Passenger() {
   const handleClick = (component: string) => {
     setCurrentComponent(component);
   };
+
+  let location = useLocation();
+  let { username, password } = location.state;
+  const [passengerdata, setPassengerdata] = useState<PassengerData[]>([]);
+
 
   const buttonStyle = {
     backgroundColor: "rgba(217, 217, 217, 1)",
@@ -128,12 +156,66 @@ function Passenger() {
     };
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`https://localhost:7196/api/userData/${username}/${password}`)
+      .then((response) => {
+        console.log(response.data);
+        setPassengerdata(
+       
+        (
+          response.data.map((passenger: any) => ({
+            Id: passenger.id,
+            firstName: passenger.firstName,
+            lastName: passenger.lastName,
+            email: passenger.email,
+            dob: passenger.dob,
+            nic: passenger.nic,
+            contactNo: passenger.contactNo,
+            userName: passenger.userName,
+            password: passenger.password,
+            userType: passenger.userType,
+            ownVehicleType: passenger.ownVehicleType,
+            drivingLicenseNo: passenger.drivingLicenseNo,
+            isDeleted: passenger.isDeleted,
+            requestStatus: passenger.requestStatus,
+          }))
+        ));
+        console.log(passengerdata);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <div>
       <PrimaryNavBar />
       <div className="container-fluid pt-3">
         <div>
-          <ProfileSection />
+
+        <div className="container-fluid rounded-4 proSec">
+            <div className="row align-items-center">
+              <div className="col-lg-3 col-sm-6 col-12 text-center">
+                <h5 className="text-white pt-4">Passenger</h5>
+                <img src={profileIcon} alt="profileIcon" className="pb-3" />
+              </div>
+
+              <div className="col-lg-4 col-sm-6 p-4">
+                <div className="">
+                  <p className="text-white">
+                  {passengerdata[0] ? passengerdata[0].firstName : 'Loading...'}&nbsp;{passengerdata[0] ? passengerdata[0].lastName : 'Loading...'}
+                    <br />
+                    Passenger Id : {passengerdata[0]?passengerdata[0].Id:'Loading...'} <br />
+                  {passengerdata[0] ? passengerdata[0].email : 'Loading...'}
+                    <br />
+                    
+                  </p>
+                </div>
+                <PrimaryButton type="button" value="Update" color="third" />
+              </div>
+            </div>
+          </div>
         </div>
         <div className="row h-auto align-items-center justify-content-center m-auto ">
           <div className="col-12  rounded-4 pt-3 class1">
@@ -199,5 +281,5 @@ function Passenger() {
   );
 }
 
-export default Passenger;
 
+export default Passenger;

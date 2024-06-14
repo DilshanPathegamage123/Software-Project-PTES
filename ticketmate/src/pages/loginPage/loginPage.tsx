@@ -1,18 +1,21 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import React, { useState } from "react";
 import "./loginPage.css";
-// import vars from '../../vars'
+ //import vars from '../../vars.css'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";//import use navigate
 import axios from "axios";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const history = useNavigate();
+
 
   const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -27,17 +30,12 @@ const LoginPage = () => {
         }
       );
 
-      // if (!response.data.token) {
-      //   console.error("Token not found in response:", response.data);
-      //   alert("Token not found in response. Please check your credentials.");
-      //   return;
-      // }
-
+ 
       const token = response.data.jwtToken;
       //Fconsole.log("token", token);
 
       if (token) {
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
 
         //decode the token
         const tokenParts = token.split(".");
@@ -53,25 +51,30 @@ const LoginPage = () => {
 
         switch (userRole) {
           case "Admin":
-            history("/AdminPage");
+            // history("/AdminPage");
+            //history(`/AdminPage?username=${username}&password=${password}`);
+            history("/AdminPage", { state: { username, password } });
+
             break;
           case "Owner":
-            history("#");
+            history("/BusOwnerPage", { state: { username, password } });
             break;
           case "Passenger":
-            history("/#");
+            history("/passenger", { state: { username, password } });
             break;
           case "Driver":
-            history("/#");
+            history("/driver", { state: { username, password } });
             break;
           default:
             //alert("Invalid user name or password");
             break;
         }
       } else {
-        alert("not enter to the if statement");
+        alert("Invalid user name or password");
       }
     } catch (error) {
+      alert("Invalid user name or password");
+
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }
@@ -80,8 +83,9 @@ const LoginPage = () => {
 
 
   return (
-    <div>
+    <div className="loginpage-body">
       <PrimaryNavBar />
+
       <a href="#">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -98,24 +102,17 @@ const LoginPage = () => {
         </svg>
       </a>
 
-      <form onSubmit={handlesubmit}>
+      <form onSubmit={handlesubmit} method="post">
 
         <div className=" d-flex justify-content-center ">
           <div
-            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
+            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center"
             id="login-form"
-
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" />
             </div>
 
-            {/* <input
-              className="form-control col-8 mx-auto m-4 custom-bg-color"
-              type="text"
-              placeholder=" <><BsFillPersonFill />    username"
-              required
-            ></input> */}
             <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -125,33 +122,30 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
               // Add padding for the icon
+            >
 
-            ></input>
 
             <input
               type="password"
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="      password"
-
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
-            ></input>
-            <div className="d-flex justify-content-center ">
-              {/* <PrimaryButton
-                type="submit"
-                value="LOG IN"
-                color="primary"
-                IsSmall={false}
-              /> */}
-              <input type="submit" value="LOG IN" className="btn btn-primary" />
+            />
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn primary">
+                LOG IN
+              </button>
             </div>
           </div>
         </div>
       </form>
       <Footer />
     </div>
-
   );
 };
+
 export default LoginPage;

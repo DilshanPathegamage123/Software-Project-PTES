@@ -32,6 +32,7 @@
 // export default ProfileSection
 
 
+
 import React from 'react'
 import profileIcon from './images/iconamoon_profile-circle-fill.png'
 import './ProfileSection.css'
@@ -42,6 +43,7 @@ function ProfileSection() {
     <>
     <div className='container-fluid rounded-4 proSec'>
         <div className='row align-items-center h-auto '>
+
             <div className='col-lg-3 col-sm-6 col-12 text-center'>
                 <h5 className='text-white pt-4'>Passenger</h5>
                 <img src={profileIcon} alt="profileIcon" className='pb-3'/>
@@ -64,3 +66,4 @@ function ProfileSection() {
 }
 
 export default ProfileSection
+

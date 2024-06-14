@@ -20,3 +20,15 @@
     }
   }
 
+  .btn.secButton.active {
+    background-color: #00757c !important; 
+    color: white !important;
+    border: 0px !important;
+  }
+
+  .btn.secButton {
+    background-color: #d9d9d9 !important; 
+    color: #00757c !important; 
+    border: 0px !important;
+  }
+

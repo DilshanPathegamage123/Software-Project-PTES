@@ -5,6 +5,7 @@ import BusIcon2 from './images/Group 391.png'
 import PrimaryButton from '../Components/Buttons/PrimaryButton'
 
 function Notifications() {
+
   return (
     <>
     <div className='row p-4 rounded-4 sec shadow m-4'>

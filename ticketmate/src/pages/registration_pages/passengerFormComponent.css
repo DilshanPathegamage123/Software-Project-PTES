@@ -14,3 +14,7 @@ body{
 p{
     font-family: "poppind-semibold", sans-serif;
 }  
+
+.btn-width {
+  width: 100px;
+}

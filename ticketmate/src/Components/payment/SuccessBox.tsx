@@ -11,6 +11,7 @@ function SuccessBox() {
   console.log(userId, tripId);
   const history = useNavigate();
 
+
   const buttonStyle = {
     backgroundColor: "rgb(4,47,64)",
     color: "white", // Optionally change text color to ensure readability
@@ -58,6 +59,7 @@ function SuccessBox() {
             </p>
 
              {/* <button
+
               type="button"
               className="btn btn-primary ml-3"
               style={buttonStyle}
@@ -65,12 +67,14 @@ function SuccessBox() {
             >
               Receipt
             </button>  */}
+
           {/* <Link to="/payment4"> */}
             <button
               type="button"
               className="btn btn-primary ml-3"
               style={buttonStyle}
               onClick={() => history("/payment4",{state:{userId,tripId}})}
+
                // Remove the argument from the useNavigate function call
             >
               Receipt

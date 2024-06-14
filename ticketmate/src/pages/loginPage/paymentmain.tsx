@@ -18,5 +18,6 @@ function Payment() {
       <Footer />
     </>
   );
+
 }
 export default Payment;

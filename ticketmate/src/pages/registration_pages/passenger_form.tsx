@@ -2,7 +2,7 @@ import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 
 import "./passenger_form.css";
 import React, { useState } from "react";
-import "../../vars.css";
+//import "../../vars.css";
 import PassengerFormComponent from "./passengerFormComponent";
 import OwnerFormComponent from "./ownerFormComponent";
 import DriverFormComponent from "./driverFormComponent";
@@ -14,7 +14,7 @@ const [selectedOption, setSelectedOption] = useState("option1");
 
 
   return (
-    <div>
+    <div className="passenger-form-body">
     
       <PrimaryNavBar />
       <a href="#">

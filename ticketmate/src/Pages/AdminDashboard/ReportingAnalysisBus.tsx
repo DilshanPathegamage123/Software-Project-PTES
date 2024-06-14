@@ -21,7 +21,7 @@ interface ReportData {
 }
 
 const ReportTable: React.FC = () => {
-  const [reportType, setReportType] = useState<string>("daily");
+  const [reportType, setReportType] = useState<string>("yearly");
   const [busOwners, setBusOwners] = useState<string[]>([]);
   const [reportData, setReportData] = useState<ReportData[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -175,13 +175,7 @@ const ReportTable: React.FC = () => {
     // Change the type of 'doc' to 'any'
     const doc: any = new jsPDF(); //corrected the error in line 228 the autotable error
 
-    doc.setFontSize(8);
-
-  // Add the current date at the top
-  doc.text(`Date: ${currentDate}`, 14, 20);
-
-  // Reset the font size for the table
-  doc.setFontSize(12);
+  
     // Capture bar chart as image
     const barChartElement = barChartRef.current;
     const barChartCanvas = barChartElement?.querySelector("canvas");
@@ -218,12 +212,29 @@ const ReportTable: React.FC = () => {
         data.totalPassengers,
         data.averageRate,
         data.totalIncome,
+        
         // data.predictedincome
       ]),
      
       startY: 30, // Start the table below the date
     margin: { left: 14 }, // Align with the date
     styles: { halign: 'center' }, // Center align the table content
+
+    didDrawPage: function (data) {
+      doc.setFontSize(8);
+
+// Add the current date at the top
+doc.text(`Date: ${currentDate}`, 14, 20);
+
+// Reset the font size for the table
+doc.setFontSize(12);
+  const pageCount = doc.internal.getNumberOfPages(); // Get total page count
+  const pageNumber = data.pageNumber; // Get current page number
+  doc.setFontSize(8);
+  // Add page number at the bottom right corner
+  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+  doc.setFontSize(12);   
+}
 
     });
 
@@ -312,7 +323,7 @@ const ReportTable: React.FC = () => {
     }
 
     // Save the PDF
-    doc.save("report.pdf");
+    doc.save("AdminBusReport.pdf");
   }
 
   return (
@@ -323,7 +334,7 @@ const ReportTable: React.FC = () => {
           style={{ backgroundColor: "#D9D9D9" }}
         >
           <div className="row">
-            <div className="clo-lg-8 col-12 col-md-6">
+            <div className="clo-lg-8 col-12 col-md-6 p-1">
               {/* Vehicle type radio buttons */}
 
               <div className="form-check form-check-inline">
@@ -357,7 +368,8 @@ const ReportTable: React.FC = () => {
             </div>
             {vehicleType === "Bus" && (
               <>
-                <div className="col-lg-3 col-12 col-md-6">
+              <div  className="row">
+                <div className="col-lg-3 col-12 col-md-6 ml-auto">
                   {/* Search input */}
                   <input
                     type="text"
@@ -377,6 +389,7 @@ const ReportTable: React.FC = () => {
                     <option value="3months">Three Months</option>
                     <option value="yearly">Yearly</option>
                   </select>
+                </div>
                 </div>
               </>
             )}
@@ -413,6 +426,8 @@ const ReportTable: React.FC = () => {
                         <td className="text-center">{data.totalPassengers}</td>
                         <td className="text-center">{data.averageRate}</td>
                         <td className="text-center">{data.totalIncome}</td>
+                        <td className="text-center">{(data.totalIncome * 1.1).toFixed(0)}</td> {/* .toFixed(2) */}
+
                       </tr>
                     ))}
                   </tbody>

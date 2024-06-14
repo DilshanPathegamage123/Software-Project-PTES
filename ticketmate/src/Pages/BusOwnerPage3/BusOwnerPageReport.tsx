@@ -21,7 +21,7 @@ interface ReportData {
 
 
 const ReportTable: React.FC = () => {
-    const [reportType, setReportType] = useState<string>("daily");
+    const [reportType, setReportType] = useState<string>("yearly");
     const [userId, setUserId] = useState<string>("");
     const [reportData, setReportData] = useState<ReportData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -180,19 +180,13 @@ useEffect(() => {
   const downloadPDF = async () => {
     const doc: any = new jsPDF();
 
-    doc.setFontSize(8);
-
-  // Add the current date at the top
-  doc.text(`Date: ${currentDate}`, 14, 20);
-
-  // Reset the font size for the table
-  doc.setFontSize(12);
+   
     const barChartElement = barChartRef.current;
     const barChartCanvas = barChartElement?.querySelector("canvas");
     let barChartImage = "";
 
     if (barChartCanvas instanceof HTMLCanvasElement) {
-      barChartImage = await html2canvas(barChartCanvas).then((canvas) =>
+      barChartImage = await html2canvas(barChartCanvas, { scale: 4 }).then((canvas) =>
         canvas.toDataURL("image/png")
       );
     }
@@ -201,7 +195,7 @@ useEffect(() => {
     let lineChartImage = "";
 
     if (lineChartCanvas instanceof HTMLCanvasElement) {
-      lineChartImage = await html2canvas(lineChartCanvas).then((canvas) =>
+      lineChartImage = await html2canvas(lineChartCanvas,{scale:4}).then((canvas) =>
         canvas.toDataURL("image/png")
       );
     }
@@ -225,7 +219,21 @@ useEffect(() => {
       startY: 30, // Start the table below the date
       margin: { left: 14 }, // Align with the date
       styles: { halign: 'center' }, // Center align the table content
-  
+      didDrawPage: function (data) {
+        doc.setFontSize(8);
+
+  // Add the current date at the top
+  doc.text(`Date: ${currentDate}`, 14, 20);
+
+  // Reset the font size for the table
+  doc.setFontSize(12);
+    const pageCount = doc.internal.getNumberOfPages(); // Get total page count
+    const pageNumber = data.pageNumber; // Get current page number
+    doc.setFontSize(8);
+    // Add page number at the bottom right corner
+    doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+    doc.setFontSize(12);   
+  }
     });
 
     const tableHeight = doc.autoTable.previous.finalY;
@@ -403,12 +411,18 @@ useEffect(() => {
             </div>
             <div
               className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom"
-              style={{ backgroundColor: "#D9D9D9" }}
+              style={{ backgroundColor: "#FFFFFF" }}
             >
               <div ref={barChartRef}>
                 <Bar data={barChartData} />
               </div>
-              <div ref={lineChartRef}>
+              
+            </div>
+            <div
+              className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom"
+              style={{ backgroundColor: "#FFFFFF" }}
+            >
+               <div ref={lineChartRef}>
                 <Line data={lineChartData} />
               </div>
             </div>

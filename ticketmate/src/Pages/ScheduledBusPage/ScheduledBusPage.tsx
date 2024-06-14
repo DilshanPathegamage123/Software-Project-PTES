@@ -5,8 +5,10 @@ import Footer from '../../Components/Footer/footer';
 import MainImg from '../../assets/busImgBack copy.jpg';
 import SchePageIcon from '../../assets/SchePageIcon.png';
 import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BackIcon from '../../assets/ion_arrow-back-circle.png';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 interface BusStation {
   busStation: string;
@@ -37,12 +39,11 @@ function ScheduledBusPage() {
   const [scheduleDates, setScheduleDates] = useState<ScheduleDate[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Extracting scheduleId from query parameters
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const scheduleId = searchParams.get('scheduleId');
 
-  // Fetching data on component mount or when scheduleId changes
   useEffect(() => {
     if (scheduleId) {
       getData(scheduleId);
@@ -51,8 +52,7 @@ function ScheduledBusPage() {
     }
   }, [scheduleId]);
 
-  // Function to fetch bus data from API
-  const getData = async (scheduleId:string) => {
+  const getData = async (scheduleId: string) => {
     try {
       const response = await axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`);
       setData(response.data);
@@ -63,8 +63,7 @@ function ScheduledBusPage() {
     }
   }
 
-  // Function to fetch bus station data from API
-  const getBusStations = async (scheduleId:string) => {
+  const getBusStations = async (scheduleId: string) => {
     try {
       const response = await axios.get(`https://localhost:7001/api/SchBusStand/schedule/${scheduleId}`);
       setBusStations(response.data);
@@ -73,8 +72,7 @@ function ScheduledBusPage() {
     }
   }
 
-  // Function to fetch schedule dates from API
-  const getScheduleDates = async (scheduleId:string) => {
+  const getScheduleDates = async (scheduleId: string) => {
     try {
       const response = await axios.get(`https://localhost:7001/api/ScheduledBusDate/ByScheduleId/${scheduleId}`);
       setScheduleDates(response.data);
@@ -87,14 +85,40 @@ function ScheduledBusPage() {
     return <div>Loading...</div>;
   }
 
+  const handleUpdateClick = () => {
+    navigate(`/BusScheduleFormUpdatePage?scheduleId=${data.scheduleId}`);
+  };
+
+  const handleUpdateClick2 = async () => {
+    try {
+      const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${data.routNo}`);
+      if (response.ok) {
+        const data2 = await response.json();
+        navigate(`/BusScheduleFormUpdatePage2?routId=${data2.routId}&scheduleId=${scheduleId}`);
+      } else {
+        console.error('Route number is unavailable.');
+        Swal.fire({
+          title: "Error!",
+          text: "Error updating bus stations. Please try again.",
+          icon: "error"
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching route number:', error);
+    }
+  };
+
   return (
     <>
       <PrimaryNavBar />
       <div className='container p-4'>
         {data && (
           <div className='SchBusInfoSec rounded-5 '>
+            <div className='pt-2 pl-2'>
+              <Link to="..\BusOwnerPage"><img src={BackIcon} alt="" /></Link>
+            </div>
             <div className='row'>
-              <h3 className='title1 p-4'>Bus Schedule Details</h3>
+              <h3 className='title1 pb-3'>Bus Schedule Details</h3>
             </div>
             <div className='row'>
               <div className='col d-flex justify-content-center'>
@@ -122,6 +146,7 @@ function ScheduledBusPage() {
                 <p className='para'>Comfortability  : {data.comfortability}</p>
                 <p className='para'>Duration  : {data.duration}</p>
                 <p className='para'>TicketPrice  : {data.ticketPrice}</p>
+                <button className='btn white m-3' onClick={handleUpdateClick}>Update</button>
               </div>
               <div className='col-lg-6 detailSec'>
                 <div className='row'>
@@ -136,11 +161,12 @@ function ScheduledBusPage() {
                     ) : (
                       <p className='para'>No bus stations available.</p>
                     )}
+                    <button className='btn white m-3' onClick={handleUpdateClick2}>Update</button>
                   </ul>
                 </div>
                 <div className='row'>
                   <p className='para'>Dates : (Departure date, Arrival date)</p>
-                  <ul  className='ulfont'>
+                  <ul className='ulfont'>
                     {scheduleDates.length > 0 ? (
                       scheduleDates.map((date, index) => (
                         <li key={index}>
@@ -150,6 +176,7 @@ function ScheduledBusPage() {
                     ) : (
                       <p className='para'>No schedule dates available.</p>
                     )}
+                    <button className='btn white m-3'>Update</button>
                   </ul>
                 </div>
               </div>

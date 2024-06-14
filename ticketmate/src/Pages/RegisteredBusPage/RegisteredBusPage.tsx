@@ -135,8 +135,8 @@ function RegisteredBusPage() {
                         <div className='row d-flex justify-content-left pl-5 pt-4'>
                             <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
-                        <div className='row d-flex justify-content-center'>
-                            <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
+                        <div className='row d-flex justify-content-center rounded-2'>
+                            <img src={BusImg} alt="BusImg" className='p-3 col-6 '/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
                             {/* Displaying bus information */}
@@ -150,7 +150,7 @@ function RegisteredBusPage() {
                         </div>
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
-                                <button className='btn white m-2'>Edit</button>
+                                <Link to={`/UpdateBusRegInfoPage?busId=${data.busId}`}><button className='btn white m-2'>Edit</button></Link>
                                 <button className='btn white m-2'onClick={()=>handleDelete()}>Delete</button>
                             </div>
                         </div>

@@ -15,6 +15,10 @@ import RegisteredCarriagePage from './Pages/RegisteredCarriagePage/RegisteredCar
 import ScheduledTrainPage from './Pages/ScheduledTrainPage/ScheduledTrainPage';
 import TrainSchedulePage from './Pages/TrainSchedulePage/TrainSchedulePage';
 import Test from './Pages/Test/test';
+import UpdateBusRegInfoPage from './Pages/UpdateBusRegInfoPage/UpdateBusRegInfoPage';
+import BusScheduleFormUpdatePage from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage';
+import BusScheduleFormUpdatePage2 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage2';
+
 
 
 function App() {
@@ -34,12 +38,16 @@ function App() {
         <Route path='/RegisteredCarriagePage' element={<RegisteredCarriagePage />} />
         <Route path='/ScheduledTrainPage' element={<ScheduledTrainPage />} />
         <Route path='/TrainSchedulePage' element={<TrainSchedulePage />} />
+        <Route path='/UpdateBusRegInfoPage' element={<UpdateBusRegInfoPage />} />
+        <Route path='/BusScheduleFormUpdatePage' element={<BusScheduleFormUpdatePage />} />
+        <Route path='/BusScheduleFormUpdatePage2' element={<BusScheduleFormUpdatePage2/>} />
+        
       </Routes>
     </BrowserRouter>
 
     
         // <>
-        //   <Test/>
+        //   <BusScheduleFormUpdatePage/>
         // </>
   );
 }

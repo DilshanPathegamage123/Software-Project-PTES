@@ -1,3 +1,4 @@
+// Importing required modules and components
 import React, { useState } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
@@ -6,6 +7,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: string | null }) {
+  // State variables for form data
   const [busId, setBusId] = useState('');
   const [driId, setDriId] = useState('');
   const [startLoc, setStartLoc] = useState('');
@@ -31,6 +33,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     ticketPrice: ''
   });
 
+  // Input validation function
   const validateInput = () => {
     const newErrors: any = {};
     if (!busId) newErrors.busId = 'Bus ID is required';
@@ -49,6 +52,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
 
   const navigate = useNavigate();
 
+  // Function to check bus ID availability
   const checkBusIdAvailability = async () => {
     try {
       const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`);
@@ -73,6 +77,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     }
   };
 
+  // Function to check driver ID availability
   const checkDriverIdAvailability = async () => {
     try {
       const response = await axios.get(`https://localhost:7001/api/userData/${driId}`);
@@ -96,6 +101,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     }
   };
 
+  // Function to check route number availability
   const checkRoutNoAvailability = async () => {
     try {
       const response = await axios.get(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
@@ -120,6 +126,15 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     }
   };
 
+  // Function to format time to AM/PM format
+  const formatTime = (time:any) => {
+    const [hours, minutes] = time.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours), parseInt(minutes));
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  };
+
+  // Function to handle the Next button click
   const handleNextClick = async () => {
     if (validateInput()) {
       setIsSubmitting(true);
@@ -148,8 +163,8 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
         routNo: routNo,
         startLocation: startLoc,
         endLocation: endLoc,
-        departureTime: depTime,
-        arrivalTime: arrTime,
+        departureTime: formatTime(depTime),
+        arrivalTime: formatTime(arrTime),
         comfortability: comportability,
         duration: duration,
         ticketPrice: ticketPrice,
@@ -161,8 +176,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
         const { scheduleId } = response.data; // Extract scheduleId from response
         setScheduleId(scheduleId); // Set scheduleId state
         console.log('Schedule ID: ', scheduleId);
-        handleNext(newBusSchedule ,scheduleId);
-
+        handleNext(newBusSchedule, scheduleId);
       } catch (error) {
         swal.fire({
           icon: 'error',
@@ -174,6 +188,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     }
   };
 
+  // Function to handle the Cancel button click
   const CancelButton = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -188,8 +203,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
         navigate('/BusOwnerPage');
       }
     });
-  }
-
+  };
 
   return (
     <form>
@@ -364,7 +378,6 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
         <div className='col-12 text-center p-3'>
           <button type='button' className='btn white mx-3' onClick={() => CancelButton()}>Cancel</button>
           <button type='button' className='btn primary mx-3' onClick={handleNextClick} disabled={isSubmitting}>Next</button>
-
         </div>
       </div>
     </form>

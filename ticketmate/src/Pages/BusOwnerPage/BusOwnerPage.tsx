@@ -154,10 +154,10 @@ function BusOwnerPage() {
         <div className='row'>
           <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>
-              <Link to={`/BusRegistrationPage?id=${userData.id, username, password}`}><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
+              <Link to={`/BusRegistrationPage?id=${userData.id}`}><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
             </div>
             <div>
-              <Link to={`/BusSchedulePage?id=${userData.id, username, password}`}><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
+              <Link to={`/BusSchedulePage?id=${userData.id}`}><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
             </div>
           </div>
           <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>

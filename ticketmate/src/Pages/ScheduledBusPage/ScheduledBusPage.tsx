@@ -108,6 +108,10 @@ function ScheduledBusPage() {
     }
   };
 
+  const handleUpdateClick3 = () => {
+    navigate(`/BusScheduleFormUpdatePage3?scheduleId=${data.scheduleId}`);
+  };
+
   return (
     <>
       <PrimaryNavBar />
@@ -176,7 +180,7 @@ function ScheduledBusPage() {
                     ) : (
                       <p className='para'>No schedule dates available.</p>
                     )}
-                    <button className='btn white m-3'>Update</button>
+                    <button className='btn white m-3' onClick={handleUpdateClick3}>Update</button>
                   </ul>
                 </div>
               </div>

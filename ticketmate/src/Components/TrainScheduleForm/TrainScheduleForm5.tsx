@@ -95,6 +95,49 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
     }
   };
 
+  const handleCancel = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => { 
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`https://localhost:7001/api/ScheduledTrain/${scheduleId}`, {
+            method: 'DELETE',
+          });
+  
+          if (!response.ok) {
+            console.error('Failed to Cancel schedule', response);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to Cancel the schedule.',
+            });
+            return;
+          }
+  
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted',
+            text: 'The schedule has been successfully Canceled.',
+          });
+        } catch (error) {
+          console.error('Error Cancel the schedule.', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error Cancel the schedule.',
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
       <div className="form-group">
@@ -145,7 +188,7 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
         </div>
         <div className='row'>
           <div className='col-12 text-center p-3'>
-            <button type="button" className="btn white mx-2">Cancel</button>
+            <button type="button" className="btn white mx-2" onClick={handleCancel}>Cancel</button>
             <button 
               type="button" 
               className='btn primary mx-2'

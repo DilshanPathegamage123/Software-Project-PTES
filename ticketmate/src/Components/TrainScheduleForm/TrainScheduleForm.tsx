@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: string | null }) {
   const [trainName, setTrainName] = useState('');
@@ -94,6 +96,14 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
     }
   };
 
+    // Function to format time to AM/PM format
+    const formatTime = (time:any) => {
+      const [hours, minutes] = time.split(':');
+      const date = new Date();
+      date.setHours(parseInt(hours), parseInt(minutes));
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    };
+
   const handleNextClick = async () => {
     if (validateInput()) {
       setIsSubmitting(true);
@@ -119,8 +129,8 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
         trainRoutNo: routNo,
         startStation: startStation,
         endStation: endStation,
-        trainDepartureTime: depTime,
-        trainArrivalTime: arrTime,
+        trainDepartureTime: formatTime(depTime),
+        trainArrivalTime: formatTime(arrTime),
         trainType: trainType,
         duration: duration,
         firstClassTicketPrice: firstClassTicketPrice,
@@ -145,6 +155,24 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
       setIsSubmitting(false);
     }
   };
+
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Go Back!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate('/TrainOwnerPage');
+      }
+    });
+  }
 
   return (
     <form>
@@ -349,7 +377,7 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
       </div>
       <div className='row'>
         <div className='col-12 text-center p-3'>
-          <button type='button' className='btn white mx-3' >Cancel</button>
+          <button type='button' className='btn white mx-3' onClick={handleCancel}>Cancel</button>
           <button type='button' className='btn primary mx-3' onClick={handleNextClick} disabled={isSubmitting}>Next</button>
         </div>
       </div>

@@ -18,6 +18,7 @@ import Test from './Pages/Test/test';
 import UpdateBusRegInfoPage from './Pages/UpdateBusRegInfoPage/UpdateBusRegInfoPage';
 import BusScheduleFormUpdatePage from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage';
 import BusScheduleFormUpdatePage2 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage2';
+import BusScheduleFormUpdatePage3 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage3';
 
 
 
@@ -41,6 +42,7 @@ function App() {
         <Route path='/UpdateBusRegInfoPage' element={<UpdateBusRegInfoPage />} />
         <Route path='/BusScheduleFormUpdatePage' element={<BusScheduleFormUpdatePage />} />
         <Route path='/BusScheduleFormUpdatePage2' element={<BusScheduleFormUpdatePage2/>} />
+        <Route path='/BusScheduleFormUpdatePage3' element={<BusScheduleFormUpdatePage3 />} />
         
       </Routes>
     </BrowserRouter>

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import RegCarriagesInfoSec from '../../Components/RegCarriagesInfoSec/RegCarriagesInfoSec';
 import ScheduledTrainInfo from '../../Components/ScheduledTrainInfo/ScheduledTrainInfo';
 import BgImg from '../../assets/trainProImg.png';
+import Swal from 'sweetalert2';
 
 function TrainOwnerPage() {
   const location = useLocation();
@@ -36,6 +37,18 @@ function TrainOwnerPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (loading) {
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we fetch your data.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+    }
+
     console.log(`Logged in as: ${username}`);
     console.log(`Password: ${password}`);
 
@@ -54,14 +67,21 @@ function TrainOwnerPage() {
           email: data.email
         });
         setLoading(false);
+        Swal.close();
       } catch (error) {
         console.error('Failed to fetch user data:', error);
         setLoading(false);
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to fetch user data.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
     };
 
     fetchUserData();
-  }, [username, password]);
+  }, [username, password, loading]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -111,9 +131,6 @@ function TrainOwnerPage() {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>

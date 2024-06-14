@@ -1,5 +1,10 @@
 @import '../../vars.css';
 
+.TrainSchPaBG{
+    background-image: url('../../assets/TrainInsideBG.jpg');
+    background-size: cover;
+}
+
 .formSec2{
     margin-left: 270px;
     margin-right: 270px;

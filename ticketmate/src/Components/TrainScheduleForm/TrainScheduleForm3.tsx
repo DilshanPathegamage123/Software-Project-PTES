@@ -51,11 +51,7 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
           throw new Error('Failed to submit data');
         }
       }
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Data submitted successfully',
-      });
+
     } catch (error) {
       console.error('Error submitting data:', error);
       Swal.fire({
@@ -84,11 +80,11 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
           });
   
           if (!response.ok) {
-            console.error('Failed to delete schedule', response);
+            console.error('Failed to Cancel schedule', response);
             Swal.fire({
               icon: 'error',
               title: 'Error',
-              text: 'Failed to delete the schedule.',
+              text: 'Failed to Cancel the schedule.',
             });
             return;
           }
@@ -96,14 +92,14 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
           Swal.fire({
             icon: 'success',
             title: 'Deleted',
-            text: 'The schedule has been successfully deleted.',
+            text: 'The schedule has been successfully Canceled.',
           });
         } catch (error) {
-          console.error('Error deleting schedule', error);
+          console.error('Error Cancel the schedule.', error);
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error deleting the schedule.',
+            text: 'Error Cancel the schedule.',
           });
         }
       }

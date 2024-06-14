@@ -8,6 +8,7 @@ import TrainScheduleForm2 from '../../Components/TrainScheduleForm/TrainSchedule
 import TrainScheduleForm3 from '../../Components/TrainScheduleForm/TrainScheduleForm3';
 import TrainScheduleForm4 from '../../Components/TrainScheduleForm/TrainScheduleForm4';
 import TrainScheduleForm5 from '../../Components/TrainScheduleForm/TrainScheduleForm5';
+import Footer from '../../Components/Footer/footer';
 
 function TrainSchedulePage() {
   const [showForm2, setShowForm2] = useState(false);
@@ -75,29 +76,32 @@ function TrainSchedulePage() {
   return (
     <>
       <PrimaryNavBar />
-      <div className='container py-4'>
-        <div className='rounded-4 formSec2'>
-          <div className='row'>
-            <h3 className='h3Style text-center'>Fill this form to Schedule a Train</h3>
-          </div>
+      <div className='TrainSchPaBG'>
+        <div className='container py-4'>
+          <div className='rounded-4 formSec2'>
+            <div className='row'>
+              <h3 className='h3Style text-center'>Fill this form to Schedule a Train</h3>
+            </div>
 
-          
-          {showForm5 ? (
-            <TrainScheduleForm5 scheduleId={scheduleId}/>
-          ) :
-          showForm4 ? (
-            <TrainScheduleForm4 handleNext={handleForm4Next} scheduleId={scheduleId}/>
-          ) :
-          showForm3 ? (
-            <TrainScheduleForm3 userId={userId} handleNext={handleForm3Next} scheduleId={scheduleId}/>
-          ) : 
-          showForm2 ? (
-            <TrainScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} scheduleId={scheduleId}/>
-          ) : (
-            <TrainScheduleForm handleNext={handleNext} userId={userId} />
-          )}
+            
+            {showForm5 ? (
+              <TrainScheduleForm5 scheduleId={scheduleId}/>
+            ) :
+            showForm4 ? (
+              <TrainScheduleForm4 handleNext={handleForm4Next} scheduleId={scheduleId}/>
+            ) :
+            showForm3 ? (
+              <TrainScheduleForm3 userId={userId} handleNext={handleForm3Next} scheduleId={scheduleId}/>
+            ) : 
+            showForm2 ? (
+              <TrainScheduleForm2 standNames={standNames} handleNext={handleForm2Next} userId={userId} scheduleId={scheduleId}/>
+            ) : (
+              <TrainScheduleForm handleNext={handleNext} userId={userId} />
+            )}
+          </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

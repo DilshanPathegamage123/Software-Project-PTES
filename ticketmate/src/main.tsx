@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,3 +16,12 @@ if (rootElement) {
   );
 }
 
+// Create a root using createRoot
+const root = ReactDOM.createRoot(container);
+
+// Render the application
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

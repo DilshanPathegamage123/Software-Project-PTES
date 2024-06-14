@@ -1,9 +1,17 @@
 import Rec2 from "./asset/rec2.png";
 import Checkmark from "./asset/checkmark.png";
-// import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 function SuccessBox() {
+  
+  let location = useLocation();
+  let { userId, tripId } = location.state;
+  console.log(userId, tripId);
+  const history = useNavigate();
+
+
   const buttonStyle = {
     backgroundColor: "rgb(4,47,64)",
     color: "white", // Optionally change text color to ensure readability
@@ -50,19 +58,23 @@ function SuccessBox() {
               Thank You
             </p>
 
-            {/* <button
+             {/* <button
+
               type="button"
               className="btn btn-primary ml-3"
               style={buttonStyle}
               onClick={() => window.location.replace('/payment4}/')}
             >
               Receipt
-            </button> */}
+            </button>  */}
+
           {/* <Link to="/payment4"> */}
             <button
               type="button"
               className="btn btn-primary ml-3"
               style={buttonStyle}
+              onClick={() => history("/payment4",{state:{userId,tripId}})}
+
                // Remove the argument from the useNavigate function call
             >
               Receipt

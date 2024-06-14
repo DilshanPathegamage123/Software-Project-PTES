@@ -1,0 +1,15 @@
+@import "../../src/vars.css";
+
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+
+.container-fluid{
+    padding-left: 72px;
+    padding-right: 72px;
+}
+.proSec{
+    background-color: var(--color-primary) !important;
+} 

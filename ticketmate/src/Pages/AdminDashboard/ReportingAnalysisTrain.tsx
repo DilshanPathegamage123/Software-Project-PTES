@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-// import "./BusOwnerPageReport.css";
+import "./ReportingAnalysis.css";
 import { Bar, Line } from "react-chartjs-2";
 import "chart.js/auto";
 import jsPDF from "jspdf";
@@ -39,13 +39,18 @@ interface ApiResponseItem {
   };
 }
 
-const TrainReport: React.FC = () => {
+interface MyComponentProps {
+  showHeading: boolean;
+  headingText?: string; // `headingText` is optional
+}
+
+const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) => {
   const [dateFilter, setDateFilter] = useState<number>(3); // Default to 'daily' (0)
   const [report, setReport] = useState<TrainReportItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentDate, setCurrentDate] = useState<string>("");
-  const [vehicleType, setVehicleType] = useState<string>("Train");
+  // const [vehicleType, setVehicleType] = useState<string>("Train");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
 
@@ -106,7 +111,7 @@ const TrainReport: React.FC = () => {
     };
 
     getReport();
-  }, [dateFilter,vehicleType]);
+  }, [dateFilter]);
 
   const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setDateFilter(parseInt(event.target.value, 10));
@@ -313,6 +318,7 @@ doc.setFontSize(12);
           <div className="row">
           
               <>
+              {showHeading && <h6>{headingText}</h6>}
                 <div className="col-lg-3 col-12 col-md-6 ml-auto">
                   {/* Search input */}
                   <input

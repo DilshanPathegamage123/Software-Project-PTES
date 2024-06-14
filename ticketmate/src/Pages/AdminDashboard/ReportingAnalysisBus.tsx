@@ -505,7 +505,7 @@ doc.setFontSize(12);
             </div>
           </>
         ) : (
-          <TrainOwners />
+          <TrainOwners  showHeading={false}/>
         )}
       </div>
     </>

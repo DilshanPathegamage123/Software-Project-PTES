@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import BoardinPoint from "./TrainBookingUpdatePageAssests/BoardingPoint.png";
 import DroppingPoint from "./TrainBookingUpdatePageAssests/DroppingPoint.png";
 import ProgresLine from "./TrainBookingUpdatePageAssests/ProgressLine.png";
@@ -35,6 +34,7 @@ interface Booking {
   totalPaymentAmount: number;
 }
 
+
 type TrainDetailsWithSeats = {
   $id: string;
   scheduledCarriages: {
@@ -50,6 +50,7 @@ type TrainDetailsWithSeats = {
     $values: SeatStructure[];
   };
 };
+
 type Carriage = {
   $id: string;
   id: number;
@@ -582,7 +583,7 @@ const TrainBookingUpdatePage: React.FC = () => {
             <button
               className="btn btn-secondary"
               onClick={handleNextCarriage}
-              disabled={
+              disabled={ 
                 currentCarriageIndex === selectedClassCarriages.length - 1
               }
             >

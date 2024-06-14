@@ -43,7 +43,7 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
   return (
     <div className=" HomeBody">
       <PrimaryNavBar />
-      <div className="HomeBackground container-fluid p-0 z-1 ">
+      <div className="HomeBackground p-0 z-1 ">
         <img className="img" src={Background} alt="Background1" />
       </div>
 

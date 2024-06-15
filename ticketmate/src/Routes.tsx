@@ -4,6 +4,10 @@ import PassengerForm from "./pages/registration_pages/passenger_form";
 import AdminPage from "./pages/AdminDashboard/AdminPage";
 import Passenger from './Passenger/passenger1';
 import BusOwnerPage from "./pages/BusOwnerPage/BusOwnerPage";
+import Home from "./pages/HomePage/Home";
+import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
+import UpdateOwnerProfile from "./pages/UpdateProfilePages/UpdateOwnerProfile";
+import UpdateDriverProfile from "./pages/UpdateProfilePages/UpdateDriverProfile";
 
 
 
@@ -17,6 +21,11 @@ function AppRoutes  ()  {
         <Route path="/AdminPage" element={<AdminPage/>} />
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/BusOwnerPage" element={<BusOwnerPage/>}/>
+        <Route path="/UpdatePassengerProfile" element={   <UpdatePassengerProfile/>}/>
+        <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
+        <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
+
+        
        
         
       </Routes>

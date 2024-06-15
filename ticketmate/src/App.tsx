@@ -8,6 +8,7 @@ import LocationWindow from '../src/pages/MapLocationWindow/LocationWindow';
 // import { GoogleMap, useLoadScript,Loadscript,Marker } from '@react-google-maps/api';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import EndRideButton from "./Components/Buttons/MapButton/EndRideButton";
+import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
 
 
 
@@ -22,7 +23,7 @@ function App() {
             <EndRideButton rideId={1} connectionId=""/>
             <VehicleLocation rideId={1} /> */}
        <AppRoutes/>
-
+    
 
     
       

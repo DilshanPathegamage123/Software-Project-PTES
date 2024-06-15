@@ -1,12 +1,12 @@
-import "./passengerFormComponent.css";
+import "./UpdateDriverProfile.css";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
-import { driverFormValidation } from "./driverFormValidation";
+import { UpdateDriverProfileValidation } from "./UpdateDriverProfileValidation";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 const initialValues = {
   firstName: "",
@@ -19,57 +19,74 @@ const initialValues = {
   confirmPassword: "",
   licenceNumber: "",
 };
+interface driverData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
-function driverFormComponent() {
+function UpdateDriverProfile() {
   const [dob, setDob] = useState<Date | null>(null);
   const history = useNavigate();
   const [driver,setDriver]=useState("busDriver");
+  const location = useLocation();
+  const { driverdata } = location.state as { driverdata: driverData };
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
-    validationSchema: driverFormValidation,
+    validationSchema: UpdateDriverProfileValidation,
     onSubmit: async (values) => {
       console.log(values);
 
       const userData = {
-        id: 0,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        dob: dob,
-        nic: values.nic,
-        contactNo: values.contactNumber,
+        id: driverdata.Id,
+        firstName: values.firstName || driverdata.firstName, 
+        lastName: values.lastName || driverdata.lastName,
+        email: values.email || driverdata.email,
+        dob: dob?.toISOString().split("T")[0] || driverdata.dob,
+        nic: values.nic || driverdata.nic,
+        contactNo: values.contactNumber || driverdata.contactNo,
         userName: values.userName,
         password: values.password,
         userType: "Driver",
         ownVehicleType: "",
         //drivingLicenseNo: values.licenceNumber,
-        drivingLicenseNo: ((driver==="busDriver")?"B-"+values.licenceNumber:"T"+values.licenceNumber),
+        drivingLicenseNo: ((driver==="busDriver")?"B-"+values.licenceNumber:"T"+values.licenceNumber) || ((driver==="busDriver")?"B-"+driverdata.drivingLicenseNo:"T"+driverdata.drivingLicenseNo),
         isDeleted: false,
         requestStatus: true,
       };
 
-      const authData = {
-        username: values.userName,
-        password: values.password,
-        roles: ["Driver"],
-      };
+     
 
       try {
-        const userResponse = await axios.post(
-          `https://localhost:7196/api/userData`,
-          userData
+        const userResponse = await axios.put(
+          `https://localhost:7196/api/UpdateProfile`,
+          userData,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
         );
-
-        const authResponse = await axios.post(
-          `https://localhost:7196/api/Auth/register`,
-          authData
-        );
-
-        if (authResponse.status === 200 && userResponse.status === 200) {
+        if(userResponse.status === 200){
           history("/login");
+        }else{
+          console.log("error");
         }
-        console.log(authResponse.data);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -92,7 +109,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your first name"
+                placeholder={driverdata.firstName}
                 className="col-11 p-3"
                 value={values.firstName}
                 onChange={handleChange}
@@ -117,7 +134,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your last name"
+                placeholder={driverdata.lastName}
                 className="col-11 p-3"
                 value={values.lastName}
                 onChange={handleChange}
@@ -144,7 +161,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your NIC number"
+                placeholder={driverdata.nic}
                 className="col-11 p-3"
                 value={values.nic}
                 onChange={handleChange}
@@ -169,7 +186,7 @@ function driverFormComponent() {
                   isClearable
                   showYearDropdown
                   scrollableMonthYearDropdown
-                  placeholderText="DD/MM/YYYY "
+                  placeholderText={driverdata.dob}
                   className="col-12  p-3"
                 />
               </div>
@@ -187,7 +204,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your email address"
+                placeholder={driverdata.email}
                 className="col-lg-8  p-3"
                 value={values.email}
                 onChange={handleChange}
@@ -214,7 +231,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your contact number"
+                placeholder={driverdata.contactNo}
                 className="col-lg-8 p-3"
                 value={values.contactNumber}
                 onChange={handleChange}
@@ -229,7 +246,7 @@ function driverFormComponent() {
               )}
             </div>
           </div>
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="col-12 col-lg-8">
               <label>
                 <input
@@ -254,7 +271,7 @@ function driverFormComponent() {
               </label>
               </div>
 
-          </div>
+          </div> */}
           <div className="row mt-4">
             <div className="col-12 col-lg-8">
               <p className="fw-regular">Driving license No</p>
@@ -267,7 +284,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your lisence number"
+                placeholder={driverdata.drivingLicenseNo}
                 className="col-lg-8 p-3"
                 value={values.licenceNumber}
             
@@ -285,7 +302,7 @@ function driverFormComponent() {
             </div>
           </div>
 
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="col-12 col-lg-8">
               <p className="fw-regular">User Name</p>
               <input
@@ -311,8 +328,8 @@ function driverFormComponent() {
                 </small>
               )}
             </div>
-          </div>
-          <div className="row mt-4">
+          </div> */}
+          {/* <div className="row mt-4">
             <div className="col-12 col-lg-6">
               <p className="fw-regular">Password</p>
               <input
@@ -363,15 +380,27 @@ function driverFormComponent() {
                 </small>
               )}
             </div>
-          </div>
+          </div> */}
           <br />
           <div className="row justify-content-center text-center">
             <button
               type="submit"
               className=" btn-outline-primary btn-sm btn-width"
             >
-              SIGN UP
+              Save
             </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+
+            <button
+              type="reset"
+              className="btn-outline-primary btn-sm btn-width"
+              onClick={() => {
+                history("/login");
+              }}
+            >
+              Cancel
+            </button>
+
 
             <br />
         
@@ -382,4 +411,4 @@ function driverFormComponent() {
   );
 }
 
-export default driverFormComponent;
+export default UpdateDriverProfile;

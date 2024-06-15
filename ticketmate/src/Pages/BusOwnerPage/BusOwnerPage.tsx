@@ -8,7 +8,7 @@ import Footer from "../../Components/Footer/footer";
 import { useEffect, useState } from "react";
 import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo";
 import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
-import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, useLocation ,useNavigate} from "react-router-dom";
 import axios from "axios";
 
 interface OwnerData {
@@ -33,10 +33,12 @@ function BusOwnerPage() {
   let location = useLocation();
   let { username, password } = location.state;
   const [ownerdata, setOwnerdata] = useState<OwnerData[]>([]);
+  const history = useNavigate();
+
 
   const getToken = () => {
     return sessionStorage.getItem("token");
-  }
+  };
 
   useEffect(() => {
     function handleResize() {
@@ -55,12 +57,15 @@ function BusOwnerPage() {
     axios
       //.get(`https://localhost:7196/api/userData/${username}/${password}`, {
 
-      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}
-`, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      })
+      .get(
+        `https://localhost:7196/api/userData/findUser/${username}/${password}
+`,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data);
         setOwnerdata(response.data);
@@ -99,21 +104,35 @@ function BusOwnerPage() {
           <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">
               <div className="col-lg-3 col-sm-6 col-12 text-center">
-                <h5 className="text-white pt-4">Bus Owner</h5>
+                <h5 className="text-white pt-4">Vehicle Owner</h5>
                 <img src={profileIcon} alt="profileIcon" className="pb-3" />
               </div>
 
               <div className="col-lg-4 col-sm-6 p-4">
                 <div className="">
                   <p className="text-white">
-                  {ownerdata[0] ? ownerdata[0].firstName : 'Loading...'}&nbsp;{ownerdata[0] ? ownerdata[0].lastName : 'Loading...'}
+                    {ownerdata[0] ? ownerdata[0].firstName : "Loading..."}&nbsp;
+                    {ownerdata[0] ? ownerdata[0].lastName : "Loading..."}
                     <br />
-                    Owner Id : {ownerdata[0]?ownerdata[0].Id:'Loading...'} <br />
-                  {ownerdata[0] ? ownerdata[0].email : 'Loading...'}
+                    Owner Id : {ownerdata[0]
+                      ? ownerdata[0].Id
+                      : "Loading..."}{" "}
+                    <br />
+                    {ownerdata[0] ? ownerdata[0].email : "Loading..."}
                     <br />
                   </p>
                 </div>
-                <PrimaryButton type="button" value="Update" color="third" />
+                {/* <PrimaryButton type="button" value="Update" color="third" /> */}
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => {
+                    history("/UpdateOwnerProfile", {
+                      state: { ownerdata: ownerdata[0] },
+                    });
+                  }}
+                >
+                  Update
+                </button>
               </div>
             </div>
           </div>

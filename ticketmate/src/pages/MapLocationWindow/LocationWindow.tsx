@@ -5,7 +5,7 @@ import * as signalR from '@microsoft/signalr';
 import logo from '../../Components/NavBar/assest/logo.png';
 
 const mapContainerStyle = {
-    height: "400px",
+    height: "600px",
     width: "100%"
 };
 

@@ -80,9 +80,9 @@ const LoginPage = () => {
 
   return (
     <div className="loginpage-body">
-      <PrimaryNavBar />
+      <PrimaryNavBar/>
 
-      <a href="#">
+      <a href="http://localhost:5173/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
@@ -90,6 +90,7 @@ const LoginPage = () => {
           fill="#042F40"
           className="bi bi-arrow-left-circle col-1 my-3 mx-5"
           viewBox="0 0 16 16"
+          data-testid="back-button"
         >
           <path
             fillRule="evenodd"

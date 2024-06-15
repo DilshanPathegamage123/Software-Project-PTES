@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import TravelHistory from "./TravelHistory";
 import Notifications from "./Notification";
 import axios from "axios";
-import { BrowserRouter as Router, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, useLocation,useNavigate } from "react-router-dom";
 import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
 
@@ -37,6 +37,8 @@ function Passenger() {
   let location = useLocation();
   let { username, password } = location.state;
   const [passengerdata, setPassengerdata] = useState<PassengerData[]>([]);
+  const history = useNavigate();
+  
 
 
   const buttonStyle = {
@@ -60,9 +62,9 @@ function Passenger() {
   }, []);
   useEffect(() => {
     axios
-      .get(`https://localhost:7196/api/userData/${username}/${password}`)
+      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}`)
       .then((response) => {
-        console.log(response.data);
+       // console.log(response.data);
         setPassengerdata(
        
         (
@@ -83,7 +85,7 @@ function Passenger() {
             requestStatus: passenger.requestStatus,
           }))
         ));
-        console.log(passengerdata);
+        //console.log(passengerdata);
       })
       .catch((error) => {
         console.log(error);
@@ -113,7 +115,17 @@ function Passenger() {
                     
                   </p>
                 </div>
-                <PrimaryButton type="button" value="Update" color="third" />
+                {/* <PrimaryButton type="button" value="Update" color="third" /> */}
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() => {
+                    history("/UpdatePassengerProfile", {
+                      state: { passengerdata: passengerdata[0] },
+                    });
+                  }}
+                >
+                  Update
+                </button>
               </div>
             </div>
           </div>

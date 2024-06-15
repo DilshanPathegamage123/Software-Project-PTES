@@ -26,3 +26,8 @@
   .BackIcon{
     width: 57px;
   }
+
+  .containerCarrPage{
+    background-image: url("../../assets/TrainBack1.jpg");
+    background-size: cover;
+  }

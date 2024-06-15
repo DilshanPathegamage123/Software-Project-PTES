@@ -6,7 +6,7 @@ import BusImg from '../../assets/RegBusImg.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
 import '../../vars.css'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
@@ -17,6 +17,7 @@ function RegisteredCarriagePage() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const carriageId = queryParams.get('carriageId');
+    const navigate = useNavigate();
 
     console.log(carriageId);
 
@@ -128,53 +129,56 @@ function RegisteredCarriagePage() {
             }
           });
     }
+    const handleEdit = () => {
+        navigate(`/UpdateCarriageRegInfoPage?carriageId=${data.carriageId}`)
+    }
 
   return (
     <>
         <PrimaryNavBar/>
-        <div className='container'>
-            <div className='row'>
-                <div className='col-lg-6'>
-                    <div className='m-4 InfoSec rounded-4'>
-                        <div className='row d-flex justify-content-left pl-5 pt-4'>
-                            <Link to='/TrainOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
-                        </div>
-                        <div className='row d-flex justify-content-center'>
-                            <img src={BusImg} alt="BusImg" className='p-3 col-6 custom-width'/>
-                        </div>
-                        <div className='row d-flex justify-content-center mt-2'>
-                            {/* Displaying bus information */}
-                            <p className='p2'>Carriage Id:  {data.carriageId} </p>
-                            <p className='p2'>Carriage No:  {data.carriageNo} </p>
-                            <p className='p2'>Carriage Class:  {data.carriageClass} </p>
-                            <p className='p2'>Seat Count:  {data.seatsCount} </p>
-                            <p className='p2'>Carriage Length:  {data.length} </p>
-                            <p className='p2'>Carriage Width:  {data.width} </p>
-                            <p className='p2'>Carriage Height:  {data.height} </p>
-                            <p className='p2'>Carriage Weight:  {data.weight} </p>
-                        </div>
-                        <div className='row p-4 justify-content-center text-center'>
-                            <div className='col-6'>
-                                <button className='btn white m-2'>Edit</button>
-                                <button className='btn secondary m-2'onClick={()=>handleDelete()}>Delete</button>
+        <div className='containerCarrPage'>
+            <div className='container'>
+                <div className='row'>
+                    <div className='col-lg-6'>
+                        <div className='m-4 InfoSec rounded-4'>
+                            <div className='row d-flex justify-content-left pl-5 pt-4'>
+                                <Link to='/TrainOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
+                            </div>
+                            <div className='row d-flex justify-content-center'>
+                                <img src={BusImg} alt="BusImg" className='p-3 col-6 custom-width'/>
+                            </div>
+                            <div className='row d-flex justify-content-center mt-2'>
+                                {/* Displaying bus information */}
+                                <p className='p2'>Carriage Id:  {data.carriageId} </p>
+                                <p className='p2'>Carriage No:  {data.carriageNo} </p>
+                                <p className='p2'>Carriage Class:  {data.carriageClass} </p>
+                                <p className='p2'>Seat Count:  {data.seatsCount} </p>
+                                <p className='p2'>Carriage Length:  {data.length} </p>
+                                <p className='p2'>Carriage Width:  {data.width} </p>
+                                <p className='p2'>Carriage Height:  {data.height} </p>
+                                <p className='p2'>Carriage Weight:  {data.weight} </p>
+                            </div>
+                            <div className='row p-4 justify-content-center text-center'>
+                                <div className='col-6'>
+                                    <button className='btn yellow m-2'onClick={()=>handleDelete()}>Delete</button>
+                                    <button className='btn white m-2' onClick={()=>handleEdit()}>Edit</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='col-lg-6'>
-                    <div className='container m-4'>
-                        <div className='bg-light2 rounded-4 p-5'>
-                            <div className='row justify-content-center pb-3'>
-                            <img src={Wheel} alt='Steering-wheel-img' style={{ width: '57px' }} />
+                    <div className='col-lg-6'>
+                        <div className='container m-4'>
+                            <div className='bg-light2 rounded-4 p-5'>
+                                <div className='row justify-content-center pb-3'>
+                                <img src={Wheel} alt='Steering-wheel-img' style={{ width: '57px' }} />
+                                </div>
+                                {renderSeatStructure()} {/* Render seat structure */}
                             </div>
-                            {renderSeatStructure()} {/* Render seat structure */}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        
         <Footer/>
     </>
   )

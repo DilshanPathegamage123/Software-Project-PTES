@@ -15,7 +15,7 @@ function LoginPage() {
   const handleLogin = (e:any) => {
     e.preventDefault();
     if (username && password) {
-      // Redirect to BusOwnerPage with username and password
+      // Redirect to BusOwnerPage TrainOwnerPage with username and password
       navigate("/TrainOwnerPage", { state: { username, password } });
     } else {
       alert("Please enter both username and password.");

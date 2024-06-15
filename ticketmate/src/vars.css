@@ -76,9 +76,9 @@
     background-color: var(--color-bg) !important;
     border-color: var(--color-primary) !important;
   }
-  .yellow:hover{
+  .white:hover{
       background-color: var(--color-primary) !important;
       color: var(--color-bg) !important;
-      border-color: var(--color-primary) !important;
+      border-color: var(--color-bg) !important;
   }
     

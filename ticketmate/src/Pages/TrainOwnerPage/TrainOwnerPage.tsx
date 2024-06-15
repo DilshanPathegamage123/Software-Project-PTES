@@ -49,38 +49,48 @@ function TrainOwnerPage() {
       });
     }
 
-    console.log(`Logged in as: ${username}`);
-    console.log(`Password: ${password}`);
+  if (username !== 'Guest' && password !== '') {
+      console.log(`Logged in as: ${username}`);
+      console.log(`Password: ${password}`);
 
-    // Function to fetch user data
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+      // Function to fetch user data
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setUserData({
+            id: data.id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email
+          });
+          setLoading(false);
+          Swal.close();
+
+          // Store username and password in local storage
+          localStorage.setItem('username', username);
+          localStorage.setItem('password', password);
+          
+        } catch (error) {
+          console.error('Failed to fetch user data:', error);
+          setLoading(false);
+          Swal.fire({
+            title: 'Error',
+            text: 'Failed to fetch user data.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
         }
-        const data = await response.json();
-        setUserData({
-          id: data.id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email
-        });
-        setLoading(false);
-        Swal.close();
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        setLoading(false);
-        Swal.fire({
-          title: 'Error',
-          text: 'Failed to fetch user data.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-      }
-    };
+      };
 
-    fetchUserData();
+      fetchUserData();
+  }else{
+      setLoading(false);
+      Swal.close();
+  }
   }, [username, password, loading]);
 
   useEffect(() => {

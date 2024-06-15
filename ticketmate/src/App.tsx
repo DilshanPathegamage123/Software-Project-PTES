@@ -19,6 +19,7 @@ import UpdateBusRegInfoPage from './Pages/UpdateBusRegInfoPage/UpdateBusRegInfoP
 import BusScheduleFormUpdatePage from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage';
 import BusScheduleFormUpdatePage2 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage2';
 import BusScheduleFormUpdatePage3 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage3';
+import UpdateCarriageRegInfoPage from './Pages/UpdateCarriageRegInfoPage/UpdateCarriageRegInfoPage';
 
 
 
@@ -43,6 +44,7 @@ function App() {
         <Route path='/BusScheduleFormUpdatePage' element={<BusScheduleFormUpdatePage />} />
         <Route path='/BusScheduleFormUpdatePage2' element={<BusScheduleFormUpdatePage2/>} />
         <Route path='/BusScheduleFormUpdatePage3' element={<BusScheduleFormUpdatePage3 />} />
+        <Route path='/UpdateCarriageRegInfoPage' element={<UpdateCarriageRegInfoPage />} />
         
       </Routes>
     </BrowserRouter>

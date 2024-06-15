@@ -98,9 +98,7 @@ const BusBookingUpdatePage: React.FC = () => {
   const [selectedVehicleType, setSelectedVehicleType] = useState<string>(
     sessionStorage.getItem("selectedVehicleType") || ""
   );
-  const [selectedDate, setSelectedDate] = useState<string>(
-    booking.bookingDate
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(booking.bookingDate);
 
   console.log(booking.id);
   const [currentBookingSeats, setCurrentBookingSeats] = useState<number[]>([]);
@@ -183,24 +181,25 @@ const BusBookingUpdatePage: React.FC = () => {
     }
 
     // Convert the array to a comma-separated string
-    const bookingSeatNO = selectedSeatNumbers.join(',');
-    
+    const bookingSeatNO = selectedSeatNumbers.join(",");
+
     try {
       // Update booked seats
       await axios.put(
-        `https://localhost:7048/api/UpdateBusBooking/${booking.id}`, bookingSeatNO,
+        `https://localhost:7048/api/UpdateBusBooking/${booking.id}`,
+        bookingSeatNO,
         {
           headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       console.log(booking.busBookingId, bookingSeatNO);
       toast.success("Seats booked successfully!");
-      
-      // Navigate to the passenger profile page
-      navigate('/passenger-profile');
 
+      // Navigate to the passenger profile page
+      navigate("/passenger-profile");
     } catch (error) {
       console.error("Error updating booked seats:", error);
       toast.error("Failed to save seats. Please try again.");
@@ -212,7 +211,7 @@ const BusBookingUpdatePage: React.FC = () => {
 
   const busId = booking.busId || 0;
   console.log(busId);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -269,7 +268,6 @@ const BusBookingUpdatePage: React.FC = () => {
 
   console.log(busName);
 
-
   return (
     <div className="BusBooking">
       <PrimaryNavBar />
@@ -298,7 +296,7 @@ const BusBookingUpdatePage: React.FC = () => {
               $values: busScheduleDetails?.scheduledBusDatesList,
             }}
             VehicleType="Bus"
-            BookingDate = {booking.bookingDate}
+            BookingDate={booking.bookingDate}
           />
         ) : (
           <p>Loading details...</p>
@@ -335,7 +333,7 @@ const BusBookingUpdatePage: React.FC = () => {
               }
               ticketPrice={busScheduleDetails?.ticketPrice || 0}
               totalSeats={busDetailsWithSeats?.registeredBus.setsCount || 0}
-              rate = {averageRating}
+              rate={averageRating}
               vehicleName={busName}
             />
           </div>
@@ -377,18 +375,16 @@ const BusBookingUpdatePage: React.FC = () => {
               ? selectedSeatLocations.sort((a, b) => a - b).join(", ") // Sort the seat locations in ascending order
               : "None"}
           </div>
-         
-            <TotalPriceLable
-              totalPrice={
-                busScheduleDetails
-                  ? selectedSeatNumbers.length * busScheduleDetails.ticketPrice
-                  : 0
-              }
-              passengers={selectedSeatNumbers.length}
-              buttonText="Save"
-              onSave={handleSave}
-            />
-          
+          <TotalPriceLable
+            totalPrice={
+              busScheduleDetails
+                ? selectedSeatNumbers.length * busScheduleDetails.ticketPrice
+                : 0
+            }
+            passengers={selectedSeatNumbers.length}
+            buttonText="Save"
+            onSave={handleSave}
+          />
         </div>
       </div>
       <Footer />

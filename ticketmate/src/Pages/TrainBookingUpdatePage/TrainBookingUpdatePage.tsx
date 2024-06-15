@@ -32,8 +32,8 @@ interface Booking {
   bookingSeatCount: number;
   ticketPrice: number;
   totalPaymentAmount: number;
+  booking: any;
 }
-
 
 type TrainDetailsWithSeats = {
   $id: string;
@@ -166,7 +166,7 @@ const TrainBookingUpdatePage: React.FC = () => {
     booking.booking.ticketPrice
   );
   console.log("Booking object", booking);
-  console.log("BusScheduleId", booking.booking.bookingCarriageNo - 1);
+  console.log("Booking Carriage Index", booking.booking.bookingCarriageNo - 1 );
 
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [averageRating, setAverageRating] = useState<number | null>(null);
@@ -244,6 +244,7 @@ const TrainBookingUpdatePage: React.FC = () => {
     booking.booking.bookingDate,
   ]);
 
+  //////
   console.log("Booked Seats:", selectedClass);
   console.log("Bus Details:", currentCarriageIndex);
   console.log("Bus Details with seats:", selectedSeats);
@@ -320,22 +321,66 @@ const TrainBookingUpdatePage: React.FC = () => {
       navigate("/passenger-profile");
     } catch (error) {
       console.error("Error updating booked seats:", error);
-      console.error("Server response:", error.response);
       toast.error("Failed to save seats. Please try again.");
     }
   };
 
+  // const handleNextCarriage = () => {
+  //   if (currentCarriageIndex < selectedClassCarriages.length - 1) {
+  //     setCurrentCarriageIndex(currentCarriageIndex + 1);
+  //     //setSelectedSeats([]);
+
+  //     // Update selectedSeats if moving to the booked carriage
+  // if (currentCarriageIndex  === booking.booking.bookingCarriageNo) {
+  //   setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number)
+  // );
+  // } else {
+  //   setSelectedSeats([]); // Clear or adjust selectedSeats as needed
+  // }
+  //   }
+  // };
+
+  // const handlePreviousCarriage = () => {
+  //   if (currentCarriageIndex > 0) {
+  //     setCurrentCarriageIndex(currentCarriageIndex - 1);
+  //     //setSelectedSeats([]);
+  //     if (currentCarriageIndex  === booking.booking.bookingCarriageNo) {
+  //       setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number)
+  //     );
+  //     } else {
+  //       setSelectedSeats([]); // Clear or adjust selectedSeats as needed
+  //     }
+
+  //   }
+  // };
+
   const handleNextCarriage = () => {
     if (currentCarriageIndex < selectedClassCarriages.length - 1) {
-      setCurrentCarriageIndex(currentCarriageIndex + 1);
-      setSelectedSeats([]);
+      const nextCarriageIndex = currentCarriageIndex + 1;
+      // Update the carriage index first
+      setCurrentCarriageIndex(nextCarriageIndex);
+  
+      // Then check if the next carriage is the booked one
+      if (nextCarriageIndex === booking.booking.bookingCarriageNo - 1) { // Adjusted to match zero-based index
+        setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number));
+      } else {
+        setSelectedSeats([]); // Clear or adjust selectedSeats as needed
+      }
     }
   };
-
+  
   const handlePreviousCarriage = () => {
     if (currentCarriageIndex > 0) {
-      setCurrentCarriageIndex(currentCarriageIndex - 1);
-      setSelectedSeats([]);
+      const prevCarriageIndex = currentCarriageIndex - 1;
+      // Update the carriage index first
+      setCurrentCarriageIndex(prevCarriageIndex);
+  
+      // Then check if the previous carriage is the booked one
+      if (prevCarriageIndex === booking.booking.bookingCarriageNo - 1) { // Adjusted to match zero-based index
+        setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number));
+      } else {
+        setSelectedSeats([]); // Clear or adjust selectedSeats as needed
+      }
     }
   };
 
@@ -382,6 +427,25 @@ const TrainBookingUpdatePage: React.FC = () => {
         </div>
       </div>
     ));
+
+    // Assuming booking object is available in the scope
+// const { bookingCarriageNo, bookingSeatNO } = booking.booking;
+// const bookingSeatsArray = bookingSeatNO.split(',').map(Number); // Convert bookingSeatNO to an array of numbers
+
+// return Object.entries(seatsByCarriage).map(([carriageIndex, seats]) => {
+//   // Update selectedSeats if currentCarriageIndex matches bookingCarriageNo - 1
+//   const updatedSelectedSeats = (currentCarriageIndex + 1 === bookingCarriageNo) ? bookingSeatsArray : selectedSeats;
+//  console.log(updatedSelectedSeats);
+//   return (
+//     <div key={carriageIndex}>
+//       <div>Class :{selectedClass === "1st" ? "1st Class" : "2nd Class"}</div>
+//       <div>Carriage : {currentCarriageIndex + 1}</div>
+//       <div>
+//         Selected Seats : {updatedSelectedSeats.sort((a, b) => a - b).join(", ")}
+//       </div>
+//     </div>
+//   );
+// });
   };
 
   console.log(trainDetailsWithSeats);
@@ -521,7 +585,7 @@ const TrainBookingUpdatePage: React.FC = () => {
       <div className=" d-flex justify-content-center align-items-center pt-3">
         <DetailsCard2
           isBookingPage
-          //VehicleId={booking.booking.busScheduleId}
+          VehicleId={booking.booking.busScheduleId}
           scheduleId={booking.booking.busScheduleId}
           vehicleNo={booking.booking.routeNo}
           routNo={booking.booking.routeNo}
@@ -543,8 +607,8 @@ const TrainBookingUpdatePage: React.FC = () => {
       <SeatMenu />
 
       <div className="row BusBooking m-auto h-auto justify-content-center align-content-center">
-      <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-12 align-items-center justify-content-center ms-lg-auto ms-lg-auto  ">
-      <div className="d-flex justify-content-start align-items-center pt-0 mt-0 ps-0">
+        <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-12 align-items-center justify-content-center ms-lg-auto ms-lg-auto  ">
+          <div className="d-flex justify-content-start align-items-center pt-0 mt-0 ps-0">
             <button
               className={`classbtn btn SignUpNow btn-sm fw-semibold fs-5 m-2 ${
                 selectedClass === "1st" ? "selected" : "default"
@@ -583,7 +647,7 @@ const TrainBookingUpdatePage: React.FC = () => {
             <button
               className="btn btn-secondary"
               onClick={handleNextCarriage}
-              disabled={ 
+              disabled={
                 currentCarriageIndex === selectedClassCarriages.length - 1
               }
             >
@@ -665,14 +729,12 @@ const TrainBookingUpdatePage: React.FC = () => {
               : "Selected Seats: None"}
           </div>
 
-          
-            <TotalPriceLable
-              passengers={selectedSeats.length}
-              totalPrice={selectedSeats.length * booking.booking.ticketPrice}
-              buttonText="Save"
-              onSave={handleSave}
-            />
-         
+          <TotalPriceLable
+            passengers={selectedSeats.length}
+            totalPrice={selectedSeats.length * booking.booking.ticketPrice}
+            buttonText="Save"
+            onSave={handleSave}
+          />
         </div>
       </div>
       <Footer />

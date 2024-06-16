@@ -29,7 +29,7 @@ function CarriageRegistrationForm() {
     width: '',
     height: '',
     weight: '',
-    carriageClass: '',
+    carriageClass: '1', // Default to 'First Class'
   });
 
   const [errors, setErrors] = useState({
@@ -48,7 +48,7 @@ function CarriageRegistrationForm() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (['seatsCount', 'length', 'width', 'height', 'weight', 'carriageClass'].includes(name) && !/^\d+$/.test(value)) {
+    if (['seatsCount', 'length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
       setErrors({
         ...errors,
         [name]: 'Only numbers are allowed'
@@ -65,11 +65,26 @@ function CarriageRegistrationForm() {
     }
   };
 
-
-
+  const handleClassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      carriageClass: e.target.value
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!Object.values(buttonStates).some(state => state)) {
+      Swal.fire({
+        icon: "error",
+        title: "Form submission failed",
+        text: "Please Enter the Seat Structure of the Bus",
+        showConfirmButton: true,
+      });
+      return;
+    }
+
     let formValid = true;
     const newErrors = { ...errors };
 
@@ -83,7 +98,6 @@ function CarriageRegistrationForm() {
         }
       }
     }
-
 
     setErrors(newErrors);
 
@@ -120,16 +134,13 @@ function CarriageRegistrationForm() {
           showConfirmButton: false,
           timer: 3500
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
 
         navigate('/TrainOwnerPage');
       } catch (error) {
         console.log("Error:", error);
         Swal.fire({
           icon: "error",
-          title: "Form submission failed2",
+          title: "Form submission failed",
           showConfirmButton: false,
           timer: 2500
         });
@@ -211,46 +222,55 @@ function CarriageRegistrationForm() {
                 <div className="form-group row">
                   <label htmlFor="inputSeatsCount" className="col-form-label">Enter Seat Count</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" onChange={handleInputChange} />
                     {errors.seatsCount && <div className="text-danger">{errors.seatsCount}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputLength" className="col-form-label">Enter Length</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputLength" name="length" placeholder="Length" onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputLength" name="length" placeholder="Length (m)" onChange={handleInputChange} />
                     {errors.length && <div className="text-danger">{errors.length}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputWidth" className="col-form-label">Enter Width</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputWidth" name="width" placeholder="Width" onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputWidth" name="width" placeholder="Width (m)" onChange={handleInputChange} />
                     {errors.width && <div className="text-danger">{errors.width}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputHeight" className="col-form-label">Enter Height</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputHeight" name="height" placeholder="Height" onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputHeight" name="height" placeholder="Height (m)" onChange={handleInputChange} />
                     {errors.height && <div className="text-danger">{errors.height}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputWeight" className="col-form-label">Enter Weight</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputWeight" name="weight" placeholder="Weight" onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputWeight" name="weight" placeholder="Weight (Kg)" onChange={handleInputChange} />
                     {errors.weight && <div className="text-danger">{errors.weight}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="inputCarriageClass" className="col-form-label">Enter Carriage Class</label>
+                  <label className="col-form-label">Select Carriage Class</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputCarriageClass" name="carriageClass" placeholder="Carriage Class" onChange={handleInputChange} />
-                    {errors.carriageClass && <div className="text-danger">{errors.carriageClass}</div>}
+                    <div className="form-check">
+                      <input className="form-check-input" type="radio" name="carriageClass" id="firstClass" value="1" checked={formData.carriageClass === '1'} onChange={handleClassChange} />
+                      <label className="form-check-label" htmlFor="firstClass">
+                        First Class
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input className="form-check-input" type="radio" name="carriageClass" id="secondClass" value="2" checked={formData.carriageClass === '2'} onChange={handleClassChange} />
+                      <label className="form-check-label" htmlFor="secondClass">
+                        Second Class
+                      </label>
+                    </div>
                   </div>
                 </div>
-              
               </div>
 
               {/* Carriage seat structure */}
@@ -258,8 +278,10 @@ function CarriageRegistrationForm() {
             </div>
             <div className='row'>
               <div className='col-12 text-center p-3'>
-                <button type='submit' className='btn primary mx-3 '>Register</button>
+
                 <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
+                <button type='submit' className='btn primary mx-3 '>Register</button>
+                
               </div>
             </div>
           </form>

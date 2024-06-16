@@ -23,6 +23,9 @@ import UpdateCarriageRegInfoPage from './Pages/UpdateCarriageRegInfoPage/UpdateC
 import UpdateLocomotiveRegInfoPage from './Pages/UpdateLocomotiveRegInfoPage/UpdateLocomotiveRegInfoPage';
 import TrainShceduleUpdatePage from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage';
 import TrainShceduleUpdatePage2 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage2';
+import TrainShceduleUpdatePage3 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage3';
+import TrainShceduleUpdatePage4 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage4';
+import TrainShceduleUpdatePage5 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5';
 
 
 
@@ -51,6 +54,9 @@ function App() {
         <Route path='/UpdateLocomotiveRegInfoPage' element={<UpdateLocomotiveRegInfoPage />} />
         <Route path='/TrainShceduleUpdatePage' element={<TrainShceduleUpdatePage />} />
         <Route path='/TrainShceduleUpdatePage2' element={<TrainShceduleUpdatePage2 />} />
+        <Route path='/TrainShceduleUpdatePage3' element={<TrainShceduleUpdatePage3 />} />
+        <Route path='/TrainShceduleUpdatePage4' element={<TrainShceduleUpdatePage4 />} />
+        <Route path='/TrainShceduleUpdatePage5' element={<TrainShceduleUpdatePage5 />} />
         
       </Routes>
     </BrowserRouter>

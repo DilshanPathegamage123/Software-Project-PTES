@@ -166,6 +166,18 @@ function ScheduledTrainPage() {
         }
       };
 
+      const handleUpdateClick3 = () => {
+        navigate(`/TrainShceduleUpdatePage3?scheduleId=${data.schedulId}`);
+      };
+
+      const handleEdit4 = () => {
+        navigate(`/TrainShceduleUpdatePage4?scheduleId=${data.schedulId}`);
+      };
+
+      const handleEdit5 = () => {
+        navigate(`/TrainShceduleUpdatePage5?scheduleId=${data.schedulId}`);
+      };
+
       
     if (loading) {
         return <div>Loading...</div>;
@@ -179,10 +191,18 @@ function ScheduledTrainPage() {
                     {data && (
                         <div className='SchBusInfoSec rounded-5 '>
                             {/* <div className='row pl-3 pt-3'>
-                                <Link to='/'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
+                                <Link to='/TrainOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                             </div> */}
-                            <div className='row'>
-                                <h3 className='title1 p-4'>Train Schedule Details</h3>
+                            <div className='row align-items-center'>
+                                <div className='col-1 pl-4 '>
+                                    <Link to='/TrainOwnerPage'>
+                                        <img src={BackIcon} alt="BackIcon" className='BackIcon'/>
+                                    </Link>
+                                </div>
+                                <div className='col text-center'>
+                                    <h3 className='title1 p-4'>Train Schedule Details</h3>
+                                </div>
+                                <div className='col-1'></div>
                             </div>
                             <div className='row'>
                                 <div className='col d-flex justify-content-center'>
@@ -238,7 +258,7 @@ function ScheduledTrainPage() {
                                                     </p>
                                                 </li>
                                             ))}
-                                            <button className='btn white'>Edit</button>
+                                            <button className='btn white' onClick={() => handleUpdateClick3()}>Edit</button>
                                         </ul>
                                     </div>
                                 </div>
@@ -254,7 +274,7 @@ function ScheduledTrainPage() {
                                                 </p>
                                             </li>
                                         ))}
-                                        <button className='btn secondary'>Edit</button>
+                                        <button className='btn secondary' onClick={() => handleEdit4()}>Edit</button>
                                     </ul>
                                 </div>
                                 <div className='col-sm-6 detailSec'>
@@ -267,7 +287,7 @@ function ScheduledTrainPage() {
                                                 </p>
                                             </li>
                                         ))}
-                                        <button className='btn secondary'>Edit</button>
+                                        <button className='btn secondary' onClick={() => handleEdit5()}>Edit</button>
                                     </ul>
                                 </div>
                             </div>

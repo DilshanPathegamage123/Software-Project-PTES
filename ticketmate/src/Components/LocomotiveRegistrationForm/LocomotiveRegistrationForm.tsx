@@ -45,12 +45,13 @@ function LocomotiveRegistrationForm() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'locomotiveSpeed' && !/^\d+$/.test(value)) {
+    if ((name === 'locomotiveSpeed' || name === 'locomotiveCapacity') && !/^\d+$/.test(value)) {
       setErrors({
         ...errors,
-        [name]: 'Only numbers are allowed for locomotive speed'
+        [name]: 'Only numbers are allowed'
       });
-    } else {
+    } 
+    else {
       setFormData({
         ...formData,
         [name]: value
@@ -134,9 +135,9 @@ function LocomotiveRegistrationForm() {
           showConfirmButton: false,
           timer: 3500
         });
-        setTimeout(() => {
-            window.location.reload();
-        }, 4000);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 4000);
 
         navigate('/TrainOwnerPage');
       } catch (error) {
@@ -200,49 +201,51 @@ function LocomotiveRegistrationForm() {
                   <label htmlFor="inputLocomotiveNum" className="col-form-label">Enter Locomotive Number</label>
                   <div className="">
                     <input type="text" className="form-control" id="inputLocomotiveNum" name="locomotiveNum" placeholder="Locomotive Number" onChange={handleInputChange} />
-                    {errors.locomotiveNum && <div className="text-danger">{errors.locomotiveNum}</div>}
+                    {errors.locomotiveNum && <div className="text-danger"><small>{errors.locomotiveNum}</small></div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputLocomotiveType" className="col-form-label">Enter Locomotive Type</label>
                   <div className="">
                     <input type="text" className="form-control" id="inputLocomotiveType" name="locomotiveType" placeholder="Locomotive Type" onChange={handleInputChange} />
-                    {errors.locomotiveType && <div className="text-danger">{errors.locomotiveType}</div>}
+                    {errors.locomotiveType && <div className="text-danger"><small>{errors.locomotiveType}</small></div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputLocomotiveModel" className="col-form-label">Enter Locomotive Model</label>
                   <div className="">
                     <input type="text" className="form-control" id="inputLocomotiveModel" name="locomotiveModel" placeholder="Locomotive Model" onChange={handleInputChange} />
-                    {errors.locomotiveModel && <div className="text-danger">{errors.locomotiveModel}</div>}
+                    {errors.locomotiveModel && <div className="text-danger"><small>{errors.locomotiveModel}</small></div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputLocomotiveCapacity" className="col-form-label">Enter Locomotive Capacity</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputLocomotiveCapacity" name="locomotiveCapacity" placeholder="Locomotive Capacity" onChange={handleInputChange} />
-                    {errors.locomotiveCapacity && <div className="text-danger">{errors.locomotiveCapacity}</div>}
+                    <input type="text" className="form-control" id="inputLocomotiveCapacity" name="locomotiveCapacity" placeholder="Locomotive Capacity (No of Passengers)" onChange={handleInputChange} />
+                    {errors.locomotiveCapacity && <div className="text-danger"><small>{errors.locomotiveCapacity}</small></div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputLocomotiveSpeed" className="col-form-label">Enter Locomotive Speed</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputLocomotiveSpeed" name="locomotiveSpeed" placeholder="Locomotive Speed" onChange={handleInputChange} />
-                    {errors.locomotiveSpeed && <div className="text-danger">{errors.locomotiveSpeed}</div>}
+                    <input type="text" className="form-control" id="inputLocomotiveSpeed" name="locomotiveSpeed" placeholder="Locomotive Speed (km\h)" onChange={handleInputChange} />
+                    {errors.locomotiveSpeed && <div className="text-danger"><small>{errors.locomotiveSpeed}</small></div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="exampleFormControlFile1">Attach vehicle licence image</label>
                   <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
                   <input type="file" className="form-control-file" id="exampleFormControlFile1" name="selectedFile" onChange={handleFileChange} />
-                  {errors.selectedFile && <div className="text-danger">{errors.selectedFile}</div>}
+                  {errors.selectedFile && <div className="text-danger"><small>{errors.selectedFile}</small></div>}
                 </div>
               </div>
             </div>
             <div className='row py-5'>
               <div className='col-12 text-center p-3'>
-                <button type='submit' className='btn primary mx-3 '>Register</button>
+
                 <button type='button' className='btn white mx-3 ' onClick={CancelButton}>Cancel</button>
+                <button type='submit' className='btn primary mx-3 '>Register</button>
+                
               </div>
             </div>
           </form>

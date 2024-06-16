@@ -195,15 +195,16 @@ function UpdateLocomotiveRegInfoPage() {
 
   return (
     <>
+    <PrimaryNavBar />
       <div className='container'>
-        <div className='col-12 rounded-4 formSec'>
-          <div className='row py-4'>
+        <div className='col-12 rounded-4 formSecLocUp my-4'>
+          <div className='row pb-4'>
             <h3 className='h3Style text-center'>Update Locomotive Information</h3>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className='row'>
-              <div className='col-12 col-lg-6 img-sec p-3'>
+              <div className='col-12 col-lg-6 img-sec-Loc-Up p-3'>
               </div>
 
               <div className='col-12 col-lg-6 pl-5'>
@@ -251,8 +252,10 @@ function UpdateLocomotiveRegInfoPage() {
                 </div>
                 <div className="form-group row">
                   <div className="col-sm-12">
+                    
+                    <button type="button" className="btn yellow mr-2" onClick={CancelButton}>Cancel</button>
                     <button type="submit" className="btn primary">Update</button>
-                    <button type="button" className="btn yellow ml-2" onClick={CancelButton}>Cancel</button>
+                    
                   </div>
                 </div>
               </div>

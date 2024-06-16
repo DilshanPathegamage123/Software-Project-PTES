@@ -6,6 +6,8 @@ import axios from 'axios';
 import SelectBusSeatStructureCarr from '../../Components/SelectBusSeatStructureCarr/SelectBusSeatStructureCarr';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import Footer from '../../Components/Footer/footer';
 
 interface ApiResponse {
   carriageId: number;
@@ -39,7 +41,7 @@ function UpdateCarriageRegInfoPage() {
     width: '',
     height: '',
     weight: '',
-    carriageClass: '',
+    carriageClass: '1', // Default to 'First Class'
     userId: '',
   });
 
@@ -97,7 +99,7 @@ function UpdateCarriageRegInfoPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (['seatsCount', 'length', 'width', 'height', 'weight', 'carriageClass'].includes(name) && !/^\d+$/.test(value)) {
+    if (['seatsCount', 'length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
       setErrors({
         ...errors,
         [name]: 'Only numbers are allowed'
@@ -112,6 +114,13 @@ function UpdateCarriageRegInfoPage() {
         [name]: ''
       });
     }
+  };
+
+  const handleClassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      carriageClass: e.target.value
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -160,7 +169,7 @@ function UpdateCarriageRegInfoPage() {
 
           Swal.fire({
             icon: "success",
-            title: "Your Bus Information Successfully Updated",
+            title: "Your Carriage Information Successfully Updated",
             showConfirmButton: false,
             timer: 3500
           });
@@ -235,6 +244,7 @@ function UpdateCarriageRegInfoPage() {
 
   return (
     <>
+      <PrimaryNavBar />
       <div className='container py-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
@@ -254,43 +264,53 @@ function UpdateCarriageRegInfoPage() {
                 <div className="form-group row">
                   <label htmlFor="inputSeatsCount" className="col-form-label">Enter Seat Count</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" value={formData.seatsCount} onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" value={formData.seatsCount} onChange={handleInputChange} />
                     {errors.seatsCount && <div className="text-danger">{errors.seatsCount}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputLength" className="col-form-label">Enter Length</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputLength" name="length" placeholder="Length" value={formData.length} onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputLength" name="length" placeholder="Length" value={formData.length} onChange={handleInputChange} />
                     {errors.length && <div className="text-danger">{errors.length}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputWidth" className="col-form-label">Enter Width</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputWidth" name="width" placeholder="Width" value={formData.width} onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputWidth" name="width" placeholder="Width" value={formData.width} onChange={handleInputChange} />
                     {errors.width && <div className="text-danger">{errors.width}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputHeight" className="col-form-label">Enter Height</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputHeight" name="height" placeholder="Height" value={formData.height} onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputHeight" name="height" placeholder="Height" value={formData.height} onChange={handleInputChange} />
                     {errors.height && <div className="text-danger">{errors.height}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
                   <label htmlFor="inputWeight" className="col-form-label">Enter Weight</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputWeight" name="weight" placeholder="Weight" value={formData.weight} onChange={handleInputChange} />
+                    <input type="number" className="form-control" id="inputWeight" name="weight" placeholder="Weight" value={formData.weight} onChange={handleInputChange} />
                     {errors.weight && <div className="text-danger">{errors.weight}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="inputCarriageClass" className="col-form-label">Enter Carriage Class</label>
+                  <label className="col-form-label">Select Carriage Class</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputCarriageClass" name="carriageClass" placeholder="Carriage Class" value={formData.carriageClass} onChange={handleInputChange} />
-                    {errors.carriageClass && <div className="text-danger">{errors.carriageClass}</div>}
+                    <div className="form-check">
+                      <input className="form-check-input" type="radio" name="carriageClass" id="firstClass" value="1" checked={formData.carriageClass === '1'} onChange={handleClassChange} />
+                      <label className="form-check-label" htmlFor="firstClass">
+                        First Class
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input className="form-check-input" type="radio" name="carriageClass" id="secondClass" value="2" checked={formData.carriageClass === '2'} onChange={handleClassChange} />
+                      <label className="form-check-label" htmlFor="secondClass">
+                        Second Class
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -312,8 +332,9 @@ function UpdateCarriageRegInfoPage() {
           </form>
         </div>
       </div>
-      <ToastContainer />
+      <Footer/>
     </>
+    
   );
 }
 

@@ -22,4 +22,63 @@
     font-family: 'poppins', sans-serif;
   }
 
-  
+  .btn{
+      padding: 11px 22px !important;
+      border-radius: 8px !important;
+  }
+
+  .btn:hover{
+      border-width: 2px !important;
+  }
+
+  .primary{
+      color: var(--color-text-white);
+      background-color: var(--color-primary) !important;
+      border-color: var(--color-primary) !important;
+  }
+  .primary:hover{
+      background-color: var(--color-bg) !important;
+      color: var(--color-primary) !important;
+      border-color: var(--color-primary) !important;
+  }
+
+  .secondary{
+      background-color: var(--color-secondary) !important;
+      border-color: var(--color-secondary) !important;
+  }
+  .secondary:hover{
+      background-color: var(--color-bg) !important;
+      color: var(--color-secondary) !important;
+      border-color: var(--color-secondary) !important;
+  }
+
+  .third{
+      background-color: var(--color-third) !important;
+      border-color: var(--color-third) !important;
+  }
+  .third:hover{
+      background-color: var(--color-bg) !important;
+      color: var(--color-third) !important;
+      border-color: var(--color-third) !important;
+  }
+
+  .yellow{
+      background-color: var(--color-yellow) !important;
+      border-color: var(--color-yellow) !important;
+  }
+  .yellow:hover{
+      background-color: var(--color-bg) !important;
+      color: var(--color-yellow) !important;
+      border-color: var(--color-yellow) !important;
+  }
+
+  .white{
+    background-color: var(--color-bg) !important;
+    border-color: var(--color-primary) !important;
+  }
+  .yellow:hover{
+      background-color: var(--color-primary) !important;
+      color: var(--color-bg) !important;
+      border-color: var(--color-primary) !important;
+  }
+    

@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import React, { useState } from "react";
 import "./loginPage.css";
@@ -12,6 +14,7 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useNavigate();
+
 
   const handlesubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -103,20 +106,13 @@ const LoginPage = () => {
 
         <div className=" d-flex justify-content-center ">
           <div
-            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
+            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center"
             id="login-form"
-
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
             </div>
 
-            {/* <input
-              className="form-control col-8 mx-auto m-4 custom-bg-color"
-              type="text"
-              placeholder=" <><BsFillPersonFill />    username"
-              required
-            ></input> */}
             <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -127,8 +123,8 @@ const LoginPage = () => {
               style={{ paddingLeft: "30px" }}
               data-testid="username"
               // Add padding for the icon
+            >
 
-            ></input>
 
             <input
               type="password"
@@ -155,7 +151,7 @@ const LoginPage = () => {
       </form>
       <Footer />
     </div>
-
   );
 };
+
 export default LoginPage;

@@ -12,7 +12,6 @@ import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerPr
 
 
 
-
 function App() {
   const rideId = 1;
   return (
@@ -29,7 +28,6 @@ function App() {
       
     </div>
       
-
   );
 }
 

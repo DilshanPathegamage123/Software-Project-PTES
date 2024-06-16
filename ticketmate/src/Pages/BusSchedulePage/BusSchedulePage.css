@@ -1,0 +1,20 @@
+@import '../../vars.css';
+
+.formSec{
+    margin-left: 300px;
+    margin-right: 300px;
+}
+@media only screen and (max-width: 600px) {
+    .formSec {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+  }
+  
+  /* Responsive padding for screens between 601px and 1200px */
+  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+    .formSec {
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+  }

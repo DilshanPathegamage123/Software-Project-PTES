@@ -20,6 +20,8 @@ const UserManage = () => {
   const [userData, setUserData] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
+
+  useEffect(() => {
   const getToken = () => {
     return sessionStorage.getItem("token");
   };

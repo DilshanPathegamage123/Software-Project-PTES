@@ -25,12 +25,12 @@ function ownerFormComponent() {
   const [vehicleType, setVehicleType] = useState("bus");
   const history = useNavigate();
 
+
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: ownerFormValidation,
     onSubmit: async (values) => {
       console.log(values);
-
       const userData = {
         id: 0,
         firstName: values.firstName,
@@ -72,6 +72,7 @@ function ownerFormComponent() {
       } catch (error) {
         console.error("Error:", error);
       }
+
     },
 
     //start of the api call

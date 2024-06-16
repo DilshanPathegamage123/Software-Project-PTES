@@ -3,8 +3,9 @@ import LoginPage from "./pages/loginPage/loginPage";
 import PassengerForm from "./pages/registration_pages/passenger_form";
 import AdminPage from "./pages/AdminDashboard/AdminPage";
 import Passenger from './Passenger/passenger1';
-import BusOwnerPage from "./pages/BusOwnerPage/BusOwnerPage";
 import Home from "./pages/HomePage/Home";
+import BusOwnerPage from "./pages/BusOwnerPage/BusOwnerPage";
+
 import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
 import UpdateOwnerProfile from "./pages/UpdateProfilePages/UpdateOwnerProfile";
 import UpdateDriverProfile from "./pages/UpdateProfilePages/UpdateDriverProfile";

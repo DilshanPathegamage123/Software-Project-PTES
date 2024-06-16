@@ -10,6 +10,7 @@ import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo
 import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
 import { BrowserRouter as Router, useLocation ,useNavigate} from "react-router-dom";
 import axios from "axios";
+import RegisteredBusInfoSec from "../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec";
 
 interface OwnerData {
   Id: number;
@@ -36,13 +37,22 @@ function BusOwnerPage() {
   const history = useNavigate();
 
 
+
   const getToken = () => {
     return sessionStorage.getItem("token");
   };
 
+  const [buttonStates, setButtonStates] = useState({ // State to track button states
+    ScheduledBuses: true,
+    RegisteredBuses: false,
+    Reports: false
+  });
+
+
   useEffect(() => {
     function handleResize() {
       const width = document.getElementById("getWidth")?.offsetWidth;
+
       setDivWidth(width || 0);
     }
 
@@ -87,12 +97,48 @@ function BusOwnerPage() {
             requestStatus: owner.requestStatus,
           }))
         );
-        console.log(ownerdata);
+
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+      
+       // Function to handle button click
+  const handleButtonClick = (componentName: string) => {
+    setSelectedComponent(componentName);
+    // Update button states
+    setButtonStates((prevState) => ({
+      ...prevState,
+      [componentName]: true
+    }));
+    // Reset other button states
+    for (let key in buttonStates) {
+      if (key !== componentName) {
+        setButtonStates((prevState) => ({
+          ...prevState,
+          [key]: false
+        }));
+      }
+    }
+  };
+
+  // Function to render selected component based on state
+  const renderSelectedComponent = () => {
+    switch (selectedComponent) {
+      case 'ScheduledBuses':
+        return <ScheduledBusInfo />;
+      case 'RegisteredBuses':
+        return <RegisteredBusInfoSec />;
+      case 'Reports':
+        return <RegisteredBusInfoSec />;
+      default:
+        return null;
+    }
+  };
+
+
 
   return (
     <>
@@ -107,7 +153,6 @@ function BusOwnerPage() {
                 <h5 className="text-white pt-4">Vehicle Owner</h5>
                 <img src={profileIcon} alt="profileIcon" className="pb-3" />
               </div>
-
               <div className="col-lg-4 col-sm-6 p-4">
                 <div className="">
                   <p className="text-white">
@@ -137,42 +182,35 @@ function BusOwnerPage() {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-lg-2 col-sm-4 m-0" id="getWidth">
+        
+       <div className='row'>
+          <div className='col-lg-2 col-sm-4 m-0' id='getWidth'>
             <div>
-              <SquareButton
-                text="Register a Bus"
-                link="/BusRegistrationPage"
-                bwidth={divWidth}
-              />
+              <Link to='/BusRegistrationPage'><SquareButton text='Register a Bus' bwidth={divWidth} /></Link>
             </div>
             <div>
-              <SquareButton
-                text="Schedule a new travel journey"
-                link="/BusRegistrationPage"
-                bwidth={divWidth}
-              />
+              <Link to='/BusSchedulePage'><SquareButton text='Schedule a new travel journey' bwidth={divWidth} /></Link>
             </div>
           </div>
-          <div className="col-lg-10 col-sm-8 rounded-4 p-3 px-4">
-            <div className="d-flex flex-row">
-              <PrimaryButton
-                value="Scheduled buses"
-                color="primary"
-              ></PrimaryButton>
-              <PrimaryButton
-                value="Registered Buses"
-                color="secondary"
-              ></PrimaryButton>
-              <PrimaryButton value="Reports" color="secondary"></PrimaryButton>
+          <div className='col-lg-10 col-sm-8 rounded-4 p-3 px-4'>
+            <div className='d-flex flex-row'>
+              <button className={`btn btn-primary secButton ${buttonStates.ScheduledBuses ? 'active' : ''}`} onClick={() => handleButtonClick('ScheduledBuses')}>
+                Scheduled buses
+              </button>
+              <button className={`btn btn-primary secButton ${buttonStates.RegisteredBuses ? 'active' : ''}`} onClick={() => handleButtonClick('RegisteredBuses')}>
+                Registered Buses
+              </button>
+              {/* <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
+                Reports
+              </button> */}
             </div>
-            <div className="p-4 rounded-4" style={{ background: "#F1F1F1" }}>
-              <ScheduledBusInfo />
-              <ScheduledBusInfo />
-              <ScheduledBusInfo />
+            <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
+              {renderSelectedComponent()}
+
             </div>
           </div>
         </div>
+
       </div>
       <Footer />
     </>

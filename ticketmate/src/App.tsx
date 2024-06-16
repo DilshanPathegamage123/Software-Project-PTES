@@ -20,6 +20,9 @@ import BusScheduleFormUpdatePage from './Pages/BusScheduleFormUpdatePage/BusSche
 import BusScheduleFormUpdatePage2 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage2';
 import BusScheduleFormUpdatePage3 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage3';
 import UpdateCarriageRegInfoPage from './Pages/UpdateCarriageRegInfoPage/UpdateCarriageRegInfoPage';
+import UpdateLocomotiveRegInfoPage from './Pages/UpdateLocomotiveRegInfoPage/UpdateLocomotiveRegInfoPage';
+import TrainShceduleUpdatePage from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage';
+import TrainShceduleUpdatePage2 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage2';
 
 
 
@@ -45,6 +48,9 @@ function App() {
         <Route path='/BusScheduleFormUpdatePage2' element={<BusScheduleFormUpdatePage2/>} />
         <Route path='/BusScheduleFormUpdatePage3' element={<BusScheduleFormUpdatePage3 />} />
         <Route path='/UpdateCarriageRegInfoPage' element={<UpdateCarriageRegInfoPage />} />
+        <Route path='/UpdateLocomotiveRegInfoPage' element={<UpdateLocomotiveRegInfoPage />} />
+        <Route path='/TrainShceduleUpdatePage' element={<TrainShceduleUpdatePage />} />
+        <Route path='/TrainShceduleUpdatePage2' element={<TrainShceduleUpdatePage2 />} />
         
       </Routes>
     </BrowserRouter>

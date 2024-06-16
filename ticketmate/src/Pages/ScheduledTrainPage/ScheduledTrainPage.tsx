@@ -5,8 +5,9 @@ import Footer from '../../Components/Footer/footer';
 import MainImg from '../../assets/trainImgBack.jpg';
 import SchePageIcon from '../../assets/SchePageIcon.png';
 import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import BackIcon from '../../assets/ion_arrow-back-circle.png';
+import Swal from 'sweetalert2';
 
 // Interfaces
 interface TrainData {
@@ -71,6 +72,8 @@ function ScheduledTrainPage() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const schedulId = searchParams.get('schedulId');
+    const navigate = useNavigate();
+
 
     // Fetching data on component mount or when scheduleId changes
     useEffect(() => {
@@ -140,6 +143,30 @@ function ScheduledTrainPage() {
             });
     }
 
+    const handleEdit1 = () => {
+        navigate(`/TrainShceduleUpdatePage?schedulId=${data.schedulId}`);
+      };
+
+      const handleUpdateClick2 = async () => {
+        try {
+          const response = await fetch(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${data.trainRoutNo}`);
+          if (response.ok) {
+            const data2 = await response.json();
+            navigate(`/TrainShceduleUpdatePage2?routId=${data2.id}&scheduleId=${schedulId}`);
+          } else {
+            console.error('Route number is unavailable.');
+            Swal.fire({
+              title: "Error!",
+              text: "Error updating bus stations. Please try again.",
+              icon: "error"
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching route number:', error);
+        }
+      };
+
+      
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -183,6 +210,7 @@ function ScheduledTrainPage() {
                                     <p className='para'>Train Type  : {data.trainType}</p>
                                     <p className='para'>First Class Ticket Price  : {data.firstClassTicketPrice}</p>
                                     <p className='para'>Second Class Ticket Price  : {data.secondClassTicketPrice}</p>
+                                    <button className='btn white' onClick={() => handleEdit1()}>Edit</button>
                                 </div>
                                 <div className='col-lg-6 detailSec'>
                                     <div className='row'>
@@ -191,11 +219,14 @@ function ScheduledTrainPage() {
                                             {stations.map((station, index) => (
                                                 <li key={index} className='station-info'>
                                                     <p className='para'>
-                                                        {station.trainStationName} - {station.trainarrivalTime} - {station.trainDepartureTime}
+                                                        {station.trainStationName} - {station.trainarrivalTime} 
+                                                        {/* - {station.trainDepartureTime} */}
                                                     </p>
                                                 </li>
                                             ))}
+                                            <button className='btn white' onClick={() => handleUpdateClick2()}>Edit</button>
                                         </ul>
+                                        
                                     </div>
                                     <div className='row'>
                                         <p className='para'>Scheduled Dates :</p>
@@ -207,6 +238,7 @@ function ScheduledTrainPage() {
                                                     </p>
                                                 </li>
                                             ))}
+                                            <button className='btn white'>Edit</button>
                                         </ul>
                                     </div>
                                 </div>
@@ -222,6 +254,7 @@ function ScheduledTrainPage() {
                                                 </p>
                                             </li>
                                         ))}
+                                        <button className='btn secondary'>Edit</button>
                                     </ul>
                                 </div>
                                 <div className='col-sm-6 detailSec'>
@@ -234,6 +267,7 @@ function ScheduledTrainPage() {
                                                 </p>
                                             </li>
                                         ))}
+                                        <button className='btn secondary'>Edit</button>
                                     </ul>
                                 </div>
                             </div>

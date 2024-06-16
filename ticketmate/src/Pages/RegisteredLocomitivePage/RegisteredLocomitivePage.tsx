@@ -5,7 +5,7 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
 import TrainImg from '../../assets/Train Icon.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
@@ -53,9 +53,10 @@ function RegisteredLocomitivePage() {
         });
     }
 
+    const navigate = useNavigate();
 
-    const handleClick = () => {
-        // can add logic to handle button clicks here if needed
+    const handleEdit = () => {
+        navigate(`/UpdateLocomotiveRegInfoPage?locomotiveId=${data.locomotiveId}`)
     };
 
     // Function to handle delete action
@@ -131,8 +132,8 @@ function RegisteredLocomitivePage() {
                         </div>
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
-                                <button className='btn white m-2'>Edit</button>
-                                <button className='btn white m-2'onClick={()=>handleDelete()}>Delete</button>
+                                <button className='btn white m-2' onClick={()=>handleEdit()}>Edit</button>
+                                <button className='btn yellow m-2'onClick={()=>handleDelete()}>Delete</button>
                             </div>
                         </div>
                     </div>

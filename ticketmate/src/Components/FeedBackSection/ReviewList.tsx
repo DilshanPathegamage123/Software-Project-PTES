@@ -90,6 +90,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ busId }) => {
             <div
               key={item.feedBackId}
               className={`carousel-item ${index === 0 ? "active" : ""}`}
+              data-bs-interval="2500"
             >
               <ReviewItem item={item} />
             </div>
@@ -99,7 +100,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ busId }) => {
       <button
         className="carousel-control-prev"
         type="button"
-        data-bs-target="#carouselExampleInterval"
+        data-bs-target="#carouselInterval"
         data-bs-slide="prev"
       >
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -108,7 +109,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ busId }) => {
       <button
         className="carousel-control-next"
         type="button"
-        data-bs-target="#carouselExampleInterval"
+        data-bs-target="#carouselInterval"
         data-bs-slide="next"
       >
         <span className="carousel-control-next-icon" aria-hidden="true"></span>

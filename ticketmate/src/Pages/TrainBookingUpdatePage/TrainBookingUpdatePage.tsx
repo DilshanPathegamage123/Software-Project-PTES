@@ -325,35 +325,6 @@ const TrainBookingUpdatePage: React.FC = () => {
     }
   };
 
-  // const handleNextCarriage = () => {
-  //   if (currentCarriageIndex < selectedClassCarriages.length - 1) {
-  //     setCurrentCarriageIndex(currentCarriageIndex + 1);
-  //     //setSelectedSeats([]);
-
-  //     // Update selectedSeats if moving to the booked carriage
-  // if (currentCarriageIndex  === booking.booking.bookingCarriageNo) {
-  //   setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number)
-  // );
-  // } else {
-  //   setSelectedSeats([]); // Clear or adjust selectedSeats as needed
-  // }
-  //   }
-  // };
-
-  // const handlePreviousCarriage = () => {
-  //   if (currentCarriageIndex > 0) {
-  //     setCurrentCarriageIndex(currentCarriageIndex - 1);
-  //     //setSelectedSeats([]);
-  //     if (currentCarriageIndex  === booking.booking.bookingCarriageNo) {
-  //       setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number)
-  //     );
-  //     } else {
-  //       setSelectedSeats([]); // Clear or adjust selectedSeats as needed
-  //     }
-
-  //   }
-  // };
-
   const handleNextCarriage = () => {
     if (currentCarriageIndex < selectedClassCarriages.length - 1) {
       const nextCarriageIndex = currentCarriageIndex + 1;
@@ -427,25 +398,6 @@ const TrainBookingUpdatePage: React.FC = () => {
         </div>
       </div>
     ));
-
-    // Assuming booking object is available in the scope
-// const { bookingCarriageNo, bookingSeatNO } = booking.booking;
-// const bookingSeatsArray = bookingSeatNO.split(',').map(Number); // Convert bookingSeatNO to an array of numbers
-
-// return Object.entries(seatsByCarriage).map(([carriageIndex, seats]) => {
-//   // Update selectedSeats if currentCarriageIndex matches bookingCarriageNo - 1
-//   const updatedSelectedSeats = (currentCarriageIndex + 1 === bookingCarriageNo) ? bookingSeatsArray : selectedSeats;
-//  console.log(updatedSelectedSeats);
-//   return (
-//     <div key={carriageIndex}>
-//       <div>Class :{selectedClass === "1st" ? "1st Class" : "2nd Class"}</div>
-//       <div>Carriage : {currentCarriageIndex + 1}</div>
-//       <div>
-//         Selected Seats : {updatedSelectedSeats.sort((a, b) => a - b).join(", ")}
-//       </div>
-//     </div>
-//   );
-// });
   };
 
   console.log(trainDetailsWithSeats);

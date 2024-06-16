@@ -30,7 +30,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ item }) => {
         const response = await axios.get(
           `https://localhost:7048/api/GetUserName`,
           {
-            params: { UserId: item.passengerId },
+            params: { UserId: parseInt(item.passengerId, 10) },
           }
         );
 

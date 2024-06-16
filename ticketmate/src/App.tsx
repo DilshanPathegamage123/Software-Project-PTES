@@ -7,7 +7,10 @@ import Paymentvisa from "./Components/payment/Paymentvisa";
 import Passenger from "./Passenger/passenger1";
 import Stripe_test from "./Test/Stripe_test";
 import Payment2 from "./pages/loginPage/payment2";
-
+import UpdateBreakdown from "./Driver/UpdateBreakDown";
+import Notification from "./Passenger/Notification"
+import Driver2 from "./Driver/Driver2";
+import Driver from "./Driver/Driver1";
 
 
 function App() {
@@ -21,13 +24,12 @@ function App() {
       {/* <SuccessBox/> */}
       {/* <Driver1/> */}
       {/* <Passenger/> */}
-      
     </div>
-  //   <>
-  //  <Payment2/>
-
-  //   </>
-  );
+    // <>
+    // <TermsAndConditions/>
+    // </>
+  
+   );
 }
 
 export default App;

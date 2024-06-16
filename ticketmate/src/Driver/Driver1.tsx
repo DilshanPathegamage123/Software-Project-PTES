@@ -17,6 +17,8 @@ function Driver() {
     color: 'black', // Optionally change text color to ensure readability    
     width: '15%'
   };
+ 
+
 
   return (
     <>
@@ -53,7 +55,7 @@ function Driver() {
                 Completed
               </button>
             </div>
-            <div className="p-4 rounded-4" style={{ background: "#F1F1F1" }}>
+            <div className="p-4 rounded-4 mb-4" style={{ background: "#F1F1F1" }}>
               {currentComponent === "TravelDetails_Ac" ? (
                 <TravelDetails_Ac />
               ) : (

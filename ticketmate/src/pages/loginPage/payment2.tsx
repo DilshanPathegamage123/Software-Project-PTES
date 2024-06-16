@@ -9,8 +9,8 @@ import { useLocation } from "react-router-dom";
 
 function Payment2(){
 
-    // let location = useLocation();
-    // let { userId, tripId } = location.state;
+    let location = useLocation();
+    let { bookingData } = location.state;
     // console.log(userId, tripId);
     // const history = useNavigate();
 

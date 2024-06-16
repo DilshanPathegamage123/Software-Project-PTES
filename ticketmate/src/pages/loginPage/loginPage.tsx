@@ -108,7 +108,7 @@ const LoginPage = () => {
 
           >
             <div className="text-center">
-              <img src={loginimage} alt="loginimage" className="" />
+              <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
             </div>
 
             {/* <input
@@ -125,6 +125,7 @@ const LoginPage = () => {
               required
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
+              data-testid="username"
               // Add padding for the icon
 
             ></input>
@@ -134,9 +135,10 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="      password"
+              placeholder="password"
 
               required
+              data-testid="password"
             ></input>
             <div className="d-flex justify-content-center ">
               {/* <PrimaryButton
@@ -145,7 +147,8 @@ const LoginPage = () => {
                 color="primary"
                 IsSmall={false}
               /> */}
-              <input type="submit" value="LOG IN" className="btn btn-primary" />
+              <input type="submit" value="LOG IN" className="btn btn-primary"
+              data-testid="login-button" />
             </div>
           </div>
         </div>

@@ -6,6 +6,10 @@ import Passenger from './Passenger/passenger1';
 import Home from "./pages/HomePage/Home";
 import BusOwnerPage from "./pages/BusOwnerPage/BusOwnerPage";
 
+import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
+import UpdateOwnerProfile from "./pages/UpdateProfilePages/UpdateOwnerProfile";
+import UpdateDriverProfile from "./pages/UpdateProfilePages/UpdateDriverProfile";
+
 
 
 function AppRoutes  ()  {
@@ -18,6 +22,10 @@ function AppRoutes  ()  {
         <Route path="/AdminPage" element={<AdminPage/>} />
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/BusOwnerPage" element={<BusOwnerPage/>}/>
+        <Route path="/UpdatePassengerProfile" element={   <UpdatePassengerProfile/>}/>
+        <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
+        <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
+
       </Routes>
     </Router>
   );

@@ -66,7 +66,8 @@ function ownerFormComponent() {
         );
 
         if (authResponse.status === 200 && userResponse.status === 200) {
-          history("/BusOwnerPage");
+          history("/login");
+
         }
         console.log(authResponse.data);
       } catch (error) {

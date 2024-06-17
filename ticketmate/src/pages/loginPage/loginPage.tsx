@@ -84,9 +84,8 @@ const LoginPage = () => {
 
   return (
     <div className="loginpage-body">
-      <PrimaryNavBar />
-
-      <a href="#">
+      <PrimaryNavBar/>
+      <a href="http://localhost:5173/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"
@@ -94,6 +93,7 @@ const LoginPage = () => {
           fill="#042F40"
           className="bi bi-arrow-left-circle col-1 my-3 mx-5"
           viewBox="0 0 16 16"
+          data-testid="back-button"
         >
           <path
             fillRule="evenodd"
@@ -110,7 +110,7 @@ const LoginPage = () => {
             id="login-form"
           >
             <div className="text-center">
-              <img src={loginimage} alt="loginimage" className="" />
+              <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
             </div>
 
             <input
@@ -121,6 +121,7 @@ const LoginPage = () => {
               required
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
+              data-testid="username"
               // Add padding for the icon
             >
 
@@ -131,14 +132,19 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+
               required
-            />
-            <div className="d-flex justify-content-center">
-              <button type="submit" className="btn primary">
-                LOG IN
-              </button>
+              data-testid="password"
+            ></input>
+            <div className="d-flex justify-content-center ">
+              {/* <PrimaryButton
+                type="submit"
+                value="LOG IN"
+                color="primary"
+                IsSmall={false}
+              /> */}
+              <input type="submit" value="LOG IN" className="btn btn-primary"
+              data-testid="login-button" />
             </div>
           </div>
         </div>

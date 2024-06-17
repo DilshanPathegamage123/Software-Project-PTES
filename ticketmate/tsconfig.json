@@ -25,6 +25,6 @@
     "allowSyntheticDefaultImports": true, // Allows default imports for modules with 'export ='
     "esModuleInterop": true // Enables compatibility with CommonJS modules
   },
-  "include": ["src"],
+  "include": ["Cypress","src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

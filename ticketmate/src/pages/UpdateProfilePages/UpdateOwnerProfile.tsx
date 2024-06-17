@@ -1,85 +1,111 @@
-import "./passengerFormComponent.css";
+import "./UpdateOwnereProfile.css";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
-import { driverFormValidation } from "./driverFormValidation";
+import { UpdateOwnerProfileValidation } from "./UpdateOwnerProfileValidation";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import Footer from "../../Components/Footer/footer";
 
 const initialValues = {
   firstName: "",
   lastName: "",
   nic: "",
   email: "",
+  dob: "",
   contactNumber: "",
   userName: "",
   password: "",
   confirmPassword: "",
-  licenceNumber: "",
 };
+interface OwnerData {
+    Id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    dob: string;
+    nic: string;
+    contactNo: string;
+    userName: string;
+    password: string;
+    userType: string;
+    ownVehicleType: string;
+    drivingLicenseNo: string;
+    isDeleted: boolean;
+    requestStatus: boolean;
+  }
 
-function driverFormComponent() {
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
+function UpdateOwnerProfile() {
   const [dob, setDob] = useState<Date | null>(null);
+  const [vehicleType, setVehicleType] = useState("bus");
   const history = useNavigate();
-  const [driver,setDriver]=useState("busDriver");
+  const location = useLocation();
+  const { ownerdata } = location.state as { ownerdata: OwnerData };
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
-    validationSchema: driverFormValidation,
+    validationSchema: UpdateOwnerProfileValidation,
     onSubmit: async (values) => {
       console.log(values);
 
       const userData = {
-        id: 0,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        dob: dob,
-        nic: values.nic,
-        contactNo: values.contactNumber,
-        userName: values.userName,
-        password: values.password,
-        userType: "Driver",
-        ownVehicleType: "",
-        //drivingLicenseNo: values.licenceNumber,
-        drivingLicenseNo: ((driver==="busDriver")?"B-"+values.licenceNumber:"T"+values.licenceNumber),
+        id: ownerdata.Id,
+        firstName: values.firstName || ownerdata.firstName,
+        lastName: values.lastName || ownerdata.lastName,
+        email: values.email || ownerdata.email,
+        dob: dob? dob.toISOString().split('T')[0]: ownerdata.dob,
+        nic: values.nic || ownerdata.nic,
+        contactNo: values.contactNumber || ownerdata.contactNo,
+        userName: ownerdata.userName,
+        password: ownerdata.password,
+        userType: "Owner",
+        ownVehicleType: vehicleType,
+        drivingLicenseNo: "",
         isDeleted: false,
         requestStatus: true,
       };
 
-      const authData = {
-        username: values.userName,
-        password: values.password,
-        roles: ["Driver"],
-      };
-
+      
       try {
-        const userResponse = await axios.post(
-          `https://localhost:7196/api/userData`,
-          userData
+        const userResponse = await axios.put(
+          `https://localhost:7196/api/UpdateProfile`,
+          userData,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
         );
-
-        const authResponse = await axios.post(
-          `https://localhost:7196/api/Auth/register`,
-          authData
-        );
-
-        if (authResponse.status === 200 && userResponse.status === 200) {
+        if(userResponse.status === 200){
           history("/login");
-
+        }else{
+          console.log("error");
         }
-        console.log(authResponse.data);
       } catch (error) {
         console.error("Error:", error);
       }
+    
     },
-  });
 
+  });
   return (
     <div>
+        <PrimaryNavBar />
+        <br /><br/>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
+      <div
+          className="text-teal fs-5 fw-semibold font-family-Inter  m-0 px-3 py-2"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Update Profile Details
+        </div>
         <form className="container display-4" onSubmit={handleSubmit}>
           <div className="row  mt-3">
             <div className="col-12 col-lg-6">
@@ -93,7 +119,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your first name"
+                placeholder={ownerdata.firstName}
                 className="col-11 p-3"
                 value={values.firstName}
                 onChange={handleChange}
@@ -118,7 +144,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your last name"
+                placeholder={ownerdata.lastName}
                 className="col-11 p-3"
                 value={values.lastName}
                 onChange={handleChange}
@@ -145,7 +171,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your NIC number"
+                placeholder={ownerdata.nic}
                 className="col-11 p-3"
                 value={values.nic}
                 onChange={handleChange}
@@ -170,7 +196,7 @@ function driverFormComponent() {
                   isClearable
                   showYearDropdown
                   scrollableMonthYearDropdown
-                  placeholderText="DD/MM/YYYY "
+                  placeholderText={ownerdata.dob}
                   className="col-12  p-3"
                 />
               </div>
@@ -188,7 +214,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your email address"
+                placeholder={ownerdata.email}
                 className="col-lg-8  p-3"
                 value={values.email}
                 onChange={handleChange}
@@ -201,6 +227,34 @@ function driverFormComponent() {
                   </p>
                 </small>
               )}
+            </div>
+            <div className="col-12 col-lg-4">
+              <p className="fw-regular">Own Vehicle Type</p>
+              <label className="d-inline-flex align-items-center">
+                <input
+                  type="radio"
+                  name="vehicleType"
+                  value="bus"
+                  onClick={() => setVehicleType("bus")}
+                  checked={vehicleType === "bus"}
+
+                  // onChange={handleOptionChange}
+                />
+                Bus
+              </label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label className="d-inline-flex align-items-center">
+                <input
+                  type="radio"
+                  name="vehicleType"
+                  value="train"
+                  onClick={() => setVehicleType("train")}
+                  checked={vehicleType === "train"}
+
+                  // onChange={handleOptionChange}
+                />
+                Train
+              </label>
             </div>
           </div>
           <div className="row mt-4">
@@ -215,7 +269,7 @@ function driverFormComponent() {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your contact number"
+                placeholder={ownerdata.contactNo}
                 className="col-lg-8 p-3"
                 value={values.contactNumber}
                 onChange={handleChange}
@@ -230,63 +284,7 @@ function driverFormComponent() {
               )}
             </div>
           </div>
-          <div className="row mt-4">
-            <div className="col-12 col-lg-8">
-              <label>
-                <input
-                  type="radio"
-                  name="driver"
-                  value="busDriver"
-                  checked={driver === "busDriver"}
-                  onChange={(e) => setDriver(e.target.value)}
-                />
-                Bus Driver
-              </label>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <label>
-                <input
-                  type="radio"
-                  name="driver"
-                  value="trainDriver"
-                  checked={driver === "trainDriver"}
-                  onChange={(e) => setDriver(e.target.value)}
-                />
-                Train Driver
-              </label>
-              </div>
-
-          </div>
-          <div className="row mt-4">
-            <div className="col-12 col-lg-8">
-              <p className="fw-regular">Driving license No</p>
-              <input
-                type="text"
-                name="licenceNumber"
-                id="licenceNumber"
-                style={{
-                  borderRadius: "4px",
-                  background: "#F6F6F6",
-                  border: "#F6F6F6",
-                }}
-                placeholder="Enter your lisence number"
-                className="col-lg-8 p-3"
-                value={values.licenceNumber}
-            
-                onChange={handleChange}
-                onBlur={handleBlur}
-              
-              />
-              {errors.licenceNumber && (
-                <small>
-                  <p className="text-danger" style={{ fontSize: "13px" }}>
-                    {errors.licenceNumber}
-                  </p>
-                </small>
-              )}
-            </div>
-          </div>
-
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="col-12 col-lg-8">
               <p className="fw-regular">User Name</p>
               <input
@@ -311,10 +309,10 @@ function driverFormComponent() {
                   </p>
                 </small>
               )}
-            </div>
-          </div>
+            </div> 
+          </div>*/}
           <div className="row mt-4">
-            <div className="col-12 col-lg-6">
+            {/* <div className="col-12 col-lg-6">
               <p className="fw-regular">Password</p>
               <input
                 type="password"
@@ -338,8 +336,8 @@ function driverFormComponent() {
                   </p>
                 </small>
               )}
-            </div>
-            <div className="col-12 col-lg-6">
+            </div> */}
+            {/* <div className="col-12 col-lg-6">
               <p className="fw-regular">Confirm Password</p>
               <input
                 type="password"
@@ -363,7 +361,7 @@ function driverFormComponent() {
                   </p>
                 </small>
               )}
-            </div>
+            </div> */}
           </div>
           <br />
           <div className="row justify-content-center text-center">
@@ -371,16 +369,24 @@ function driverFormComponent() {
               type="submit"
               className=" btn-outline-primary btn-sm btn-width"
             >
-              SIGN UP
+              Save
             </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
 
+            <button
+              type="reset"
+              className=" btn-outline-primary btn-sm btn-width"
+              onClick={()=>history("/login")}
+            >
+              Cancel
+            </button>
             <br />
-        
           </div>
         </form>
       </div>
+      <Footer />
     </div>
   );
 }
 
-export default driverFormComponent;
+export default UpdateOwnerProfile;

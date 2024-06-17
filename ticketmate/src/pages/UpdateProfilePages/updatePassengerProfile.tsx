@@ -1,13 +1,14 @@
-import "./passengerFormComponent.css";
+import "./UpdatePassengerProfile.css";
 import { ChangeEvent, FormEvent, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
-import { passengerFormValidation } from "./passengerFormValidation";
+import { updatePassengerProfileValidation } from "./updatePassengerProfileValidation";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate,useLocation } from "react-router-dom";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import Footer from "../../Components/Footer/footer";
 
 const initialValues = {
   FirstName: "",
@@ -20,92 +21,80 @@ const initialValues = {
   Password: "",
   ConfirmPassword: "",
 };
+interface passengerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 
-const PassengerFormComponent = () => {
-  const history = useNavigate();
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
+
+const UpdatePassengerProfile = () => {
+
   const [dob, setDob] = useState<Date | null>(null);
+  const history = useNavigate();
+  const location = useLocation();
+  const { passengerdata } = location.state as { passengerdata: passengerData };
+
 
   const { values, handleChange, handleBlur, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
-    validationSchema: passengerFormValidation,
+    validationSchema: updatePassengerProfileValidation,
 
     onSubmit: async (values) => {
       const userData = {
-        id: 0,
-        firstName: values.FirstName,
-        lastName: values.LastName,
-        email: values.Email,
-        dob: dob,
-        nic: values.NIC,
-        contactNo: values.ContactNumber,
-        userName: values.UserName,
-        password: values.Password,
+        id: passengerdata.Id,
+        firstName: values.FirstName || passengerdata.firstName,
+        lastName: values.LastName || passengerdata.lastName,
+        email: values.Email || passengerdata.email,
+        dob: dob ? dob.toISOString().split("T")[0] : passengerdata.dob,
+        nic: values.NIC || passengerdata.nic,
+        contactNo: values.ContactNumber || passengerdata.contactNo,
+        userName: passengerdata.userName,
+        password: passengerdata.password,
         userType: "Passenger",
         ownVehicleType: "",
         drivingLicenseNo: "",
         isDeleted: false,
-        requestStatus: true,
+        requestStatus: true
+        
       };
 
-      const authData = {
-        username: values.UserName,
-        password: values.Password,
-        roles: ["Passenger"],
-      };
-
+      //console.log(userData);
       try {
-        const userResponse = await axios.post(
-          `https://localhost:7196/api/userData`,
-          userData
+        const userResponse = await axios.put(
+          `https://localhost:7196/api/UpdateProfile`,
+          userData,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
         );
-
-        const authResponse = await axios.post(
-          `https://localhost:7196/api/Auth/register`,
-          authData
-        );
-
-        if (authResponse.status === 200 && userResponse.status === 200) {
+        if(userResponse.status === 200){
           history("/login");
+        }else{
+          console.log("error");
         }
-        console.log(authResponse.data);
       } catch (error) {
         console.error("Error:", error);
-      });
-
-
+      }
+    
       
-
-
-
-      // try {
-      //   // Make POST request using Axios
-      //   const response = await axios.post(
-      //     "https://localhost:7196/api/userData",
-      //     {
-      //       firstName: formValues.FirstName,
-      //       lastName: formValues.LastName,
-      //       email: formValues.Email,
-      //       dob: dob,
-      //       nic: formValues.NIC,
-      //       contactNo: formValues.ContactNumber,
-      //       userName: formValues.UserName,
-      //       password: formValues.Password,
-      //       userType: "Passenger",
-      //       ownVehicleType: "",
-      //       drivingLicenseNo: "",
-      //     }
-      //   );
-
-      //   // Handle response if needed
-      //   console.log(response.data);
-      // } catch (error) {
-      //   // Handle error if request fails
-      //   console.error("Error:", error);
-      // }
     },
-
-
-  });
 
     // axios
     //   .post(`https://localhost:7196/api/userData`, {
@@ -177,13 +166,21 @@ const PassengerFormComponent = () => {
 
   return (
     <div>
+      <PrimaryNavBar />
+      <br /><br/>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
+        
+        <div
+          className="text-teal fs-5 fw-semibold font-family-Inter  m-0 px-3 py-2"
+          style={{ color: "var(--color-secondary)" }}
+        >
+          Update Profile Details
+        </div>
         <form
           className="container display-4"
           onSubmit={handleSubmit}
           method="post"
         >
-
           <div className="row  mt-3">
             <div className="col-12 col-lg-6">
               <p className="fw-regular">First Name</p>
@@ -196,7 +193,7 @@ const PassengerFormComponent = () => {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your first name"
+                placeholder={passengerdata.firstName}
                 className="col-11 p-3"
                 value={values.FirstName}
                 onChange={handleChange}
@@ -223,7 +220,7 @@ const PassengerFormComponent = () => {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your last name"
+                placeholder={passengerdata.lastName}
                 className="col-11 p-3"
                 value={values.LastName}
                 //onChange={handleInputChange}
@@ -251,7 +248,7 @@ const PassengerFormComponent = () => {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your NIC number"
+                placeholder={passengerdata.nic}
                 className="col-11 p-3"
                 value={values.NIC}
                 //onChange={handleInputChange}
@@ -277,7 +274,7 @@ const PassengerFormComponent = () => {
                   isClearable
                   showYearDropdown
                   scrollableMonthYearDropdown
-                  placeholderText="DD/MM/YYYY "
+                  placeholderText={passengerdata.dob}
                   className="col-12  p-3"
                   //value={values.DOB}
 
@@ -303,7 +300,7 @@ const PassengerFormComponent = () => {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your email address"
+                placeholder={passengerdata.email}
                 className="col-lg-8  p-3"
                 value={values.Email}
                 //onChange={handleInputChange}
@@ -331,7 +328,7 @@ const PassengerFormComponent = () => {
                   background: "#F6F6F6",
                   border: "#F6F6F6",
                 }}
-                placeholder="Enter your contact number"
+                placeholder={passengerdata.contactNo}
                 className="col-lg-8 p-3"
                 value={values.ContactNumber}
                 //onChange={handleInputChange}
@@ -347,7 +344,7 @@ const PassengerFormComponent = () => {
               )}
             </div>
           </div>
-          <div className="row mt-4">
+          {/* <div className="row mt-4">
             <div className="col-12 col-lg-8">
               <p className="fw-regular">User Name</p>
               <input
@@ -374,9 +371,9 @@ const PassengerFormComponent = () => {
                 </small>
               )}
             </div>
-          </div>
+          </div> */}
           <div className="row mt-4">
-            <div className="col-12 col-lg-6">
+            {/* <div className="col-12 col-lg-6">
               <p className="fw-regular">Password</p>
               <input
                 type="password"
@@ -401,8 +398,8 @@ const PassengerFormComponent = () => {
                   </p>
                 </small>
               )}
-            </div>
-            <div className="col-12 col-lg-6">
+            </div> */}
+            {/* <div className="col-12 col-lg-6">
               <p className="fw-regular">Confirm Password</p>
               <input
                 type="password"
@@ -427,7 +424,7 @@ const PassengerFormComponent = () => {
                   </p>
                 </small>
               )}
-            </div>
+            </div> */}
           </div>
           <br />
           <div className="row justify-content-center text-center">
@@ -435,9 +432,16 @@ const PassengerFormComponent = () => {
               type="submit"
               className=" btn-outline-primary btn-sm btn-width"
             >
-              SIGN UP
+              Save
             </button>
-
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button
+              type="reset"
+              className=" btn-outline-primary btn-sm btn-width"
+              onClick={() => history("/login")}
+            >
+              Cancel
+            </button>
             {/* <button
             type="submit"
             value="SIGN UP"
@@ -453,13 +457,12 @@ const PassengerFormComponent = () => {
               onclick={handleSubmit}
             /> */}
             <br />
-        
           </div>
         </form>
       </div>
+      <Footer/>
     </div>
   );
 };
 
-
-export default PassengerFormComponent;
+export default UpdatePassengerProfile;

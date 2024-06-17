@@ -68,6 +68,7 @@ function driverFormComponent() {
 
         if (authResponse.status === 200 && userResponse.status === 200) {
           history("/login");
+
         }
         console.log(authResponse.data);
       } catch (error) {

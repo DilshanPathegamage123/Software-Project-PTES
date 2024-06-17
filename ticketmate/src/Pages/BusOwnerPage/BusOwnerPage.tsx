@@ -36,11 +36,10 @@ function BusOwnerPage() {
   const [ownerdata, setOwnerdata] = useState<OwnerData[]>([]);
   const history = useNavigate();
 
-
-
   const getToken = () => {
     return sessionStorage.getItem("token");
   };
+
 
   const [buttonStates, setButtonStates] = useState({ // State to track button states
     ScheduledBuses: true,
@@ -76,6 +75,7 @@ function BusOwnerPage() {
           },
         }
       )
+
       .then((response) => {
         console.log(response.data);
         setOwnerdata(response.data);

@@ -7,6 +7,7 @@ import "./loginPage.css";
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
+
 import { useNavigate } from "react-router-dom";//import use navigate
 import axios from "axios";
 
@@ -84,7 +85,6 @@ const LoginPage = () => {
   return (
     <div className="loginpage-body">
       <PrimaryNavBar/>
-
       <a href="http://localhost:5173/">
         <svg
           xmlns="http://www.w3.org/2000/svg"

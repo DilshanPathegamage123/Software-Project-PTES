@@ -1,31 +1,5 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import BusRegistrationPage from './Pages/BusRegistrationPage/BusRegistrationPage';
-import BusOwnerPage from './Pages/BusOwnerPage/BusOwnerPage';
-import RegisteredBusPage from './Pages/RegisteredBusPage/RegisteredBusPage';
-import ScheduledBusPage from './Pages/ScheduledBusPage/ScheduledBusPage';
-import BusSchedulePage from './Pages/BusSchedulePage/BusSchedulePage';
-import LoginPage from './Pages/loginPage/loginPage';
-import Home from './Pages/HomePage/Home';
-import TrainOwnerPage from './Pages/TrainOwnerPage/TrainOwnerPage';
-import ScheduledBusInfo from './Components/ScheduledBusInfo/ScheduledBusInfo';
-import TrainRegistrationPage from './Pages/TrainRegistrationPage/TrainRegistrationPage';
-import RegisteredLocomitivePage from './Pages/RegisteredLocomitivePage/RegisteredLocomitivePage';
-import RegisteredCarriagePage from './Pages/RegisteredCarriagePage/RegisteredCarriagePage'
-import ScheduledTrainPage from './Pages/ScheduledTrainPage/ScheduledTrainPage';
-import TrainSchedulePage from './Pages/TrainSchedulePage/TrainSchedulePage';
-import Test from './Pages/Test/test';
-import UpdateBusRegInfoPage from './Pages/UpdateBusRegInfoPage/UpdateBusRegInfoPage';
-import BusScheduleFormUpdatePage from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage';
-import BusScheduleFormUpdatePage2 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage2';
-import BusScheduleFormUpdatePage3 from './Pages/BusScheduleFormUpdatePage/BusScheduleFormUpdatePage3';
-import UpdateCarriageRegInfoPage from './Pages/UpdateCarriageRegInfoPage/UpdateCarriageRegInfoPage';
-import UpdateLocomotiveRegInfoPage from './Pages/UpdateLocomotiveRegInfoPage/UpdateLocomotiveRegInfoPage';
-import TrainShceduleUpdatePage from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage';
-import TrainShceduleUpdatePage2 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage2';
-import TrainShceduleUpdatePage3 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage3';
-import TrainShceduleUpdatePage4 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage4';
-import TrainShceduleUpdatePage5 from './Pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5';
 import AppRoutes from './Routes';
 
 

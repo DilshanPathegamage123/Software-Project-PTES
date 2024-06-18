@@ -17,11 +17,13 @@ interface ReportData {
     totalPassengers: number;
     date: string;
     averageRate: number;
+    monthlyPredictedIncome: number; 
+
   }
 
 
 const ReportTable: React.FC = () => {
-    const [reportType, setReportType] = useState<string>("yearly");
+    const [reportType, setReportType] = useState<string>("monthly");
     const [userId, setUserId] = useState<string>("");
     const [reportData, setReportData] = useState<ReportData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -133,15 +135,10 @@ useEffect(() => {
       totalIncome: data.totalIncome,
       averageRate: data.averageRate,
       date: data.date,
+      monthlyPredictedIncome: data.monthlyPredictedIncome,
     };
   };
-//   const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-//     setReportType(event.target.value);
-//   };
 
-//   const handleUserIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setUserId(event.target.value);
-//   };
 
   const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setReportType(event.target.value);
@@ -158,7 +155,7 @@ useEffect(() => {
       {
         label: "Rate",
         data: reportData.map((data) => data.averageRate),
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        backgroundColor: "rgba(82, 208, 146, 01)",
         borderWidth: 1,
       },
     ],
@@ -170,8 +167,14 @@ useEffect(() => {
       {
         label: "Income",
         data: reportData.map((data) => data.totalIncome),
-        borderColor: "rgba(75, 192, 192, 0.6)",
-        borderWidth: 1,
+        borderColor: "rgba(255, 99, 132, 1)",
+        borderWidth:6,
+        fill: false,
+      },{
+        label: "Monthly Predicted Income",
+        data: reportData.map((data) => data.monthlyPredictedIncome),
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth:6,
         fill: false,
       },
     ],
@@ -200,6 +203,21 @@ useEffect(() => {
       );
     }
 
+    const getReportHeading = () => {
+      switch (reportType) {
+        case "daily":
+          return "Daily BusOwner Report ";
+        case "monthly":
+          return "Monthly BusOwner Report";
+        case "3months":
+          return "Three Months BusOwner Report";
+        case "yearly":
+          return "Yearly BusOwner Report";
+        default:
+          return "Bus Owner Report"; // Default fallback
+      }
+    };
+
     autoTable(doc, {
       head: [
         [
@@ -207,7 +225,7 @@ useEffect(() => {
           "Total Passengers",
           "Average Rate",
           "Total Income",
-          "Predicted Income",
+          "Monthly PredictedIncome",
         ],
       ],
       body: reportData.map((data) => [
@@ -215,14 +233,15 @@ useEffect(() => {
         data.totalPassengers,
         data.averageRate,
         data.totalIncome,
+        data.monthlyPredictedIncome
       ]),
       startY: 30, // Start the table below the date
       margin: { left: 14 }, // Align with the date
       styles: { halign: 'center' }, // Center align the table content
       didDrawPage: function (data) {
         doc.setFontSize(8);
-
-  // Add the current date at the top
+        doc.text(getReportHeading(), 14, 15);
+        // Add the current date at the top
   doc.text(`Date: ${currentDate}`, 14, 20);
 
   // Reset the font size for the table
@@ -311,7 +330,7 @@ useEffect(() => {
       }
     }
 
-    doc.save("report.pdf");
+    doc.save("BusOwnerReport.pdf");
   };
 
   return (
@@ -392,7 +411,7 @@ useEffect(() => {
                     <th className="text-center">Total Passengers</th>
                     <th className="text-center">Average Rate</th>
                     <th className="text-center">Total Income</th>
-                    <th className="text-center">Predicted Income</th>
+                    <th className="text-center">Monthly Predicted Income</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -402,7 +421,7 @@ useEffect(() => {
                         <td className="text-center">{data.totalPassengers}</td>
                         <td className="text-center">{data.averageRate}</td>
                         <td className="text-center">{data.totalIncome}</td>
-                        {/* <td className="text-center">{data.predictedIncome}</td> */}
+                        <td className="text-center">{(data.monthlyPredictedIncome)}</td> {/*.toFixed(0) */}
                       </tr>
                     ))}
                   </tbody>
@@ -414,7 +433,31 @@ useEffect(() => {
               style={{ backgroundColor: "#FFFFFF" }}
             >
               <div ref={barChartRef}>
-                <Bar data={barChartData} />
+                <Bar data={barChartData}
+                options={{
+                  responsive: true,
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Vehicle Owner",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                    },
+                    y: {
+                      title: {
+                        display: true,
+                        text: "Rate",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                    },
+                  },
+                }}
+                 />
               </div>
               
             </div>
@@ -423,7 +466,32 @@ useEffect(() => {
               style={{ backgroundColor: "#FFFFFF" }}
             >
                <div ref={lineChartRef}>
-                <Line data={lineChartData} />
+                <Line data={lineChartData} 
+                 options={{
+                  responsive: true,
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Vehicle Owner",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                    },
+                    y: {
+                      title: {
+                        display: true,
+                        text: "Income",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                      min: 0,
+                    },
+                  },
+                }}
+                />
               </div>
             </div>
           </>

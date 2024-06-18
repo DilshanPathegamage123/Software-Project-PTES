@@ -17,11 +17,11 @@ interface ReportData {
   totalPassengers: number;
   totalIncome: number;
   averageRate: number;
-  predictedIncome?: number; // Add this if predictedIncome is part of your data
+  monthlyTotalPredictedIncome: number; 
 }
 
 const ReportTable: React.FC = () => {
-  const [reportType, setReportType] = useState<string>("yearly");
+  const [reportType, setReportType] = useState<string>("monthly");
   const [busOwners, setBusOwners] = useState<string[]>([]);
   const [reportData, setReportData] = useState<ReportData[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -87,6 +87,7 @@ const ReportTable: React.FC = () => {
     }
     // handleSearchInputChange;
   }, [reportType, busOwners, searchTerm, vehicleType]);
+  
 
   // Functions to fetch statistics for each date filter
   const fetchDailyStatistics = async (userId: string): Promise<ReportData> => {
@@ -127,6 +128,7 @@ const ReportTable: React.FC = () => {
       totalPassengers: data.totalPassengers,
       totalIncome: data.totalIncome,
       averageRate: data.averageRate,
+      monthlyTotalPredictedIncome: data.monthlyTotalPredictedIncome,
     };
   };
 
@@ -152,7 +154,7 @@ const ReportTable: React.FC = () => {
       {
         label: "Rate",
         data: filteredReportData.map((data) => data.averageRate),
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        backgroundColor: "rgba(82, 208, 146, 01)",// yellow "rgba(0, 128, 0, .8)",green
         borderWidth: 1,
       },
     ],
@@ -164,11 +166,34 @@ const ReportTable: React.FC = () => {
       {
         label: "Income",
         data: filteredReportData.map((data) => data.totalIncome),
-        borderColor: "rgba(75, 192, 192, 0.6)", // Aqua color
-        borderWidth: 1,
+        borderColor: "rgba(255, 99, 132, 1)", // red color
+        borderWidth: 5, // Increase the border width for a thicker line
+        tension: 0, // Set tension to 0 for a straight line
+        fill: false,
+      },  {
+        label: "Monthly Predicted Income",
+        data: filteredReportData.map((data) => data.monthlyTotalPredictedIncome),
+        borderColor: "rgba(54, 162, 235, 1)", // Blue color
+        borderWidth: 5, 
+        tension: 0, 
         fill: false,
       },
     ],
+    
+  };
+  const getReportHeading = () => {
+    switch (reportType) {
+      case "daily":
+        return "Daily Admin Report";
+      case "monthly":
+        return "Monthly Admin Report";
+      case "3months":
+        return "Three Months Admin Report";
+      case "yearly":
+        return "Yearly Admin Report";
+      default:
+        return "Admin Report"; // Default fallback
+    }
   };
 
   async function downloadPDF() {
@@ -204,7 +229,7 @@ const ReportTable: React.FC = () => {
           "Total Passengers",
           "Average Rate",
           "Total Income",
-          "Predicted Income",
+          "Monthly PredictedIncome",
         ],
       ],
       body: filteredReportData.map((data) => [
@@ -212,8 +237,8 @@ const ReportTable: React.FC = () => {
         data.totalPassengers,
         data.averageRate,
         data.totalIncome,
+        data.monthlyTotalPredictedIncome
         
-        // data.predictedincome
       ]),
      
       startY: 30, // Start the table below the date
@@ -222,6 +247,7 @@ const ReportTable: React.FC = () => {
 
     didDrawPage: function (data) {
       doc.setFontSize(8);
+      doc.text(getReportHeading(), 14, 15);
 
 // Add the current date at the top
 doc.text(`Date: ${currentDate}`, 14, 20);
@@ -416,7 +442,7 @@ doc.setFontSize(12);
                       <th className="text-center">Total Passengers</th>
                       <th className="text-center">Average Rate</th>
                       <th className="text-center">Total Income</th>
-                      <th className="text-center">Predicted Income</th>
+                      <th className="text-center">Monthly Predicted Income</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -426,7 +452,7 @@ doc.setFontSize(12);
                         <td className="text-center">{data.totalPassengers}</td>
                         <td className="text-center">{data.averageRate}</td>
                         <td className="text-center">{data.totalIncome}</td>
-                        <td className="text-center">{(data.totalIncome * 1.1).toFixed(0)}</td> {/* .toFixed(2) */}
+                        <td className="text-center">{(data.monthlyTotalPredictedIncome)}</td> {/*.toFixed(0) */}
 
                       </tr>
                     ))}
@@ -451,12 +477,18 @@ doc.setFontSize(12);
                         title: {
                           display: true,
                           text: "Vehicle Owner",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                       },
                       y: {
                         title: {
                           display: true,
                           text: "Rate",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                       },
                     },
@@ -480,12 +512,18 @@ doc.setFontSize(12);
                         title: {
                           display: true,
                           text: "Vehicle Owner",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                       },
                       y: {
                         title: {
                           display: true,
                           text: "Income",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                         min: 0,
                       },

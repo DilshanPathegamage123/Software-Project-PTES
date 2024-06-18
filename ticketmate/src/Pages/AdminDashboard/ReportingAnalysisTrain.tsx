@@ -12,6 +12,7 @@ interface TrainReportItem {
   trainName: string;
   totalIncome: number;
   totalPassengers: number;
+  monthlyPredictedIncome: number; 
   averageRate: number;
   userId: string;
   date: string;
@@ -30,6 +31,7 @@ interface ApiResponseItem {
   trainName: string;
   totalIncome: number;
   totalPassengers: number;
+  monthlyPredictedIncome: number; 
   averageRate: number;
   userId: string;
   date: string;
@@ -45,7 +47,7 @@ interface MyComponentProps {
 }
 
 const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) => {
-  const [dateFilter, setDateFilter] = useState<number>(3); // Default to 'daily' (0)
+  const [dateFilter, setDateFilter] = useState<number>(1); // Default to 'daily' (0)
   const [report, setReport] = useState<TrainReportItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +73,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
       totalIncome: item.totalIncome,
       totalPassengers: item.totalPassengers,
       averageRate: item.averageRate,
+      monthlyPredictedIncome: item.monthlyPredictedIncome,
       userId: item.userId,
       date: item.date,
       scheduleIds: {
@@ -132,7 +135,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
       {
         label: "Rate",
         data: filteredReportData.map((data) => data.averageRate),
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
+        backgroundColor: "rgba(82, 208, 146, 01)",
         borderWidth: 1,
       },
     ],
@@ -144,11 +147,33 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
       {
         label: "Income",
         data: filteredReportData.map((data) => data.totalIncome),
-        borderColor: "rgba(75, 192, 192, 0.6)", // Aqua color
-        borderWidth: 1,
+        borderColor: "rgba(255, 99, 132, 1)", 
+        borderWidth: 5,
+        fill: false,
+      },
+      {
+        label: "Monthly Predicted Income",
+        data: filteredReportData.map((data) => data.monthlyPredictedIncome),
+        borderColor: "rgba(54, 162, 235, 1)", // Blue color
+        borderWidth: 5, 
+        tension: 0, 
         fill: false,
       },
     ],
+  };
+  const getReportHeading = () => {
+    switch (dateFilter) {
+      case 0:
+        return "Daily Admin Train Report";
+      case 1:
+        return "Monthly Admin Train Report";
+      case 2:
+        return "Three Months Admin Train Report";
+      case 3:
+        return "Yearly Admin Train Report";
+      default:
+        return "Admin Train Report"; // Default fallback
+    }
   };
 
   async function downloadPDF() {
@@ -184,7 +209,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
           "Total Passengers",
           "Average Rate",
           "Total Income",
-          "Predicted Income",
+          "Monthly Predicted Income",
         ],
       ],
       body: filteredReportData.map((data) => [
@@ -193,7 +218,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
         data.totalPassengers,
         data.averageRate,
         data.totalIncome,
-        // data.predictedincome
+        data.monthlyPredictedIncome,
       ]),
      
       startY: 30, // Start the table below the date
@@ -202,7 +227,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
 
     didDrawPage: function (data) {
       doc.setFontSize(8);
-
+      doc.text(getReportHeading(), 14, 15);
 // Add the current date at the top
 doc.text(`Date: ${currentDate}`, 14, 20);
 
@@ -303,7 +328,7 @@ doc.setFontSize(12);
     }
 
     // Save the PDF
-    doc.save("AdimnTraineReport.pdf");
+    doc.save("AdminTrainReport.pdf");
   }
 
 
@@ -370,7 +395,7 @@ doc.setFontSize(12);
                     <th className="text-center">Total Passengers</th>
                     <th className="text-center">Average Rate</th>
                     <th className="text-center">Total Income</th>
-                    <th className="text-center">Predicted Income</th>
+                    <th className="text-center">Monthly Predicted Income</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -381,7 +406,7 @@ doc.setFontSize(12);
                           <td className="text-center">{item.totalPassengers}</td>
                           <td className="text-center">{item.averageRate.toFixed(1)}</td>
                           <td className="text-center">{item.totalIncome}</td>
-                          <td className="text-center">{(item.totalIncome * 1.1).toFixed(0)}</td> {/* .toFixed(2) */}
+                          <td className="text-center">{(item.monthlyPredictedIncome)}</td> {/* .toFixed(0) */}
                         </tr>
                       ))}
                     </tbody>
@@ -405,12 +430,18 @@ doc.setFontSize(12);
                         title: {
                           display: true,
                           text: "Train Name",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                       },
                       y: {
                         title: {
                           display: true,
                           text: "Rate",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                       },
                     },
@@ -434,12 +465,18 @@ doc.setFontSize(12);
                         title: {
                           display: true,
                           text: "Train Name",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                       },
                       y: {
                         title: {
                           display: true,
                           text: "Income",
+                          font: {
+                            weight: 'bold'
+                          }
                         },
                         min: 0,
                       },

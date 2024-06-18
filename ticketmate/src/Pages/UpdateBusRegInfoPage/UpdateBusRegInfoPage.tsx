@@ -411,8 +411,8 @@ function UpdateBusRegInfoPage() {
           <div className="row justify-content-center mt-4">
               <div className="row justify-content-center text-center">
                 <div className="col-6">
-                  <button type="submit" className="btn btn-primary m-2">Update</button>
-                  <button type="button" className="btn btn-secondary m-2" onClick={CancelButton}>Cancel</button>
+                  <button type="submit" className="btn primary m-2">Update</button>
+                  <button type="button" className="btn white m-2" onClick={CancelButton}>Cancel</button>
                 </div>
               </div>
           </div>

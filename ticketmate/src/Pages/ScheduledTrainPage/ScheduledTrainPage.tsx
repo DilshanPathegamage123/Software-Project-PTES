@@ -74,10 +74,10 @@ function ScheduledTrainPage() {
     const schedulId = searchParams.get('schedulId');
     const navigate = useNavigate();
 
-
-    // Fetching data on component mount or when scheduleId changes
+    // Display loading message
     useEffect(() => {
         if (schedulId) {
+            Swal.showLoading();
             getData(schedulId);
             getStationData(schedulId);
             getScheduledDates(schedulId);
@@ -92,10 +92,16 @@ function ScheduledTrainPage() {
             .then((response) => {
                 setData(response.data);
                 setLoading(false);
+                Swal.close();
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to fetch train schedule data.",
+                    icon: "error"
+                });
             });
     }
 
@@ -107,6 +113,11 @@ function ScheduledTrainPage() {
             })
             .catch((error) => {
                 console.log(error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to fetch train station data.",
+                    icon: "error"
+                });
             });
     }
 
@@ -118,6 +129,11 @@ function ScheduledTrainPage() {
             })
             .catch((error) => {
                 console.log(error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to fetch scheduled dates data.",
+                    icon: "error"
+                });
             });
     }
 
@@ -129,6 +145,11 @@ function ScheduledTrainPage() {
             })
             .catch((error) => {
                 console.log(error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to fetch locomotive data.",
+                    icon: "error"
+                });
             });
     }
 
@@ -140,6 +161,11 @@ function ScheduledTrainPage() {
             })
             .catch((error) => {
                 console.log(error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to fetch carriage data.",
+                    icon: "error"
+                });
             });
     }
 
@@ -157,12 +183,17 @@ function ScheduledTrainPage() {
             console.error('Route number is unavailable.');
             Swal.fire({
               title: "Error!",
-              text: "Error updating bus stations. Please try again.",
+              text: "Error updating train stations. Please try again.",
               icon: "error"
             });
           }
         } catch (error) {
           console.error('Error fetching route number:', error);
+          Swal.fire({
+              title: "Error!",
+              text: "Error fetching route number. Please try again.",
+              icon: "error"
+          });
         }
       };
 
@@ -180,7 +211,7 @@ function ScheduledTrainPage() {
 
       
     if (loading) {
-        return <div>Loading...</div>;
+        return null;
     }
 
     return (
@@ -234,7 +265,7 @@ function ScheduledTrainPage() {
                                 </div>
                                 <div className='col-lg-6 detailSec'>
                                     <div className='row'>
-                                        <p className='para'>Train Stations :</p>
+                                        <p className='para'>Train Stations : <br /> (With arrival Time)</p>
                                         <ul className='pl-5'>
                                             {stations.map((station, index) => (
                                                 <li key={index} className='station-info'>
@@ -249,12 +280,12 @@ function ScheduledTrainPage() {
                                         
                                     </div>
                                     <div className='row'>
-                                        <p className='para'>Scheduled Dates :</p>
+                                        <p className='para'>Scheduled Dates : <br /> (Arrival Date || Departure Date)</p>
                                         <ul className='pl-5'>
                                             {scheduledDates.map((date, index) => (
                                                 <li key={index} className='date-info'>
                                                     <p className='para'>
-                                                        - {date.arrivalDate}   - {date.departureDate}
+                                                        {date.arrivalDate}   ||  {date.departureDate}
                                                     </p>
                                                 </li>
                                             ))}

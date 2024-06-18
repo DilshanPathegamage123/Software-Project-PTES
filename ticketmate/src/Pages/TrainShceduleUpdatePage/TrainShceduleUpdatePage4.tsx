@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import '../../vars.css';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import Footer from '../../Components/Footer/footer';
 
 function TrainShceduleUpdatePage4() {
     
@@ -130,81 +132,86 @@ function TrainShceduleUpdatePage4() {
   
   return (
     <>
-      <div className="form-group">
-        <div className='row justify-content-center'>
-            <div className='col-sm-6'>
-                <label htmlFor="inputTrainLocomotive" className="col-form-label">Train Locomotive Id</label>
-            </div>
-        </div>
-        <div className='row justify-content-center'>
-          <div className="col-sm-4">
-            <input 
-              type="text" 
-              className="form-control" 
-              id="inputTrainLocomotive" 
-              name="trainLoc" 
-              placeholder="Enter Train Locomotive ID" 
-              value={currentTrainLoc}
-              onChange={(e) => setCurrentTrainLoc(e.target.value)}
-            />
+    <PrimaryNavBar/>
+      <div className='BusSheUpForm my-5 rounded-3'>
+        <div className="form-group">
+        <h3 className='h3Style text-center pb-2'>Update the Scheduled Locomotives</h3>
+          <div className='row justify-content-center'>
+              <div className='col-sm-6'>
+                  <label htmlFor="inputTrainLocomotive" className="col-form-label">Train Locomotive Id</label>
+              </div>
           </div>
-          <div className='col-sm-2'>
-            <button 
-              type="button" 
-              className="btn primary"
-              onClick={handleAdd}
-            >
-              ADD
-            </button>
-          </div>      
-        </div>
-        <div className='mt-3'>
-          {trainLocs.map((loc) => (
-            <div key={loc.id} className='row justify-content-center mt-1'>
-              <div className='col-sm-4 pl-5'>
-                <p>{loc.registeredLocomotiveLocomotiveId}</p>
-              </div>
-              <div className='col-sm-2'>
-                <button 
-                  type="button" 
-                  className="btn yellow"
-                  onClick={() => handleRemove(loc.id)}
-                >
-                  Remove
-                </button>
-              </div>
+          <div className='row justify-content-center'>
+            <div className="col-sm-4">
+              <input 
+                type="text" 
+                className="form-control" 
+                id="inputTrainLocomotive" 
+                name="trainLoc" 
+                placeholder="Enter Train Locomotive ID" 
+                value={currentTrainLoc}
+                onChange={(e) => setCurrentTrainLoc(e.target.value)}
+              />
             </div>
-          ))}
-          {newTrainLocs.map((loc, index) => (
-            <div key={index} className='row justify-content-center mt-1'>
-              <div className='col-sm-4 pl-5'>
-                <p>{loc}</p>
-              </div>
-              <div className='col-sm-2'>
-                <button 
-                  type="button" 
-                  className="btn yellow"
-                  onClick={() => setNewTrainLocs(newTrainLocs.filter(id => id !== loc))}
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className='row'>
-            <div className='col-12 text-center p-3'>
-                <button type="button" className="btn white mx-2" onClick={handleCancel}>Cancel</button>
-                <button 
+            <div className='col-sm-2'>
+              <button 
+                type="button" 
+                className="btn primary"
+                onClick={handleAdd}
+              >
+                ADD
+              </button>
+            </div>      
+          </div>
+          <div className='mt-3'>
+            {trainLocs.map((loc) => (
+              <div key={loc.id} className='row justify-content-center mt-1'>
+                <div className='col-sm-4 pl-5'>
+                  <p>{loc.registeredLocomotiveLocomotiveId}</p>
+                </div>
+                <div className='col-sm-2'>
+                  <button 
                     type="button" 
-                    className='btn primary mx-2'
-                    onClick={handleNextButton}
-                >
-                    Next
-                </button>
-            </div>
+                    className="btn yellow"
+                    onClick={() => handleRemove(loc.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+            {newTrainLocs.map((loc, index) => (
+              <div key={index} className='row justify-content-center mt-1'>
+                <div className='col-sm-4 pl-5'>
+                  <p>{loc}</p>
+                </div>
+                <div className='col-sm-2'>
+                  <button 
+                    type="button" 
+                    className="btn yellow"
+                    onClick={() => setNewTrainLocs(newTrainLocs.filter(id => id !== loc))}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className='row'>
+              <div className='col-12 text-center p-3'>
+                  <button type="button" className="btn white mx-2" onClick={handleCancel}>Cancel</button>
+                  <button 
+                      type="button" 
+                      className='btn primary mx-2'
+                      onClick={handleNextButton}
+                  >
+                      Save
+                  </button>
+              </div>
+          </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

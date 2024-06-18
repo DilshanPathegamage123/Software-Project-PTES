@@ -38,7 +38,7 @@ function BusScheduleFormUpdatePage2() {
         if (response.ok) {
           const data = await response.json();
           const stands = data.reduce((acc: { [key: string]: { time: string, id: number } }, item: { busStation: string, standArrivalTime: string, id: number }) => {
-            acc[item.busStation] = { time: item.standArrivalTime, id: item.id };
+            acc[item.busStation] = { time: convertTo24HourFormat(item.standArrivalTime), id: item.id };
             return acc;
           }, {});
           setSelectedStands(stands);
@@ -56,6 +56,31 @@ function BusScheduleFormUpdatePage2() {
       fetchSelectedStands();
     }
   }, [routId, scheduleId]);
+
+  const convertTo24HourFormat = (time: string) => {
+    const [timePart, modifier] = time.split(' ');
+    let [hours, minutes] = timePart.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = (parseInt(hours, 10) + 12).toString();
+    }
+
+    return `${hours.padStart(2, '0')}:${minutes}`;
+  };
+
+  const convertTo12HourFormat = (time: string) => {
+    let [hours, minutes] = time.split(':');
+    const modifier = parseInt(hours, 10) >= 12 ? 'PM' : 'AM';
+
+    hours = (parseInt(hours, 10) % 12).toString();
+    hours = hours === '0' ? '12' : hours;
+
+    return `${hours.padStart(2, '0')}:${minutes} ${modifier}`;
+  };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
@@ -92,7 +117,7 @@ function BusScheduleFormUpdatePage2() {
       const data = {
         scheduledBusScheduleId: scheduleId,
         busStation,
-        standArrivalTime: time,
+        standArrivalTime: convertTo12HourFormat(time),
       };
 
       try {
@@ -179,7 +204,6 @@ function BusScheduleFormUpdatePage2() {
         }
       });
   };
-
   return (
     <>
       <PrimaryNavBar />

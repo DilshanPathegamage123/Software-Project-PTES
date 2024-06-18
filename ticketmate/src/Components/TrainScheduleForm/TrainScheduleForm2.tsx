@@ -39,6 +39,14 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
     setSelectedStands({ ...selectedStands, [standName]: newTime });
   };
 
+  const convertTo12HourFormat = (time: string) => {
+    const [hour, minute] = time.split(':');
+    const hourInt = parseInt(hour);
+    const period = hourInt >= 12 ? 'PM' : 'AM';
+    const adjustedHour = hourInt % 12 || 12;
+    return `${adjustedHour}:${minute} ${period}`;
+  };
+
   const handleSubmit = async () => {
     const selectedEntries = Object.entries(selectedStands);
     if (selectedEntries.length === 0 || selectedEntries.some(([, time]) => !time)) {
@@ -53,7 +61,7 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
     const dataToSubmit = selectedEntries.map(([trainStationName, trainarrivalTime]) => ({
       scheduledTrainSchedulId: scheduleId,
       trainStationName,
-      trainarrivalTime,
+      trainarrivalTime: convertTo12HourFormat(trainarrivalTime),
     }));
 
     for (const data of dataToSubmit) {

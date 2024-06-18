@@ -38,7 +38,7 @@ function TrainShceduleUpdatePage2() {
         if (response.ok) {
           const data = await response.json();
           const stands = data.reduce((acc: { [key: string]: { time: string, id: number } }, item: { trainStationName: string, trainarrivalTime: string, id: number }) => {
-            acc[item.trainStationName] = { time: item.trainarrivalTime, id: item.id };
+            acc[item.trainStationName] = { time: convertTo24HourFormat(item.trainarrivalTime), id: item.id };
             return acc;
           }, {});
           setSelectedStands(stands);
@@ -72,6 +72,29 @@ function TrainShceduleUpdatePage2() {
     setSelectedStands({ ...selectedStands, [standName]: { ...selectedStands[standName], time: e.target.value } });
   };
 
+  const convertTo24HourFormat = (time: string) => {
+    const [timePart, modifier] = time.split(' ');
+    let [hours, minutes] = timePart.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = (parseInt(hours, 10) + 12).toString();
+    }
+
+    return `${hours.padStart(2, '0')}:${minutes}`;
+  };
+
+  const convertTo12HourFormat = (time: string) => {
+    const [hour, minute] = time.split(':');
+    const hourInt = parseInt(hour);
+    const period = hourInt >= 12 ? 'PM' : 'AM';
+    const adjustedHour = hourInt % 12 || 12;
+    return `${adjustedHour}:${minute} ${period}`;
+  };
+
   const handleSubmit = async () => {
     const selectedEntries = Object.entries(selectedStands);
     const allEntries = Object.entries(allStands);
@@ -92,7 +115,7 @@ function TrainShceduleUpdatePage2() {
       const data = {
         scheduledTrainSchedulId: scheduleId,
         trainStationName,
-        trainarrivalTime: time,
+        trainarrivalTime: convertTo12HourFormat(time),
       };
 
       try {

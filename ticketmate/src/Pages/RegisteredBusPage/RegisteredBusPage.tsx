@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './RegisteredBusPage.css'
 import Footer from '../../Components/Footer/footer'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import BusImg from '../../assets/busImgBack2.jpg'
+import BusImg from '../../assets/BusIconRegBusPage.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
 import { Link, useLocation } from 'react-router-dom';
@@ -136,7 +136,7 @@ function RegisteredBusPage() {
                             <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
                         <div className='row d-flex justify-content-center rounded-2'>
-                            <img src={BusImg} alt="BusImg" className='p-3 col-6 '/>
+                            <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
                             {/* Displaying bus information */}
@@ -151,7 +151,7 @@ function RegisteredBusPage() {
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
                                 <Link to={`/UpdateBusRegInfoPage?busId=${data.busId}`}><button className='btn white m-2'>Edit</button></Link>
-                                <button className='btn white m-2'onClick={()=>handleDelete()}>Delete</button>
+                                <button className='btn yellow m-2'onClick={()=>handleDelete()}>Delete</button>
                             </div>
                         </div>
                     </div>

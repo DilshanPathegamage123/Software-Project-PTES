@@ -54,10 +54,17 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
       return;
     }
 
+    const formatTimeWithAmPm = (time24:any) => {
+      const [hours, minutes] = time24.split(':');
+      let hours12 = parseInt(hours, 10) % 12 || 12;
+      const amPm = parseInt(hours, 10) < 12 ? 'AM' : 'PM';
+      return `${hours12}:${minutes} ${amPm}`;
+    };
+
     const dataToSubmit = selectedEntries.map(([busStation, standArrivalTime]) => ({
       scheduledBusScheduleId: scheduleId,
       busStation,
-      standArrivalTime,
+      standArrivalTime: formatTimeWithAmPm(standArrivalTime),
     }));
 
     for (const data of dataToSubmit) {

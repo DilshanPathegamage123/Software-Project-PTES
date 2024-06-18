@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import '../../vars.css';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import Footer from '../../Components/Footer/footer';
 
 function TrainScheduleUpdatePage5() {
     
@@ -132,7 +134,10 @@ function TrainScheduleUpdatePage5() {
   
   return (
     <>
+    <PrimaryNavBar/>
+    <div className='BusSheUpForm my-5 rounded-3'>
       <div className="form-group">
+      <h3 className='h3Style text-center pb-2'>Update the Scheduled Carriages</h3>
         <div className='row justify-content-center'>
             <div className='col-sm-6'>
                 <label htmlFor="inputTrainLocomotive" className="col-form-label">Train Locomotive Id</label>
@@ -202,11 +207,13 @@ function TrainScheduleUpdatePage5() {
                     className='btn primary mx-2'
                     onClick={handleNextButton}
                 >
-                    Next
+                    Save
                 </button>
             </div>
         </div>
       </div>
+    </div>
+    <Footer/>
     </>
   );
 }

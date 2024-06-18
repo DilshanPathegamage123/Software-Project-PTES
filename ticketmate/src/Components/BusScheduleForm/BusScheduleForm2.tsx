@@ -27,7 +27,20 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>, standName: string) => {
-    setSelectedStands({ ...selectedStands, [standName]: e.target.value });
+    const newTime = e.target.value;
+
+    // Check if the new time is already selected for another stand
+    const isTimeAlreadySelected = Object.values(selectedStands).includes(newTime);
+
+    if (isTimeAlreadySelected) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Duplicate Time',
+        text: 'You cannot enter the same arrival time for multiple stands.',
+      });
+    } else {
+      setSelectedStands({ ...selectedStands, [standName]: newTime });
+    }
   };
 
   const handleSubmit = async () => {
@@ -88,7 +101,7 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Cancel it!"
     }).then(async (result) => { 
       if (result.isConfirmed) {
         try {
@@ -107,12 +120,6 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
             return;
           }
   
-          // Swal.fire({
-          //   icon: 'success',
-          //   title: 'Deleted',
-          //   text: 'The schedule has been successfully deleted.',
-          // });
-
           navigate('/BusOwnerPage');
 
         } catch (error) {

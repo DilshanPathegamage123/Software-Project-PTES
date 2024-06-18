@@ -232,6 +232,7 @@ function BusScheduleFormUpdatePage() {
                   placeholder="Enter Route No"
                   value={routNo}
                   onChange={(e) => setRoutNo(e.target.value)}
+                  disabled // Disabled the input field
                 />
                 {errors.routNo && <div className='text-danger'>{errors.routNo}</div>}
               </div>

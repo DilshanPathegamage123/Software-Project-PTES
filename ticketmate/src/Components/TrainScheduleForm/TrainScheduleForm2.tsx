@@ -27,7 +27,16 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>, standName: string) => {
-    setSelectedStands({ ...selectedStands, [standName]: e.target.value });
+    const newTime = e.target.value;
+    if (Object.values(selectedStands).includes(newTime)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You cannot select the same time for multiple stations.',
+      });
+      return;
+    }
+    setSelectedStands({ ...selectedStands, [standName]: newTime });
   };
 
   const handleSubmit = async () => {
@@ -88,7 +97,7 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Cancel it!"
     }).then(async (result) => { 
       if (result.isConfirmed) {
         try {
@@ -96,20 +105,20 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
             method: 'DELETE',
           });
   
-          if (!response.ok) {
-            console.error('Failed to delete schedule', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to delete the schedule.',
-            });
-            return;
-          }
+          // if (!response.ok) {
+          //   console.error('Failed to delete schedule', response);
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Error',
+          //     text: 'Failed to delete the schedule.',
+          //   });
+          //   return;
+          // }
   
           Swal.fire({
             icon: 'success',
-            title: 'Deleted',
-            text: 'The schedule has been successfully deleted.',
+            title: 'Cancelled',
+            text: 'The schedule has been successfully Cancelled.',
           });
 
           navigate('/TrainOwnerPage');
@@ -119,7 +128,7 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error deleting the schedule.',
+            text: 'Error Cancelling the schedule.',
           });
         }
       }

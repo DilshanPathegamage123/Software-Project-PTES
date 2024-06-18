@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import '../../vars.css';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string | null, scheduleId: string, handleNext: () => void; }) {
 
   console.log('ScheduleId:', scheduleId);
+
+  const navigate = useNavigate();
 
   const [dates, setDates] = useState<{ arrivalDate: string, departureDate: string }[]>([]);
   const [arrivalDate, setArrivalDate] = useState<string>('');
@@ -71,7 +74,7 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Cancel it!"
     }).then(async (result) => { 
       if (result.isConfirmed) {
         try {
@@ -79,21 +82,24 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
             method: 'DELETE',
           });
   
-          if (!response.ok) {
-            console.error('Failed to Cancel schedule', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to Cancel the schedule.',
-            });
-            return;
-          }
+          // if (!response.ok) {
+          //   console.error('Failed to Cancel schedule', response);
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Error',
+          //     text: 'Failed to Cancel the schedule.',
+          //   });
+          //   return;
+          // }
   
           Swal.fire({
             icon: 'success',
             title: 'Deleted',
             text: 'The schedule has been successfully Canceled.',
           });
+
+          navigate('/TrainOwnerPage');
+
         } catch (error) {
           console.error('Error Cancel the schedule.', error);
           Swal.fire({

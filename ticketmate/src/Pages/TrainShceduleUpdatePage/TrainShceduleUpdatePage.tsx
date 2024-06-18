@@ -178,6 +178,7 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter Train Route No"
                     value={trainSchedule.trainRoutNo || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, trainRoutNo: e.target.value })}
+                    disabled
                     />
                     {errors.trainRoutNo && <div className='text-danger'>{errors.trainRoutNo}</div>}
                 </div>

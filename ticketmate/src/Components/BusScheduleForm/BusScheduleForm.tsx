@@ -1,4 +1,3 @@
-// Importing required modules and components
 import React, { useState } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
@@ -127,7 +126,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
   };
 
   // Function to format time to AM/PM format
-  const formatTime = (time:any) => {
+  const formatTime = (time: any) => {
     const [hours, minutes] = time.split(':');
     const date = new Date();
     date.setHours(parseInt(hours), parseInt(minutes));
@@ -137,19 +136,29 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
   // Function to handle the Next button click
   const handleNextClick = async () => {
     if (validateInput()) {
+      // Check if departure time and arrival time are the same
+      if (depTime === arrTime) {
+        swal.fire({
+          icon: 'error',
+          title: 'Invalid Times',
+          text: 'Departure Time and Arrival Time cannot be the same. Please select different times.'
+        });
+        return;
+      }
+
       setIsSubmitting(true);
       const busNo = await checkBusIdAvailability();
       if (!busNo) {
         setIsSubmitting(false);
         return;
       }
-      
+
       const isDriverIdAvailable = await checkDriverIdAvailability();
       if (!isDriverIdAvailable) {
         setIsSubmitting(false);
         return;
       }
-      
+
       const routeId = await checkRoutNoAvailability();
       if (!routeId) {
         setIsSubmitting(false);
@@ -197,7 +206,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Go Back!"
+      confirmButtonText: "Yes, Cancel!"
     }).then((result) => {
       if (result.isConfirmed) {
         navigate('/BusOwnerPage');

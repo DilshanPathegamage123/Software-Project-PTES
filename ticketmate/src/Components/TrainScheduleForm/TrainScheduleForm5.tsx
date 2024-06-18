@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import '../../vars.css';
+import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
   const [trainLocs, setTrainLocs] = useState<string[]>([]);
   const [carriageClasses, setCarriageClasses] = useState<{ [key: string]: string }>({});
   const [currentTrainLoc, setCurrentTrainLoc] = useState('');
+  const navigate = useNavigate();
 
   const handleAdd = async () => {
     if (currentTrainLoc.trim() !== '') {
@@ -38,7 +40,7 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
           Swal.fire({
             icon: 'error',
             title: 'Invalid Locomotive ID',
-            text: 'The locomotive ID is not valid or deleteState is false.'
+            text: 'The locomotive ID is not valid.'
           });
         }
       } catch (error) {
@@ -84,8 +86,11 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
       Swal.fire({
         icon: 'success',
         title: 'Success',
-        text: 'All Carriage IDs have been saved successfully.'
+        text: 'Train Schedule has been successfully saved.'
       });
+
+      navigate('/TrainOwnerPage');
+
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -103,7 +108,7 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Cancel it!"
     }).then(async (result) => { 
       if (result.isConfirmed) {
         try {
@@ -111,21 +116,23 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
             method: 'DELETE',
           });
   
-          if (!response.ok) {
-            console.error('Failed to Cancel schedule', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to Cancel the schedule.',
-            });
-            return;
-          }
+          // if (!response.ok) {
+          //   console.error('Failed to Cancel schedule', response);
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Error',
+          //     text: 'Failed to Cancel the schedule.',
+          //   });
+          //   return;
+          // }
   
           Swal.fire({
             icon: 'success',
             title: 'Deleted',
             text: 'The schedule has been successfully Canceled.',
           });
+          navigate('/TrainOwnerPage');
+
         } catch (error) {
           console.error('Error Cancel the schedule.', error);
           Swal.fire({
@@ -194,7 +201,7 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
               className='btn primary mx-2'
               onClick={handleNextButton}
             >
-              Next
+              Submit
             </button>
           </div>
         </div>

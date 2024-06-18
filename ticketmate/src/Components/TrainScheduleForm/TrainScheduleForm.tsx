@@ -96,16 +96,25 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
     }
   };
 
-    // Function to format time to AM/PM format
-    const formatTime = (time:any) => {
-      const [hours, minutes] = time.split(':');
-      const date = new Date();
-      date.setHours(parseInt(hours), parseInt(minutes));
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-    };
+  // Function to format time to AM/PM format
+  const formatTime = (time:any) => {
+    const [hours, minutes] = time.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hours), parseInt(minutes));
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  };
 
   const handleNextClick = async () => {
     if (validateInput()) {
+      if (depTime === arrTime) {
+        swal.fire({
+          icon: 'error',
+          title: 'Invalid Time Selection',
+          text: 'Departure Time and Arrival Time cannot be the same. Please select different times.'
+        });
+        return;
+      }
+      
       setIsSubmitting(true);
       
       const isDriverIdAvailable = await checkDriverIdAvailability();

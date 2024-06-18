@@ -57,7 +57,7 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
         icon: 'success',
         title: 'Success',
         text: 'Data submitted successfully',
-        timer: 2500,
+        timer: 4500,
       });
 
       navigate('/BusOwnerPage');
@@ -79,7 +79,7 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Cancel it!"
     }).then(async (result) => { 
       if (result.isConfirmed) {
         try {

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import '../../vars.css';
+import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, handleNext: () => void;}) {
   const [trainLocs, setTrainLocs] = useState<string[]>([]);
   const [currentTrainLoc, setCurrentTrainLoc] = useState('');
+  const navigate = useNavigate();
 
   const handleAdd = async () => {
     if (currentTrainLoc.trim() !== '') {
@@ -27,7 +29,7 @@ function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, ha
           Swal.fire({
             icon: 'error',
             title: 'Invalid Locomotive ID',
-            text: 'The locomotive ID is not valid or deleteState is false.'
+            text: 'The locomotive ID is not valid.'
           });
         }
       } catch (error) {
@@ -81,7 +83,7 @@ function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, ha
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Cancel it!"
     }).then(async (result) => { 
       if (result.isConfirmed) {
         try {
@@ -89,21 +91,23 @@ function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, ha
             method: 'DELETE',
           });
   
-          if (!response.ok) {
-            console.error('Failed to Cancel schedule', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to Cancel the schedule.',
-            });
-            return;
-          }
+          // if (!response.ok) {
+          //   console.error('Failed to Cancel schedule', response);
+          //   Swal.fire({
+          //     icon: 'error',
+          //     title: 'Error',
+          //     text: 'Failed to Cancel the schedule.',
+          //   });
+          //   return;
+          // }
   
           Swal.fire({
             icon: 'success',
             title: 'Deleted',
             text: 'The schedule has been successfully Canceled.',
           });
+
+          navigate('/TrainOwnerPage');
         } catch (error) {
           console.error('Error Cancel the schedule.', error);
           Swal.fire({

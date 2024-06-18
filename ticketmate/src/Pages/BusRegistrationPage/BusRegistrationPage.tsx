@@ -134,6 +134,19 @@ function BusRegistrationPage() {
 
     setErrors(newErrors);
 
+    // Check if at least one seat button is selected
+    const seatSelected = Object.values(buttonStates).some((value) => value);
+    if (!seatSelected) {
+      Swal.fire({
+        icon: 'error',
+        title: 'No seat selected',
+        text: 'Please select at least one seat before submitting the form.',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return;
+    }
+
     if (formValid) {
       Swal.fire({
         title: 'Uploading...',
@@ -173,9 +186,9 @@ function BusRegistrationPage() {
           showConfirmButton: false,
           timer: 3500
         })
-        setTimeout(() => {
-            window.location.reload();
-        }, 4000);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 4000);
 
         navigate('/BusOwnerPage');
         //toast.success('Form submitted successfully');
@@ -298,7 +311,7 @@ function BusRegistrationPage() {
                   <div className="form-group row">
                     <label htmlFor="inputSeatNo" className="col-form-label">Enter seat Count</label>
                     <div className="">
-                      <input type="text" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
+                      <input type="number" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
                       {errors.seatCount && <div className="text-danger">{errors.seatCount}</div>}
                     </div>
                   </div>

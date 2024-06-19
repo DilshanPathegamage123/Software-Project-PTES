@@ -62,15 +62,17 @@ function PrimaryNavBar() {
                 </button>
              
             </div>
-
-
-            <PrimaryButton
+           <button
               type="button"
               value="SIGN IN"
               color="third"
-              IsSmall={true}
-             // onClick={() => (window.location.href = "/login")}
-            />
+              className="btn btn-outline-primary btn-sm"
+
+            onClick={() => history("/login")}
+            
+            > SIGN IN
+            </button>
+
           </form>
         </div>
 

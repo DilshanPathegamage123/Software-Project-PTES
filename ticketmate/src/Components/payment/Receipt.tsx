@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Rec3 from "./asset/rec3.png";
 import Rec4 from "./asset/rec4.png";
 import StartEndLocation from "./StartEnd";
+import { useLocation } from "react-router-dom";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
 function Receipt() {
+  
+ const pdfRef= useRef<HTMLDivElement>(null);
+
+  let location = useLocation();
+  //let { userId, tripId } = location.state;//pass userId and tripId
   const buttonStyle1 = {
     backgroundColor: "rgba(0, 117, 124,1)",
     color: "white", // Optionally change text color to ensure readability
@@ -11,13 +20,33 @@ function Receipt() {
     backgroundColor: "rgba(4, 47, 64, 1)",
     color: "white", // Optionally change text color to ensure readability
   };
+  const downloadPDF = () => {
+    const input = pdfRef.current;
+    if (input) {
+     html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4",true);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight =pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio=Math.min(pdfWidth/imgWidth,pdfHeight/imgHeight);
+      const imgX=(pdfWidth-imgWidth*ratio)/2;
+      const imgY=30;
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("download.pdf");
+     });}
+     else{
+      alert("No data to download pdf");
+    }
+  };
   return (
     <>
       <div className="container">
         {/* <div className="bg-white rounded-3 shadow"> */}
 
         {/* <div className="bg-white rounded-3 shadow"> */}
-        <div className="d-flex justify-content-center align-items-center position-relative img-fluid mt-5">
+        <div className="d-flex justify-content-center align-items-center position-relative img-fluid mt-5" ref={pdfRef}>
           <img src={Rec3} alt="Rec3" />
           <div className="position-absolute">
             <div className="row justify-content-center">
@@ -61,11 +90,15 @@ function Receipt() {
                 <div className="col-2"></div>
               </div>
             </div>
-            <div className="d-flex justify-content-end">
+           
+          </div>
+        </div>
+        <div className="d-flex justify-content-end">
               <button
                 type="button"
                 className="btn btn-primary mt-4"
                 style={buttonStyle1}
+                onClick={downloadPDF}
               >
                 DOWNLOAD
               </button>
@@ -77,8 +110,6 @@ function Receipt() {
                 CANCEL
               </button>
             </div>
-          </div>
-        </div>
 
         {/* </div> */}
       </div>

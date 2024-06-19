@@ -32,6 +32,7 @@ type Feedback = {
   rating: number;
 };
 
+
 function TravelHistory() {
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
@@ -215,3 +216,4 @@ function TravelHistory() {
 }
 
 export default TravelHistory;
+

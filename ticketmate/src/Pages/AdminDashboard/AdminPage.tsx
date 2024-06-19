@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
@@ -22,16 +23,17 @@ let { username, password } = location.state;
 
   return (
     <div className="adminpage">
-      <PrimaryNavBar />
+      <span data-testid="navbar"><PrimaryNavBar /></span>
       <div className="container-fluid pt-3 ">
         <div className="container-fluid rounded-4 proSec">
           <div className="row align-items-center">
             <div className="col-lg-3 col-sm-6 col-12 text-center">
               <h5 className="text-white pt-4">Admin</h5>
-              <img src={profileIcon} alt="profileIcon" className="pb-3" />
+              <img src={profileIcon} alt="profileIcon" className="pb-3" 
+              data-testid="logo-admin"/>
             </div>
 
-            <div className="col-lg-4 col-sm-6 p-4">
+            <div className="col-lg-4 col-sm-6 p-4" data-testid="profile-section-text">
               <div className="">
                 <p className="text-white">
                   {username}

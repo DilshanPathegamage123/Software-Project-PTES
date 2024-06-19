@@ -28,7 +28,10 @@ function App() {
         setSelectedEndLocation={setSelectedEndLocation}
       />
     </SelectedVehicleTypeContext.Provider>
+
   );
 }
 
 export default App;
+
+

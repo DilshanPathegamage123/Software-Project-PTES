@@ -102,6 +102,7 @@ import MyBookings from "./MyBookings";
 import { useEffect, useState } from "react";
 import TravelHistory from "./TravelHistory";
 import Notifications from "./Notification";
+
 import axios from "axios";
 import { BrowserRouter as Router, useLocation,useNavigate } from "react-router-dom";
 import PrimaryButton from "../Components/Buttons/PrimaryButton";
@@ -131,6 +132,7 @@ function Passenger() {
   const handleClick = (component: string) => {
     setCurrentComponent(component);
   };
+
   let location = useLocation();
   let { username, password } = location.state;
   const [passengerdata, setPassengerdata] = useState<PassengerData[]>([]);
@@ -191,9 +193,8 @@ function Passenger() {
   return (
     <div>
       <PrimaryNavBar />
-      <div className="container-fluid pt-3">
+      <div className="col-lg-10 col-sm-12 m-auto pt-3">
         <div>
-
         <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">
               <div className="col-lg-3 col-sm-6 col-12 text-center">
@@ -228,7 +229,7 @@ function Passenger() {
             </div>
           </div>
         </div>
-        <div className="row h-auto align-items-center justify-content-center m-auto ">
+        <div className="h-auto align-items-center justify-content-center m-auto  ">
           <div className="col-12  rounded-4 pt-3 class1">
             <div className="d-flex flex-row pb-2 ">
               <button
@@ -275,7 +276,7 @@ function Passenger() {
                 Notifications
               </button>
             </div>
-            <div className="p-4 rounded-4" style={{ background: "#F1F1F1" }}>
+            <div className="p-2 rounded-4 ms-auto me-auto justify-content-center align-items-center " style={{ background: "#F1F1F1" }}>
               {currentComponent === "My Bookings" ? (
                 <MyBookings />
               ) : currentComponent === "Travel History" ? (

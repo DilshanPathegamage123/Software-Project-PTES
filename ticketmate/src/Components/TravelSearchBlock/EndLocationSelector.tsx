@@ -86,12 +86,11 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
         setEndData([]);
         setFilteredEndData([]);
       }
-
     } catch (error) {
       console.error("Error while fetching end locations from backend", error);
     }
   };
-
+  
 
   const filterEndLocations = (input: string) => {
     const filteredLocations = endData.filter(

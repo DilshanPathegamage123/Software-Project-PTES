@@ -1,11 +1,13 @@
 .DetailsCard {
   background-color: #f1f1f1;
+  height: auto;
 }
 
 .DetailsCard.BookingPage {
   background-color: #042f40;
-color: white;}
-
+  color: white;
+  height: auto;
+}
 
 .VehicleImg {
   width: 135px;
@@ -21,8 +23,8 @@ color: white;}
   background-color: #00757c;
   color: white;
 }
+
 .btn:hover {
   background-color: #d17b0a;
   cursor: pointer;
 }
-

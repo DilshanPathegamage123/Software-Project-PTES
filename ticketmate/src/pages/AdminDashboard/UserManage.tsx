@@ -14,15 +14,25 @@ const UserManage = () => {
     contactNo: string;
     userType: string;
     dob: string;
+    ownVehicleType: string;
+    drivingLicenseNo: string;
   };
   const [userData, setUserData] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-//now commented
-  useEffect(() => {
 
-    
+
+  useEffect(() => {
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+  useEffect(() => {
     axios
-      .get("https://localhost:7196/api/userData")
+      .get("https://localhost:7196/api/userData",{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      })
       .then((response) => {
         setUserData(response.data);
         //console.log(userData);
@@ -33,28 +43,42 @@ const UserManage = () => {
   }, []);
 
   const deleteUser = (id: number) => {
-    //console.log("befor api",id);
+    console.log("befor api", id);
 
     axios
-      .put(`https://localhost:7196/api/userData/${id}`)
+      .put(`https://localhost:7196/api/userData/${id}`, {},{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      
+      })
       .then((response) => {
         console.log(response);
         setUserData(userData.filter((user) => user.id !== id));
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error in delete userr" + error);
       });
   };
 
-  const handleChange=(firstname:string)=>{
-   //console.log(firstname);
+  const handleChange = (firstname: string) => {
+    //console.log(firstname);
 
     if (firstname.trim() !== "") {
-      const filteredData = userData.filter(user => user.firstName.toLowerCase().includes(firstname.toLowerCase()));
+      const filteredData = userData.filter((user) =>
+        user.firstName.toLowerCase().includes(firstname.toLowerCase())
+      );
       setUserData(filteredData);
     } else {
       axios
-        .get("https://localhost:7196/api/userData")
+        .get("https://localhost:7196/api/userData",{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        
+        })
         .then((response) => {
           setUserData(response.data);
         })
@@ -62,10 +86,7 @@ const UserManage = () => {
           console.log(error);
         });
     }
-
-
-
-  }
+  };
 
   //create a popup window
   const [Model1, setModel1] = useState(false);
@@ -109,7 +130,9 @@ const UserManage = () => {
               name="firstName"
               id="firstName"
               className="form-control border rounded-5"
-              onChange={(e) => {handleChange(e.target.value)}}
+              onChange={(e) => {
+                handleChange(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -137,7 +160,7 @@ const UserManage = () => {
                   <td>{user.userType}</td>
                   <td>
                     <label onClick={() => toggleModel1(user)}>
-                      <a href="#">
+                      {/* <a href="#"> */}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24"
@@ -158,12 +181,12 @@ const UserManage = () => {
                             stroke-width="1.5"
                           />
                         </svg>
-                      </a>
+                      {/* </a> */}
                     </label>
                     {Model1 && (
                       <div className="Model1  ">
                         <div
-                          className="overlay "
+                          className="overlay"
                           onClick={() => toggleModel1(user)}
                         ></div>
                         <div
@@ -252,28 +275,27 @@ const UserManage = () => {
                     )}
                     &nbsp;&nbsp;&nbsp;
                     <label onClick={() => toggleModel2(user)}>
-                    <a href="#">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <path
-                          d="M19 9L18.2841 18.3068C18.1238 20.3908 16.386 22 14.2959 22H9.70412C7.61398 22 5.87621 20.3908 5.71591 18.3068L5 9M21 7C18.4021 5.73398 15.3137 5 12 5C8.68635 5 5.59792 5.73398 3 7M10 5V4C10 2.89543 10.8954 2 12 2C13.1046 2 14 2.89543 14 4V5M10 11V17M14 11V17"
-                          stroke="#16151C"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </a>
+                      {/* <a href="#"> */}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M19 9L18.2841 18.3068C18.1238 20.3908 16.386 22 14.2959 22H9.70412C7.61398 22 5.87621 20.3908 5.71591 18.3068L5 9M21 7C18.4021 5.73398 15.3137 5 12 5C8.68635 5 5.59792 5.73398 3 7M10 5V4C10 2.89543 10.8954 2 12 2C13.1046 2 14 2.89543 14 4V5M10 11V17M14 11V17"
+                            stroke="#16151C"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      {/* </a> */}
                     </label>
-
                     {Model2 && (
                       <div className="Model2  ">
                         <div
-                          className="overlay "
+                          className="overlay"
                           onClick={() => toggleModel2(user)}
                         ></div>
                         <div
@@ -347,32 +369,41 @@ const UserManage = () => {
                               </tr>
                             </table>
                           </div>
-                          <br/>
-                    
+                          <br />
+
                           <div className="row ">
                             <button
-                            className="close-Model1 col col-6 text-right"
-                            onClick={()=>{deleteUser(user.id);toggleModel2(user)}}
-                            style={{border:"none",color:"White" ,backgroundColor:"transparent"}}
-                          >
-                            Remove
-                          </button>
+                              className="close-Model1 col col-6 text-right"
+                              onClick={() => {
+                                deleteUser(user.id);
+                                toggleModel2(user);
+                              }}
+                              style={{
+                                border: "none",
+                                color: "White",
+                                backgroundColor: "transparent",
+                              }}
+                            >
+                              Remove
+                            </button>
 
-                        
-                          <button
-                            className="close-Model1 col col-6 text-left"
-                            onClick={()=>{toggleModel2(user);}}
-                            style={{border:"none",color:"white" ,backgroundColor:"transparent"}}
-                          >
-                            Close
-                          </button>
+                            <button
+                              className="close-Model1 col col-6 text-left"
+                              onClick={() => {
+                                toggleModel2(user);
+                              }}
+                              style={{
+                                border: "none",
+                                color: "white",
+                                backgroundColor: "transparent",
+                              }}
+                            >
+                              Close
+                            </button>
                           </div>
                         </div>
                       </div>
                     )}
-
-
-
                   </td>
                 </tr>
               ))}

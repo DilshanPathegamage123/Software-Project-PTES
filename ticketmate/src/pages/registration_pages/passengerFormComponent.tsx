@@ -1,13 +1,12 @@
 import "./passengerFormComponent.css";
 import { ChangeEvent, FormEvent, useState } from "react";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
-
 import { useFormik } from "formik";
 import { passengerFormValidation } from "./passengerFormValidation";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const initialValues = {
@@ -16,7 +15,6 @@ const initialValues = {
   NIC: "",
   Email: "",
   DOB: "",
-
   ContactNumber: "",
   UserName: "",
   Password: "",
@@ -24,66 +22,168 @@ const initialValues = {
 };
 
 const PassengerFormComponent = () => {
-  const [formValues, setFormValues] = useState({
-    FirstName: "",
-    LastName: "",
-    NIC: "",
-    Email: "",
-    DOB: "",
-    ContactNumber: "",
-    UserName: "",
-    Password: "",
-    ConfirmPassword: "",
-  });
+  const history = useNavigate();
   const [dob, setDob] = useState<Date | null>(null);
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
-  const { handleBlur, handleSubmit, errors } = useFormik({
+  const { values, handleChange, handleBlur, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: passengerFormValidation,
 
+    onSubmit: async (values) => {
+      const userData = {
+        id: 0,
+        firstName: values.FirstName,
+        lastName: values.LastName,
+        email: values.Email,
+        dob: dob,
+        nic: values.NIC,
+        contactNo: values.ContactNumber,
+        userName: values.UserName,
+        password: values.Password,
+        userType: "Passenger",
+        ownVehicleType: "",
+        drivingLicenseNo: "",
+        isDeleted: false,
+        requestStatus: true,
+      };
 
-    onSubmit: async (FormValues) => {
+      const authData = {
+        username: values.UserName,
+        password: values.Password,
+        roles: ["Passenger"],
+      };
+
       try {
-        // Make POST request using Axios
-        const response = await axios.post(
-          "https://localhost:7196/api/userData",
-          {
-            firstName: formValues.FirstName,
-            lastName: formValues.LastName,
-            email: formValues.Email,
-            dob: dob,
-            nic: formValues.NIC,
-            contactNo: formValues.ContactNumber,
-            userName: formValues.UserName,
-            password: formValues.Password,
-            userType: "Passenger",
-            ownVehicleType: "",
-            drivingLicenseNo: "",
-
-          }
+        const userResponse = await axios.post(
+          `https://localhost:7196/api/userData`,
+          userData
         );
 
-        // Handle response if needed
-        console.log(response.data);
+        const authResponse = await axios.post(
+          `https://localhost:7196/api/Auth/register`,
+          authData
+        );
+
+        if (authResponse.status === 200 && userResponse.status === 200) {
+          history("/login");
+        }
+        console.log(authResponse.data);
       } catch (error) {
-        // Handle error if request fails
         console.error("Error:", error);
-      }
+      });
+
+
+      
+
+
+
+      // try {
+      //   // Make POST request using Axios
+      //   const response = await axios.post(
+      //     "https://localhost:7196/api/userData",
+      //     {
+      //       firstName: formValues.FirstName,
+      //       lastName: formValues.LastName,
+      //       email: formValues.Email,
+      //       dob: dob,
+      //       nic: formValues.NIC,
+      //       contactNo: formValues.ContactNumber,
+      //       userName: formValues.UserName,
+      //       password: formValues.Password,
+      //       userType: "Passenger",
+      //       ownVehicleType: "",
+      //       drivingLicenseNo: "",
+      //     }
+      //   );
+
+      //   // Handle response if needed
+      //   console.log(response.data);
+      // } catch (error) {
+      //   // Handle error if request fails
+      //   console.error("Error:", error);
+      // }
     },
+
+
   });
 
+    // axios
+    //   .post(`https://localhost:7196/api/userData`, {
+    //     id: 0,
+    //     firstName: values.FirstName,
+    //     lastName: values.LastName,
+    //     email: values.Email,
+    //     dob: dob,
+    //     nic: values.NIC,
+    //     contactNo: values.ContactNumber,
+    //     userName: values.UserName,
+    //     password: values.Password,
+    //     userType: "Passenger",
+    //     ownVehicleType: "",
+    //     drivingLicenseNo: "",
+    //     isDeleted: false,
+    //     requestStatus: true,
+    //   })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     console.log("response status : ", response.status);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+
+    // axios
+    //   .post(`https://localhost:7196/api/Auth/register`, {
+    //     username: values.UserName,
+    //     password: values.Password,
+    //     role: "Passenger",
+    //   })
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       history("/");
+    //       console.log(response.data);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+
+    // try {
+    //   // Make POST request using Axios
+    //   const response = await axios.post(
+    //     "https://localhost:7196/api/userData",
+    //     {
+    //       firstName: formValues.FirstName,
+    //       lastName: formValues.LastName,
+    //       email: formValues.Email,
+    //       dob: dob,
+    //       nic: formValues.NIC,
+    //       contactNo: formValues.ContactNumber,
+    //       userName: formValues.UserName,
+    //       password: formValues.Password,
+    //       userType: "Passenger",
+    //       ownVehicleType: "",
+    //       drivingLicenseNo: "",
+    //     }
+    //   );
+
+    //   // Handle response if needed
+    //   console.log(response.data);
+    // } catch (error) {
+    //   // Handle error if request fails
+    //   console.error("Error:", error);
+    // }
+  });
 
   return (
     <div>
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
-        <form className="container display-4" onSubmit={handleSubmit}>
+        <form
+          className="container display-4"
+          onSubmit={handleSubmit}
+          method="post"
+        >
+
           <div className="row  mt-3">
             <div className="col-12 col-lg-6">
               <p className="fw-regular">First Name</p>
@@ -98,8 +198,8 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your first name"
                 className="col-11 p-3"
-                value={formValues.FirstName}
-                onChange={handleInputChange}
+                value={values.FirstName}
+                onChange={handleChange}
                 //onChange={e => setFirstName(e.target.value)}
 
                 onBlur={handleBlur}
@@ -125,9 +225,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your last name"
                 className="col-11 p-3"
-                value={formValues.LastName}
-                onChange={handleInputChange}
-
+                value={values.LastName}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.LastName && (
@@ -153,9 +253,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your NIC number"
                 className="col-11 p-3"
-                value={formValues.NIC}
-                onChange={handleInputChange}
-
+                value={values.NIC}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.NIC && (
@@ -205,9 +305,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your email address"
                 className="col-lg-8  p-3"
-                value={formValues.Email}
-                onChange={handleInputChange}
-
+                value={values.Email}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.Email && (
@@ -233,9 +333,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your contact number"
                 className="col-lg-8 p-3"
-                value={formValues.ContactNumber}
-                onChange={handleInputChange}
-
+                value={values.ContactNumber}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.ContactNumber && (
@@ -261,9 +361,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your user name"
                 className="col-lg-8 p-3"
-                value={formValues.UserName}
-                onChange={handleInputChange}
-
+                value={values.UserName}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.UserName && (
@@ -289,9 +389,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your password"
                 className="col-11 p-3"
-                value={formValues.Password}
-                onChange={handleInputChange}
-
+                value={values.Password}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.Password && (
@@ -315,9 +415,9 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Confirm your password"
                 className="col-11 p-3"
-                value={formValues.ConfirmPassword}
-                onChange={handleInputChange}
-
+                value={values.ConfirmPassword}
+                //onChange={handleInputChange}
+                onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.ConfirmPassword && (
@@ -330,15 +430,30 @@ const PassengerFormComponent = () => {
             </div>
           </div>
           <br />
-          <div className="row text-center">
-            <PrimaryButton
+          <div className="row justify-content-center text-center">
+            <button
+              type="submit"
+              className=" btn-outline-primary btn-sm btn-width"
+            >
+              SIGN UP
+            </button>
+
+            {/* <button
+            type="submit"
+            value="SIGN UP"
+            color="primary"
+            >
+              SIGN UP
+            </button> */}
+            {/* <PrimaryButton
               type="submit"
               value="SIGN UP"
               color="primary"
               IsSmall={false}
-            />
+              onclick={handleSubmit}
+            /> */}
             <br />
-            {/* <GoogleSignInButton/> */}
+        
           </div>
         </form>
       </div>
@@ -346,6 +461,5 @@ const PassengerFormComponent = () => {
   );
 };
 
-// value={formValues.FirstName}
 
 export default PassengerFormComponent;

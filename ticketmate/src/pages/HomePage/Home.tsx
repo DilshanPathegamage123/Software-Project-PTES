@@ -1,37 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext, Dispatch, SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./Home.css";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import Background from "./assests/Home Background.jpg";
 import TotalBlock from "../../Components/TravelSearchBlock/TotalBlock";
 import HomeContent from "../../Components/HomePageContent/HomeContent";
-import Footer from "../../Components/Footer/Footer";
-const Home = () => {
-
+import Footer from "../../Components/Footer/footer";
+import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
+import { SearchResult } from "../../SearchResult";
 interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
-}
-
-interface SearchResult {
-  // Define the properties of a search result
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
+  setSelectedStartLocation: Dispatch<SetStateAction<string>>;
+  setSelectedEndLocation: Dispatch<SetStateAction<string>>;
 }
 
 const Home: React.FC<HomeProps> = ({ onSearch }) => {
-  const [selectedVehicleType, setSelectedVehicleType] = useState("");
+  const { selectedVehicleType, setSelectedVehicleType } = useContext(
+    SelectedVehicleTypeContext
+  );
+
+  const [selectedStartLocation, setSelectedStartLocation] = useState("");
+  const [selectedEndLocation, setSelectedEndLocation] = useState("");
 
   const navigate = useNavigate();
 
@@ -42,6 +32,8 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
       state: {
         searchResults: results,
         selectedVehicleType: selectedVehicleType,
+        selectedStartLocation: selectedStartLocation,
+        selectedEndLocation: selectedEndLocation,
       },
     });
 
@@ -51,13 +43,17 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
   return (
     <div className=" HomeBody">
       <PrimaryNavBar />
-      <div className="HomeBackground container-fluid p-0   z-0   ">
+      <div className="HomeBackground p-0 z-1 ">
         <img className="img" src={Background} alt="Background1" />
       </div>
 
       <TotalBlock
         selectedVehicleType={selectedVehicleType}
         setSelectedVehicleType={setSelectedVehicleType}
+        selectedStartLocation={selectedStartLocation}
+        setSelectedStartLocation={setSelectedStartLocation}
+        selectedEndLocation={selectedEndLocation}
+        setSelectedEndLocation={setSelectedEndLocation}
         onSearch={handleSearch}
       />
 
@@ -67,5 +63,5 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
     </div>
   );
 };
-
+}
 export default Home;

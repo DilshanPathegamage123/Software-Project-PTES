@@ -2,31 +2,90 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import "./StartLocationSelector.css";
+import { toast } from "react-toastify";
 
 interface StartLocationSelectorProps {
+  selectedVehicleType: string;
   setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
 }
 
+interface BusStand {
+  standName: string;
+}
+
+interface TrainStation {
+  trainStationName: string;
+}
+
 const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
+  selectedVehicleType,
   setSelectedStartLocation,
 }) => {
   const [startvalue, setStartValue] = useState("");
-  const [startData, setStartData] = useState([]);
-  const [filteredStartData, setFilteredStartData] = useState([]);
+  const [startData, setStartData] = useState<{ stopName: string }[]>([]);
+  const [filteredStartData, setFilteredStartData] = useState<
+    { stopName: string }[]>([]);
 
   useEffect(() => {
-    getAllStartLocations();
-  }, []); // Empty dependency array ensures the effect runs only once
+    if (selectedVehicleType === "Bus") {
+      getAllBusStands();
+    } else if (selectedVehicleType === "Train") {
+      getAllTrainStations();
+    }
+  }, [selectedVehicleType]);
 
-  const getAllStartLocations = async () => {
+  const getAllBusStands = async () => {
     try {
-      // Api call for fetching start locations
+      // Api call for fetching bus stands
       const response = await axios.get(
-        "https://localhost:7048/api/StartLocation"
+        "https://localhost:7048/api/GetBusStands"
       );
       console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
-      setStartData(response.data);
-      setFilteredStartData(response.data); // Initialize filteredData with the same data
+
+      if (Array.isArray(response.data.$values)) {
+        setStartData(
+          response.data.$values.map((item: BusStand) => ({
+            stopName: item.standName,
+          }))
+        );
+        setFilteredStartData(
+          response.data.$values.map((item: BusStand) => ({
+            stopName: item.standName,
+          }))
+        );
+      } else {
+        setStartData([]);
+        setFilteredStartData([]);
+      }
+    } catch (error) {
+      console.error("Error while sending start location to backend", error);
+    }
+  };
+
+  const getAllTrainStations = async () => {
+    try {
+      // Api call for fetching train stations
+      const response = await axios.get(
+        "https://localhost:7048/api/GetTrainStations"
+      );
+
+      console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
+
+      if (Array.isArray(response.data.$values)) {
+        setStartData(
+          response.data.$values.map((item: TrainStation) => ({
+            stopName: item.trainStationName,
+          }))
+        );
+        setFilteredStartData(
+          response.data.$values.map((item: TrainStation) => ({
+            stopName: item.trainStationName,
+          }))
+        );
+      } else {
+        setStartData([]);
+        setFilteredStartData([]);
+      }
     } catch (error) {
       console.error("Error while sending start location to backend", error);
     }
@@ -42,7 +101,14 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
   };
 
   return (
-    <div className="selector  d-flex  w-100 ">
+    <div
+      className="selector  d-flex  w-100 "
+      onClick={() => {
+        if (!selectedVehicleType) {
+          toast.error("Please select a vehicle type first.");
+        }
+      }}
+    >
       <span className="icon-container me-2">
         {/* Bootstrap SVG icon */}
         <svg

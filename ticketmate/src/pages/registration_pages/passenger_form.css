@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
 }
-body{
+.passenger-form-body{
     background-image: url("../../assets/form_background.png");
     width: 100%;
     height: auto;

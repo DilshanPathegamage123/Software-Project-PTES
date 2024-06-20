@@ -5,6 +5,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
 import { driverFormValidation } from "./driverFormValidation";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   firstName: "",
@@ -20,12 +22,58 @@ const initialValues = {
 
 function driverFormComponent() {
   const [dob, setDob] = useState<Date | null>(null);
+  const history = useNavigate();
+  const [driver,setDriver]=useState("busDriver");
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: driverFormValidation,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+
+      const userData = {
+        id: 0,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        dob: dob,
+        nic: values.nic,
+        contactNo: values.contactNumber,
+        userName: values.userName,
+        password: values.password,
+        userType: "Driver",
+        ownVehicleType: "",
+        //drivingLicenseNo: values.licenceNumber,
+        drivingLicenseNo: ((driver==="busDriver")?"B-"+values.licenceNumber:"T"+values.licenceNumber),
+        isDeleted: false,
+        requestStatus: true,
+      };
+
+      const authData = {
+        username: values.userName,
+        password: values.password,
+        roles: ["Driver"],
+      };
+
+      try {
+        const userResponse = await axios.post(
+          `https://localhost:7196/api/userData`,
+          userData
+        );
+
+        const authResponse = await axios.post(
+          `https://localhost:7196/api/Auth/register`,
+          authData
+        );
+
+        if (authResponse.status === 200 && userResponse.status === 200) {
+          history("/login");
+
+        }
+        console.log(authResponse.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
   });
 
@@ -184,6 +232,32 @@ function driverFormComponent() {
           </div>
           <div className="row mt-4">
             <div className="col-12 col-lg-8">
+              <label>
+                <input
+                  type="radio"
+                  name="driver"
+                  value="busDriver"
+                  checked={driver === "busDriver"}
+                  onChange={(e) => setDriver(e.target.value)}
+                />
+                Bus Driver
+              </label>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <label>
+                <input
+                  type="radio"
+                  name="driver"
+                  value="trainDriver"
+                  checked={driver === "trainDriver"}
+                  onChange={(e) => setDriver(e.target.value)}
+                />
+                Train Driver
+              </label>
+              </div>
+
+          </div>
+          <div className="row mt-4">
+            <div className="col-12 col-lg-8">
               <p className="fw-regular">Driving license No</p>
               <input
                 type="text"
@@ -197,6 +271,10 @@ function driverFormComponent() {
                 placeholder="Enter your lisence number"
                 className="col-lg-8 p-3"
                 value={values.licenceNumber}
+            
+                onChange={handleChange}
+                onBlur={handleBlur}
+              
               />
               {errors.licenceNumber && (
                 <small>
@@ -288,20 +366,19 @@ function driverFormComponent() {
             </div>
           </div>
           <br />
-          <div className="row text-center">
-            <PrimaryButton
+          <div className="row justify-content-center text-center">
+            <button
               type="submit"
-              value="SIGN UP"
-              color="primary"
-              IsSmall={false}
-            />
+              className=" btn-outline-primary btn-sm btn-width"
+            >
+              SIGN UP
+            </button>
+
             <br />
-            {/* <GoogleSignInButton/> */}
+        
           </div>
         </form>
       </div>
-
-     
     </div>
   );
 }

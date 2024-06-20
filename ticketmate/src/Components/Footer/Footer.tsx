@@ -1,5 +1,5 @@
 // import React from 'react'
-import './Footer.css'
+import './footer.css'
 import f_logo from '../../assets/icon1.png'
 import i_logo from '../../assets/icon2.png'
 import t_logo from '../../assets/icon3.png'
@@ -9,8 +9,8 @@ function Footer() {
 
       <div className='futter mt-3'>
         <div className="container">
-        <footer className="py-3 my-0">
-            <div className='row'>
+        <footer className="py-3 mb-0 mt-4">
+            <div className='row h-auto'>
             <div className='col'>
             <ul className="nav justify-content-left pb-3 mb-3">
                 <li className="nav-item"><a href="#" className="nav-link px-2">About us</a></li>

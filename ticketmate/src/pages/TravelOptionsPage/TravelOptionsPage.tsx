@@ -1,49 +1,65 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./TravelOptionsPage.css";
-
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer/footer";
+import { SearchResult } from "../../SearchResult";
 
-// Define the SearchResult interface
-interface SearchResult {
-  vehicleType: string;
-  startLocation: string;
-  departureTime: string;
-  endLocation: string;
-  arrivalTime: string;
-  travelDate: string;
-  arrivalDate: string;
-  regNo: string;
-  comfortability: string;
-  duration: string;
-  ticketPrice: number;
-  bookingClosingDate: string;
-  bookingClosingTime: string;
-}
+// interface TravelOptionsPageProps {
+//   selectedVehicleType: string;
+//   selectedStartLocation: string;
+//   selectedEndLocation: string;
+// }
 
-interface TravelOptionsPageProps {
-  selectedVehicleType: string;
-}
-
-// Define the TravelOptionsPage component
-const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
+const TravelOptionsPage: React.FC = () => {
   const location = useLocation();
-  const searchResults: SearchResult[] = location.state?.searchResults || [];
-  const selectedVehicleType: string = location.state?.selectedVehicleType || "";
-
   const navigate = useNavigate();
 
-  const onSearch = async (results: SearchResult[]) => {};
-  const handleSearch = async (results: SearchResult[]) => {
-    // Wait for the search operation to complete
-    await onSearch(results);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>(
+    location.state?.searchResults || []
+  );
+  const [selectedVehicleType, setSelectedVehicleType] = useState<string>(
+    location.state?.selectedVehicleType || ""
+  );
+  const [selectedStartLocation, setSelectedStartLocation] = useState<string>(
+    location.state?.selectedStartLocation || ""
+  );
+  const [selectedEndLocation, setSelectedEndLocation] = useState<string>(
+    location.state?.selectedEndLocation || ""
+  );
 
-    // Then navigate to the TravelOptionsPage
+  useEffect(() => {
+    if (!location.state) {
+      const storedSearchResults = sessionStorage.getItem("searchResults");
+      const storedSelectedVehicleType = sessionStorage.getItem(
+        "selectedVehicleType"
+      );
+      const storedSelectedStartLocation = sessionStorage.getItem(
+        "selectedStartLocation"
+      );
+      const storedSelectedEndLocation = sessionStorage.getItem(
+        "selectedEndLocation"
+      );
+
+      setSearchResults(
+        storedSearchResults ? JSON.parse(storedSearchResults) : []
+      );
+      setSelectedVehicleType(storedSelectedVehicleType || "");
+      setSelectedStartLocation(storedSelectedStartLocation || "");
+      setSelectedEndLocation(storedSelectedEndLocation || "");
+    }
+  }, [location.state]);
+
+  const onSearch = async (results: SearchResult[]) => {
+    setSearchResults(results);
+  };
+
+  const handleSearch = async (results: SearchResult[]) => {
+    await onSearch(results);
+    sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
     navigate("/travel-options", {
       state: {
         searchResults: results,
@@ -51,42 +67,100 @@ const TravelOptionsPage: React.FC<TravelOptionsPageProps> = () => {
       },
     });
   };
-  // Output searchResults for debugging
-  console.log(searchResults);
+
+  useEffect(() => {
+    sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
+  }, [selectedVehicleType]);
+
+  const handleBookNow = (VehicleId: number) => {
+    const selectedVehicle = searchResults.find(
+      (result) => result.VehicleId === VehicleId
+    );
+    if (selectedVehicle) {
+      const startStand = selectedVehicle.selectedStands.$values.find(
+        (stand) => {
+          if ("busStation" in stand) {
+            return stand.busStation === selectedStartLocation;
+          } else {
+            return stand.trainStationName === selectedStartLocation;
+          }
+        }
+      );
+      const endStand = selectedVehicle.selectedStands.$values.find((stand) => {
+        if ("busStation" in stand) {
+          return stand.busStation === selectedEndLocation;
+        } else {
+          return stand.trainStationName === selectedEndLocation;
+        }
+      });
+      if (startStand && endStand) {
+        const startStandTime =
+          "busStation" in startStand
+            ? startStand.standArrivalTime
+            : startStand.trainDepartureTime;
+        const endStandTime =
+          "busStation" in endStand
+            ? endStand.standArrivalTime
+            : endStand.trainDepartureTime;
+
+        sessionStorage.setItem("startStandTime", startStandTime);
+        sessionStorage.setItem("endStandTime", endStandTime);
+        sessionStorage.setItem("selectedStartLocation", selectedStartLocation);
+        sessionStorage.setItem("selectedEndLocation", selectedEndLocation);
+        sessionStorage.setItem(
+          "scheduleId",
+          selectedVehicle.scheduleId.toString()
+        );
+
+        console.log(selectedStartLocation);
+        console.log(selectedEndLocation);
+
+        console.log("Start Stand Arrival Time", startStandTime);
+        console.log("End Stand Arrival Time", endStandTime);
+        console.log(selectedVehicle);
+        console.log(selectedVehicleType);
+        console.log(selectedVehicle.scheduleId);
+
+        const pageToNavigate =
+          selectedVehicleType === "Train" ? "/train-booking" : "/bus-booking";
+
+        navigate(pageToNavigate, {
+          state: {
+            ...selectedVehicle,
+          },
+        });
+      } else {
+        console.error("Start or end stand details not found.");
+      }
+    } else {
+      console.error("Selected vehicle details not found.");
+    }
+  };
 
   return (
     <>
       <PrimaryNavBar />
       <TotalBlock2
         selectedVehicleType={selectedVehicleType}
-        //setSelectedVehicleType={setSelectedVehicleType}
+        selectedStartLocation={selectedStartLocation}
+        setSelectedStartLocation={setSelectedStartLocation}
+        selectedEndLocation={selectedEndLocation}
+        setSelectedEndLocation={setSelectedEndLocation}
         onSearch={handleSearch}
-        //setSelectedVehicleType={() => {}}
       />
-      <div className="Travel-Option-Page-body d-flex ">
-        <div className=" details-card-container d-flex flex-wrap justify-content-center  ">
-          {/* Render DetailsCard components for each search result */}
+      <div className="Travel-Option-Page-body d-flex">
+        <div className="details-card-container d-flex flex-wrap justify-content-center">
           {searchResults.length > 0 ? (
             searchResults.map((result: SearchResult, index: number) => (
               <DetailsCard
                 key={index}
-                vehicleType={result.vehicleType}
-                startLocation={result.startLocation}
-                departureTime={result.departureTime}
-                endLocation={result.endLocation}
-                arrivalTime={result.arrivalTime}
-                travelDate={result.travelDate}
-                arrivalDate={result.arrivalDate}
-                regNo={result.regNo}
-                comfortability={result.comfortability}
-                duration={result.duration}
-                ticketPrice={result.ticketPrice}
-                bookingClosingDate={result.bookingClosingDate}
-                bookingClosingTime={result.bookingClosingTime}
+                onBookNow={handleBookNow}
+                //selectedVehicleType={selectedVehicleType}
+                {...result}
               />
             ))
           ) : (
-            <div className=" h-auto mt-5 mb-5 p-4  ">
+            <div className="h-auto mt-5 mb-5 p-4">
               No matching travel options found! Search another destination...
             </div>
           )}

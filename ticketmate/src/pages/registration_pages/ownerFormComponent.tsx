@@ -3,10 +3,10 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
-import {useFormik} from "formik";
-import {ownerFormValidation} from "./ownerFormValidation";
-
-
+import { useFormik } from "formik";
+import { ownerFormValidation } from "./ownerFormValidation";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const initialValues = {
   firstName: "",
@@ -20,18 +20,92 @@ const initialValues = {
   confirmPassword: "",
 };
 
-
 function ownerFormComponent() {
   const [dob, setDob] = useState<Date | null>(null);
-  const [vehicleType, setVehicleType] = useState("busType");
-  
+  const [vehicleType, setVehicleType] = useState("bus");
+  const history = useNavigate();
+
 
   const { values, handleBlur, handleChange, handleSubmit, errors } = useFormik({
     initialValues: initialValues,
     validationSchema: ownerFormValidation,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+      const userData = {
+        id: 0,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        dob: dob,
+        nic: values.nic,
+        contactNo: values.contactNumber,
+        userName: values.userName,
+        password: values.password,
+        userType: "Owner",
+        ownVehicleType: vehicleType,
+        drivingLicenseNo: "",
+        isDeleted: false,
+        requestStatus: false,
+      };
+
+      const authData = {
+        username: values.userName,
+        password: values.password,
+        roles: ["Owner"],
+      };
+
+      try {
+        const userResponse = await axios.post(
+          `https://localhost:7196/api/userData`,
+          userData
+        );
+
+        const authResponse = await axios.post(
+          `https://localhost:7196/api/Auth/register`,
+          authData
+        );
+
+        if (authResponse.status === 200 && userResponse.status === 200) {
+          history("/login");
+
+        }
+        console.log(authResponse.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+
     },
+
+    //start of the api call
+    // axios
+    // .post(`https://localhost:7196/api/userData`, {
+    //       id:0,
+    //       firstName: values.firstName,
+    //       lastName: values.lastName,
+    //       email: values.email,
+    //       dob: dob,
+    //       nic: values.nic,
+    //       contactNo: values.contactNumber,
+    //       userName: values.userName,
+    //       password: values.password,
+    //       userType: "Owner",
+    //       ownVehicleType: vehicleType,
+    //       drivingLicenseNo: "",
+    //       isDeleted: false,
+    //       requestStatus:false
+    // })
+    // .then((response) => {
+    //   console.log(response.data);
+
+    //   if(response.status === 200){
+    //     history("/BusOwnerPage");
+    //     alert(response.data);
+
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error("Error:", error);
+    // });
   });
   return (
     <div>
@@ -55,7 +129,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.firstName && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.firstName}</p></small>)}
+              {errors.firstName && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.firstName}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-6">
               <p className="fw-regular">Last Name</p>
@@ -74,7 +154,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.lastName && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.lastName}</p></small>)}
+              {errors.lastName && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.lastName}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <div className="row mt-4">
@@ -95,7 +181,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.nic && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.nic}</p></small>)}
+              {errors.nic && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.nic}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-6">
               <p className="fw-regular ">Date of Birth</p>
@@ -132,34 +224,36 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.email && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.email}</p></small>)}
+              {errors.email && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.email}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-4">
               <p className="fw-regular">Own Vehicle Type</p>
-              <label
-                onClick={() => setVehicleType("busType")}
-                className="d-inline-flex align-items-center"
-              >
+              <label className="d-inline-flex align-items-center">
                 <input
                   type="radio"
                   name="vehicleType"
-                  value="busType"
-                  checked={vehicleType === "busType"}
+                  value="bus"
+                  onClick={() => setVehicleType("bus")}
+                  checked={vehicleType === "bus"}
 
                   // onChange={handleOptionChange}
                 />
                 Bus
               </label>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <label
-                onClick={() => setVehicleType("trainType")}
-                className="d-inline-flex align-items-center"
-              >
+              <label className="d-inline-flex align-items-center">
                 <input
                   type="radio"
                   name="vehicleType"
-                  value="trainType"
-                  checked={vehicleType === "trainType"}
+                  value="train"
+                  onClick={() => setVehicleType("train")}
+                  checked={vehicleType === "train"}
 
                   // onChange={handleOptionChange}
                 />
@@ -185,7 +279,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.contactNumber && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.contactNumber}</p></small>)}
+              {errors.contactNumber && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.contactNumber}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <div className="row mt-4">
@@ -206,7 +306,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.userName && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.userName}</p></small>)}
+              {errors.userName && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.userName}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <div className="row mt-4">
@@ -227,7 +333,13 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.password && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.password}</p></small>)}
+              {errors.password && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.password}
+                  </p>
+                </small>
+              )}
             </div>
             <div className="col-12 col-lg-6">
               <p className="fw-regular">Confirm Password</p>
@@ -246,17 +358,23 @@ function ownerFormComponent() {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.confirmPassword && (<small><p className="text-danger" style={{fontSize:"13px"}}>{errors.confirmPassword}</p></small>)}
+              {errors.confirmPassword && (
+                <small>
+                  <p className="text-danger" style={{ fontSize: "13px" }}>
+                    {errors.confirmPassword}
+                  </p>
+                </small>
+              )}
             </div>
           </div>
           <br />
-          <div className="row text-center">
-            <PrimaryButton
+          <div className="row justify-content-center text-center">
+            <button
               type="submit"
-              value="SIGN UP"
-              color="primary"
-              IsSmall={false}
-            />
+              className=" btn-outline-primary btn-sm btn-width"
+            >
+              SIGN UP
+            </button>
             <br />
             {/* <GoogleSignInButton/> */}
           </div>

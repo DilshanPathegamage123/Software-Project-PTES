@@ -1,5 +1,14 @@
 @import "../../src/vars.css";
 
-.sec{
-    background:"#F1F1F1"
+.sec {
+  background: "#F1F1F1";
+}
+
+.VehicleIcon {
+  width: 80px;
+  height: 80px;
+}
+
+.but {
+  width: 100px;
 }

@@ -1,3 +1,4 @@
+
 import React from "react";
 import AppRoutes from "./Routes";
 import AdminPage from "./pages/AdminDashboard/AdminPage";
@@ -8,9 +9,6 @@ import LocationWindow from '../src/pages/MapLocationWindow/LocationWindow';
 // import { GoogleMap, useLoadScript,Loadscript,Marker } from '@react-google-maps/api';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import EndRideButton from "./Components/Buttons/MapButton/EndRideButton";
-import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
-
-
 
 function App() {
   const rideId = 1;
@@ -23,10 +21,13 @@ function App() {
             <VehicleLocation rideId={1} /> */}
        <AppRoutes/>
 
-    
-      
     </div>
       
+    </div>
+  //   <>
+  //  <Payment2/>
+
+  //   </>
   );
 }
 

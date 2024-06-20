@@ -26,9 +26,6 @@ function AppRoutes  ()  {
         <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
         <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
 
-        
-       
-        
       </Routes>
     </Router>
   );

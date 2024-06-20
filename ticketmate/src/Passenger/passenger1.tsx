@@ -1,6 +1,7 @@
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import ProfileSection from "./ProfileSection";
 import Footer from "../Components/Footer/footer";
+
 import MyBookings from "./MyBookings";
 import { useEffect, useState } from "react";
 import TravelHistory from "./TravelHistory";
@@ -39,7 +40,6 @@ function Passenger() {
   const [passengerdata, setPassengerdata] = useState<PassengerData[]>([]);
   const history = useNavigate();
   
-
 
   const buttonStyle = {
     backgroundColor: "rgba(217, 217, 217, 1)",
@@ -97,6 +97,7 @@ function Passenger() {
       <PrimaryNavBar />
       <div className="container-fluid pt-3">
         <div>
+
         <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">
               <div className="col-lg-3 col-sm-6 col-12 text-center">
@@ -126,6 +127,7 @@ function Passenger() {
                 >
                   Update
                 </button>
+
               </div>
             </div>
           </div>
@@ -195,3 +197,4 @@ function Passenger() {
 }
 
 export default Passenger;
+

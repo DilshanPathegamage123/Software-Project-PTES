@@ -31,7 +31,7 @@ const EndRideButton: React.FC<EndRideButtonProps> = ({ rideId ,connectionId}) =>
     };
 
     return (
-        <button onClick={endRide}>End Ride</button>
+        <button onClick={endRide} className='btn btn-primary '>{"End Ride !!"}</button>
     );
 };
 

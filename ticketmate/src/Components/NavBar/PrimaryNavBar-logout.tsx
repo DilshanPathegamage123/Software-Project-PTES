@@ -4,7 +4,7 @@ import LOGO from "./assest/logo.png";
 import LOGO2 from "./assest/logopart2.png";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
-
+import icon from "./assest/log-out-icon.png"
 import { Link } from "react-router-dom";
 
 //import { Link } from "react-router-dom";
@@ -73,13 +73,7 @@ function PrimaryNavBar() {
                 
                 </button>
               */}
-              <button
-                type="button"
-                className="btn btn-outline-primary btn-sm"
-                onClick={() => history("/register")}
-              >
-                SIGN UP
-              </button>
+             
             </div>
 
 
@@ -87,11 +81,12 @@ function PrimaryNavBar() {
               type="button"
               value="SIGN IN"
               color="third"
-              className="btn btn-outline-primary btn-sm"
+              //className="btn btn-outline-primary btn-sm"
+              style={{border: "none", background: "none", color: "var(--color-text-dark)"}}
           
             onClick={() => history("/login")}
             
-            > SIGN IN
+            > Log out &nbsp;<img src={icon} alt="icon" width="25px" height="25px" /> 
             </button>
 
           </form>

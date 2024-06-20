@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import { UpdateOwnerProfileValidation } from "./UpdateOwnerProfileValidation";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../../Components/Footer/footer";
 
 const initialValues = {
@@ -60,8 +60,8 @@ function UpdateOwnerProfile() {
         firstName: values.firstName || ownerdata.firstName,
         lastName: values.lastName || ownerdata.lastName,
         email: values.email || ownerdata.email,
-        dob: dob? dob.toISOString().split('T')[0]: ownerdata.dob,
-        nic: values.nic || ownerdata.nic,
+        dob: ownerdata.dob,
+        nic: ownerdata.nic,
         contactNo: values.contactNumber || ownerdata.contactNo,
         userName: ownerdata.userName,
         password: ownerdata.password,
@@ -160,7 +160,7 @@ function UpdateOwnerProfile() {
             </div>
           </div>
           <div className="row mt-4">
-            <div className="col-12 col-lg-6">
+            {/* <div className="col-12 col-lg-6">
               <p className="fw-regular">NIC Number</p>
               <input
                 type="text"
@@ -184,8 +184,8 @@ function UpdateOwnerProfile() {
                   </p>
                 </small>
               )}
-            </div>
-            <div className="col-12 col-lg-6">
+            </div> */}
+            {/* <div className="col-12 col-lg-6">
               <p className="fw-regular ">Date of Birth</p>
 
               <div className="col-6 text-secondary fs-10 fw-normal  font-family-Inter m-0 px-3 py-2 p-2">
@@ -200,7 +200,7 @@ function UpdateOwnerProfile() {
                   className="col-12  p-3"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="row mt-4">
             <div className="col-12 col-lg-8">

@@ -22,7 +22,6 @@ function App() {
             <EndRideButton rideId={1} connectionId=""/>
             <VehicleLocation rideId={1} /> */}
        <AppRoutes/>
-    
 
     
       

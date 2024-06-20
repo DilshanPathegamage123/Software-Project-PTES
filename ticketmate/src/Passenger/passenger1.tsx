@@ -1,4 +1,4 @@
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import ProfileSection from "./ProfileSection";
 import Footer from "../Components/Footer/footer";
 import MyBookings from "./MyBookings";

@@ -121,20 +121,19 @@ const getToken = () => {
                   <td>{user.ownVehicleType}</td>
                   <td>
                     <button
-                      className="btn "
+                      className="btn-accept btn "
                       onClick={() => AcceptOwner(user.id)}
                     >
                       Accept
                     </button>
                     &nbsp;&nbsp;
                     <button
-                      className="btn "
+                      className="btn-accept btn"
                       onClick={() => rejectOwner(user.id)}
                     >
                       Reject
                     </button>
                     &nbsp;&nbsp;
-
                   </td>
                   <td>
                     {/* onClick={() => toggleModel1(user)} */}

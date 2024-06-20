@@ -1,99 +1,100 @@
 .table-container {
-    max-height: calc(1.5em * 15);
-    overflow-y: auto;
-    scrollbar-width: thin; /* For Firefox */
-    scrollbar-color: #888 #f5f5f5; /* For Firefox */
-    line-height: 1.5em;
-  }
-  
-  /* For Chrome, Safari, and Opera */
-  .table-container::-webkit-scrollbar {
-    max-height: calc(1.5em*15);
-    width: 12px;
-  }
-  .table-container tbody tr {
-    line-height: 2.5em; /* New line height */
-  }
-  
-  
-  .table-container::-webkit-scrollbar-track {
-    background: #f5f5f5;
-  }
-  
-  .table-container::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 20px;
-    border: 3px solid #f5f5f5;
-  }
-  
-  .table-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
+  max-height: calc(1.5em * 15);
+  overflow-y: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f5f5f5; /* For Firefox */
+  line-height: 1.5em;
+}
 
-  .btn{
-    background-color: #00757C;
-    color:white;
-    border-radius: 20px;
-    font-size: 0.8em;
-  }
+/* For Chrome, Safari, and Opera */
+.table-container::-webkit-scrollbar {
+  max-height: calc(1.5em*15);
+  width: 12px;
+}
+.table-container tbody tr {
+  line-height: 2.5em; /* New line height */
+}
 
-  .btn:hover{
-    background-color: #005F63;
-    color:white;
-  }
 
-  .viewbutton{
-    background-color:#0254A4;
-    color:white;
-    border-radius: 15px;
-    font-size: 0.8em;
-    border-color: transparent;
-  }
-  .viewbutton:hover{
-    background-color:#003C7D;
-    color:white;
-  }
+.table-container::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
 
-  
-  body.active-Model1{
-    overflow-y: hidden;
-  }
-  body.active-Model2{
-    overflow-y: hidden;
-  }
-  .Model1,.overlay,.Model2,.overlay{
-    width:100vw;
-    height: 100vh;
-    top:0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    position: fixed;
-  }
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 20px;
+  border: 3px solid #f5f5f5;
+}
 
-  .overlay{
-    background: rgba(249, 249, 249, 0.053);
-    border-radius: 15px;
-  }
-  .Model1-content, .Model2-content{
-    position :absolute;
-    top:40%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    line-height: 1.4;
-    background: #00757C;
-    padding:14px 28px;
-    border-radius: 3px;
-    max-width: 600px;
-    min-width: 300px;
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
 
-  }
-  close-Model1,close-Model2{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 7px;
-  }
-  .Model1{
-    top:25px;
-  }
+.btn-accept{
+  background-color: #00757C;
+  color:white;
+  border-radius: 10px;
+  font-size: 0.8em;
+  border-color: transparent;
+}
+
+.btn:hover{
+  background-color: #005F63;
+  color:white;
+}
+
+.viewbutton{
+  background-color:#0254A4;
+  color:white;
+  border-radius: 15px;
+  font-size: 0.8em;
+  border-color: transparent;
+}
+.viewbutton:hover{
+  background-color:#003C7D;
+  color:white;
+}
+
+
+body.active-Model1{
+  overflow-y: hidden;
+}
+body.active-Model2{
+  overflow-y: hidden;
+}
+.Model1,.overlay,.Model2,.overlay{
+  width:100vw;
+  height: 100vh;
+  top:0;
+  left:0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+}
+
+.overlay{
+  background: rgba(249, 249, 249, 0.053);
+  border-radius: 15px;
+}
+.Model1-content, .Model2-content{
+  position :absolute;
+  top:40%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1.4;
+  background: #00757C;
+  padding:14px 28px;
+  border-radius: 3px;
+  max-width: 600px;
+  min-width: 300px;
+
+}
+close-Model1,close-Model2{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 7px;
+}
+.Model1{
+  top:25px;
+}

@@ -7,7 +7,7 @@ import "./TravelOptionsPage.css";
 
 import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../Components/Footer/footer";
 
 // Define the SearchResult interface
 interface SearchResult {

@@ -95,7 +95,7 @@
 
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
 import ProfileSection from "./ProfileSection";
-import Footer from "../Components/Footer/Footer";
+import Footer from "../Components/Footer/footer";
 import MyBookings from "./MyBookings";
 import { useEffect, useState } from "react";
 import TravelHistory from "./TravelHistory";

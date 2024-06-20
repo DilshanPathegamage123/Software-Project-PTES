@@ -5,7 +5,36 @@ import Wallet from "./asset/wallet.png";
 import Payment1 from "../../pages/loginPage/payment1";
 import Payment2 from "../../pages/loginPage/payment2";
 
-function Selection() {
+interface BookingData {
+  driverId: number;
+
+  busBookingId: number;
+  busScheduleId: number;
+  busId: number;
+
+  passengerId: string;
+  routeNo: string;
+  startLocation: string;
+  endLocation: string;
+  boardingPoint: string;
+  droppingPoint: string;
+  startTime: string;
+  endTime: string;
+  bookingDate: string;
+  bookingSeatNO: string;
+  bookingSeatCount: string;
+  ticketPrice: number;
+  totalPaymentAmount: number;
+  paymentStatus: boolean;
+
+  trainBookingId:number ;
+  trainScheduleId: number;
+  bookingCarriageNo: number;
+  bookingClass: string
+
+}
+
+const Selection: React.FC<BookingData> = (props) => {
   const [selectedOption, setSelectedOption] = useState("payment1");
 
   const handleOptionChange = (event: {
@@ -13,7 +42,8 @@ function Selection() {
   }) => {
     setSelectedOption(event.target.value);
   };
-
+ 
+ 
   return (
     <>
       <div className="container mt-2">
@@ -81,10 +111,11 @@ function Selection() {
         </div>
       </div>
     </div>
-        {selectedOption === "payment1" && <Payment1 />}
-        {selectedOption === "payment2" && <Payment2 />}
+        {selectedOption === "payment1" && <Payment1 {...props} />}
+        {selectedOption === "payment2" && <Payment2 {...props}/>}
       </div>
     </>
   );
 }
+
 export default Selection;

@@ -1,4 +1,4 @@
-import AppRoutes from "./Routes/Routes";
+import AppRoutes from "./Routes";
 import React from 'react'
 import Driver1 from "./Driver/Driver1";
 import Payment3 from "./pages/loginPage/payment3";
@@ -11,8 +11,8 @@ import UpdateBreakdown from "./Driver/UpdateBreakDown";
 import Notification from "./Passenger/Notification"
 import Driver2 from "./Driver/Driver2";
 import Driver from "./Driver/Driver1";
-
-
+import Selection from "./Components/payment/Selection"; 
+import Paymentmain from "./pages/loginPage/paymentmain";
 function App() {
 
   
@@ -26,7 +26,7 @@ function App() {
       {/* <Passenger/> */}
     </div>
     // <>
-    // <TermsAndConditions/>
+    // <Paymentmain/>
     // </>
   
    );

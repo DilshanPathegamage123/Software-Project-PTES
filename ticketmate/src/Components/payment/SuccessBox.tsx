@@ -3,14 +3,44 @@ import Checkmark from "./asset/checkmark.png";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
+interface BookingData {
 
-function SuccessBox() {
+  driverId: number;
   
-  let location = useLocation();
-  let { userId, tripId } = location.state;
-  console.log(userId, tripId);
-  const history = useNavigate();
+  busBookingId: number;
+  busScheduleId: number;
+  busId: number;
 
+  passengerId: string;
+  routeNo: string;
+  startLocation: string;
+  endLocation: string;
+  boardingPoint: string;
+  droppingPoint: string;
+  startTime: string;
+  endTime: string;
+  bookingDate: string;
+  bookingSeatNO: string;
+  bookingSeatCount: string;
+  ticketPrice: number;
+  totalPaymentAmount: number;
+  paymentStatus: boolean;
+
+  trainBookingId: number;
+  trainScheduleId: number;
+  bookingCarriageNo: number;
+  bookingClass: string;
+
+  clientSecret: string;
+
+}
+const SuccessBox:React.FC<BookingData> = (props)=>{
+  
+  //let location = useLocation();
+  //let { userId, tripId } = location.state;
+  //console.log(userId, tripId);
+  const history = useNavigate();
+  console.log("props-successbox",props);
   const buttonStyle = {
     backgroundColor: "rgb(4,47,64)",
     color: "white", // Optionally change text color to ensure readability
@@ -22,10 +52,6 @@ function SuccessBox() {
 
   return (
     <>
-      {/* <div className="container">
-         <img src={Rec2} className="rounded mx-auto d-block" alt="Rec2"/>
-         <div className="centered">Centered</div>
-         </div> */}
       <div className="container mt-5">
         <div className="d-flex justify-content-center align-items-center position-relative">
           <img src={Rec2} className="rounded mx-auto d-block" alt="Rec2" />
@@ -56,24 +82,15 @@ function SuccessBox() {
             >
               Thank You
             </p>
-
-             {/* <button
-              type="button"
-              className="btn btn-primary ml-3"
-              style={buttonStyle}
-              onClick={() => window.location.replace('/payment4}/')}
-            >
-              Receipt
-            </button>  */}
-          {/* <Link to="/payment4"> */}
             <button
               type="button"
               className="btn btn-primary ml-3"
               style={buttonStyle}
-              onClick={() => history("/payment4",{state:{userId,tripId}})}
+              onClick={() => history("/payment4",{state:{...props}})}
+             
                // Remove the argument from the useNavigate function call
             >
-              Receipt
+              Receipt  
             </button>
           {/* </Link> */}
 

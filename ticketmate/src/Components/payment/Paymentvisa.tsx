@@ -13,6 +13,8 @@ import axios from "axios";
 
 // Define the interface for your data
 interface BookingData {
+  driverId: number;
+
   busBookingId: number;
   busScheduleId: number;
   busId: number;
@@ -35,48 +37,23 @@ interface BookingData {
   trainBookingId:number ;
   trainScheduleId: number;
   bookingCarriageNo: number;
+  bookingClass: string;
 
 }
 const stripePromise = loadStripe(
   "pk_test_51PKw0t04aP7UQrlkXsmQnGlaCpfs21pIOLfkBQPwAk3Qr4HjZQ1NHPpsXDgsclOczo8xuhtCGwLRxLn1x18IK0iz00Gb2xtcqS"
 );
-   const x=1000;
-//convert to USD
- //const Total=Math.round(x * 0.3458 );
- // const NumOfPassengers=3;
 
 
-   const bookingData: BookingData = {
-    busBookingId: 0,
-    busScheduleId: 456,
-    busId: 789,
+interface PaymentFormProps extends BookingData {
+  clientSecret: string;
+}
 
-    passengerId: '001',
-    routeNo: 'A1',
-    startLocation: 'City A',
-    endLocation: 'City B',
-    boardingPoint: 'Point A',
-    droppingPoint: 'Point B',
-    startTime: '10:00 AM',
-    endTime: '02:00 PM',
-    bookingDate: '2024-06-16',
-    bookingSeatNO: '12',
-    bookingSeatCount: '1',
-    ticketPrice: 50.00,
-    totalPaymentAmount: 50,
-    paymentStatus: true,
 
-    trainBookingId: 0,
-    trainScheduleId:0 ,
-    bookingCarriageNo:0,
-    
-  };
-// const y=bookingData.totalPaymentAmount;
-//   const Total=Math.round(y* 0.3458 );
-const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
+const total=Math.round(1000 * 0.3458 *100 );
 
-  const PaymentForm: React.FC<{ clientSecret: string }> = ({ clientSecret}) => {
-    
+  const PaymentForm: React.FC<PaymentFormProps> = (props) => {
+
   const [cardHolderName, setCardHolderName] = useState("");
   const stripe = useStripe();
   const elements = useElements();
@@ -110,7 +87,7 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
     }
 
     const { error, paymentIntent } = await stripe.confirmCardPayment(
-      clientSecret,
+      props.clientSecret,
       {
         payment_method: {
           card: cardNumberElement,
@@ -135,27 +112,29 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
 
       // Send an email when the payment is successful
       axios
-        .post(`https://localhost:7296/api/Email/SendEmails/${bookingData.passengerId}`, {
+        .post(`https://localhost:7296/api/Email/SendEmails/${props.passengerId}`, {
           to: "",
           message:  `
           <html>
             <body>
-              <p>Dear customer(${bookingData.passengerId}),</p>
+              <p>Dear customer(${props.passengerId}),</p>
               <p>We are delighted to inform you that your seat booking has been successfully processed and confirmed. Please find below the details of your reservation:</p>
               <ul>
-                <li><strong>Booking ID:</strong> 0</li>
-                <li><strong>Booking Date:</strong> ${bookingData.bookingDate}</li>
+               
+                <li><strong>Booking Date:</strong> ${props.bookingDate}</li>
                 <li><strong>Payment Date:</strong> ${formattedPaymentDate}</li>
                 <li><strong>Payment Method:</strong> Card</li>
-                <li><strong>Booked Seat No.:</strong>${bookingData.bookingSeatNO}</li>
-                <li><strong>Total Seats Booked:</strong> ${bookingData.bookingSeatCount}</li>
-                <li><strong>Ticket Price:</strong> ${bookingData.ticketPrice}</li>
-                <li><strong>Total Payment Amount:</strong>${bookingData.totalPaymentAmount}</li>
+                <li><strong>Boarding point:</strong> ${props.boardingPoint}</li>
+                <li><strong>Dropping point:</strong> ${props.droppingPoint}</li>
+                <li><strong>Booked Seat No.:</strong>${props.bookingSeatNO}</li>
+                <li><strong>Total Seats Booked:</strong> ${props.bookingSeatCount}</li>
+                <li><strong>Ticket Price:</strong> ${props.ticketPrice}</li>
+                <li><strong>Total Payment Amount:</strong>${props.totalPaymentAmount}</li>
               </ul>
               <p>Your payment has been successfully processed using the card payment method.</p>
               <p>Thank you for choosing our service. We look forward to serving you aboard our srvice. Should you have any further inquiries or require assistance, please feel free to contact us at +9471 1152 633.</p>
               <p>Warm regards,</p>
-              <p>R.M.H.Ranasinghe<br>
+              <p>Joe Henry<br>
               Director<br>
               TicketMate<br>
               +9471 123 2145</p>
@@ -165,35 +144,33 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
         })
         .then((response) => {
           console.log("Email sent", response);
-          if (bookingData.busId) {
-            alert("bus")
-            alert(bookingData.busId)
+          if (props.busId) {
           axios
           .post("https://localhost:7296/api/BusBooking", {
-            busBookingId: bookingData.busBookingId,
-            busScheduleId: bookingData.busScheduleId,
-            busId: bookingData.busId,
-            passengerId: bookingData.passengerId,
-            routeNo: bookingData.routeNo,
-            startLocation: bookingData.startLocation,
-            endLocation: bookingData.endLocation,
-            boardingPoint: bookingData.boardingPoint,
-            droppingPoint: bookingData.droppingPoint,
-            startTime: bookingData.startTime,
-            endTime: bookingData.endTime,
-            bookingDate: bookingData.bookingDate,
+            busBookingId: props.busBookingId,
+            busScheduleId: props.busScheduleId,
+            busId: props.busId,
+            passengerId:props.passengerId,
+            routeNo: props.routeNo,
+            startLocation: props.startLocation,
+            endLocation: props.endLocation,
+            boardingPoint: props.boardingPoint,
+            droppingPoint: props.droppingPoint,
+            startTime: props.startTime,
+            endTime: props.endTime,
+            bookingDate: props.bookingDate,
             paymentDate: formattedPaymentDate, // Use the formatted payment date here
             paymentMethod: "card",
-            bookingSeatNO: bookingData.bookingSeatNO,
-            bookingSeatCount: bookingData.bookingSeatCount,
-            ticketPrice: bookingData.ticketPrice,
-            totalPaymentAmount: bookingData.totalPaymentAmount,
+            bookingSeatNO: props.bookingSeatNO,
+            bookingSeatCount: props.bookingSeatCount,
+            ticketPrice: props.ticketPrice,
+            totalPaymentAmount: props.totalPaymentAmount,
             paymentStatus: true,
             paymentId:paymentIntent.id,
           })
           .then((bookingResponse) => {
             console.log("Booking successful", bookingResponse);
-            history("/payment3", { state: { bookingData } });
+            history("/payment3", { state: { ...props } });
           })
           .catch((bookingError) => {
             console.error("Failed to bus book", bookingError);
@@ -203,30 +180,32 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
           axios
             .post("https://localhost:7296/api/TrainBooking", {
               // Provide train booking details here
-              trainBookingId: bookingData.trainBookingId,
-              trainScheduleId: bookingData.trainScheduleId,
-              passengerId: bookingData.passengerId,
-              routeNo: bookingData.routeNo,
-              startLocation: bookingData.startLocation,
-              endLocation: bookingData.endLocation,
-              boardingPoint: bookingData.boardingPoint,
-              droppingPoint: bookingData.droppingPoint,
-              startTime: bookingData.startTime,
-              endTime: bookingData.endTime,
-              bookingDate: bookingData.bookingDate,
+              trainBookingId: props.trainBookingId,
+              trainScheduleId: props.trainScheduleId,
+              passengerId: props.passengerId,
+              routeNo: props.routeNo,
+              startLocation: props.startLocation,
+              endLocation: props.endLocation,
+              boardingPoint: props.boardingPoint,
+              droppingPoint: props.droppingPoint,
+              startTime: props.startTime,
+              endTime: props.endTime,
+              bookingDate: props.bookingDate,
               paymentDate: formattedPaymentDate,
               paymentMethod:"card",
-              bookingClass: bookingData.bookingCarriageNo, 
-              bookingCarriageNo: bookingData.bookingCarriageNo,
-              bookingSeatNO: bookingData.bookingSeatNO,
-              bookingSeatCount: bookingData.bookingSeatCount,
-              ticketPrice: bookingData.ticketPrice,
-              totalPaymentAmount: bookingData.totalPaymentAmount,
+              bookingClass:props.bookingClass, 
+              bookingCarriageNo: props.bookingCarriageNo,
+              bookingSeatNO: props.bookingSeatNO,
+              bookingSeatCount: props.bookingSeatCount,
+              ticketPrice: props.ticketPrice,
+              totalPaymentAmount: props.totalPaymentAmount,
               paymentStatus: true,
               paymentId:paymentIntent.id,
             })
             .then(response => {
               console.log("Train booking successful:", response.data);
+              history("/payment3", { state: { ...props } });
+
               // Handle success response if needed
             })
             .catch(error => {
@@ -345,6 +324,7 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
           onChange={handleCardHolderNameChange}
           placeholder="John Doe"
         />
+        
       </div>
       <div style={wrapperStyle}>
         <CardNumberElement options={CARD_ELEMENT_OPTIONS1} />
@@ -465,7 +445,7 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
               Passengers
             </div>
             <div className="col text-end" style={{ fontFamily: "Poppins", fontSize: "30px", fontWeight: "bold" }}>
-              {bookingData.bookingSeatCount}
+              {props.bookingSeatCount}
             </div>
           </div>
           <div className="row align-items-center">
@@ -473,7 +453,7 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
               Total
             </div>
             <div className="col text-end" style={{ fontFamily: "Poppins", fontSize: "36px", color: "rgb(0, 117, 124)", fontWeight: "bold" }}>
-              {bookingData.totalPaymentAmount}
+              {props.totalPaymentAmount}
             </div>
           </div>
         </div>
@@ -488,14 +468,19 @@ const total=Math.round(Number(bookingData.totalPaymentAmount) * 0.3458 *100 );
   );
 };
 
-const Stripe_test: React.FC = () => {
-  const [clientSecret, setClientSecret] = React.useState<string>("");
 
+
+
+
+const Stripe_test: React.FC <BookingData>= (prop1) => {
+  const [clientSecret, setClientSecret] = React.useState<string>("");
+const total1=prop1.totalPaymentAmount;
   React.useEffect(() => {
+    //alert(prop1.totalPaymentAmount)
     // Fetch the client secret from your backend
     axios
       .post("https://localhost:7296/api/stripe/create-payment-intent", {
-        amount:  total ,
+        amount: total1, // Convert the amount to cents
       })
       .then((response) => {
         setClientSecret(response.data.clientSecret);
@@ -504,7 +489,7 @@ const Stripe_test: React.FC = () => {
 
   return (
     <Elements stripe={stripePromise}>
-      {clientSecret && <PaymentForm clientSecret={clientSecret}/>}
+      {clientSecret && <PaymentForm clientSecret={clientSecret} driverId={prop1.driverId} busBookingId={prop1.busBookingId} busScheduleId={prop1.busScheduleId} busId={prop1.busId} passengerId={prop1.passengerId} routeNo={prop1.routeNo} startLocation={prop1.startLocation} endLocation={prop1.endLocation} boardingPoint={prop1.boardingPoint} droppingPoint={prop1.droppingPoint} startTime={prop1.startTime} endTime={prop1.endTime} bookingDate={prop1.bookingDate} bookingSeatNO={prop1.bookingSeatNO} bookingSeatCount={prop1.bookingSeatCount} ticketPrice={prop1.ticketPrice} totalPaymentAmount={prop1.totalPaymentAmount} paymentStatus={prop1.paymentStatus} trainBookingId={prop1.trainBookingId} trainScheduleId={prop1.trainScheduleId} bookingCarriageNo={prop1.bookingCarriageNo} bookingClass={prop1.bookingClass}/>}
     </Elements>
   );
 };

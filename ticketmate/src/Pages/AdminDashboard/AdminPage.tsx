@@ -11,6 +11,7 @@ import profileIcon from "../../../src/Components/ProfileSection/assets/iconamoon
 import { BiFontColor } from "react-icons/bi";
 import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
+import ReportAnlysis from "./ReportingAnalysisBus";
 
 function AdminPage() {
 let location = useLocation();
@@ -103,7 +104,7 @@ let { username, password } = location.state;
 <div className="row">
         {selectedOption === "option1" && <RegistrationRequests />}
         {selectedOption === "option2" && <UserManage />}
-        {/* {selectedOption === "option3" && < ReportAnlysis/>} */}
+        {selectedOption === "option3" && < ReportAnlysis/>}
       </div>
 
 

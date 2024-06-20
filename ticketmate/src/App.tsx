@@ -23,7 +23,6 @@ function App() {
 
     </div>
       
-    </div>
   //   <>
   //  <Payment2/>
 

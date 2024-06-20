@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 interface BookingData {
@@ -43,12 +44,13 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
         height: '40%',
       };
       const handlePayNowClick = async () => {
-        
+
         // Display an alert when the "Pay Now" button is clicked
         // alert("Your payment is successfully done.Your email has been received tickets.");
 
         try{
             const response = await axios.post(`https://localhost:7296/api/Email/SendEmails/${PassengerId}`, 
+
             {
                 to: "",
                 message:  `
@@ -150,6 +152,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
         }catch(error){
             alert("Error in sending email");
            
+
         }
     };
       
@@ -160,6 +163,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
         <div className="d-grid">
             <button className="btn mt-5 mb-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} >Confirm</button>
             {/* <button className="btn mt-5" type="button" style={buttonStyle}   onClick={() => history("/payment3",{state:{userId,tripId}})} >Pay Now</button> */}
+
         </div>
     )
 }

@@ -19,3 +19,32 @@
         padding-right: 40px !important;
     }
   }
+
+ 
+
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+
+.container-fluid{
+    padding-left: 72px;
+    padding-right: 72px;
+}
+.proSec{
+    background-color: var(--color-primary) !important;
+}
+
+.func{
+  background-color: var( --color-text-white) !important;
+}
+
+.adminpage{    
+    background-color: var(--color-text-white) !important;
+    /* padding: 20px; */
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  background-image: none;
+}
+

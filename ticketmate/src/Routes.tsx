@@ -8,6 +8,10 @@ import Payment3 from "./pages/loginPage/payment3";
 import Driver1 from "./Driver/Driver1";
 import Driver2 from "./Driver/Driver2";
 import Notification from "./Passenger/Notification";
+import Passenger from './Passenger/passenger1';
+import Home from "./pages/HomePage/Home";
+import BusOwnerPage from "./pages/BusOwnerPage/BusOwnerPage";
+
 
 
 function AppRoutes  ()  {
@@ -15,6 +19,7 @@ function AppRoutes  ()  {
     <Router>
       <Routes>
       <Route path="/" element={<LoginPage />} />
+        <Route path="/passenger" element={<Passenger />} />
         <Route path="/register" element={<PassengerForm />} />
         <Route path="/AdminPage" element={<AdminPage />} />
         <Route path="/paymentmain" element={<Paymentmain/>} />
@@ -23,6 +28,9 @@ function AppRoutes  ()  {
         <Route path="/Driver1" element={<Driver1/>}/>
         <Route path="/Driver2" element={<Driver2/>}/>
         <Route path="/Notification" element={<Notification />} />
+     
+        <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/BusOwnerPage" element={<BusOwnerPage/>}/>
       </Routes>
     </Router>
   );

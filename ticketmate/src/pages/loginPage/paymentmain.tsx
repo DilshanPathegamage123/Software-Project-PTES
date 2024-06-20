@@ -49,6 +49,7 @@ function Payment() {
       </div>
     </>
   );
+
 }
 
 export default Payment;

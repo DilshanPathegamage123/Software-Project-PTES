@@ -14,9 +14,7 @@ import Driver from "./Driver/Driver1";
 import Selection from "./Components/payment/Selection"; 
 import Paymentmain from "./pages/loginPage/paymentmain";
 function App() {
-
-  
-
+  const rideId = 1;
   return (
     <div className="App" id="app">
       <AppRoutes/>
@@ -33,3 +31,5 @@ function App() {
 }
 
 export default App;
+
+

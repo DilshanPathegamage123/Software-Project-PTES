@@ -161,6 +161,7 @@ function UpdateOwnerProfile() {
           </div>
           <div className="row mt-4">
             {/* <div className="col-12 col-lg-6">
+
               <p className="fw-regular">NIC Number</p>
               <input
                 type="text"
@@ -184,8 +185,10 @@ function UpdateOwnerProfile() {
                   </p>
                 </small>
               )}
+
             </div> */}
             {/* <div className="col-12 col-lg-6">
+
               <p className="fw-regular ">Date of Birth</p>
 
               <div className="col-6 text-secondary fs-10 fw-normal  font-family-Inter m-0 px-3 py-2 p-2">
@@ -201,6 +204,7 @@ function UpdateOwnerProfile() {
                 />
               </div>
             </div> */}
+
           </div>
           <div className="row mt-4">
             <div className="col-12 col-lg-8">

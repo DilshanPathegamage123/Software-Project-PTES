@@ -20,6 +20,9 @@
     "formik": "^2.4.5",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "react-chartjs-2": "^5.2.0",
+
     "@microsoft/signalr": "^8.0.0",
     "@react-google-maps/api": "^2.19.3",
     "esbuild": "^0.20.2",

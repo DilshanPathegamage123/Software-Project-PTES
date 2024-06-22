@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+
 import "./DatePicker.css";
 
 interface DatePickerProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+  defaultDate: string;
 }
 
-const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  setSelectedDate,
+  defaultDate,
+}) => {
   const currentDate = new Date().toISOString().substr(0, 10);
-  const [date, setDate] = useState(currentDate);
+  const [date, setDate] = useState(defaultDate || currentDate);
 
   useEffect(() => {
     setSelectedDate(date);
   }, []);
 
-
   return (
     <div className="datepicker  d-flex ">
       <input
-        className=" h-100 w-100  p-sm-3 p-0 align-content-center "
+        className=" h-100 w-100  p-sm-3 align-content-center "
         type="date"
         value={date}
         onChange={(e) => {
@@ -33,7 +37,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ setSelectedDate }) => {
             setDate(e.target.value);
             setSelectedDate(e.target.value);
           }
-
         }}
       />
     </div>

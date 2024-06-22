@@ -60,8 +60,10 @@ const UpdatePassengerProfile = () => {
         firstName: values.FirstName || passengerdata.firstName,
         lastName: values.LastName || passengerdata.lastName,
         email: values.Email || passengerdata.email,
+
         dob: passengerdata.dob,
         nic:passengerdata.nic,
+
         contactNo: values.ContactNumber || passengerdata.contactNo,
         userName: passengerdata.userName,
         password: passengerdata.password,
@@ -239,8 +241,10 @@ const UpdatePassengerProfile = () => {
 
 
 
+
 {/* 
            <div className="row mt-4">
+
             <div className="col-12 col-lg-6">
               <p className="fw-regular">NIC Number</p>
               <input
@@ -291,6 +295,7 @@ const UpdatePassengerProfile = () => {
                 />
               </div>
             </div>
+
           </div>  */}
 
 

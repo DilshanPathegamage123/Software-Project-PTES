@@ -10,6 +10,7 @@ import { useNavigate,useLocation } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../../Components/Footer/footer";
 
+
 const initialValues = {
   firstName: "",
   lastName: "",
@@ -97,7 +98,9 @@ function UpdateDriverProfile() {
 
   return (
     <div>
+
       <PrimaryNavBar/>
+
       <div className="container shadow bg-white col-8  justify-center shadow p-3 rounded mb-5 bg-body rounded">
         <form className="container display-4" onSubmit={handleSubmit}>
           <div className="row  mt-3">
@@ -153,7 +156,9 @@ function UpdateDriverProfile() {
             </div>
           </div>
           <div className="row mt-4">
+
             {/* <div className="col-12 col-lg-6">
+
               <p className="fw-regular">NIC Number</p>
               <input
                 type="text"
@@ -177,8 +182,10 @@ function UpdateDriverProfile() {
                   </p>
                 </small>
               )}
+
             </div> */}
             {/* <div className="col-12 col-lg-6">
+
               <p className="fw-regular ">Date of Birth</p>
 
               <div className="col-6 text-secondary fs-10 fw-normal  font-family-Inter m-0 px-3 py-2 p-2">
@@ -193,7 +200,9 @@ function UpdateDriverProfile() {
                   className="col-12  p-3"
                 />
               </div>
+
             </div> */}
+
           </div>
           <div className="row mt-4">
             <div className="col-12 col-lg-8">
@@ -410,7 +419,9 @@ function UpdateDriverProfile() {
           </div>
         </form>
       </div>
+
       <Footer/>
+
     </div>
   );
 }

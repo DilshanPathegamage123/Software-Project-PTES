@@ -1,19 +1,27 @@
 
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import App from './App.tsx';
+// import './index.css';
+
+// const rootElement = document.getElementById('root');
+// if (rootElement) {
+//   ReactDOM.render(
+//     <React.StrictMode>
+//       <App />
+//     </React.StrictMode>,
+//     rootElement
+//   );
+// }
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import ReactDOM from 'react-dom/client'; // Updated import
 import App from './App';
-import './index.css';
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  ReactDOM.render(
-    <React.StrictMode>
-      {/* <BrowserRouter> */}
-        <App />
-      {/* </BrowserRouter> */}
-    </React.StrictMode>,
-    rootElement
-  );
+
+// Get the root container element
+const container = document.getElementById('root');
+if (!container) {
+  throw new Error('Root container not found');
 }
 
 // Create a root using createRoot

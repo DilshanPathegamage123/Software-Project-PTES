@@ -8,7 +8,6 @@ import { passengerFormValidation } from "./passengerFormValidation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const initialValues = {
   FirstName: "",
   LastName: "",
@@ -65,50 +64,16 @@ const PassengerFormComponent = () => {
         );
 
         if (authResponse.status === 200 && userResponse.status === 200) {
-          history("/passenger");
+          history("/login");
         }
         console.log(authResponse.data);
       } catch (error) {
         console.error("Error:", error);
-      });
-
-
-      
-
-
-
-      // try {
-      //   // Make POST request using Axios
-      //   const response = await axios.post(
-      //     "https://localhost:7196/api/userData",
-      //     {
-      //       firstName: formValues.FirstName,
-      //       lastName: formValues.LastName,
-      //       email: formValues.Email,
-      //       dob: dob,
-      //       nic: formValues.NIC,
-      //       contactNo: formValues.ContactNumber,
-      //       userName: formValues.UserName,
-      //       password: formValues.Password,
-      //       userType: "Passenger",
-      //       ownVehicleType: "",
-      //       drivingLicenseNo: "",
-      //     }
-      //   );
-
-      //   // Handle response if needed
-      //   console.log(response.data);
-      // } catch (error) {
-      //   // Handle error if request fails
-      //   console.error("Error:", error);
-      // }
+      }
     },
 
-
-  });
-
     // axios
-    //   .post(`https://localhost:7196/api/userData`, {
+    //   .post(https://localhost:7196/api/userData, {
     //     id: 0,
     //     firstName: values.FirstName,
     //     lastName: values.LastName,
@@ -133,7 +98,7 @@ const PassengerFormComponent = () => {
     //   });
 
     // axios
-    //   .post(`https://localhost:7196/api/Auth/register`, {
+    //   .post(https://localhost:7196/api/Auth/register, {
     //     username: values.UserName,
     //     password: values.Password,
     //     role: "Passenger",
@@ -183,7 +148,6 @@ const PassengerFormComponent = () => {
           onSubmit={handleSubmit}
           method="post"
         >
-
           <div className="row  mt-3">
             <div className="col-12 col-lg-6">
               <p className="fw-regular">First Name</p>

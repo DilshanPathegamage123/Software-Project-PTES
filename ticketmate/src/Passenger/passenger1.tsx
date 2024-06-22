@@ -270,8 +270,8 @@ function Passenger() {
               ) : currentComponent === "Travel History" ? (
                 <TravelHistory />
               ) : (
-                // <Notifications />
-                <TravelHistory/>
+                <Notifications />
+                // <TravelHistory/>
               )}
             </div>
           </div>

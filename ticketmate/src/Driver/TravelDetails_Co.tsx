@@ -26,8 +26,8 @@ function TravelDetails() {
 
     }
     const [travelDetails, setTravelDetails] = useState<travel[]>([]);
-    const DriverId: number | null = 79;
-    const DrivingLicenceNum: string | null = "t1234566";
+    const DriverId: number | null = 4;
+    const DrivingLicenceNum: string | null = "b1234566";
 
 
 

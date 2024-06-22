@@ -122,7 +122,7 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
               // Add padding for the icon
-            >
+            />
 
 
             <input
@@ -132,7 +132,7 @@ const LoginPage = () => {
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+           
               required
             />
             <div className="d-flex justify-content-center">

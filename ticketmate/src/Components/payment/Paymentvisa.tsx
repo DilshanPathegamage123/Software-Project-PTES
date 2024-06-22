@@ -11,6 +11,7 @@ import {
 } from "@stripe/react-stripe-js";
 import axios from "axios";
 
+
 // Define the interface for your data
 interface BookingData {
   driverId: number;
@@ -50,6 +51,7 @@ interface PaymentFormProps extends BookingData {
 }
 
 
+
 const total=Math.round(1000 * 0.3458 *100 );
 
   const PaymentForm: React.FC<PaymentFormProps> = (props) => {
@@ -57,6 +59,8 @@ const total=Math.round(1000 * 0.3458 *100 );
   const [cardHolderName, setCardHolderName] = useState("");
   const stripe = useStripe();
   const elements = useElements();
+  
+
   
   const [userId, setUserId] = useState("10"); //to pass userId
   const [tripId, setTripId] = useState("23"); //to pass tripId

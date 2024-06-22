@@ -5,12 +5,12 @@ import AdminPage from "./pages/AdminDashboard/AdminPage";
 import Passenger from './Passenger/passenger1';
 import Home from "./pages/HomePage/Home";
 import BusOwnerPage from "./pages/BusOwnerPage/BusOwnerPage";
+import Driver from "./Driver/Driver1";
 import TravelOptionsPage from "./pages/TravelOptionsPage/TravelOptionsPage";
 import BusBookingPage from "./pages/Bus-BookingPage/BusBookingPage";
 import BusBookingUpdatePage from "./pages/BusBookingUpdatePage/BusBookingUpdatePage";
 import TrainBookingUpdatePage from "./pages/TrainBookingUpdatePage/TrainBookingUpdatePage";
 import TrainBookingPage from "./pages/Bus-BookingPage/TrainBookingPage";
-import Passenger from "./Passenger/passenger1";
 import { SearchResult } from "./SearchResult";
 import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
 import UpdateOwnerProfile from "./pages/UpdateProfilePages/UpdateOwnerProfile";
@@ -65,6 +65,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/UpdatePassengerProfile" element={   <UpdatePassengerProfile/>}/>
         <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
         <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
+        <Route path="/driver" element={<Driver />} />
+
 
       </Routes>
     </Router>

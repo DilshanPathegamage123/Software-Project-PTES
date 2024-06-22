@@ -1,14 +1,17 @@
-import React from "react";
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+//import React from "react";
+// import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import ProfileSection from "../../Components/ProfileSection/ProfileSection";
+import PrimaryNavbar_login from "../../Components/NavBar/PrimaryNavBar-logout"
 import SquareButton from "../../Components/Buttons/SquareButton/SquareButton";
-import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+//import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import "./BusOwnerPage.css";
 import Footer from "../../Components/Footer/footer";
 import { useEffect, useState } from "react";
 import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo";
 import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
-import { BrowserRouter as Router, useLocation ,useNavigate} from "react-router-dom";
+
+import { Link, BrowserRouter as Router, useLocation ,useNavigate} from "react-router-dom";
+
 import axios from "axios";
 import RegisteredBusInfoSec from "../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec";
 
@@ -31,6 +34,7 @@ interface OwnerData {
 
 function BusOwnerPage() {
   const [divWidth, setDivWidth] = useState<number>(0);
+  const[selectedComponent,setSelectedComponent]=useState<string | undefined>();
   let location = useLocation();
   let { username, password } = location.state;
   const [ownerdata, setOwnerdata] = useState<OwnerData[]>([]);
@@ -67,8 +71,9 @@ function BusOwnerPage() {
       //.get(`https://localhost:7196/api/userData/${username}/${password}`, {
 
       .get(
-        `https://localhost:7196/api/userData/findUser/${username}/${password}
-`,
+
+        `https://localhost:7196/api/userData/findUser/${username}/${password}`,
+
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
@@ -142,7 +147,7 @@ function BusOwnerPage() {
 
   return (
     <>
-      <PrimaryNavBar />
+      <PrimaryNavbar_login />
       <div className="container-fluid pt-3">
         <div>
           {/* <ProfileSection /> */}

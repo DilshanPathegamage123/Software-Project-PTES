@@ -4,7 +4,9 @@ import * as yup from 'yup';
 export const updatePassengerProfileValidation = yup.object().shape({
     FirstName:yup.string().min(3).required('Name is required*'),
     LastName:yup.string().min(3).required('Name is required*'),
-    NIC:yup.string().length(12).required('NIC is required*'),
+
+    //NIC:yup.string().length(12).required('NIC is required*'),
+
     Email:yup.string().email("Please Enter valid email").required('Email is required*'),
     ContactNumber:yup.string().length(10).required('Contact number is required*'),
     //UserName:yup.string().min(5).required('User Name is required*'),

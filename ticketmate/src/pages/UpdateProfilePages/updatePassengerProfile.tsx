@@ -60,8 +60,10 @@ const UpdatePassengerProfile = () => {
         firstName: values.FirstName || passengerdata.firstName,
         lastName: values.LastName || passengerdata.lastName,
         email: values.Email || passengerdata.email,
-        dob: dob ? dob.toISOString().split("T")[0] : passengerdata.dob,
-        nic: values.NIC || passengerdata.nic,
+
+        dob: passengerdata.dob,
+        nic:passengerdata.nic,
+
         contactNo: values.ContactNumber || passengerdata.contactNo,
         userName: passengerdata.userName,
         password: passengerdata.password,
@@ -236,7 +238,13 @@ const UpdatePassengerProfile = () => {
               )}
             </div>
           </div>
-          <div className="row mt-4">
+
+
+
+
+{/* 
+           <div className="row mt-4">
+
             <div className="col-12 col-lg-6">
               <p className="fw-regular">NIC Number</p>
               <input
@@ -287,7 +295,12 @@ const UpdatePassengerProfile = () => {
                 />
               </div>
             </div>
-          </div>
+
+          </div>  */}
+
+
+
+
           <div className="row mt-4">
             <div className="col-12 col-lg-8">
               <p className="fw-regular">Email Address</p>

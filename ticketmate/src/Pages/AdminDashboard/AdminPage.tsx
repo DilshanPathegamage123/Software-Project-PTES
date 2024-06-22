@@ -1,7 +1,8 @@
 
 import React, { useState } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+//import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
 import ProfileSection from "../../Components/ProfileSection/ProfileSection";
 import SquareButton from "../../Components/Buttons/SquareButton/SquareButton";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
@@ -24,7 +25,8 @@ let { username, password } = location.state;
 
   return (
     <div className="adminpage">
-      <span data-testid="navbar"><PrimaryNavBar /></span>
+ <span data-testid="navbar"><PrimaryNavBar_logout /></span>
+
       <div className="container-fluid pt-3 ">
         <div className="container-fluid rounded-4 proSec">
           <div className="row align-items-center">

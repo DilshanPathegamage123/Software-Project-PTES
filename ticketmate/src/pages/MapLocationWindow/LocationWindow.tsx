@@ -5,7 +5,8 @@ import * as signalR from '@microsoft/signalr';
 import logo from '../../Components/NavBar/assest/logo.png';
 
 const mapContainerStyle = {
-    height: "600px",
+
+    height: "500px",
     width: "100%"
 };
 
@@ -30,6 +31,10 @@ const VehicleLocation: React.FC<VehicleLocationProps> = ({ rideId }) => {
             .build();
 
         setConnection(newConnection);
+
+
+
+
     }, []);
 
     useEffect(() => {
@@ -73,9 +78,10 @@ const VehicleLocation: React.FC<VehicleLocationProps> = ({ rideId }) => {
                 mapContainerStyle={mapContainerStyle}
                  center={locations.length > 0 ? { lat: locations[locations.length - 1].latitude, lng: locations[locations.length - 1].longitude } : { lat: 6.9271, lng: 79.8612 }}
                 // center={center}
-                zoom={16}
 
-         
+                zoom={18}
+                
+
             >
                 {/* <Marker position={{ lat: -34.397, lng: 150.644 }} /> */}
            {locations.map((location, index) => (

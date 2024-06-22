@@ -130,7 +130,7 @@
 //07/06 updatte is bellow
 
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as signalR from '@microsoft/signalr';
 
@@ -139,6 +139,7 @@ interface StartRideButtonProps {
 }
 
 const StartRideButton: React.FC<StartRideButtonProps> = ({ rideId }) => {
+
     const startRide = async () => {
         try {
             const connection = new signalR.HubConnectionBuilder()
@@ -169,7 +170,7 @@ const StartRideButton: React.FC<StartRideButtonProps> = ({ rideId }) => {
                 navigator.geolocation.watchPosition(
                     async position => {
                         const { latitude, longitude } = position.coords;
-                        //console.log('before Location updated:', latitude, longitude);
+                        console.log('before Location updated:', latitude, longitude);
                         await axios.post('https://localhost:7196/api/Location/UpdateLocation', {
                             rideId: rideId,
                             latitude:latitude,
@@ -194,7 +195,7 @@ const StartRideButton: React.FC<StartRideButtonProps> = ({ rideId }) => {
     };
 
     return (
-        <button onClick={startRide}>Start Ride</button>
+        <button onClick={startRide} className='btn btn-primary ' data-testid="start-ride-button">{"Start Ride >>"}</button>
     );
 };
 

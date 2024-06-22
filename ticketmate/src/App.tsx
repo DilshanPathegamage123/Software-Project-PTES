@@ -17,6 +17,7 @@ function App() {
   const [selectedStartLocation, setSelectedStartLocation] = useState("");
   const [selectedEndLocation, setSelectedEndLocation] = useState("");
 
+
   return (
     <SelectedVehicleTypeContext.Provider
       value={{ selectedVehicleType, setSelectedVehicleType }}
@@ -28,6 +29,7 @@ function App() {
         setSelectedEndLocation={setSelectedEndLocation}
       />
     </SelectedVehicleTypeContext.Provider>
+
 
   );
 }

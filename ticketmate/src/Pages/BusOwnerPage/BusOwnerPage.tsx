@@ -9,9 +9,7 @@ import Footer from "../../Components/Footer/footer";
 import { useEffect, useState } from "react";
 import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo";
 import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
-
 import { Link, BrowserRouter as Router, useLocation ,useNavigate} from "react-router-dom";
-
 import axios from "axios";
 import RegisteredBusInfoSec from "../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec";
 
@@ -71,9 +69,7 @@ function BusOwnerPage() {
       //.get(`https://localhost:7196/api/userData/${username}/${password}`, {
 
       .get(
-
         `https://localhost:7196/api/userData/findUser/${username}/${password}`,
-
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,

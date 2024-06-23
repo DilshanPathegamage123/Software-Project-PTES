@@ -1,21 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import './Button.css'
 
+//const history = useNavigate();
 function PrimaryButton(props: any) {
-
-  const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    if (props.onClick) {
-      props.onClick(event);
-    } else if (props.link) {
-      window.location.href = props.link;
-    }
-  };
-
     const color = props.color;
     const Block = props.IsBlock? "btn-block" : "";
     const size = props.IsSmall? "btn-sm" : "";
+    // const history = useHistory();
     let classColor;
-
 
     if (color == "primary"){
       classColor = "primary"
@@ -39,19 +32,17 @@ function PrimaryButton(props: any) {
       window.location.href = props.link;
     }
 
-   
+    // const handleClick=()=>{
+    //   history(props.link)
+    // }
+
     return (
       <>
-      <div>
-        <input
-          type={props.type}
-          className={`btn btn-primary ${classColor} ${Block} ${size}`}
-          value={props.value}
-          style={buttonStyles}
-          onClick={handleClick}
-        />
-      </div>
-    </>
+          <div>
+              <input type={props.type} className={`btn btn-primary ${classColor} ${Block} ${size}`} value={props.value}  style={buttonStyles} onClick={LINK}/>
+
+          </div>
+      </>
   )
 
 }

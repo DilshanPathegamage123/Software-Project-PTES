@@ -1,6 +1,6 @@
 .HomeContent {
   border-radius: 18px;
-  background: linear-gradient(180deg, #042F40 0%, rgba(0, 128, 178, 0.18) 148.36%)
+  background: linear-gradient(180deg, #042f40 0%, rgba(0, 128, 178, 0.18) 100%);
 }
 
 .HomeImg1 {
@@ -81,7 +81,7 @@
 
 .section3 {
   text-align: center;
-  background: linear-gradient(180deg, rgba(9, 150, 205, 0.08) -13.41%, #042F40 100%);
+  background: linear-gradient(180deg, rgba(0, 128, 178, 0.18) 0%, #042f40 100%);
   border-radius: 18px;
 }
 

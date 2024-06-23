@@ -86,6 +86,7 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
         setStartData([]);
         setFilteredStartData([]);
       }
+
     } catch (error) {
       console.error("Error while sending start location to backend", error);
     }

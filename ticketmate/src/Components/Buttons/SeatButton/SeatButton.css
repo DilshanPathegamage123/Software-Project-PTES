@@ -3,6 +3,7 @@
   background: none;
   width: 70px;
   height: 70px;
+
 }
 
 .hoverEffect {
@@ -46,6 +47,7 @@
   color: rgb(0, 0, 0);
   font-weight: bold;
 }
+
 
 .not-available-seat {
   width: 50px;

@@ -12,7 +12,6 @@ import profileIcon from "../../../src/Components/ProfileSection/assets/iconamoon
 import { BiFontColor } from "react-icons/bi";
 import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
-import ReportAnlysis from "./ReportingAnalysisBus";
 
 function AdminPage() {
 let location = useLocation();
@@ -25,18 +24,16 @@ let { username, password } = location.state;
 
   return (
     <div className="adminpage">
- <span data-testid="navbar"><PrimaryNavBar_logout /></span>
-
+      <PrimaryNavBar_logout />
       <div className="container-fluid pt-3 ">
         <div className="container-fluid rounded-4 proSec">
           <div className="row align-items-center">
             <div className="col-lg-3 col-sm-6 col-12 text-center">
               <h5 className="text-white pt-4">Admin</h5>
-              <img src={profileIcon} alt="profileIcon" className="pb-3" 
-              data-testid="logo-admin"/>
+              <img src={profileIcon} alt="profileIcon" className="pb-3" />
             </div>
 
-            <div className="col-lg-4 col-sm-6 p-4" data-testid="profile-section-text">
+            <div className="col-lg-4 col-sm-6 p-4">
               <div className="">
                 <p className="text-white">
                   {username}
@@ -106,7 +103,7 @@ let { username, password } = location.state;
 <div className="row">
         {selectedOption === "option1" && <RegistrationRequests />}
         {selectedOption === "option2" && <UserManage />}
-        {selectedOption === "option3" && < ReportAnlysis/>}
+        {/* {selectedOption === "option3" && < ReportAnlysis/>} */}
       </div>
 
 

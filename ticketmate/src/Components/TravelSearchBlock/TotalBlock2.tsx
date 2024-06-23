@@ -27,12 +27,9 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
   setSelectedEndLocation,
   onSearch,
 }) => {
-  //const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
-  const [selectedDate, setSelectedDate] = useState<string>(
-    sessionStorage.getItem("selectedDate") || ""
-  );
 
   const handleSearch = async () => {
     if (
@@ -120,38 +117,38 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
       } else {
         console.error("Search results are not in the expected format");
       }
+
     } catch (error) {
       console.error("Error during search:", error);
     }
   };
 
-  console.log(selectedDate);
-  sessionStorage.setItem("selectedDate", selectedDate);
-
   return (
-    <div className="TotalBlock2 text-black fs-5 fw-semibold font-family-Poppins ms-auto me-auto w-100 col-12 ">
-      <div className="row col-12  m-auto h-auto">
+    <div className="TotalBlock2 text-black fs-5 fw-semibold font-family-Poppins h-auto   ">
+      <div className="row col-12  m-auto ">
         <p className="m-0 px-4 py-3 text-white   ">
           {selectedVehicleType === "Bus" ? "Bus Schedule" : "Train Schedule"}{" "}
         </p>
       </div>
 
-      <div className="row col-12  m-auto pb-3 pt-2  d-sm-flex ">
+      <div className="row row   col-12  m-auto pb-3 pt-2  d-sm-flex ">
         <div className=" class col col-12  m-auto d-md-flex">
           <div className="col  pb-1  ">
             <StartLocationSelector
               selectedVehicleType={selectedVehicleType}
+
               setSelectedStartLocation={setSelectedStartLocation}
             />
           </div>
           <div className="col pb-1 ">
             <EndLocationSelector
               selectedVehicleType={selectedVehicleType}
+
               setSelectedEndLocation={setSelectedEndLocation}
             />
           </div>
           <div className="col pb-1 ">
-            <DatePicker setSelectedDate={setSelectedDate} defaultDate={selectedDate} />
+            <DatePicker setSelectedDate={setSelectedDate} />
           </div>
 
           <div className=" class col pb-1 ">
@@ -159,6 +156,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
               type="button"
               className=" Modify-Button btn btn-lg text-white fs-5 fw-normal col  m-auto align-content-center justify-content-center"
               onClick={() => handleSearch()}
+
             >
               Search
             </button>

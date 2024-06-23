@@ -1,9 +1,12 @@
-.img {
-  width: 100%;
+.home-img {
+  width: 100vw;
 }
 
 .HomeBody {
   margin: 0;
   padding: 0;
   width: auto;
+  height: auto;
 }
+
+

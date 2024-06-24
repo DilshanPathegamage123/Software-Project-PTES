@@ -168,9 +168,9 @@ function BusOwnerPage() {
               <button className={`btn btn-primary secButton ${buttonStates.RegisteredBuses ? 'active' : ''}`} onClick={() => handleButtonClick('RegisteredBuses')}>
                 Registered Buses
               </button>
-              {/* <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
+              <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
                 Reports
-              </button> */}
+              </button>
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}

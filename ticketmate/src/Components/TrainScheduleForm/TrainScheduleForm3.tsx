@@ -116,6 +116,22 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
     <form onSubmit={handleAddDate}>
       <div className='form-group'>
         <div className='row align-items-end'>
+
+        <div className='col-sm-4'>
+            <label htmlFor="departureDate">Departure Date :</label> <br />
+            <div className=''>
+              <input 
+                type="date" 
+                className='form-control '
+                id="departureDate" 
+                name="departureDate"
+                value={departureDate}
+                onChange={(e) => setDepartureDate(e.target.value)}
+              />
+            </div>
+          </div>
+
+
           <div className='col-sm-4'>
             <label htmlFor="arrivalDate">Arrival Date :</label> <br />
             <div className=''>
@@ -130,20 +146,7 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
             </div>
           </div>
 
-          <div className='col-sm-4'>
-            <label htmlFor="departureDate">Departure Date :</label> <br />
-            <div className=''>
-              <input 
-                type="date" 
-                className='form-control '
-                id="departureDate" 
-                name="departureDate"
-                value={departureDate}
-                onChange={(e) => setDepartureDate(e.target.value)}
-              />
-            </div>
-          </div>
-
+          
           <div className='col-sm-4'>
             <div className=''>
               <button type="submit" className='btn primary'>Add</button>

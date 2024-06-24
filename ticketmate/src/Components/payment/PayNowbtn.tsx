@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-
+import QRCode from 'qrcode';
 import axios from "axios";
 
 interface BookingData {
@@ -47,7 +47,22 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
         // Display an alert when the "Pay Now" button is clicked
         // alert("Your payment is successfully done.Your email has been received tickets.");
-
+        const qrCodeData = JSON.stringify({
+        
+          passengerId: props.passengerId,
+          bookingSeatNO: props.bookingSeatNO,
+          boardingPoint: props.boardingPoint,
+          droppingPoint: props.droppingPoint,
+         
+        });
+    
+       
+      // Generate base64 QR code
+      QRCode.toDataURL(qrCodeData, { width: 150, margin: 1 }, async (err, url) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
         try{
             const response = await axios.post(`https://localhost:7296/api/Email/SendEmails/${PassengerId}`, 
 
@@ -73,6 +88,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
                     Director<br>
                     TicketMate<br>
                     +9471 123 2145</p>
+                    
                   </body>
                 </html>
               `,
@@ -154,6 +170,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
            
 
         }
+      });
     };
       
 

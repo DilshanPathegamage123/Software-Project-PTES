@@ -184,7 +184,7 @@ const NotificationComponent: React.FC = () => {
   }, [allowedIds]);
 
   return (
-    <div className="notification-container">
+    <div className="notification-container" style={styles.container}>
       {messages.length > 0 ? (
         <div>
           {messages.map((msg, index) => (
@@ -207,6 +207,10 @@ const NotificationComponent: React.FC = () => {
 
 // Internal CSS styles
 const styles = {
+  container: {
+    maxHeight: "400px" as const, // Adjust the height as needed
+    overflowY: "auto" as const,
+  },
   messageContainer: {
     backgroundColor: "#f8f9fa",
     border: "1px solid #ccc",

@@ -3,6 +3,7 @@ import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
 import Footer from "../Components/Footer/Footer1";
 import TravelDetails_Ac from "./TravelDetails_Ac";
 import TravelDetails_Co from "./TravelDetails_Co";
+
 import { useState } from "react";
 
 

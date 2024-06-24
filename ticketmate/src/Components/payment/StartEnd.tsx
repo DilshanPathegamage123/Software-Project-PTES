@@ -66,19 +66,17 @@ const StartEndLocation:React.FC<BookingData> = (props)=>{
               <div className="col-lg-2 ml-5 position-relative mt-3">
                 <div
                   className="bg-success-subtle rounded-3 px-2 py-0 position-relative"
-                  style={{
-                    width: "71.748px",
-                    height: "26.905px",
-                    flexShrink: 0,
-                  }}
+                  // style={{
+                  //   width: "71.748px",
+                  //   height: "26.905px",
+                  //   flexShrink: 0,
+                  // }}
                 >
                     <div className="row d-flex">
-                        <div className="col-4"><img src={star} /></div>
-                        <div className="col-6"><p  className="text-black text-opacity-75 fs-6 fw-semibold font-family-Poppins m-0 px-0 ">
+                        {/* <div className="col-4"><img src={star} /></div> */}
+                        {/* <div className="col-6"><p  className="text-black text-opacity-75 fs-6 fw-semibold font-family-Poppins m-0 px-0 ">
                     4.6
-                  </p></div>
-
-                  {/* py-0  top-0 start-100 translate-middle-y mt-0 mr-2 */}
+                  </p></div> */}
                     </div>
                   
                   

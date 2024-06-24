@@ -13,8 +13,9 @@ import Driver2 from "./Driver/Driver2";
 import Driver from "./Driver/Driver1";
 import Selection from "./Components/payment/Selection"; 
 import Paymentmain from "./pages/loginPage/paymentmain";
+import QrCode1 from "./Test/QrCode";
 function App() {
-  const rideId = 1;
+
   return (
     <div className="App" id="app">
       <AppRoutes/>

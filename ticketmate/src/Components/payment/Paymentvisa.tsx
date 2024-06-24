@@ -10,7 +10,7 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import axios from "axios";
-
+import QRCode from 'qrcode';
 
 // Define the interface for your data
 interface BookingData {
@@ -113,7 +113,23 @@ const total=Math.round(1000 * 0.3458 *100 );
       // Set the paymentId state here
       setPaymentId(paymentIntent.id);
 
-
+      const qrCodeData = JSON.stringify({
+        bookingId: paymentIntent.id,
+        passengerId: props.passengerId,
+        bookingSeatNO: props.bookingSeatNO,
+        boardingPoint: props.boardingPoint,
+        droppingPoint: props.droppingPoint,
+       
+      });
+  
+     
+    // Generate base64 QR code
+    QRCode.toDataURL(qrCodeData, { width: 150, margin: 1 }, (err, url) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      
       // Send an email when the payment is successful
       axios
         .post(`https://localhost:7296/api/Email/SendEmails/${props.passengerId}`, {
@@ -142,6 +158,8 @@ const total=Math.round(1000 * 0.3458 *100 );
               Director<br>
               TicketMate<br>
               +9471 123 2145</p>
+              <p>QR Code for your booking:</p>
+            <div><img src="${url}" alt="QR Code"></div>
             </body>
           </html>
         `,
@@ -221,6 +239,7 @@ const total=Math.round(1000 * 0.3458 *100 );
         .catch((error) => {
           console.error("Failed to send email", error);
         });
+      });
     }
   };
   const CARD_ELEMENT_OPTIONS1 = {

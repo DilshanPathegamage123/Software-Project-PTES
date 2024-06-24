@@ -1,21 +1,6 @@
-// services/signalrConnection.ts
 import * as signalR from "@microsoft/signalr";
 
-//const userId = localStorage.getItem("P002");
-//const userId = "P002";
 
-// const connection = new signalR.HubConnectionBuilder()
-//     .withUrl("https://localhost:7296/notificationHub", {
-//         withCredentials: true
-//     })
-//     .withAutomaticReconnect()
-//     .build();
-   
-// connection.start().catch(err => console.error("SignalR Connection Error: ", err));
-// export default connection;
-
-
-// signalrService.ts
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 
 let connection: HubConnection | null = null;

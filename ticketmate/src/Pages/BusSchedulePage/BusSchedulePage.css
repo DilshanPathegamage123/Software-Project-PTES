@@ -1,20 +1,43 @@
 @import '../../vars.css';
+.BusSchPaBG{
+  background-image: url('../../assets/busschedupageBG.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
 
-.formSec{
-    margin-left: 300px;
-    margin-right: 300px;
+.formSec2{
+    margin-left: 270px;
+    margin-right: 270px;
+    background-color: #D9D9D9 ;
+    padding: 50px !important;
 }
 @media only screen and (max-width: 600px) {
-    .formSec {
+    .formSec2 {
         margin-left: 10px;
         margin-right: 10px;
+        padding: 10px !important;
     }
   }
   
   /* Responsive padding for screens between 601px and 1200px */
   @media only screen and (min-width: 601px) and (max-width: 1200px) {
-    .formSec {
-        margin-left: 70px;
-        margin-right: 70px;
+    .formSec2 {
+        margin-left: 50px;
+        margin-right: 50px;
+        padding: 35px !important;
     }
+    }
+
+  .BusScheBack{
+    /* background-image: url('../../assets/busschedupageBG.jpg'); */
+    background-color: var(--color-secondary) !important; 
+    background-size: cover; /* Ensure the image fits within the container */
+    background-position: center top; /* Position the image on the right side */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    width: 100%; /* Ensure the container takes up the full height */
+
   }

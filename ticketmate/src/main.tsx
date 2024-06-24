@@ -16,12 +16,3 @@ if (rootElement) {
   );
 }
 
-// Create a root using createRoot
-const root = ReactDOM.createRoot(container);
-
-// Render the application
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);

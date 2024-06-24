@@ -23,8 +23,8 @@
   }
 
   .btn{
-      padding: 7px 18px !important;
-      border-radius: 15px !important;
+      padding: 11px 22px !important;
+      border-radius: 8px !important;
   }
 
   .btn:hover{
@@ -76,9 +76,9 @@
     background-color: var(--color-bg) !important;
     border-color: var(--color-primary) !important;
   }
-  .yellow:hover{
+  .white:hover{
       background-color: var(--color-primary) !important;
       color: var(--color-bg) !important;
-      border-color: var(--color-primary) !important;
+      border-color: var(--color-bg) !important;
   }
     

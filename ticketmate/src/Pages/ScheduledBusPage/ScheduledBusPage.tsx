@@ -21,20 +21,20 @@ interface ScheduleDate {
 }
 
 function ScheduledBusPage() {
-  const [data, setData] = useState({
-    startLocation: '',
-    endLocation: '',
-    scheduleId: '',
-    registeredBusBusId: '',
-    busNo: '',
-    driverId: '',
-    routNo: '',
-    departureTime: '',
-    arrivalTime: '',
-    comfortability: '',
-    duration: '',
-    ticketPrice: ''
-  });
+    const [data, setData] = useState({
+        startLocation: '',
+        endLocation: '',
+        scheduleId: '',
+        registeredBusBusId: '',
+        busNo: '',
+        driverId: '',
+        routNo: '',
+        departureTime: '',
+        arrivalTime: '',
+        comfortability: '',
+        duration: '',
+        ticketPrice: ''
+      });
   const [busStations, setBusStations] = useState<BusStation[]>([]);
   const [scheduleDates, setScheduleDates] = useState<ScheduleDate[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,6 +44,10 @@ function ScheduledBusPage() {
   const searchParams = new URLSearchParams(location.search);
   const scheduleId = searchParams.get('scheduleId');
 
+  //const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetching data on component mount or when scheduleId changes
   useEffect(() => {
     if (scheduleId) {
       getData(scheduleId);
@@ -51,15 +55,15 @@ function ScheduledBusPage() {
       getScheduleDates(scheduleId);
     }
   }, [scheduleId]);
-
+  
   const getData = async (scheduleId: string) => {
     try {
       const response = await axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`);
-      setData(response.data);
-      setLoading(false);
+            setData(response.data);
+            setLoading(false);
     } catch (error) {
       console.error('Error fetching schedule data:', error);
-      setLoading(false);
+            setLoading(false);
     }
   }
 
@@ -79,11 +83,11 @@ function ScheduledBusPage() {
     } catch (error) {
       console.error('Error fetching schedule dates:', error);
     }
-  }
+}
 
-  if (loading) {
+if (loading) {
     return <div>Loading...</div>;
-  }
+}
 
   const handleUpdateClick = () => {
     navigate(`/BusScheduleFormUpdatePage?scheduleId=${data.scheduleId}`);
@@ -183,8 +187,11 @@ function ScheduledBusPage() {
                     <button className='btn white m-3' onClick={handleUpdateClick3}>Update</button>
                   </ul>
                 </div>
+
               </div>
+
             </div>
+
           </div>
         )}
       </div>

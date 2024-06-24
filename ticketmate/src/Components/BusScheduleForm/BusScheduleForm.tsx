@@ -210,7 +210,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     }).then((result) => {
       if (result.isConfirmed) {
         navigate('/BusOwnerPage');
-      }
+    }
     });
   };
 

@@ -27,6 +27,7 @@ function BusSchedulePage() {
       const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
       if (response.ok) {
         const data = await response.json();
+        console.log('BusRouteRoutId:', data.routId);
 
         // Fetch stand names by routeId
         const standResponse = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${data.routId}`);
@@ -60,12 +61,12 @@ function BusSchedulePage() {
   return (
     <>
       <div className="BusSchPaBG d-flex flex-column min-vh-100">
-        <PrimaryNavBar />
+      <PrimaryNavBar />
         <div className='container py-4 flex-grow-1'>
           <div className='rounded-4 formSec2'>
-            <div className='row'>
-              <h3 className='h3Style text-center'>Fill this form to Schedule a bus</h3>
-            </div>
+          <div className='row'>
+            <h3 className='h3Style text-center'>Fill this form to Schedule a bus</h3>
+          </div>
 
             {showForm3 ? (
               <BusScheduleForm3 userId={userId} scheduleId={scheduleId} />

@@ -1,15 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
-import ProfileSection from '../../Components/ProfileSection/ProfileSection';
-import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
-import './BusOwnerPage.css';
-import Footer from '../../Components/Footer/footer';
-import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo';
-import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
-import { Link } from 'react-router-dom';
+//import React from "react";
+// import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import ProfileSection from "../../Components/ProfileSection/ProfileSection";
+import PrimaryNavbar_login from "../../Components/NavBar/PrimaryNavBar-logout"
+import SquareButton from "../../Components/Buttons/SquareButton/SquareButton";
+//import PrimaryButton from "../../Components/Buttons/PrimaryButton";
+import "./BusOwnerPage.css";
+import Footer from "../../Components/Footer/footer";
+import { useEffect, useState } from "react";
+import ScheduledBusInfo from "../../Components/ScheduledBusInfo/ScheduledBusInfo";
+import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+
+import { Link, BrowserRouter as Router, useLocation ,useNavigate} from "react-router-dom";
+
+import axios from "axios";
+import RegisteredBusInfoSec from "../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec";
 import Swal from 'sweetalert2';
 import BgImg from '../../assets/busProImg.png'
+
+interface OwnerData {
+    Id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    dob: string;
+    nic: string;
+    contactNo: string;
+    userName: string;
+    password: string;
+    userType: string;
+    ownVehicleType: string;
+    drivingLicenseNo: string;
+    isDeleted: boolean;
+    requestStatus: boolean;
+}
 
 function BusOwnerPage() {
   const location = useLocation();
@@ -105,6 +128,48 @@ function BusOwnerPage() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+  useEffect(() => {
+    axios
+      //.get(`https://localhost:7196/api/userData/${username}/${password}`, {
+
+      .get(
+
+        `https://localhost:7196/api/userData/findUser/${username}/${password}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      )
+
+      .then((response) => {
+        console.log(response.data);
+        setOwnerdata(response.data);
+        setOwnerdata(
+          response.data.map((owner: any) => ({
+            Id: owner.id,
+            firstName: owner.firstName,
+            lastName: owner.lastName,
+            email: owner.email,
+            dob: owner.dob,
+            nic: owner.nic,
+            contactNo: owner.contactNo,
+            userName: owner.userName,
+            password: owner.password,
+            userType: owner.userType,
+            ownVehicleType: owner.ownVehicleType,
+            drivingLicenseNo: owner.drivingLicenseNo,
+            isDeleted: owner.isDeleted,
+            requestStatus: owner.requestStatus,
+          }))
+        );
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   // Function to handle button click
   const handleButtonClick = (componentName:any) => {
@@ -138,6 +203,42 @@ function BusOwnerPage() {
         return null;
     }
   };
+
+      
+       // Function to handle button click
+  const handleButtonClick = (componentName: string) => {
+    setSelectedComponent(componentName);
+    // Update button states
+    setButtonStates((prevState) => ({
+      ...prevState,
+      [componentName]: true
+    }));
+    // Reset other button states
+    for (let key in buttonStates) {
+      if (key !== componentName) {
+        setButtonStates((prevState) => ({
+          ...prevState,
+          [key]: false
+        }));
+      }
+    }
+  };
+
+  // Function to render selected component based on state
+  const renderSelectedComponent = () => {
+    switch (selectedComponent) {
+      case 'ScheduledBuses':
+        return <ScheduledBusInfo />;
+      case 'RegisteredBuses':
+        return <RegisteredBusInfoSec />;
+      case 'Reports':
+        return <RegisteredBusInfoSec />;
+      default:
+        return null;
+    }
+  };
+
+
 
   return (
     <>
@@ -177,6 +278,7 @@ function BusOwnerPage() {
             </div>
           </div>
         </div>
+
       </div>
       <Footer />
     </>

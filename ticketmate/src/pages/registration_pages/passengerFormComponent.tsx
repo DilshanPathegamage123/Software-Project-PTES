@@ -394,28 +394,15 @@ const PassengerFormComponent = () => {
             </div>
           </div>
           <br />
-          <div className="row justify-content-center text-center">
+          <div className=" justify-content-center text-center">
             <button
               type="submit"
-              className=" btn-outline-primary btn-sm btn-width"
+              className=" btn-primary btn"
             >
               SIGN UP
             </button>
-
-            {/* <button
-            type="submit"
-            value="SIGN UP"
-            color="primary"
-            >
-              SIGN UP
-            </button> */}
-            {/* <PrimaryButton
-              type="submit"
-              value="SIGN UP"
-              color="primary"
-              IsSmall={false}
-              onclick={handleSubmit}
-            /> */}
+            
+          
             <br />
         
           </div>

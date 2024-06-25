@@ -16,12 +16,14 @@ if (rootElement) {
   );
 }
 
-// Create a root using createRoot
-// const root = ReactDOM.createRoot(container);
+
+// Declare the 'container' variable
+// const container = document.getElementById('root');
 
 // // Render the application
-// root.render(
+// ReactDOM.render(
 //   <React.StrictMode>
 //     <App />
-//   </React.StrictMode>
+//   </React.StrictMode>,
+//   container
 // );

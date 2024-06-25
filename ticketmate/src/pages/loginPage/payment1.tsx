@@ -1,10 +1,10 @@
 import React from 'react';
-import Paymentvisa from '../../Components/payment/Paymentvisa';
+//import Paymentvisa from '../../Components/payment/Paymentvisa';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import Creditcard from '../../Components/payment/asset/creditcard.png';
 import TravelDetails from '../../Components/payment/TravelDetail';
 import VisaMasterBtn from '../../Components/payment/VisaMasterBtn';
-import Footer from '../../Components/Footer/Footer';
+import Footer from '../../Components/Footer/footer';
 import Selection from '../../Components/payment/Selection';
 import Back from '../../Components/payment/Backbutton';
 
@@ -37,7 +37,7 @@ function Payment1(){
             <div className="row mb-5 d-flex justify-content-center">
                <div className="col-2"></div>
                <div className="col-10">
-                 <Paymentvisa/>
+                 {/* <Paymentvisa/> */}
                </div>
             </div>
    

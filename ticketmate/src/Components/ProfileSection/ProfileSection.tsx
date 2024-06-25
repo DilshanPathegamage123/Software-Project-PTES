@@ -5,6 +5,7 @@ import PrimaryButton from '../Buttons/PrimaryButton';
 
 function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehicleType }: { id: string, firstName: string, lastName: string, email: string, backgroundImage: string, vehicleType:string }) {
   return (
+
     <div className='container rounded-4 proSec' style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div className='row align-items-center'>
         <div className='col-lg-3 col-sm-6 col-12 text-center'>

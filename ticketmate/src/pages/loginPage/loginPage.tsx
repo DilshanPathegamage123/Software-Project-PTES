@@ -170,6 +170,8 @@ import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
+import { content } from "html2canvas/dist/types/css/property-descriptors/content";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -299,20 +301,20 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="password"
+              placeholder="    password"
               value={password}
               required
               data-testid="password"
 
             ></input>
-            <div className="d-flex justify-content-center ">
+            <div className=" justify-content-center text-center" >
               {/* <PrimaryButton
                 type="submit"
                 value="LOG IN"
                 color="primary"
                 IsSmall={false}
               /> */}
-              <input type="submit" value="LOG IN" className="btn btn-primary"
+              <input type="submit" value="LOG IN" className=" btn-primary btn"
               data-testid="login-button" />
 
             </div>

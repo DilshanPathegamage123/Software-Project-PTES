@@ -65,7 +65,6 @@ const Selection: React.FC<BookingData> = (props) => {
           <div className="row">
             <div className="col-md-6 d-flex align-items-center mb-3">
               <div className="form-check form-check-inline">
-                   <label htmlFor="inlineRadio1" className="ms-2 d-flex align-items-center">
                 <input
                   className="form-check-input mt-2"
                   type="radio"
@@ -75,7 +74,7 @@ const Selection: React.FC<BookingData> = (props) => {
                   checked={selectedOption === 'payment1'}
                   onChange={handleOptionChange}
                 />
-             
+                <label htmlFor="inlineRadio1" className="ms-2 d-flex align-items-center">
                   <img
                     src={Creditcard}
                     alt="Credit/Debit Card"
@@ -88,7 +87,6 @@ const Selection: React.FC<BookingData> = (props) => {
             </div>
             <div className="col-md-6 d-flex align-items-center mb-3">
               <div className="form-check form-check-inline">
-              <label htmlFor="inlineRadio2" className="ms-2 d-flex align-items-center">
                 <input
                   className="form-check-input mt-2"
                   type="radio"
@@ -98,7 +96,7 @@ const Selection: React.FC<BookingData> = (props) => {
                   checked={selectedOption === 'payment2'}
                   onChange={handleOptionChange}
                 />
-               
+                <label htmlFor="inlineRadio2" className="ms-2 d-flex align-items-center">
                   <img
                     src={Wallet}
                     alt="Cash"

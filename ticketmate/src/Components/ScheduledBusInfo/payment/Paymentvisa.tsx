@@ -518,3 +518,4 @@ const total1=prop1.totalPaymentAmount;
 };
 
 export default Stripe_test;
+

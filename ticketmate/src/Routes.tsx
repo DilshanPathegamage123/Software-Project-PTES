@@ -15,6 +15,11 @@ import { SearchResult } from "./SearchResult";
 import UpdatePassengerProfile from "./pages/UpdateProfilePages/updatePassengerProfile";
 import UpdateOwnerProfile from "./pages/UpdateProfilePages/UpdateOwnerProfile";
 import UpdateDriverProfile from "./pages/UpdateProfilePages/UpdateDriverProfile";
+import Paymentmain from "./pages/loginPage/paymentmain";
+import Payment3 from "./pages/loginPage/payment3";
+import Payment4 from "./pages/loginPage/payment4";
+import Driver2 from "./Driver/Driver2";
+
 
 
 interface AppRoutesProps {
@@ -32,7 +37,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
   return (
           // <Router>
     <Routes>
-      <Route
+      {/* <Route
         path="/"
         element={
           <Home
@@ -49,7 +54,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         path="/train-booking-update"
         element={<TrainBookingUpdatePage />}
       />
-      <Route path="/train-booking" element={<TrainBookingPage />} />
+      <Route path="/train-booking" element={<TrainBookingPage />} /> */}
 {/* <!--       <Route path="/passenger-profile" element={<Passenger />} /> -->
 <!--       <Route path="/login" element={<LoginPage />} /> -->
 <!--       <Route path="/AdminPage" element={<AdminPage />} /> -->
@@ -66,7 +71,10 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
         <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
         <Route path="/driver" element={<Driver />} />
-
+        <Route path="/driver2" element={<Driver2 />} />
+        <Route path="/paymentmain" element={<Paymentmain />} />
+        <Route path="/Payment3" element={<Payment3 />} />
+        <Route path="/Payment4" element={<Payment4 />} />
 
       </Routes>
   //  </Router>

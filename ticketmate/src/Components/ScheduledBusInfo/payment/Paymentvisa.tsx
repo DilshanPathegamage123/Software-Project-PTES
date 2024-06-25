@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Link, useNavigate } from "react-router-dom";
@@ -519,3 +518,4 @@ const total1=prop1.totalPaymentAmount;
 };
 
 export default Stripe_test;
+

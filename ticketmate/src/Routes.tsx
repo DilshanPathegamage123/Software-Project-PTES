@@ -18,6 +18,8 @@ import UpdateDriverProfile from "./pages/UpdateProfilePages/UpdateDriverProfile"
 import Paymentmain from "./pages/loginPage/paymentmain";
 import Payment3 from "./pages/loginPage/payment3";
 import Payment4 from "./pages/loginPage/payment4";
+import Driver2 from "./Driver/Driver2";
+
 
 import BusRegistrationPage from './pages/BusRegistrationPage/BusRegistrationPage';
 import RegisteredBusPage from './pages/RegisteredBusPage/RegisteredBusPage';
@@ -40,7 +42,7 @@ import TrainShceduleUpdatePage from './pages/TrainShceduleUpdatePage/TrainShcedu
 import TrainShceduleUpdatePage2 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage2';
 import TrainShceduleUpdatePage3 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage3';
 import TrainShceduleUpdatePage4 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage4';
-import TrainShceduleUpdatePage5 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5';
+
 
 
 
@@ -59,7 +61,9 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
   return (
           //  <Router >
     <Routes>
+
        <Route
+
         path="/"
         element={
           <Home
@@ -76,7 +80,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         path="/train-booking-update"
         element={<TrainBookingUpdatePage />}
       />
-      <Route path="/train-booking" element={<TrainBookingPage />} />
+      <Route path="/train-booking" element={<TrainBookingPage />} /> */}
 {/* <!--       <Route path="/passenger-profile" element={<Passenger />} /> -->
 <!--       <Route path="/login" element={<LoginPage />} /> -->
 <!--       <Route path="/AdminPage" element={<AdminPage />} /> -->
@@ -96,6 +100,12 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
         <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
         <Route path="/driver" element={<Driver />} />
+
+        <Route path="/driver2" element={<Driver2 />} />
+        <Route path="/paymentmain" element={<Paymentmain />} />
+        <Route path="/Payment3" element={<Payment3 />} />
+        <Route path="/Payment4" element={<Payment4 />} />
+
 
         {/* malinga scheduling */}
         <Route path='/BusOwnerPage' element={<BusOwnerPage />} />
@@ -120,6 +130,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path='/TrainShceduleUpdatePage3' element={<TrainShceduleUpdatePage3 />} />
         <Route path='/TrainShceduleUpdatePage4' element={<TrainShceduleUpdatePage4 />} />
         <Route path='/TrainShceduleUpdatePage5' element={<TrainShceduleUpdatePage5 />} />
+
 
 
       </Routes>

@@ -67,6 +67,7 @@ function PrimaryNavBar() {
                 <button
                   type="button"
                   className="btn btn-outline-primary btn-sm"
+                  onClick={()=>history('/register')}
                 >
                   SIGN UP
                 </button>

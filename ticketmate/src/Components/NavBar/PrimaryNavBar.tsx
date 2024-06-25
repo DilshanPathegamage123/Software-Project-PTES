@@ -5,13 +5,18 @@ import LOGO2 from "./assest/logopart2.png";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
 
+import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
+import { use } from "chai";
 
 
 //import { Link } from "react-router-dom";
 
 function PrimaryNavBar() {
+  const history = useNavigate();
+
+    
   return (
     <>
 

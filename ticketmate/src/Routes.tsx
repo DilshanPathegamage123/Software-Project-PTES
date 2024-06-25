@@ -30,7 +30,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
   setSelectedEndLocation,
 }) => {
   return (
-          <Router>
+          // <Router>
     <Routes>
       <Route
         path="/"
@@ -50,13 +50,13 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         element={<TrainBookingUpdatePage />}
       />
       <Route path="/train-booking" element={<TrainBookingPage />} />
-<!--       <Route path="/passenger-profile" element={<Passenger />} /> -->
+{/* <!--       <Route path="/passenger-profile" element={<Passenger />} /> -->
 <!--       <Route path="/login" element={<LoginPage />} /> -->
 <!--       <Route path="/AdminPage" element={<AdminPage />} /> -->
 <!--       <Route path="/register" element={<PassengerForm />} /> -->
 <!--       <Route path="/BusOwnerPage" element={<BusOwnerPage />} />
-    -->
-<!--       <Route path="/" element={<LoginPage />} /> -->
+    --> */}
+       {/* <Route path="/" element={<LoginPage />} /> --> */}
         <Route path="/passenger" element={<Passenger />} />
         <Route path="/register" element={<PassengerForm />} />
         <Route path="/AdminPage" element={<AdminPage/>} />
@@ -69,7 +69,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
 
 
       </Routes>
-    </Router>
+  //  </Router>
   );
 };
 export default AppRoutes;

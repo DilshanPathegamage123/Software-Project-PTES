@@ -10,7 +10,7 @@ import {FirStorage} from './FirebaseConfig';
 import { v4 } from 'uuid';
 import { getDownloadURL, listAll, ref, uploadBytes } from 'firebase/storage';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 interface ApiResponse {
@@ -18,6 +18,13 @@ interface ApiResponse {
 }
 
 function BusRegistrationPage() {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const userId = queryParams.get('id');
+  console.log("user id " + userId);
+
+    
   const [formData, setFormData] = useState({
     busNum: '',
     busName: '',
@@ -76,20 +83,17 @@ function BusRegistrationPage() {
     }
   };
 
-
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setFormData({
       ...formData,
       acOption: value
     });
-
     setErrors({
       ...errors,
       acOption: ''
     });
   };
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -130,6 +134,19 @@ function BusRegistrationPage() {
 
     setErrors(newErrors);
 
+    // Check if at least one seat button is selected
+    const seatSelected = Object.values(buttonStates).some((value) => value);
+    if (!seatSelected) {
+      Swal.fire({
+        icon: 'error',
+        title: 'No seat selected',
+        text: 'Please select at least one seat before submitting the form.',
+        timer: 3000,
+        showConfirmButton: false
+      });
+      return;
+    }
+
     if (formValid) {
       Swal.fire({
         title: 'Uploading...',
@@ -152,7 +169,8 @@ function BusRegistrationPage() {
           ACorNONAC: acOptionValue,
           LicenseImgURL: licenseUrl,
           InsuranceImgURL: insuranceUrl,
-          BusName: formData.busName
+          BusName: formData.busName,
+          userId: userId
         });
 
         const busId = response.data.busId;
@@ -168,11 +186,11 @@ function BusRegistrationPage() {
           showConfirmButton: false,
           timer: 3500
         })
-        setTimeout(() => {
-            window.location.reload();
-        }, 4000);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 4000);
 
-        navigate('/');
+        navigate('/BusOwnerPage');
         //toast.success('Form submitted successfully');
       } catch (error) {
         Swal.fire({
@@ -210,6 +228,8 @@ function BusRegistrationPage() {
     } catch (error) {
       console.error('Error storing button data:', error);
     }
+
+    
   };
 
   const uploadFileAndGetUrl = async (file: File) => {
@@ -232,7 +252,7 @@ function BusRegistrationPage() {
       confirmButtonText: "Yes, Go Back!"
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/');
+        navigate('/BusOwnerPage');
       }
     });
   }
@@ -241,102 +261,99 @@ function BusRegistrationPage() {
   return (
     <>
       <PrimaryNavBar />
-      <div className='container py-4'>
-
-        <div className='col-12 rounded-4 formSec'>
-          <div className='row'>
-            <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
-          </div>
-
-          <form onSubmit={handleSubmit}>
-
+      <div className='BusRegBack'>
+        <div className='container py-4'>
+          <div className='col-12 rounded-4 formSec'>
             <div className='row'>
-              <div className='col-12 col-lg-6 p-3'>
-                <div className="form-group row">
-                  <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
-                  <div className="">
-                    <input type="text" className="form-control" id="inputbusNum" name="busNum" placeholder="Bus Number" onChange={handleInputChange} />
-                    {errors.busNum && <div className="text-danger">{errors.busNum}</div>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label htmlFor="inputBusName" className="col-form-label">Enter Bus Name</label>
-                  <div className="">
-                    <input type="text" className="form-control" id="inputBusName" name="busName" placeholder="Bus Name" onChange={handleInputChange} />
-                    {errors.busName && <div className="text-danger">{errors.busName}</div>}
-                  </div>
-                </div>
-                <div className="form-group row">
+              <h3 className='h3Style text-center'>Fill this form to register a new bus</h3>
+            </div>
 
-                  <label htmlFor="inputLicencenum" className="col-form-label">Enter Licence Number</label>
-                  <div className="">
-                    <input type="text" className="form-control" id="inputLicencenum" name="licenceNum" placeholder="Licence Number" onChange={handleInputChange} />
-                    {errors.licenceNum && <div className="text-danger">{errors.licenceNum}</div>}
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label htmlFor="exampleFormControlFile1">Attach vehicle licence image</label>
-                  <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
-                  <input type="file" className="form-control-file" id="exampleFormControlFile1" name="selectedFile1" onChange={handleFileChange} />
-                  {errors.selectedFile1 && <div className="text-danger">{errors.selectedFile1}</div>}
-                </div>
-
-                <div className="form-group row">
-                  <label htmlFor="exampleFormControlFile2">Attach vehicle Insuarance image</label>
-                  <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
-                  <input type="file" className="form-control-file" id="exampleFormControlFile2" name="selectedFile2" onChange={handleFileChange} />
-                  {errors.selectedFile2 && <div className="text-danger">{errors.selectedFile2}</div>}
-                </div>
-
-                <div className="form-group row">
-                  <label htmlFor="inputSeatNo" className="col-form-label">Enter seat Count</label>
-                  <div className="">
-                    <input type="text" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
-                    {errors.seatCount && <div className="text-danger">{errors.seatCount}</div>}
-                  </div>
-                </div>
-                <div className="row">
-                  <fieldset className="form-group">
-                    <legend className="col-form-label pt-0">AC or NoN AC</legend>
+            <form onSubmit={handleSubmit}>
+              <div className='row'>
+                
+                <div className='col-12 col-lg-6 p-3'>
+                  <div className="form-group row">
+                    <label htmlFor="inputbusNum" className="col-form-label">Enter Bus Number</label>
                     <div className="">
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio" name="acOption" id="gridRadios1" value="AC" onChange={handleRadioChange} />
-                        <label className="form-check-label" htmlFor="gridRadios1">
-                          AC
-                          </label>
-                      </div>
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio" name="acOption" id="gridRadios2" value="Non AC" onChange={handleRadioChange} />
-                        <label className="form-check-label" htmlFor="gridRadios2">
-                          Non AC
-                          </label>
-                      </div>
+                      <input type="text" className="form-control" id="inputbusNum" name="busNum" placeholder="Bus Number" onChange={handleInputChange} />
+                      {errors.busNum && <div className="text-danger">{errors.busNum}</div>}
                     </div>
-                    {errors.acOption && <div className="text-danger">{errors.acOption}</div>}
-                  </fieldset>
+                  </div>
+                  <div className="form-group row">
+                    <label htmlFor="inputBusName" className="col-form-label">Enter Bus Name</label>
+                    <div className="">
+                      <input type="text" className="form-control" id="inputBusName" name="busName" placeholder="Bus Name" onChange={handleInputChange} />
+                      {errors.busName && <div className="text-danger">{errors.busName}</div>}
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label htmlFor="inputLicencenum" className="col-form-label">Enter Licence Number</label>
+                    <div className="">
+                      <input type="text" className="form-control" id="inputLicencenum" name="licenceNum" placeholder="Licence Number" onChange={handleInputChange} />
+                      {errors.licenceNum && <div className="text-danger">{errors.licenceNum}</div>}
+                    </div>
+                  </div>
+
+                  <div className="form-group row">
+                    <label htmlFor="exampleFormControlFile1">Attach vehicle licence image</label>
+                    <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
+                    <input type="file" className="form-control-file" id="exampleFormControlFile1" name="selectedFile1" onChange={handleFileChange} />
+                    {errors.selectedFile1 && <div className="text-danger">{errors.selectedFile1}</div>}
+                  </div>
+
+                  <div className="form-group row">
+                    <label htmlFor="exampleFormControlFile2">Attach vehicle Insuarance image</label>
+                    <i><p className="mb-2" style={{ fontSize: '14px', color: 'rgba(0, 0, 0, 0.5)' }}>* Only jpg, jpeg, png, and pdf are allowed. *</p></i>
+                    <input type="file" className="form-control-file" id="exampleFormControlFile2" name="selectedFile2" onChange={handleFileChange} />
+                    {errors.selectedFile2 && <div className="text-danger">{errors.selectedFile2}</div>}
+                  </div>
+
+                  <div className="form-group row">
+                    <label htmlFor="inputSeatNo" className="col-form-label">Enter seat Count</label>
+                    <div className="">
+                      <input type="number" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
+                      {errors.seatCount && <div className="text-danger">{errors.seatCount}</div>}
+                    </div>
+                  </div>
+                  <div className="row">
+                    <fieldset className="form-group">
+                      <legend className="col-form-label pt-0">AC or NoN AC</legend>
+                      <div className="">
+                        <div className="form-check">
+                          <input className="form-check-input" type="radio" name="acOption" id="gridRadios1" value="AC" onChange={handleRadioChange} />
+                          <label className="form-check-label" htmlFor="gridRadios1">
+                            AC
+                            </label>
+                        </div>
+                        <div className="form-check">
+                          <input className="form-check-input" type="radio" name="acOption" id="gridRadios2" value="Non AC" onChange={handleRadioChange} />
+                          <label className="form-check-label" htmlFor="gridRadios2">
+                            Non AC
+                            </label>
+                        </div>
+                      </div>
+                      {errors.acOption && <div className="text-danger">{errors.acOption}</div>}
+                    </fieldset>
+                  </div>
+                </div>
+                
+                {/* Bus seat structure */}
+                <SelectBusSeatStructure setButtonStates={setButtonStates} />
+              </div>
+              <div className='row'>
+                <div className='col-12 text-center p-3'>
+                  <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
+                  <button type='submit' className='btn primary mx-3 '>Register</button>
                 </div>
               </div>
-              
-              {/* Bus seat structure */}
-              <SelectBusSeatStructure setButtonStates={setButtonStates} />
-            </div>
-            <div className='row'>
-              <div className='col-12 text-center p-3'>
-                <button type='submit' className='btn primary mx-3 '>Register</button>
-                <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
-
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-      <ToastContainer />
+      
       <Footer />
     </>
   );
 }
 
-
 export default BusRegistrationPage;
-

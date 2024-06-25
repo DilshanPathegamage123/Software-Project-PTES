@@ -1,0 +1,58 @@
+@import '../../vars.css';
+
+.pageBack{
+    background-color: var(--color-secondary) !important;
+}
+
+.SchBusInfoSec{
+    background-color: var(--color-primary) !important;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.title1{
+    color: var(--color-text-white);
+    text-align: center;
+}
+
+.para{
+    color: var(--color-text-white);
+
+}
+
+.detailSec{
+    padding-left: 85px;
+}
+
+.MainImage{
+    width: 100%;
+    border-radius: 20px;
+    max-width: 800px;
+}
+
+@media only screen and (max-width: 600px) {
+    .SchBusInfoSec {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    .detailSec{
+        padding-left: 25px;
+    }
+  }
+  
+  /* Responsive padding for screens between 601px and 1200px */
+  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+    .SchBusInfoSec {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    .detailSec{
+        padding-left: 45px;
+    }
+  }
+
+  li::marker {
+    color: rgb(255, 255, 255);
+  }
+
+

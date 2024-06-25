@@ -1,0 +1,24 @@
+@import '../../vars.css';
+
+.img-sec-Loc-Up{
+    background-image: url("../../assets/womenInTrainImg.jpg");
+    background-size: cover;
+    border-radius: 30px;
+}
+
+.formSecLocUp{
+    background-color: #D9D9D9 ;
+    padding: 50px !important;
+}
+@media only screen and (max-width: 600px) {
+    .formSecLocUp {
+      padding: 10px !important;
+    }
+  }
+  
+  /* Responsive padding for screens between 601px and 1200px */
+  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+    .formSecLocUp {
+      padding: 35px !important;
+    }
+  }

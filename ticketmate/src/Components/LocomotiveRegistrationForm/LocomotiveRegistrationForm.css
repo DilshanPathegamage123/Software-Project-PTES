@@ -1,0 +1,87 @@
+@import '../../vars.css';
+
+.container-fluid{
+    padding-left: 72px !important;
+    padding-right: 72px !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .container-fluid {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+    }
+  }
+  
+  /* Responsive padding for screens between 601px and 1200px */
+  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+    .container-fluid {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+  }
+
+
+.formSec{
+    background-color: #D9D9D9 ;
+    padding: 50px !important;
+    padding-top: 20px !important;
+}
+@media only screen and (max-width: 600px) {
+    .formSec {
+      padding: 10px !important;
+    }
+  }
+  
+  /* Responsive padding for screens between 601px and 1200px */
+  @media only screen and (min-width: 601px) and (max-width: 1200px) {
+    .formSec {
+      padding: 35px !important;
+    }
+  }
+
+.h3Style{
+    color: var(--color-primary);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 60px */
+    letter-spacing: 0.4px;
+}
+.form-control{
+    height: 48px;
+}
+
+.form-control-file{
+    height: 48px;
+}
+.seatButton{
+    background-color: var(--color-primary);
+    width: 57px;
+    height: 57px;
+}
+
+.rowW {
+    display: flex;
+    justify-content: space-between;
+    /* Add more styles as needed */
+  }
+.column {
+    display: flex;
+    flex-direction: column;
+    /* Add more styles as needed */
+
+}
+
+.btn-primary2 {
+  background-color: #D9D9D9;
+  color: white;
+}
+.btn-primary2.active {
+  background-color: #1FBF83;
+
+}
+.img-sec{
+    background-image: url("../../assets/TrainLocomotiveImgBack.jpg");
+    background-size: cover;
+    border-radius: 30px;
+}

@@ -1,0 +1,12 @@
+.search {
+  height: 50px;
+}
+
+.button {
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+  margin: 0;
+  text-align: center;
+  justify-content: center;
+  padding-top: 12px;
+}

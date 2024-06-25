@@ -1,0 +1,35 @@
+.TotalBlock {
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 5px 5px 10.9px 1px rgba(0, 0, 0, 0.16);
+}
+
+.row {
+  height: 80px;
+  padding-top: 15px;
+  padding-left: auto;
+}
+@media (min-width: 991px) {
+  .row {
+    padding-left: 50px;
+    column-gap: 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .row {
+    height: 140px;
+  }
+}
+
+@media (max-width: 767px) {
+  .row {
+    height: 220px;
+  }
+}
+
+@media (max-width: 575px) {
+  .row {
+    height: 360px;
+  }
+}

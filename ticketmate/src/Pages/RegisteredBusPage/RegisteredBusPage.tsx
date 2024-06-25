@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './RegisteredBusPage.css'
-import Footer from '../../Components/Footer/footer'
+import Footer from '../../Components/Footer/Footer'
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
-import BusImg from '../../assets/BusIconRegBusPage.png'
+import BusImg from '../../assets/RegBusImg.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
 import { Link, useLocation } from 'react-router-dom';
@@ -133,9 +133,9 @@ function RegisteredBusPage() {
                 <div className='col-lg-6'>
                     <div className='m-4 InfoSec rounded-4'>
                         <div className='row d-flex justify-content-left pl-5 pt-4'>
-                            <Link to='/BusOwnerPage'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
+                            <Link to='/'><img src={BackIcon} alt="BackIcon" className='BackIcon'/></Link>
                         </div>
-                        <div className='row d-flex justify-content-center rounded-2'>
+                        <div className='row d-flex justify-content-center'>
                             <img src={BusImg} alt="BusImg" className='p-3 col-6'/>
                         </div>
                         <div className='row d-flex justify-content-center mt-2'>
@@ -150,8 +150,8 @@ function RegisteredBusPage() {
                         </div>
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
-                                <Link to={`/UpdateBusRegInfoPage?busId=${data.busId}`}><button className='btn white m-2'>Edit</button></Link>
-                                <button className='btn yellow m-2'onClick={()=>handleDelete()}>Delete</button>
+                                <button className='btn white m-2'>Edit</button>
+                                <button className='btn white m-2'onClick={()=>handleDelete()}>Delete</button>
                             </div>
                         </div>
                     </div>

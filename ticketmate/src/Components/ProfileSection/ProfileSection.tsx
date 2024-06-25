@@ -7,8 +7,8 @@ function ProfileSection() {
     
   return (
     <>
-    <div className='container rounded-4 proSec'>
-        <div className='row align-items-center'>
+    <div className='container rounded-4 proSec '>
+        <div className='row align-items-center psec'>
             <div className='col-lg-3 col-sm-6 col-12 text-center'>
                 <h5 className='text-white pt-4'>Bus Owner</h5>
                 <img src={profileIcon} alt="profileIcon" className='pb-3'/>

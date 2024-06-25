@@ -171,7 +171,7 @@ import Footer from "../../Components/Footer/footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function LoginPage() {
+const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useNavigate();
@@ -237,7 +237,9 @@ function LoginPage() {
       console.error("There was an error!", error);
       // Handle error (e.g., show error message to user)
     }
+
   };
+
 
   return (
     <div className="loginpage-body">
@@ -258,22 +260,30 @@ function LoginPage() {
           />
         </svg>
       </a>
-      <form onSubmit={handleLogin}>
-        <div className="d-flex justify-content-center">
+
+      <form onSubmit={handlesubmit} method="post">
+
+        <div className=" d-flex justify-content-center ">
           <div
-            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center"
+            className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
+
           >
             <div className="text-center">
               <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
             </div>
 
+            {/* <input
+              className="form-control col-8 mx-auto m-4 custom-bg-color"
+              type="text"
+              placeholder=" <><BsFillPersonFill />    username"
+              required
+            ></input> */}
             <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
               placeholder="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="username"
               required
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
@@ -286,9 +296,7 @@ function LoginPage() {
 
             <input
               type="password"
-              className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="password"
-              value={password}
+              name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               placeholder="password"
@@ -308,14 +316,12 @@ function LoginPage() {
               data-testid="login-button" />
 
             </div>
-            <p>johndoe   password123</p>
-            <p>alicejohnson   password789</p>
           </div>
         </div>
       </form>
       <Footer />
-    </>
-  );
-}
+    </div>
 
+  );
+};
 export default LoginPage;

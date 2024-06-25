@@ -35,10 +35,10 @@ const SelectBusSeatStructure: React.FC<SelectBusSeatStructureProps> = ({ setButt
   }, []);
 
   return (
-    <div className='col-12 col-lg-6 p-3'>
+    <div className='col-12 col-lg-6 p-5'>
       <p>Please select the seat structure</p>
       <div className='container'>
-        <div className='bg-light rounded-4 px-1 py-5'>
+        <div className='bg-light rounded-4 p-5'>
           <div className='row justify-content-center pb-3'>
             <img src={Wheel} alt='Steering-wheel-img' style={{ width: '57px' }} />
           </div>
@@ -56,6 +56,7 @@ const SelectBusSeatStructure: React.FC<SelectBusSeatStructureProps> = ({ setButt
                     onClick={() => handleClick(buttonId)}
                   >
                     {buttonStates[buttonId] ? '-' : '+'}
+
                   </button>
                 );
               })}
@@ -66,5 +67,6 @@ const SelectBusSeatStructure: React.FC<SelectBusSeatStructureProps> = ({ setButt
     </div>
   );
 };
+
 
 export default SelectBusSeatStructure;

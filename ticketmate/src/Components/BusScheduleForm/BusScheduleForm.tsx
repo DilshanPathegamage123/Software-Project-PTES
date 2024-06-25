@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import swal from 'sweetalert2';
-import axios from 'axios';
-import BusScheduleForm2 from './BusScheduleForm2';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 
-function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: string | null }) {
-  // State variables for form data
-  const [busId, setBusId] = useState('');
+function BusScheduleForm({ handleNext }: { handleNext: any }) {
+  const [busNum, setBusNum] = useState('');
   const [driId, setDriId] = useState('');
   const [startLoc, setStartLoc] = useState('');
   const [endLoc, setEndLoc] = useState('');
@@ -17,11 +11,9 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
   const [duration, setDuration] = useState('');
   const [comportability, setComportability] = useState('Luxury');
   const [ticketPrice, setTicketPrice] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [scheduleId, setScheduleId] = useState('');
 
   const [errors, setErrors] = useState({
-    busId: '',
+    busNum: '',
     driId: '',
     startLoc: '',
     endLoc: '',
@@ -32,14 +24,13 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     ticketPrice: ''
   });
 
-  // Input validation function
   const validateInput = () => {
     const newErrors: any = {};
-    if (!busId) newErrors.busId = 'Bus ID is required';
-    if (!driId) newErrors.driId = 'Driver ID is required';
+    if (!busNum) newErrors.busNum = 'Bus Number is required';
+    if (!driId) newErrors.driId = 'Driver Id is required';
     if (!startLoc) newErrors.startLoc = 'Start Location is required';
     if (!endLoc) newErrors.endLoc = 'End Location is required';
-    if (!routNo) newErrors.routNo = 'Route No is required';
+    if (!routNo) newErrors.routNo = 'Rout No is required';
     if (!depTime) newErrors.depTime = 'Departure Time is required';
     if (!arrTime) newErrors.arrTime = 'Arrival Time is required';
     if (!duration) newErrors.duration = 'Duration is required';
@@ -49,169 +40,10 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
     return Object.keys(newErrors).length === 0;
   };
 
-  const navigate = useNavigate();
-
-  // Function to check bus ID availability
-  const checkBusIdAvailability = async () => {
-    try {
-      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`);
-      if (response.data && response.data.deleteState === true) {
-        console.log("Bus Number:", response.data.busNo);
-        return response.data.busNo;
-      } else {
-        swal.fire({
-          icon: 'error',
-          title: 'Bus ID Not Valid',
-          text: 'The entered Bus ID is not valid or the bus is not available. Please check and try again.'
-        });
-        return null;
-      }
-    } catch (error) {
-      swal.fire({
-        icon: 'error',
-        title: 'Bus ID Not Found',
-        text: 'The entered Bus ID is not available. Please check and try again.'
-      });
-      return null;
-    }
-  };
-
-  // Function to check driver ID availability
-  const checkDriverIdAvailability = async () => {
-    try {
-      const response = await axios.get(`https://localhost:7001/api/userData/${driId}`);
-      if (response.data && response.data.userType === 'Driver') {
-        return true;
-      } else {
-        swal.fire({
-          icon: 'error',
-          title: 'Invalid Driver ID',
-          text: 'The entered Driver ID is not available or the user is not a Driver. Please check and try again.'
-        });
-        return false;
-      }
-    } catch (error) {
-      swal.fire({
-        icon: 'error',
-        title: 'Driver ID Not Found',
-        text: 'The entered Driver ID is not available. Please check and try again.'
-      });
-      return false;
-    }
-  };
-
-  // Function to check route number availability
-  const checkRoutNoAvailability = async () => {
-    try {
-      const response = await axios.get(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
-      if (response.status === 200) {
-        const data = response.data;
-        return data.routId;
-      } else {
-        swal.fire({
-          icon: 'error',
-          title: 'Invalid Route Number',
-          text: 'The entered Route Number is not available. Please check and try again.'
-        });
-        return null;
-      }
-    } catch (error) {
-      swal.fire({
-        icon: 'error',
-        title: 'Invalid Route Number',
-        text: 'An error occurred while checking the Route Number. Please try again.'
-      });
-      return null;
-    }
-  };
-
-  // Function to format time to AM/PM format
-  const formatTime = (time: any) => {
-    const [hours, minutes] = time.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hours), parseInt(minutes));
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
-  };
-
-  // Function to handle the Next button click
-  const handleNextClick = async () => {
+  const handleNextClick = () => {
     if (validateInput()) {
-      // Check if departure time and arrival time are the same
-      if (depTime === arrTime) {
-        swal.fire({
-          icon: 'error',
-          title: 'Invalid Times',
-          text: 'Departure Time and Arrival Time cannot be the same. Please select different times.'
-        });
-        return;
-      }
-
-      setIsSubmitting(true);
-      const busNo = await checkBusIdAvailability();
-      if (!busNo) {
-        setIsSubmitting(false);
-        return;
-      }
-
-      const isDriverIdAvailable = await checkDriverIdAvailability();
-      if (!isDriverIdAvailable) {
-        setIsSubmitting(false);
-        return;
-      }
-
-      const routeId = await checkRoutNoAvailability();
-      if (!routeId) {
-        setIsSubmitting(false);
-        return;
-      }
-
-      const newBusSchedule = {
-        registeredBusBusId: busId,
-        busNo: busNo,
-        driverId: driId,
-        routNo: routNo,
-        startLocation: startLoc,
-        endLocation: endLoc,
-        departureTime: formatTime(depTime),
-        arrivalTime: formatTime(arrTime),
-        comfortability: comportability,
-        duration: duration,
-        ticketPrice: ticketPrice,
-        userId: userId
-      };
-
-      try {
-        const response = await axios.post('https://localhost:7001/api/ScheduledBus', newBusSchedule);
-        const { scheduleId } = response.data; // Extract scheduleId from response
-        setScheduleId(scheduleId); // Set scheduleId state
-        console.log('Schedule ID: ', scheduleId);
-        handleNext(newBusSchedule, scheduleId);
-      } catch (error) {
-        swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'An error occurred while saving the schedule. Please try again.'
-        });
-      }
-      setIsSubmitting(false);
+      handleNext({ busNum, driId, startLoc, endLoc, routNo, depTime, arrTime, duration, comportability, ticketPrice });
     }
-  };
-
-  // Function to handle the Cancel button click
-  const CancelButton = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate('/BusOwnerPage');
-    }
-    });
   };
 
   return (
@@ -219,18 +51,18 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
       <div className='row'>
         <div className='col-12 p-3'>
           <div className="form-group row">
-            <label htmlFor="inputBusId" className="col-form-label">Bus ID</label>
+            <label htmlFor="inputbusNum" className="col-form-label">Bus Number</label>
             <div className="">
               <input 
                 type="text" 
                 className="form-control" 
-                id="inputBusId" 
-                name="busId" 
-                placeholder="Enter Bus ID" 
-                value={busId} 
-                onChange={(e) => setBusId(e.target.value)} 
+                id="inputbusNum" 
+                name="busNum" 
+                placeholder="Enter Bus Number" 
+                value={busNum} 
+                onChange={(e) => setBusNum(e.target.value)} 
               />
-              {errors.busId && <div className='text-danger'>{errors.busId}</div>}
+              {errors.busNum && <div className='text-danger'>{errors.busNum}</div>}
             </div>
           </div>
 
@@ -284,14 +116,14 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
           </div>
 
           <div className="form-group row">
-            <label htmlFor="inputRoutNo" className="col-form-label">Route No</label>
+            <label htmlFor="inputRoutNo" className="col-form-label">Rout No</label>
             <div className="">
               <input 
                 type="text" 
                 className="form-control" 
                 id="inputRoutNo" 
                 name="RoutNo" 
-                placeholder="Enter Route No" 
+                placeholder="Enter Rout No" 
                 value={routNo} 
                 onChange={(e) => setRoutNo(e.target.value)} 
               />
@@ -304,7 +136,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
               <label htmlFor="inputDepTime" className="col-form-label">Departure Time</label>
               <div className="">
                 <input 
-                  type="time" 
+                  type="text" 
                   className="form-control" 
                   id="inputDepTime" 
                   name="DepTime" 
@@ -319,7 +151,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
               <label htmlFor="inputArrTime" className="col-form-label">Arrival Time</label>
               <div className="">
                 <input 
-                  type="time" 
+                  type="text" 
                   className="form-control" 
                   id="inputArrTime" 
                   name="ArrTime" 
@@ -340,7 +172,7 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
                 className="form-control" 
                 id="inputDuration" 
                 name="Duration" 
-                placeholder="Enter Duration : Ex: 2h 30m" 
+                placeholder="Enter Duration" 
                 value={duration} 
                 onChange={(e) => setDuration(e.target.value)} 
               />
@@ -366,14 +198,14 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
           </div>
 
           <div className="form-group row">
-            <label htmlFor="inputTicketPrice" className="col-form-label">Ticket Price</label>
+            <label htmlFor="inputTicketprice" className="col-form-label">Ticket price</label>
             <div className="">
               <input 
                 type="text" 
                 className="form-control" 
-                id="inputTicketPrice" 
-                name="TicketPrice" 
-                placeholder="Enter Ticket Price" 
+                id="inputTicketprice" 
+                name="Ticketprice" 
+                placeholder="Enter Ticket price" 
                 value={ticketPrice} 
                 onChange={(e) => setTicketPrice(e.target.value)} 
               />
@@ -385,8 +217,8 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
       </div>
       <div className='row'>
         <div className='col-12 text-center p-3'>
-          <button type='button' className='btn white mx-3' onClick={() => CancelButton()}>Cancel</button>
-          <button type='button' className='btn primary mx-3' onClick={handleNextClick} disabled={isSubmitting}>Next</button>
+          <button type='button' className='btn white mx-3'>Cancel</button>
+          <button type='button' className='btn primary mx-3' onClick={handleNextClick}>Next</button>
         </div>
       </div>
     </form>

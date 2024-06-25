@@ -9,8 +9,8 @@ function Footer() {
 
       <div className='futter'>
         <div className="container">
-        <footer className="py-3 mb-0 mt-4">
-            <div className='row h-auto'>
+        <footer className="py-3 mb-0">
+            <div className='row'>
             <div className='col'>
             <ul className="nav justify-content-left pb-3 mb-3">
                 <li className="nav-item"><a href="#" className="nav-link px-2">About us</a></li>

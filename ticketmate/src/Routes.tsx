@@ -43,7 +43,7 @@ import TrainShceduleUpdatePage2 from './pages/TrainShceduleUpdatePage/TrainShced
 import TrainShceduleUpdatePage3 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage3';
 import TrainShceduleUpdatePage4 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage4';
 import TrainShceduleUpdatePage5 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5';
-
+import OwnerPage from "./pages/OwnerPage/OwnerPage";
 
 
 
@@ -131,6 +131,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path='/TrainShceduleUpdatePage3' element={<TrainShceduleUpdatePage3 />} />
         <Route path='/TrainShceduleUpdatePage4' element={<TrainShceduleUpdatePage4 />} />
         <Route path='/TrainShceduleUpdatePage5' element={<TrainShceduleUpdatePage5 />} />
+        <Route path='/OwnerPage' element={<OwnerPage/>}/>
 
 
 

@@ -218,7 +218,7 @@ const LoginPage = () => {
 
             break;
           case "Owner":
-            history("/BusOwnerPage", { state: { username, password } });
+            history("/OwnerPage", { state: { username, password } });
             break;
           case "Passenger":
             history("/passenger", { state: { username, password } });

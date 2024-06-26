@@ -193,28 +193,36 @@ import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function TravelDetails() {
-    interface Travel {
-        id: number;
-        arrivalDate: string;
-        routNo: string;
-        startLocation: string;
-        endLocation: string;
-        arrivalTime: string;
-        departureTime: string;
-        busNo: string;
-        registeredBusBusId: number;
-        trainRoutNo: string;
-        startStation: string;
-        endStation: string;
-        trainDepartureTime: string;
-        trainArrivalTime: string;
-        trainName: string;
-    }
+interface Travel {
+    id: number;
+    arrivalDate: string;
+    routNo: string;
+    startLocation: string;
+    endLocation: string;
+    arrivalTime: string;
+    departureTime: string;
+    busNo: string;
+    registeredBusBusId: number;
+    trainRoutNo: string;
+    startStation: string;
+    endStation: string;
+    trainDepartureTime: string;
+    trainArrivalTime: string;
+    trainName: string;
+
+  
+}
+interface TravelDetailsProps {
+    DriverId: number;
+    DrivingLicenceNum: string;
+
+}
+const TravelDetails:React.FC<TravelDetailsProps>=({DriverId,DrivingLicenceNum})=> {
+    
  
     const [travelDetails, setTravelDetails] = useState<Travel[]>([]);
-    const DriverId: number | null =4 ;
-    const DrivingLicenceNum: string | null = "bt1234566";
+    // const DriverId: number | null =4 ;
+    // const DrivingLicenceNum: string | null = "bt1234566";
     const history = useNavigate();
 
     const handleClick = (detail: Travel) => {
@@ -224,10 +232,10 @@ function TravelDetails() {
     useEffect(() => {
         let url: string | null = null;
     
-        if (DrivingLicenceNum && DrivingLicenceNum.startsWith("t")) {
+        if (DrivingLicenceNum && DrivingLicenceNum.startsWith("T")) {
             url = `https://localhost:7296/api/Scheduledtrain/details?isCompleted=false&Id=${DriverId}`;
-        } else if (DrivingLicenceNum && DrivingLicenceNum.startsWith("b")) {
-            url = `https://localhost:7296/api/ScheduledBus/details?isCompleted=0&Id=${DriverId}`;
+        } else if (DrivingLicenceNum && DrivingLicenceNum.startsWith("B")) {
+            url = `https://localhost:7296/api/ScheduledBus/details?isCompleted=false&Id=${DriverId}`;
         }
         
         if (url) {

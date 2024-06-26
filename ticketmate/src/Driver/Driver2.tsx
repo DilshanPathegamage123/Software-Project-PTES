@@ -1,16 +1,56 @@
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import UpdateBreakdown from "./UpdateBreakDown";
 import { useLocation } from "react-router-dom";
 import Notification from "../Passenger/Notification";
 import TravelDetails from "./TravelDetails_Ac";
 import { useState } from "react";
+import VehicleLocation from "../pages/MapLocationWindow/LocationWindow";
+import StartRideButton from "../Components/Buttons/MapButton/StartRideButton";
+import EndRideButton from "../Components/Buttons/MapButton/EndRideButton";
+import axios from "axios";
+import { head } from "cypress/types/lodash";
 
+const getToken = () => {
+  return sessionStorage.getItem("token");
+}
 function Driver2() {
   let location = useLocation();
   let { travelDetails, DriverId } = location.state || {};
 
- const Id=14;
+  const handleend = () => {
+    if(travelDetails.routNo){
+      axios.put(`https://localhost:7296/api/ScheduledBus/endbustrip/${travelDetails.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+        
+      )
+      .then((response) => {
+        if(response.status === 200){
+          alert("Bus trip ended")
+        }
+      })
+
+    }else{
+      axios.put(`https://localhost:7296/api/Scheduledtrain/endtraintrip/${travelDetails.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+      )
+      .then((response) => {
+        if(response.status === 200){
+          alert("Train trip ended")
+        }
+      })
+    }
+    
+  }
+
 
 
 
@@ -54,12 +94,15 @@ function Driver2() {
           )}
 
           <div className="row mb-5 fs-5 mt-2">Driver Id:{DriverId} </div>
+         
           <div className="row">
             <div></div>
           </div>
           {/* <div className="row">Booked Seat</div> */}
           <div className="p-5 rounded-4 custom-height" style={{ background: "#FFFFFF"}}>
-            Map
+          <StartRideButton rideId={travelDetails.id} />&nbsp;&nbsp;
+          <span onClick={handleend}><EndRideButton rideId={travelDetails.id} connectionId=""/></span>
+            <VehicleLocation rideId={13} />
             </div>
 
         </div>

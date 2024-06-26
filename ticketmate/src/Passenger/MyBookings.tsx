@@ -21,6 +21,7 @@ type BookingType = {
 };
 
 
+
 function MyBookings() {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<BookingType[]>([]);
@@ -230,5 +231,4 @@ let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
 }
 
 export default MyBookings;
-
 

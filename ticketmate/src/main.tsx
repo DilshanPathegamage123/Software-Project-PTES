@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,11 +8,20 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   ReactDOM.render(
     <React.StrictMode>
-      <BrowserRouter>
+      {/* <BrowserRouter> */}
         <App />
-      </BrowserRouter>
+      {/* </BrowserRouter> */}
     </React.StrictMode>,
     rootElement
   );
 }
 
+// Create a root using createRoot
+const root = ReactDOM.createRoot(container);
+
+// Render the application
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

@@ -5,9 +5,9 @@ import BusIcon2 from './images/Group 391.png'
 import PrimaryButton from '../Components/Buttons/PrimaryButton'
 
 function MyBookings() {
+
   return (
     <>
-
 <div className="row p-5 rounded-4 sec shadow m-4 h-auto  ">
         <div className="col-lg-1 align-items-center justify-content-center m-auto d-grid pb-1 ">
           <img src={BusIcon} alt="BusIcon" />
@@ -140,3 +140,4 @@ function MyBookings() {
 }
 
 export default MyBookings
+

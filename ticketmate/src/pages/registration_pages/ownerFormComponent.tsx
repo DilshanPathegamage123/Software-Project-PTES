@@ -56,7 +56,7 @@ function ownerFormComponent() {
 
       try {
         const userResponse = await axios.post(
-          `https://localhost:7196/api/userData`,
+          `https://localhost:7196/api/userData/addOwner`,
           userData
         );
 

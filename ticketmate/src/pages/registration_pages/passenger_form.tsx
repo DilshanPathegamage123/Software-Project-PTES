@@ -8,17 +8,19 @@ import OwnerFormComponent from "./ownerFormComponent";
 import DriverFormComponent from "./driverFormComponent";
 import Footer from "../../Components/Footer/footer";
 import { color } from "html2canvas/dist/types/css/types/color";
+import { useNavigate } from "react-router-dom";
 
 
 const  PassengerForm=()=> {
 const [selectedOption, setSelectedOption] = useState("option1");
+const history = useNavigate();
 
 
   return (
     <div className="passenger-form-body">
     
       <PrimaryNavBar />
-      <a href="#">
+      <a href="#" onClick={()=>history("/")}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="30"

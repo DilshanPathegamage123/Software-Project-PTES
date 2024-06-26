@@ -11,6 +11,23 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import BgImg from '../../assets/busProImg.png'
 
+
+interface OwnerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 function BusOwnerPage() {
   const location = useLocation();
   const storedUsername = localStorage.getItem('username');
@@ -18,6 +35,11 @@ function BusOwnerPage() {
   const locationState = location.state || { username: 'Guest', password: '' };
   const [username, setUsername] = useState(storedUsername || locationState.username);
   const [password, setPassword] = useState(storedPassword || locationState.password);
+
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component

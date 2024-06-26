@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
@@ -9,8 +9,7 @@ import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo
 import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import BgImg from '../../assets/busProImg.png'
-
+import BgImg from '../../assets/busProImg.png';
 
 interface OwnerData {
   Id: number;
@@ -28,14 +27,15 @@ interface OwnerData {
   isDeleted: boolean;
   requestStatus: boolean;
 }
+
 function BusOwnerPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const storedUsername = localStorage.getItem('username');
   const storedPassword = localStorage.getItem('password');
   const locationState = location.state || { username: 'Guest', password: '' };
   const [username, setUsername] = useState(storedUsername || locationState.username);
   const [password, setPassword] = useState(storedPassword || locationState.password);
-
 
   const getToken = () => {
     return sessionStorage.getItem("token");
@@ -53,7 +53,8 @@ function BusOwnerPage() {
     id: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    requestStatus: true
   });
   const [loading, setLoading] = useState(true);
 
@@ -86,7 +87,8 @@ function BusOwnerPage() {
             id: data.id,
             firstName: data.firstName,
             lastName: data.lastName,
-            email: data.email
+            email: data.email,
+            requestStatus: data.requestStatus
           });
           setLoading(false);
           Swal.close();
@@ -94,6 +96,11 @@ function BusOwnerPage() {
           // Store username and password in local storage
           localStorage.setItem('username', username);
           localStorage.setItem('password', password);
+
+          // Check the requestStatus and navigate to /loginpage if it is 0
+          if (data.requestStatus === 0) {
+            navigate('/loginpage');
+          }
         } catch (error) {
           console.error('Failed to fetch user data:', error);
           setLoading(false);
@@ -111,7 +118,7 @@ function BusOwnerPage() {
       setLoading(false);
       Swal.close();
     }
-  }, [username, password, loading]);
+  }, [username, password, loading, navigate]);
 
   useEffect(() => {
     // Function to handle window resize

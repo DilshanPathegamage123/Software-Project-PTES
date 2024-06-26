@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
+
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
 import './BusOwnerPage.css';
@@ -11,23 +13,6 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import BgImg from '../../assets/busProImg.png';
 
-interface OwnerData {
-  Id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  dob: string;
-  nic: string;
-  contactNo: string;
-  userName: string;
-  password: string;
-  userType: string;
-  ownVehicleType: string;
-  drivingLicenseNo: string;
-  isDeleted: boolean;
-  requestStatus: boolean;
-}
-
 
 interface OwnerData {
   Id: number;
@@ -45,11 +30,14 @@ interface OwnerData {
   isDeleted: boolean;
   requestStatus: boolean;
 }
+
 function BusOwnerPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const storedUsername = localStorage.getItem('username');
-  const storedPassword = localStorage.getItem('password');
+
+  const storedUsername = sessionStorage.getItem('username');
+  const storedPassword = sessionStorage.getItem('password');
+
   const locationState = location.state || { username: 'Guest', password: '' };
   const [username, setUsername] = useState(storedUsername || locationState.username);
   const [password, setPassword] = useState(storedPassword || locationState.password);
@@ -110,9 +98,10 @@ function BusOwnerPage() {
           setLoading(false);
           Swal.close();
 
-          // Store username and password in local storage
-          localStorage.setItem('username', username);
-          localStorage.setItem('password', password);
+          // Store username and password in session storage
+          sessionStorage.setItem('username', username);
+          sessionStorage.setItem('password', password);
+
 
           // Check the requestStatus and navigate to /loginpage if it is 0
           if (data.requestStatus === 0) {

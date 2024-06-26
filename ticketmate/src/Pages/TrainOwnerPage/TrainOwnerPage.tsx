@@ -70,9 +70,9 @@ function TrainOwnerPage() {
           setLoading(false);
           Swal.close();
 
-          // Store username and password in local storage
-          localStorage.setItem('username', username);
-          localStorage.setItem('password', password);
+          // Store username and password in session storage
+          sessionStorage.setItem('username', username);
+          sessionStorage.setItem('password', password);
           
         } catch (error) {
           console.error('Failed to fetch user data:', error);

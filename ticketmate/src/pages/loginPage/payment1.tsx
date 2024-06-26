@@ -8,6 +8,7 @@ import Footer from '../../Components/Footer/footer';
 import Selection from '../../Components/payment/Selection';
 import Back from '../../Components/payment/Backbutton';
 import './paymentmain.css';
+import Paymentvisa from '../../Components/payment/Paymentvisa';
 
 interface BookingData {
    driverId: number;

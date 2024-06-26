@@ -74,6 +74,7 @@ const history = useNavigate();
                 value="option2"
                 checked={selectedOption === "option2"}
       
+      
 
                 //  onChange={handleUserTypeChange}
               />

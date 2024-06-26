@@ -68,3 +68,4 @@ const TravelDetails:React.FC<BookingData> = (props)=>{
 export default TravelDetails;
 
 
+

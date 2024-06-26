@@ -185,3 +185,4 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
     )
 }
 export default PayNowbtn;
+

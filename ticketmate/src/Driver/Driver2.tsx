@@ -1,16 +1,76 @@
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import Footer from "../Components/Footer/Footer1";
+import UpdateBreakdown from "./UpdateBreakDown";
+import { useLocation } from "react-router-dom";
+import Notification from "../Passenger/Notification";
+import TravelDetails from "./TravelDetails_Ac";
+import { useState } from "react";
 
-function Driver2(){
+function Driver2() {
+  let location = useLocation();
+  let { travelDetails, DriverId } = location.state || {};
 
-    return(
-        <>
-        <PrimaryNavBar/>
-        <div className='container-fluid pt-3'>
-            
+ const Id=14;
+
+
+
+  if (!travelDetails) {
+    return <div>Travel details not found.</div>;
+  }
+  return (
+    <>
+      <PrimaryNavBar />
+
+      <div
+        className="p-4 rounded-4 mt-5 mb-5 mr-5 ml-5"
+        style={{ background: "#F1F1F1" }}
+      >
+        <div className="container">
+          {travelDetails.routNo ? (
+            <div className="d-flex flex-row justify-content-center align-items-center font-weight-bold font-family-Inter fs-2">
+              {travelDetails.startLocation} TO {travelDetails.endLocation}
+            </div>
+          ) : (
+            <div className="d-flex flex-row justify-content-center align-items-center font-weight-bold fs-2">
+              {travelDetails.startStation} TO {travelDetails.endStation}
+            </div>
+          )}
+
+          <div className="d-flex flex-row justify-content-center align-items-center fs-3 ">
+            Travel Journey Id : {travelDetails.id}
+          </div>
+          {travelDetails.routNo ? (
+            <div className="row fs-5 mt-2">Vehicle No: {travelDetails.busNo}</div>
+          ) : (
+            <div className="row fs-5 mt-2">Train Name: {travelDetails.trainName}</div>
+          )}
+
+          {travelDetails.routNo ? (
+            <div className="row fs-5 mt-2">
+              Vehicle reg no :{travelDetails.registeredBusBusId}{" "}
+            </div>
+          ) : (
+            <div className="row fs-5 mt-2"></div>
+          )}
+
+          <div className="row mb-5 fs-5 mt-2">Driver Id:{DriverId} </div>
+          <div className="row">
+            <div></div>
+          </div>
+          {/* <div className="row">Booked Seat</div> */}
+          <div className="p-5 rounded-4 custom-height" style={{ background: "#FFFFFF"}}>
+            Map
+            </div>
+
         </div>
+        <UpdateBreakdown routNo={travelDetails.routNo} Id={travelDetails.id} DriverId={DriverId} BusNo={travelDetails.busNo}/>
+      </div>
+      <Footer />
+      <div className="d-none">
+      <Notification/>
+      </div>
 
-        </>
-    )
-   
+    </>
+  );
 }
 export default Driver2;

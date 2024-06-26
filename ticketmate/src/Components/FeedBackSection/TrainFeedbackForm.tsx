@@ -121,12 +121,7 @@ const TrainFeedbackForm: React.FC<Props> = ({
 
       try {
         if (newFeedback) {
-          //   await axios.put(
-          //     `https://localhost:7048/api/UpdateBusFeedBack/${newFeedback.feedBackId}`,
-          //     { feedBack: newFeedback.feedBack, rate: newFeedback.rate }
-          //   );
-          //   toast.success("Feedback updated successfully");
-          // } else {
+          
           await axios.post(
             "https://localhost:7048/api/SaveTrainFeedback",
             newFeedback
@@ -139,11 +134,7 @@ const TrainFeedbackForm: React.FC<Props> = ({
           console.log("Saved Successfully");
           console.log("New FeedBack:", newFeedback);
         }
-        // onSave(newFeedback);
-        // setText("");
-
-        // console.log("Saved Successfully");
-        // console.log("New FeedBack:", newFeedback);
+        
       } catch (error) {
         console.error("Error submitting feedback:", error);
         console.log(error);

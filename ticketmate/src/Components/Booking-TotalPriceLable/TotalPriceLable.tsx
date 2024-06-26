@@ -1,11 +1,32 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./TotalPriceLabel.css";
+import { toast } from "react-toastify";
 
 interface TotalPriceLableProps {
   passengers: number;
   totalPrice: number;
-  buttonText?: string; // Optional prop
-  onSave?: () => void; // Optional prop
+  buttonText?: string; 
+  onSave?: () => void;
+  BusScheduleId?: string;
+  TrainScheduleId?: string;
+  VehicleId?: Number;
+  RouteNo?: string;
+  StartLocation?: string;
+  EndLocation?: string;
+  BoardingPoint?: string;
+  DroppingPoint?: string;
+  StartTime?: string;
+  EndTime?: string;
+  BookingSeatNO?: string;
+  BookingSeatCount?: Number;
+  TicketPrice?: Number;
+  TotalPaymentAmount?: Number;
+  departureDate?: string;
+ // disableButton?: boolean;
+  BookingClass?: string;
+  BookingCarriageNo?: Number;
+
 }
 
 const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
@@ -13,7 +34,82 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
   totalPrice,
   buttonText = "Pay Now", // Default value is Pay Now
   onSave,
+  BusScheduleId,
+  TrainScheduleId,
+  VehicleId,
+  RouteNo,
+  StartLocation,
+  EndLocation,
+  BoardingPoint,
+  DroppingPoint,
+  StartTime,
+  EndTime,
+  BookingSeatNO,
+  BookingSeatCount,
+  TicketPrice,
+  TotalPaymentAmount,
+  departureDate,
+  //disableButton,
+  BookingClass,
+  BookingCarriageNo,
 }) => {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token")
+   }
+
+  const navigate = useNavigate();
+ 
+  const handlePayNow = () => {
+    
+    if(BookingSeatCount === 0){
+      toast.warning("Please select at least one seat to proceed");
+    } else{
+    const path = getToken() ? "/paymentmain" : "/login";
+    //const path = getToken() ? "/login" : "/paymentmain";
+
+    navigate(path, {
+      state: {
+        BusScheduleId,
+        VehicleId,
+        RouteNo,
+        StartLocation,
+        EndLocation,
+        BoardingPoint,
+        DroppingPoint,
+        StartTime,
+        EndTime,
+        BookingSeatNO,
+        BookingSeatCount,
+        TicketPrice,
+        TotalPaymentAmount,
+        departureDate,
+        BookingClass,
+        BookingCarriageNo,
+      },
+    });
+  };
+  };
+
+  console.log(
+    BusScheduleId,
+    TrainScheduleId,
+    VehicleId,
+    RouteNo,
+    StartLocation,
+    EndLocation,
+    BoardingPoint,
+    DroppingPoint,
+    StartTime,
+    EndTime,
+    BookingSeatNO,
+    BookingSeatCount,
+    TicketPrice,
+    TotalPaymentAmount,
+    departureDate,
+    BookingClass,
+        BookingCarriageNo,
+  );
   return (
     <div className="PriceLable col-12 pt-5 h-auto">
       <div className="row1 row col-12 pb-2 m-auto h-auto pt-lg-4 pb-lg-5">
@@ -37,7 +133,8 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
           <button
             className=" button PayNowButton w-100 h-auto  border-0 p-1 fs-4 fw-bold "
             type="button"
-            onClick={onSave}
+            onClick={handlePayNow}
+            //disabled={disableButton}
           >
             {buttonText}
           </button>

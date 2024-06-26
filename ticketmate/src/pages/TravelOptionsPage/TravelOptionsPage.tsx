@@ -8,12 +8,6 @@ import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
 import Footer from "../../Components/Footer/footer";
 import { SearchResult } from "../../SearchResult";
 
-// interface TravelOptionsPageProps {
-//   selectedVehicleType: string;
-//   selectedStartLocation: string;
-//   selectedEndLocation: string;
-// }
-
 const TravelOptionsPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -138,7 +132,7 @@ const TravelOptionsPage: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="wrapper">
       <PrimaryNavBar />
       <TotalBlock2
         selectedVehicleType={selectedVehicleType}
@@ -148,7 +142,7 @@ const TravelOptionsPage: React.FC = () => {
         setSelectedEndLocation={setSelectedEndLocation}
         onSearch={handleSearch}
       />
-      <div className="Travel-Option-Page-body d-flex">
+      <div className="Travel-Option-Page-body d-flex h-100">
         <div className="details-card-container d-flex flex-wrap justify-content-center">
           {searchResults.length > 0 ? (
             searchResults.map((result: SearchResult, index: number) => (
@@ -167,7 +161,7 @@ const TravelOptionsPage: React.FC = () => {
         </div>
       </div>
       <Footer />
-    </>
+      </div>
   );
 };
 

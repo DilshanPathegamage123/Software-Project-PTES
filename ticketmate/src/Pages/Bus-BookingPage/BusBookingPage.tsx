@@ -114,6 +114,8 @@ const BusBookingPage: React.FC = () => {
     }
   };
 
+  console.log(busDetails.scheduledDatesList.$values[0].departureDate);
+
   sessionStorage.setItem("BusScheduleId", busDetails.scheduleId);
   sessionStorage.setItem("VehicleId", busDetails.VehicleId.toString());
   sessionStorage.setItem("RouteNo", busDetails.routNo);
@@ -133,11 +135,34 @@ const BusBookingPage: React.FC = () => {
     "TotalPaymentAmount",
     (selectedSeatNumbers.length * busDetails.ticketPrice).toString()
   );
+  sessionStorage.setItem(
+    "departureDate",
+    busDetails.scheduledDatesList.$values[0].departureDate
+  );
+
+
 
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [averageRating, setAverageRating] = useState<number | null>(null);
 
   const busId = busDetails.VehicleId || 0;
+
+  console.log(
+    busDetails.scheduleId,
+    busDetails.VehicleId,
+    busDetails.routNo,
+    busDetails.startLocation,
+    busDetails.endLocation,
+    selectedStartLocation,
+    selectedEndLocation,
+    startStandTime,
+    endStandTime,
+    selectedSeatNumbers.toString(),
+    selectedSeatNumbers.length,
+    busDetails.ticketPrice,
+    selectedSeatNumbers.length * busDetails.ticketPrice,
+
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -196,7 +221,6 @@ const BusBookingPage: React.FC = () => {
 
   console.log(busName);
 
- 
   return (
     <div className="BusBooking">
       <PrimaryNavBar />
@@ -255,7 +279,7 @@ const BusBookingPage: React.FC = () => {
               ticketPrice={busDetails.ticketPrice}
               totalSeats={busDetailsWithSeats?.registeredBus.setsCount || 0}
               rate={averageRating}
-              vehicleName = {busName}
+              vehicleName={busName}
             />
           </div>
           <div className="BDPoints row col-12 h-auto d-flex pt-5 pb-5  mt-5 ms-auto  ">
@@ -299,6 +323,25 @@ const BusBookingPage: React.FC = () => {
           <TotalPriceLable
             passengers={selectedSeatNumbers.length}
             totalPrice={selectedSeatNumbers.length * busDetails.ticketPrice}
+            BusScheduleId={busDetails.scheduleId}
+            VehicleId={busDetails.VehicleId}
+            RouteNo={busDetails.routNo}
+            StartLocation={busDetails.startLocation}
+            EndLocation={busDetails.endLocation}
+            BoardingPoint={selectedStartLocation}
+            DroppingPoint={selectedEndLocation}
+            StartTime={startStandTime}
+            EndTime={endStandTime}
+            BookingSeatNO={selectedSeatNumbers.toString()}
+            BookingSeatCount={selectedSeatNumbers.length}
+            TicketPrice={busDetails.ticketPrice}
+            TotalPaymentAmount={
+              selectedSeatNumbers.length * busDetails.ticketPrice
+            }
+            departureDate={
+              busDetails.scheduledDatesList.$values[0].departureDate
+            }
+           // disableButton={selectedSeatNumbers.length === 0}
           />
         </div>
       </div>

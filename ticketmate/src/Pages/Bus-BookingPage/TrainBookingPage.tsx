@@ -31,16 +31,16 @@ interface Booking {
   bookingClass: string;
   bookingCarriageNo: number;
   bookingSeatNO: string;
- 
 }
 
 const TrainBookingPage: React.FC = () => {
   const location = useLocation();
 
-
   const [trainDetailsWithSeats, setTrainDetailsWithSeats] = useState<any>(null);
-  const [bookedSeats, setBookedSeats] = useState<{ [classType: string]: { [carriageNo: number]: number[]; }; }>({});
-  
+  const [bookedSeats, setBookedSeats] = useState<{
+    [classType: string]: { [carriageNo: number]: number[] };
+  }>({});
+
   const [selectedSeats, setSelectedSeats] = useState<
     { carriageIndex: number; seatNumber: number }[]
   >([]);
@@ -88,7 +88,6 @@ const TrainBookingPage: React.FC = () => {
   );
 
   const [trainName, setTrainName] = useState("");
- 
 
   useEffect(() => {
     if (location.state) {
@@ -116,32 +115,37 @@ const TrainBookingPage: React.FC = () => {
           `https://localhost:7048/api/GetBookingsOfTrainSchedule/${trainDetails.scheduleId}?selectedDate=${selectedDate}`
         );
         const bookedSeatsData = bookedSeatsResponse.data?.$values || [];
-      
-        const bookedSeatsByClassAndCarriage: { [classType: string]: { [carriageNo: number]: number[] } } = {};
 
-         bookedSeatsData.forEach((booking : Booking) => {
-           const classType = booking.bookingClass;
-           const carriageNo = booking.bookingCarriageNo;
-           const bookedSeatNumbers = booking.bookingSeatNO.split(",").map(Number);
-         
-           if (!bookedSeatsByClassAndCarriage[classType]) {
-             bookedSeatsByClassAndCarriage[classType] = {};
-           }
-         
-           if (!bookedSeatsByClassAndCarriage[classType][carriageNo]) {
-             bookedSeatsByClassAndCarriage[classType][carriageNo] = [];
-           }
-         
-           bookedSeatsByClassAndCarriage[classType][carriageNo].push(
-             ...bookedSeatNumbers
-           );
-         });
-         
-         console.log("Booked Seats by Class and Carriage:", bookedSeatsByClassAndCarriage);
-         
-         setBookedSeats(bookedSeatsByClassAndCarriage);
-    
+        const bookedSeatsByClassAndCarriage: {
+          [classType: string]: { [carriageNo: number]: number[] };
+        } = {};
 
+        bookedSeatsData.forEach((booking: Booking) => {
+          const classType = booking.bookingClass;
+          const carriageNo = booking.bookingCarriageNo;
+          const bookedSeatNumbers = booking.bookingSeatNO
+            .split(",")
+            .map(Number);
+
+          if (!bookedSeatsByClassAndCarriage[classType]) {
+            bookedSeatsByClassAndCarriage[classType] = {};
+          }
+
+          if (!bookedSeatsByClassAndCarriage[classType][carriageNo]) {
+            bookedSeatsByClassAndCarriage[classType][carriageNo] = [];
+          }
+
+          bookedSeatsByClassAndCarriage[classType][carriageNo].push(
+            ...bookedSeatNumbers
+          );
+        });
+
+        console.log(
+          "Booked Seats by Class and Carriage:",
+          bookedSeatsByClassAndCarriage
+        );
+
+        setBookedSeats(bookedSeatsByClassAndCarriage);
       } catch (error) {
         console.error("Error fetching train details:", error);
       }
@@ -150,11 +154,9 @@ const TrainBookingPage: React.FC = () => {
     fetchTrainDetails();
   }, [trainDetails]);
 
-
   console.log("Booked Seats:", bookedSeats);
   console.log("Train Details:", trainDetails);
   console.log("Bus Details with seats:", trainDetailsWithSeats);
-
 
   useEffect(() => {
     if (trainDetailsWithSeats && trainDetailsWithSeats.scheduledCarriages) {
@@ -169,7 +171,7 @@ const TrainBookingPage: React.FC = () => {
   }, [trainDetailsWithSeats]);
 
   console.log(trainName);
-   
+
   useEffect(() => {
     if (trainDetailsWithSeats && trainDetailsWithSeats.scheduledCarriages) {
       const carriages = trainDetailsWithSeats.scheduledCarriages.$values.filter(
@@ -209,7 +211,6 @@ const TrainBookingPage: React.FC = () => {
       );
     }
   };
-
 
   const handleNextCarriage = () => {
     if (currentCarriageIndex < selectedClassCarriages.length - 1) {
@@ -272,92 +273,103 @@ const TrainBookingPage: React.FC = () => {
 
   const getBookedSeatsForCurrentCarriage = (): number[] => {
     // Map selected class to numeric key
-    const classKey = selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
-  
+    const classKey =
+      selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
+
     if (classKey !== null && bookedSeats[classKey]) {
       // Use currentCarriageIndex + 1 to get the carriage number (1-based index)
       const carriageSeats = bookedSeats[classKey][currentCarriageIndex + 1];
       if (carriageSeats) {
-        console.log(`Booked seats for ${selectedClass} class, carriage ${currentCarriageIndex + 1}:`, carriageSeats);
+        console.log(
+          `Booked seats for ${selectedClass} class, carriage ${
+            currentCarriageIndex + 1
+          }:`,
+          carriageSeats
+        );
         return carriageSeats;
       }
     }
-    console.log(`No booked seats found for ${selectedClass} class, carriage ${currentCarriageIndex + 1}`);
+    console.log(
+      `No booked seats found for ${selectedClass} class, carriage ${
+        currentCarriageIndex + 1
+      }`
+    );
     return [];
   };
 
   const getTotalBookedSeatsCountForSelectedClass = (): number => {
     // Map selected class to numeric key
-    const classKey = selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
-  
+    const classKey =
+      selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
+
     let totalBookedSeats = 0;
-  
+
     if (classKey !== null && bookedSeats[classKey]) {
       // Sum up all the booked seats for the selected class across all carriages
       for (let carriage in bookedSeats[classKey]) {
         totalBookedSeats += bookedSeats[classKey][carriage].length;
       }
     }
-  
-    console.log(`Total booked seats for ${selectedClass} class:`, totalBookedSeats);
+
+    console.log(
+      `Total booked seats for ${selectedClass} class:`,
+      totalBookedSeats
+    );
     return totalBookedSeats;
   };
 
+  const A = getBookedSeatsForCurrentCarriage();
+  console.log("BookedSeatsForCurrentCarriage", A);
 
+  const [feedback, setFeedback] = useState<Feedback[]>([]);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("Fetching feedback with params:", {
+          trainName,
+        });
 
-const A = getBookedSeatsForCurrentCarriage();
-console.log("BookedSeatsForCurrentCarriage",A);
-
-
-const [feedback, setFeedback] = useState<Feedback[]>([]);
-const [averageRating, setAverageRating] = useState<number | null>(null);
-
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      console.log("Fetching feedback with params:", {
-        trainName,
-      });
-
-      const response = await axios.get(
-        `https://localhost:7048/api/GetFeedBackForTrain`,
-        {
-          params: { trainName },
-        }
-      );
-
-      console.log("API response:", response.data);
-
-      const feedbackArray = response.data.$values || [];
-      setFeedback(feedbackArray);
-      console.log("Fetched feedback:", feedbackArray);
-
-      if (feedbackArray.length > 0) {
-        const totalRating = feedbackArray.reduce(
-          (sum: number, item: Feedback) => sum + item.rate,
-          0
+        const response = await axios.get(
+          `https://localhost:7048/api/GetFeedBackForTrain`,
+          {
+            params: { trainName },
+          }
         );
-        const avgRating = totalRating / feedbackArray.length;
-        setAverageRating(avgRating);
-      } else {
-        setAverageRating(null);
+
+        console.log("API response:", response.data);
+
+        const feedbackArray = response.data.$values || [];
+        setFeedback(feedbackArray);
+        console.log("Fetched feedback:", feedbackArray);
+
+        if (feedbackArray.length > 0) {
+          const totalRating = feedbackArray.reduce(
+            (sum: number, item: Feedback) => sum + item.rate,
+            0
+          );
+          const avgRating = totalRating / feedbackArray.length;
+          setAverageRating(avgRating);
+        } else {
+          setAverageRating(null);
+        }
+      } catch (error) {
+        console.error("Error fetching feedback:", error);
+      } finally {
+        //setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching feedback:", error);
-    } finally {
-      //setIsLoading(false);
+    };
+
+    if (trainName) {
+      fetchData();
     }
-  };
+  }, [trainName]);
 
-  if (trainName) {
-    fetchData();
-  }
-}, [trainName]);
+  console.log("Fetched feedback:", averageRating);
+  console.log(selectedSeats);
 
-console.log("Fetched feedback:", averageRating);
-
-    return (
+  return (
     <div className="BusBooking">
       <PrimaryNavBar />
       <div className=" d-flex justify-content-center align-items-center pt-3">
@@ -384,8 +396,8 @@ console.log("Fetched feedback:", averageRating);
       <SeatMenu />
 
       <div className="row BusBooking m-auto h-auto justify-content-center align-content-center">
-      <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-12 align-items-center justify-content-center ms-lg-auto ms-lg-auto  ">
-      <div className="d-flex justify-content-start align-items-center pt-0 mt-0 ps-0">
+        <div className="BusBookingBodyLeft col col-lg-4 col-md-12 col-12 align-items-center justify-content-center ms-lg-auto ms-lg-auto  ">
+          <div className="d-flex justify-content-start align-items-center pt-0 mt-0 ps-0">
             <button
               className={`classbtn btn SignUpNow btn-sm fw-semibold fs-5 m-2 ${
                 selectedClass === "1st" ? "selected" : "default"
@@ -442,23 +454,26 @@ console.log("Fetched feedback:", averageRating);
               selectedSeatNumbers={selectedSeats
                 .filter((seat) => seat.carriageIndex === currentCarriageIndex)
                 .map((seat) => seat.seatNumber)}
-                bookedSeats={getBookedSeatsForCurrentCarriage()}
+              bookedSeats={getBookedSeatsForCurrentCarriage()}
             />
           )}
         </div>
         <div className="BusBookingBodyRight col col-lg-6 col-md-12 col-12  align-items-center justify-content-center me-lg-auto">
           <div className="mb-4">
             <TravelLable
-              availableSeats={calculateSeatsCount(selectedClass) - getTotalBookedSeatsCountForSelectedClass()}
+              availableSeats={
+                calculateSeatsCount(selectedClass) -
+                getTotalBookedSeatsCountForSelectedClass()
+              }
               isAC={selectedClass === "1st"}
               ticketPrice={
                 selectedClass === "1st"
                   ? trainDetails.firstClassTicketPrice || 0
                   : trainDetails.secondClassTicketPrice || 0
               }
-              totalSeats= {calculateSeatsCount(selectedClass)}
-              vehicleName = {trainName}
-            rate = {averageRating }
+              totalSeats={calculateSeatsCount(selectedClass)}
+              vehicleName={trainName}
+              rate={averageRating}
             />
           </div>
           <div className="BDPoints row col-12 h-auto d-flex pt-5 pb-5  mt-5 ms-auto  ">
@@ -497,18 +512,53 @@ console.log("Fetched feedback:", averageRating);
               ? formatSelectedSeats()
               : "Selected Seats: None"}
           </div>
-          
-            <TotalPriceLable
-              passengers={selectedSeats.length}
-              totalPrice={
+
+          <TotalPriceLable
+            passengers={selectedSeats.length}
+            totalPrice={
+              selectedClass === "1st"
+                ? selectedSeats.length *
+                  (trainDetails?.firstClassTicketPrice || 0)
+                : selectedSeats.length *
+                  (trainDetails?.secondClassTicketPrice || 0)
+            }
+            TrainScheduleId={trainDetails.scheduleId}
+            RouteNo={trainDetails.routNo}
+            StartLocation={trainDetails.startLocation}
+            EndLocation={trainDetails.endLocation}
+            BoardingPoint={selectedStartLocation}
+            DroppingPoint={selectedEndLocation}
+            StartTime={startStandTime}
+            EndTime={endStandTime}
+            BookingSeatNO={selectedSeats
+              .map((seat) => seat.seatNumber)
+              .sort((a, b) => a - b)
+              .join(", ")}
+            BookingSeatCount={selectedSeats.length}
+            TicketPrice={
+              selectedClass === "1st"
+                ? trainDetails?.firstClassTicketPrice || 0
+                : trainDetails?.secondClassTicketPrice || 0
+            }
+            TotalPaymentAmount={
                 selectedClass === "1st"
-                  ? selectedSeats.length *
-                    (trainDetails?.firstClassTicketPrice || 0)
-                  : selectedSeats.length *
-                    (trainDetails?.secondClassTicketPrice || 0)
-              }
-            />
-         
+                ? selectedSeats.length *
+                  (trainDetails?.firstClassTicketPrice || 0)
+                : selectedSeats.length *
+                  (trainDetails?.secondClassTicketPrice || 0)
+            }
+            // departureDate={
+            //   trainDetails.scheduledDatesList.$values[0].departureDate 
+            // }
+            departureDate={
+              trainDetails.scheduledDatesList && trainDetails.scheduledDatesList.length > 0
+                ? trainDetails.scheduledDatesList[0].departureDate
+                : undefined // or a default value or handling for when departureDate is not available
+            }
+            //disableButton={selectedSeats.length === 0}
+            BookingClass={selectedClass}
+            BookingCarriageNo={currentCarriageIndex + 1}
+          />
         </div>
       </div>
       <TrainReviewList trainName={trainName} />
@@ -518,3 +568,60 @@ console.log("Fetched feedback:", averageRating);
 };
 
 export default TrainBookingPage;
+
+// VehicleId: undefined,
+//     vehicleNo: '23',
+//     scheduleId: 1,
+//     routNo: '23',
+//     startLocation: 'Gampaha',
+//     endLocation: 'Colombo',
+//     departureTime: '3.00 pm',
+//     arrivalTime: '5.00 pm',
+//     comfortability: 'Express',
+//     duration: '2 hrs',
+//     ticketPrice: undefined,
+//     selectedStands: {
+//       '$id': '3',
+//       '$values': [
+//         {
+//           '$id': '4',
+//           id: 1,
+//           trainStationName: 'Gampaha',
+//           trainDepartureTime: '3.05 pm'
+//         },
+//         {
+//           '$id': '5',
+//           id: 2,
+//           trainStationName: 'Veyangoda',
+//           trainDepartureTime: '3.35 pm'
+//         },
+//         {
+//           '$id': '6',
+//           id: 3,
+//           trainStationName: 'Kelaniya',
+//           trainDepartureTime: '4.05 pm'
+//         },
+//         {
+//           '$id': '7',
+//           id: 4,
+//           trainStationName: 'Maradana',
+//           trainDepartureTime: '4.35 pm'
+//         },
+//         {
+//           '$id': '8',
+//           id: 5,
+//           trainStationName: 'Colombo',
+//           trainDepartureTime: '5.00 pm'
+//         }
+//       ]
+//     },
+//     scheduledDatesList: [
+//       {
+//         '$id': '9',
+//         arrivalDate: '2024-06-30',
+//         departureDate: '2024-06-30'
+//       }
+//     ],
+//     firstClassTicketPrice: 520,
+//     secondClassTicketPrice: 320
+//   }

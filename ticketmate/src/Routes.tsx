@@ -42,7 +42,8 @@ import TrainShceduleUpdatePage from './pages/TrainShceduleUpdatePage/TrainShcedu
 import TrainShceduleUpdatePage2 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage2';
 import TrainShceduleUpdatePage3 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage3';
 import TrainShceduleUpdatePage4 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage4';
-
+import TrainShceduleUpdatePage5 from "./pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5";
+import NotificationComponent from "./Passenger/Notification";
 
 
 
@@ -80,7 +81,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         path="/train-booking-update"
         element={<TrainBookingUpdatePage />}
       />
-      <Route path="/train-booking" element={<TrainBookingPage />} /> */}
+      <Route path="/train-booking" element={<TrainBookingPage />} /> 
 {/* <!--       <Route path="/passenger-profile" element={<Passenger />} /> -->
 <!--       <Route path="/login" element={<LoginPage />} /> -->
 <!--       <Route path="/AdminPage" element={<AdminPage />} /> -->
@@ -103,8 +104,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
 
         <Route path="/driver2" element={<Driver2 />} />
         <Route path="/paymentmain" element={<Paymentmain />} />
-        <Route path="/Payment3" element={<Payment3 />} />
-        <Route path="/Payment4" element={<Payment4 />} />
+        <Route path="/notification" element={<NotificationComponent />} />
+      
 
 
         {/* malinga scheduling */}

@@ -1,12 +1,13 @@
 // import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-// import React, { useState } from "react";
 // import "./loginPage.css";
 //  //import vars from '../../vars.css'
 // import loginimage from "../../assets/Ellipse 628.svg";
 // import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 // import Footer from "../../Components/Footer/footer";
-// import { useNavigate } from "react-router-dom";//import use navigate
+// import { useNavigate } from "react-router-dom";
 // import axios from "axios";
+// import { useState } from "react";
+// import { content } from "html2canvas/dist/types/css/property-descriptors/content";
 
 // const LoginPage = () => {
 //   const [username, setUsername] = useState("");
@@ -17,7 +18,7 @@
 //     e.preventDefault();
 
 //     try {
-//        console.log("username: " + username + " password: " + password);
+//       // console.log("username: " + username + " password: " + password);
 //       const response = await axios.post(
 //         "https://localhost:7196/api/Auth/login",
 //         {
@@ -81,7 +82,6 @@
 //   return (
 //     <div className="loginpage-body">
 //       <PrimaryNavBar/>
-
 //       <a href="http://localhost:5173/">
 //         <svg
 //           xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +108,7 @@
 
 //           >
 //             <div className="text-center">
-//               <img src={loginimage} alt="loginimage" className=""  data-testid="login-page-profile-icon"/>
+//               <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
 //             </div>
 
 //             {/* <input
@@ -128,6 +128,8 @@
 //               data-testid="username"
 //               // Add padding for the icon
 
+
+
 //             ></input>
 
 //             <input
@@ -135,19 +137,21 @@
 //               name="password"
 //               onChange={(e) => setPassword(e.target.value)}
 //               className="form-control col-8 mx-auto m-4 custom-bg-color"
-//               placeholder="      password"
+//               placeholder="    password"
+//               value={password}
+//               required
 //               data-testid="password"
 
-//               required
 //             ></input>
-//             <div className="d-flex justify-content-center ">
-//               {/* <PrimaryButton
-//                 type="submit"
-//                 value="LOG IN"
-//                 color="primary"
-//                 IsSmall={false}
-//               /> */}
-//               <input type="submit" value="LOG IN" className="btn btn-primary" data-testid="login-button"/>
+//             <div className=" justify-content-center text-center" >
+             
+//               <input type="submit" value="LOG IN" className=" btn-primary btn"
+//               data-testid="login-button" /><br/><br/>
+              
+//                <small>Don't have an account? <a href="/register">sign up</a></small> 
+                
+              
+
 //             </div>
 //           </div>
 //         </div>
@@ -161,17 +165,15 @@
 
 
 
-
+import React, { useState } from "react";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import "./loginPage.css";
- //import vars from '../../vars.css'
 import loginimage from "../../assets/Ellipse 628.svg";
 import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
-import { content } from "html2canvas/dist/types/css/property-descriptors/content";
+import Swal from "sweetalert2";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -182,7 +184,6 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      // console.log("username: " + username + " password: " + password);
       const response = await axios.post(
         "https://localhost:7196/api/Auth/login",
         {
@@ -191,34 +192,26 @@ const LoginPage = () => {
         }
       );
 
- 
       const token = response.data.jwtToken;
-      //Fconsole.log("token", token);
 
       if (token) {
         sessionStorage.setItem("token", token);
 
-        //decode the token
+        // Decode the token
         const tokenParts = token.split(".");
         const encodedPayload = tokenParts[1];
-        // console.log("encodedPayload", encodedPayload); // Log the encoded payload
-
         const decodedPayload = JSON.parse(atob(encodedPayload));
         const userRole =
           decodedPayload[
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
           ];
-        //console.log("userRole" , userRole);
 
         switch (userRole) {
           case "Admin":
-            // history("/AdminPage");
-            //history(`/AdminPage?username=${username}&password=${password}`);
             history("/AdminPage", { state: { username, password } });
-
             break;
           case "Owner":
-            history("/BusOwnerPage", { state: { username, password } });
+            history("/OwnerPage", { state: { username, password } });
             break;
           case "Passenger":
             history("/passenger", { state: { username, password } });
@@ -227,25 +220,33 @@ const LoginPage = () => {
             history("/driver", { state: { username, password } });
             break;
           default:
-            //alert("Invalid user name or password");
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Invalid user role",
+            });
             break;
         }
       } else {
-        alert("Invalid user name or password");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Invalid username or password",
+        });
       }
     } catch (error) {
-      alert("Invalid user name or password");
-
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Invalid username or password",
+      });
       console.error("There was an error!", error);
-      // Handle error (e.g., show error message to user)
     }
-
   };
-
 
   return (
     <div className="loginpage-body">
-      <PrimaryNavBar/>
+      <PrimaryNavBar />
       <a href="http://localhost:5173/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -264,23 +265,15 @@ const LoginPage = () => {
       </a>
 
       <form onSubmit={handlesubmit} method="post">
-
         <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
-
           >
             <div className="text-center">
-              <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
+              <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon" />
             </div>
 
-            {/* <input
-              className="form-control col-8 mx-auto m-4 custom-bg-color"
-              type="text"
-              placeholder=" <><BsFillPersonFill />    username"
-              required
-            ></input> */}
             <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -290,10 +283,6 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               style={{ paddingLeft: "30px" }}
               data-testid="username"
-              // Add padding for the icon
-
-
-
             ></input>
 
             <input
@@ -301,29 +290,30 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="    password"
+              placeholder="password"
               value={password}
               required
               data-testid="password"
-
             ></input>
-            <div className=" justify-content-center text-center" >
-              {/* <PrimaryButton
+            <div className=" justify-content-center text-center">
+              <input
                 type="submit"
                 value="LOG IN"
-                color="primary"
-                IsSmall={false}
-              /> */}
-              <input type="submit" value="LOG IN" className=" btn-primary btn"
-              data-testid="login-button" />
-
+                className=" btn-primary btn"
+                data-testid="login-button"
+              />
+              <br />
+              <br />
+              <small>
+                Don't have an account? <a href="/register">sign up</a>
+              </small>
             </div>
           </div>
         </div>
       </form>
       <Footer />
     </div>
-
   );
 };
+
 export default LoginPage;

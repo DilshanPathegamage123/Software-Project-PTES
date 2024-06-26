@@ -139,14 +139,14 @@ function BusOwnerPage() {
   const handleButtonClick = (componentName:any) => {
     setSelectedComponent(componentName);
     // Update button states
-    setButtonStates((prevState) => ({
+    setButtonStates((prevState:any) => ({
       ...prevState,
       [componentName]: true
     }));
     // Reset other button states
     for (let key in buttonStates) {
       if (key !== componentName) {
-        setButtonStates((prevState) => ({
+        setButtonStates((prevState:any) => ({
           ...prevState,
           [key]: false
         }));

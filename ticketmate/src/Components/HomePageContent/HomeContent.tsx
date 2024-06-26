@@ -2,8 +2,10 @@ import React from "react";
 import "./HomeContent.css";
 import HomeImg1 from "./AssertHomePage/HomeImg2.png";
 import HomeImg2 from "./AssertHomePage/HomeImg3.png";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeContent() {
+  const history=useNavigate();
   return (
     <>
       {/*Section 1 */}
@@ -92,12 +94,13 @@ export default function HomeContent() {
         </div>
         <div className="row container section3row2 row-cols-1 row-cols-lg-2 h-auto   ">
           <div className="col container  section3col col-lg-4 col-12  ms-auto  me-auto mb-3   ">
-            <button type="button" className="btn SignUpNow btn-sm ">
+            <button type="button" className="btn SignUpNow btn-sm " onClick={()=>history("/register")}>
               Sign Up Now
             </button>
           </div>
           <div className="col  container section3col col-lg-4 col-12  ms-auto me-auto mb-0  ">
-            <button type="button" className="btn ExploreRoutesButton btn-sm ">
+            <button type="button" className="btn ExploreRoutesButton btn-sm "
+            onClick={()=>history("/")}>
               Explore Routes
             </button>
           </div>

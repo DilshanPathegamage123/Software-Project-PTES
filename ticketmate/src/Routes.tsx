@@ -42,6 +42,7 @@ import TrainShceduleUpdatePage from './pages/TrainShceduleUpdatePage/TrainShcedu
 import TrainShceduleUpdatePage2 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage2';
 import TrainShceduleUpdatePage3 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage3';
 import TrainShceduleUpdatePage4 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage4';
+import TrainShceduleUpdatePage5 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5';
 
 
 
@@ -80,7 +81,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         path="/train-booking-update"
         element={<TrainBookingUpdatePage />}
       />
-      <Route path="/train-booking" element={<TrainBookingPage />} /> */}
+      <Route path="/train-booking" element={<TrainBookingPage />} /> 
 {/* <!--       <Route path="/passenger-profile" element={<Passenger />} /> -->
 <!--       <Route path="/login" element={<LoginPage />} /> -->
 <!--       <Route path="/AdminPage" element={<AdminPage />} /> -->

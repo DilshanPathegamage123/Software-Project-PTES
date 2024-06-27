@@ -105,11 +105,9 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
         <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
         <Route path="/driver" element={<Driver />} />
-
         <Route path="/driver2" element={<Driver2 />} />
         <Route path="/paymentmain" element={<Paymentmain />} />
         <Route path="/Mapview" element={<MapView />} />
-        
         <Route path="/notification" element={<NotificationComponent />} />
       
 

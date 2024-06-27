@@ -1,4 +1,3 @@
-
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import UpdateBreakdown from "./UpdateBreakDown";
@@ -19,7 +18,7 @@ function Driver2() {
   let location = useLocation();
   let { travelDetails, DriverId } = location.state || {};
 
- const Id=14;
+
   const handleend = () => {
     if(travelDetails.routNo){
       axios.put(`https://localhost:7296/api/ScheduledBus/endbustrip/${travelDetails.id}`,
@@ -35,6 +34,7 @@ function Driver2() {
           alert("Bus trip ended")
         }
       })
+
 
     }else{
       axios.put(`https://localhost:7296/api/Scheduledtrain/endtraintrip/${travelDetails.id}`,
@@ -55,6 +55,23 @@ function Driver2() {
 
 
 
+
+    }else{
+      axios.put(`https://localhost:7296/api/Scheduledtrain/endtraintrip/${travelDetails.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+      )
+      .then((response) => {
+        if(response.status === 200){
+          alert("Train trip ended")
+        }
+      })
+    }
+    
+  }
 
   if (!travelDetails) {
     return <div>Travel details not found.</div>;
@@ -102,10 +119,10 @@ function Driver2() {
           </div>
           {/* <div className="row">Booked Seat</div> */}
           <div className="p-5 rounded-4 custom-height" style={{ background: "#FFFFFF"}}>
-
           <StartRideButton rideId={travelDetails.id} />&nbsp;&nbsp;
           <span onClick={handleend}><EndRideButton rideId={travelDetails.id} connectionId=""/></span>
-            <VehicleLocation rideId={13} />
+            <VehicleLocation rideId={travelDetails.id} />
+
             </div>
 
         </div>

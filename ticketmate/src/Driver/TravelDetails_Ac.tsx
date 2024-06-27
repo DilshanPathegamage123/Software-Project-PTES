@@ -232,6 +232,7 @@ const TravelDetails:React.FC<TravelDetailsProps>=({DriverId,DrivingLicenceNum})=
     useEffect(() => {
         let url: string | null = null;
     
+
         if (DrivingLicenceNum && DrivingLicenceNum.startsWith("T")) {
             url = `https://localhost:7296/api/Scheduledtrain/details?isCompleted=false&Id=${DriverId}`;
         } else if (DrivingLicenceNum && DrivingLicenceNum.startsWith("B")) {

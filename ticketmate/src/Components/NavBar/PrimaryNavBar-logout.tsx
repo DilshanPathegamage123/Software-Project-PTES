@@ -70,8 +70,8 @@ function PrimaryNavBar() {
               color="third"
               //className="btn btn-outline-primary btn-sm"
               style={{border: "none", background: "none", color: "var(--color-text-dark)"}}
-          
-            onClick={() => {sessionStorage.clear();history("/login")}}
+                      onClick={() => {sessionStorage.clear();history("/login")}}
+
             
             > Log out &nbsp;<img src={icon} alt="icon" width="25px" height="25px" /> 
             </button>

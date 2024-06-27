@@ -24,6 +24,7 @@ interface driverData {
   isDeleted: boolean;
   requestStatus: boolean;
 }
+
 function Driver() {
   const [currentComponent, setCurrentComponent] = useState("TravelDetails_Ac");
   const handleClick = (component: string) => {
@@ -78,11 +79,52 @@ function Driver() {
  
 
 
+  
+  let location = useLocation();
+  let { username, password } = location.state;
+  const [driverdata, setDriverdata] = useState<driverData[]>([]);
+  const history = useNavigate();
+  useEffect(() => {
+    axios
+      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}`)
+      .then((response) => {
+       // console.log(response.data);
+        setDriverdata(
+       
+        (
+          response.data.map((driver: any) => ({
+            Id: driver.id,
+            firstName: driver.firstName,
+            lastName: driver.lastName,
+            email: driver.email,
+            dob: driver.dob,
+            nic: driver.nic, 
+            contactNo: driver.contactNo,
+            userName: driver.userName,
+            password: driver.password,
+            userType: driver.userType,
+            ownVehicleType: driver.ownVehicleType,
+            drivingLicenseNo: driver.drivingLicenseNo,
+            isDeleted: driver.isDeleted,
+            requestStatus: driver.requestStatus,
+          }))
+        ));
+      
+        //console.log(passengerdata);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+ 
+
+
   return (
     <>
       <PrimaryNavBar />
       <div className="container-fluid pt-3">
         <div>
+
         <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">
               <div className="col-lg-3 col-sm-6 col-12 text-center">

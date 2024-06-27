@@ -18,6 +18,7 @@ function Driver2() {
   let location = useLocation();
   let { travelDetails, DriverId } = location.state || {};
 
+
   const handleend = () => {
     if(travelDetails.routNo){
       axios.put(`https://localhost:7296/api/ScheduledBus/endbustrip/${travelDetails.id}`,
@@ -33,6 +34,27 @@ function Driver2() {
           alert("Bus trip ended")
         }
       })
+
+
+    }else{
+      axios.put(`https://localhost:7296/api/Scheduledtrain/endtraintrip/${travelDetails.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+      )
+      .then((response) => {
+        if(response.status === 200){
+          alert("Train trip ended")
+        }
+      })
+    }
+    
+  }
+
+
+
 
     }else{
       axios.put(`https://localhost:7296/api/Scheduledtrain/endtraintrip/${travelDetails.id}`,
@@ -91,7 +113,7 @@ function Driver2() {
           )}
 
           <div className="row mb-5 fs-5 mt-2">Driver Id:{DriverId} </div>
-         
+
           <div className="row">
             <div></div>
           </div>
@@ -100,6 +122,7 @@ function Driver2() {
           <StartRideButton rideId={travelDetails.id} />&nbsp;&nbsp;
           <span onClick={handleend}><EndRideButton rideId={travelDetails.id} connectionId=""/></span>
             <VehicleLocation rideId={travelDetails.id} />
+
             </div>
 
         </div>

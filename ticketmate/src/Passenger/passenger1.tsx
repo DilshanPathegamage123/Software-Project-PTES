@@ -89,6 +89,7 @@ function Passenger() {
         if (response.data.length > 0) {
           const userId = response.data[0].id.toString(); // Convert to string for storage
           sessionStorage.setItem('userId', userId);
+
         }
         //console.log(passengerdata);
       })

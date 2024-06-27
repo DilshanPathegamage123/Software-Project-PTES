@@ -14,8 +14,8 @@ import Swal from 'sweetalert2';
 
 function TrainOwnerPage() {
   const location = useLocation();
-  const storedUsername = localStorage.getItem('username');
-  const storedPassword = localStorage.getItem('password');
+  const storedUsername = sessionStorage.getItem('username');
+  const storedPassword = sessionStorage.getItem('password');
   const locationState = location.state || { username: 'Guest', password: '' };
   const [username, setUsername] = useState(storedUsername || locationState.username);
   const [password, setPassword] = useState(storedPassword || locationState.password);
@@ -70,9 +70,9 @@ function TrainOwnerPage() {
           setLoading(false);
           Swal.close();
 
-          // Store username and password in local storage
-          localStorage.setItem('username', username);
-          localStorage.setItem('password', password);
+          // Store username and password in session storage
+          sessionStorage.setItem('username', username);
+          sessionStorage.setItem('password', password);
           
         } catch (error) {
           console.error('Failed to fetch user data:', error);

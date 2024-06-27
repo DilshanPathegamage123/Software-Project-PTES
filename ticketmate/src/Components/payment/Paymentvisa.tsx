@@ -21,6 +21,7 @@ interface BookingData {
 
   busId: number;
 
+
   passengerId: string;
   routeNo: string;
   startLocation: string;
@@ -68,6 +69,7 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
   ) => {
     setCardHolderName(event.target.value);
   };
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

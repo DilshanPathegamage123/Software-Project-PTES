@@ -17,6 +17,7 @@ const RatingSelect: React.FC<Props> = ({ select, selected }) => {
       {Array.from({ length: 10 }, (_, i) => (
         <li key={`rating-${i + 1}`}>
           <input
+          className="rating-input"
             type="radio"
             id={`num${i + 1}`}
             name="rating"

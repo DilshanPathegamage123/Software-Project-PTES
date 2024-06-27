@@ -1,4 +1,4 @@
-import './TravelDetail.css';
+import "./TravelDetail.css";
 
 interface BookingData {
   busBookingId: number;
@@ -20,11 +20,10 @@ interface BookingData {
   totalPaymentAmount: number;
   paymentStatus: boolean;
 
-  trainBookingId:number ;
+  trainBookingId: number;
   trainScheduleId: number;
   bookingCarriageNo: number;
   bookingClass: string;
-
 }
 
 
@@ -58,13 +57,10 @@ const TravelDetails:React.FC<BookingData> = (props)=>{
         <li className="list-inline-item">End Time: <strong style={{ marginLeft: '20px' }}>{props.endTime}</strong></li>
         <li className="list-inline-item"></li>
       </ul>     
+
       </div>
-    </div>
-    </div>
-      </>
-    );
-}
+    </>
+  );
+};
 
 export default TravelDetails;
-
-

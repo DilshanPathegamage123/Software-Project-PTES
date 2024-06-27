@@ -9,109 +9,120 @@ import TrainIcon from "./images/TrainImage.png";
 import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import ConfirmModal from "../Components/ConfirmModal/ConfirmModal";
 
-
 type BookingType = {
   id: number;
-  type: 'bus' | 'train';
+  type: "bus" | "train";
   boardingPoint: string;
   bookingDate: string;
   startTime: string;
   droppingPoint: string;
   endTime: string;
+  paymentId: string;
 };
 
 
+interface passengerData {
+  id: number;
+}
 
-function MyBookings() {
+
+
+function MyBookings({pid}: {pid: number}) {
+  const passengerid=pid;
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<BookingType | null>(
     null
   );
+
   
-let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
+let passengerId = passengerid.toString();
 
   useEffect(() => {
-  const fetchBookings = async () => {
-    try {
-       const busResponse = await axios.get(`https://localhost:7048/api/GetUserBusBookings/${passengerId}`);
-      console.log(busResponse);
-      const busBookings = busResponse.data.$values.map((booking: any) => ({
-        id: booking.busBookingId,
-        type: 'bus',
-        busScheduleId : booking.busScheduleId,
-        busId : booking.busId,
-        passengerId : booking.passengerId,
-        routeNo : booking.routeNo,
-        startLocation : booking.startLocation,
-        endLocation : booking.endLocation,
-        boardingPoint: booking.boardingPoint,
-        droppingPoint : booking.droppingPoint,
-        startTime: booking.startTime,
-        endTime: booking.endTime,
-        bookingDate: booking.bookingDate,
-        bookingSeatNO : booking.bookingSeatNO,
-        bookingSeatCount : booking.bookingSeatCount,
-        ticketPrice : booking.ticketPrice,
-        totalPaymentAmount : booking.totalPaymentAmount,
-        paymentId : booking.paymentId,
+    const fetchBookings = async () => {
+      try {
+        const busResponse = await axios.get(
+          `https://localhost:7048/api/GetUserBusBookings/${passengerId}`
+        );
+        console.log(busResponse);
+        const busBookings = busResponse.data.$values.map((booking: any) => ({
+          id: booking.busBookingId,
+          type: "bus",
+          busScheduleId: booking.busScheduleId,
+          busId: booking.busId,
+          passengerId: booking.passengerId,
+          routeNo: booking.routeNo,
+          startLocation: booking.startLocation,
+          endLocation: booking.endLocation,
+          boardingPoint: booking.boardingPoint,
+          droppingPoint: booking.droppingPoint,
+          startTime: booking.startTime,
+          endTime: booking.endTime,
+          bookingDate: booking.bookingDate,
+          bookingSeatNO: booking.bookingSeatNO,
+          bookingSeatCount: booking.bookingSeatCount,
+          ticketPrice: booking.ticketPrice,
+          totalPaymentAmount: booking.totalPaymentAmount,
+          paymentId: booking.paymentId,
+        }));
 
-      }));
-      
-      const trainResponse = await axios.get(`https://localhost:7048/api/GetUserTrainBookings/${passengerId}`);
-      console.log(trainResponse);
-      const trainBookings = trainResponse.data.$values.map((booking: any) => ({
-        id: booking.trainBookingId,
-        type: 'train',
-        busScheduleId : booking.trainScheduleId,
-        passengerId : booking.passengerId,
-        routeNo : booking.routeNo,
-        startLocation : booking.startLocation,
-        endLocation : booking.endLocation,
-        boardingPoint: booking.boardingPoint,
-        droppingPoint : booking.droppingPoint,
-        startTime: booking.startTime,
-        endTime: booking.endTime,
-        bookingDate: booking.bookingDate,
-        bookingClass : booking.bookingClass,
-        bookingCarriageNo : booking.bookingCarriageNo,
-        bookingSeatNO : booking.bookingSeatNO,
-        bookingSeatCount : booking.bookingSeatCount,
-        ticketPrice : booking.ticketPrice,
-        totalPaymentAmount : booking.totalPaymentAmount,
-        paymentId : booking.paymentId,
+        const trainResponse = await axios.get(
+          `https://localhost:7048/api/GetUserTrainBookings/${passengerId}`
+        );
+        console.log(trainResponse);
+        const trainBookings = trainResponse.data.$values.map(
+          (booking: any) => ({
+            id: booking.trainBookingId,
+            type: "train",
+            busScheduleId: booking.trainScheduleId,
+            passengerId: booking.passengerId,
+            routeNo: booking.routeNo,
+            startLocation: booking.startLocation,
+            endLocation: booking.endLocation,
+            boardingPoint: booking.boardingPoint,
+            droppingPoint: booking.droppingPoint,
+            startTime: booking.startTime,
+            endTime: booking.endTime,
+            bookingDate: booking.bookingDate,
+            bookingClass: booking.bookingClass,
+            bookingCarriageNo: booking.bookingCarriageNo,
+            bookingSeatNO: booking.bookingSeatNO,
+            bookingSeatCount: booking.bookingSeatCount,
+            ticketPrice: booking.ticketPrice,
+            totalPaymentAmount: booking.totalPaymentAmount,
+            paymentId: booking.paymentId,
+          })
+        );
 
-      }));
-
-      const today = new Date();
-        const filterBookings = (booking: BookingType) => new Date(booking.bookingDate) >= today;
+        const today = new Date();
+        const filterBookings = (booking: BookingType) =>
+          new Date(booking.bookingDate) >= today;
 
         const filteredBusBookings = busBookings.filter(filterBookings);
         const filteredTrainBookings = trainBookings.filter(filterBookings);
 
         console.log(filteredBusBookings);
         console.log(filteredTrainBookings);
-        
+
         setBookings([...filteredBusBookings, ...filteredTrainBookings]);
 
-      console.log(busBookings);
-      console.log(trainBookings);
-    
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-    }
-  };
+        console.log(busBookings);
+        console.log(trainBookings);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
 
-  fetchBookings();
-}, []);
+    fetchBookings();
+  }, []);
 
   console.log(bookings);
 
   const handleEditClick = (booking: BookingType) => {
-    if(booking.type === 'bus'){
-    navigate("/bus-booking-update", { state: { booking } });
-    } else if(booking.type === 'train'){
+    if (booking.type === "bus") {
+      navigate("/bus-booking-update", { state: { booking } });
+    } else if (booking.type === "train") {
       navigate("/train-booking-update", { state: { booking } });
     }
     console.log(booking);
@@ -126,17 +137,25 @@ let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
   const handleConfirmCancel = async () => {
     if (selectedBooking) {
       try {
-
-        if (selectedBooking.type === 'bus') {
-          await axios.delete(`https://localhost:7048/api/DeleteBusBooking/${selectedBooking.id}`);
-        } else if (selectedBooking.type === 'train') {
-          await axios.delete(`https://localhost:7048/api/DeleteTrainBooking/${selectedBooking.id}`);
+        // Call refund API only for card payments
+        if (selectedBooking.paymentId && selectedBooking.paymentId !== "None") {
+          await axios.post(`https://localhost:7296/api/Refund/refund-payment`, {
+            paymentId: selectedBooking.paymentId,
+          });
+          console.log("Refund API called");
+          console.log(selectedBooking.paymentId);
         }
-        setBookings(
-          bookings.filter(
-            (b) => b.id !== selectedBooking.id
-          )
-        );
+
+        if (selectedBooking.type === "bus") {
+          await axios.delete(
+            `https://localhost:7048/api/DeleteBusBooking/${selectedBooking.id}`
+          );
+        } else if (selectedBooking.type === "train") {
+          await axios.delete(
+            `https://localhost:7048/api/DeleteTrainBooking/${selectedBooking.id}`
+          );
+        }
+        setBookings(bookings.filter((b) => b.id !== selectedBooking.id));
         setShowModal(false);
         toast.success("Booking cancelled successfully");
       } catch (error) {
@@ -150,11 +169,13 @@ let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
     <>
       {bookings.length > 0 ? (
         bookings.map((booking, index) => (
-          <div key={booking.type + booking.id} className="row p-5 rounded-4 sec shadow m-4 h-auto  ">
+          <div
+            key={booking.type + booking.id}
+            className="row p-5 rounded-4 sec shadow m-4 h-auto  "
+          >
             <div className="col-lg-1 align-items-center justify-content-center m-auto d-grid pb-1 ">
               <img
-              src={booking.type === 'train' ? TrainIcon : BusIcon}
-                
+                src={booking.type === "train" ? TrainIcon : BusIcon}
                 alt="BusIcon "
                 className="VehicleIcon align-items-center justify-content-center m-auto"
               />
@@ -224,11 +245,19 @@ let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
         onHide={() => setShowModal(false)}
         onConfirm={handleConfirmCancel}
         title="Confirm Cancellation"
-        body="Are you sure you want to cancel this booking?"
+        body={
+          <div>
+            Are you sure you want to cancel this booking?
+            <span className=" text-danger">
+              <span className=" fw-bold">Note : </span>
+              Cancellations made after 24 hours of making the payment may not be
+              eligible for refund. Refund applicable only for card payments.
+            </span>
+          </div>
+        }
       />
     </>
   );
 }
 
 export default MyBookings;
-

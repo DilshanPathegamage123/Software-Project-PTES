@@ -32,8 +32,14 @@ type Feedback = {
   rating: number;
 };
 
+interface passengerData {
+  id: number;
+}
 
-function TravelHistory() {
+
+
+function TravelHistory({pid}: {pid: number}) {
+  const passengerid=pid;
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   //const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
@@ -41,7 +47,8 @@ function TravelHistory() {
     null
   );
 
-  let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
+
+  let passengerId = passengerid.toString();
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -205,7 +212,7 @@ function TravelHistory() {
                 passengerId={passengerId}
                 trainScheduleId={selectedBooking.trainScheduleId || 0}
                 bookingId={selectedBooking.id}
-                trainName="Dumbara Menike"
+                
               />
             </>
           )}

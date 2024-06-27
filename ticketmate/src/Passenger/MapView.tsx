@@ -22,7 +22,7 @@ interface TripData {
   routeNumber: string;
   passengerId: number;
 }
-const rideId = 54;
+
 
 const MapView: React.FC<TripData> = (props) => {
   return (

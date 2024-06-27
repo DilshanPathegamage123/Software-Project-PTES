@@ -475,7 +475,8 @@ const Receipt: React.FC<BookingData> = (props) => {
             type="button"
             className="btn btn-secondary ml-3 mt-4"
             style={buttonStyle2}
-            onClick={() => history("/")}
+            onClick={() => history("/paymentmain")}
+
           >
             CANCEL
           </button>

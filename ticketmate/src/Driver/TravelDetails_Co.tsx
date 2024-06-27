@@ -3,6 +3,7 @@ import './TravelDetails.css'
 import PrimaryButton from '../Components/Buttons/PrimaryButton'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 interface travel {
   id: number;
   arrivalDate: string;
@@ -48,6 +49,7 @@ const TravelDetails:React.FC<TravelDetailsProps>=({DriverId,DrivingLicenceNum})=
   
       if (DrivingLicenceNum && DrivingLicenceNum.startsWith('T')) {
         url = `https://localhost:7296/api/Scheduledtrain/details?isCompleted=true&Id=${DriverId}`;
+
       } else if (DrivingLicenceNum &&   DrivingLicenceNum.startsWith('B')) {
         url = `https://localhost:7296/api/ScheduledBus/details?isCompleted=true&Id=${DriverId}`;
       }

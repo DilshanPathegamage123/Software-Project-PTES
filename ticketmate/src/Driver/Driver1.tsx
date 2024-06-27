@@ -1,13 +1,9 @@
 import ProfileSection from "./ProfileSection";
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
+import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
 import Footer from "../Components/Footer/Footer1";
 import TravelDetails_Ac from "./TravelDetails_Ac";
 import TravelDetails_Co from "./TravelDetails_Co";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
-
+import { useState } from "react";
 interface driverData {
   Id: number;
   firstName: string;
@@ -24,6 +20,7 @@ interface driverData {
   isDeleted: boolean;
   requestStatus: boolean;
 }
+
 function Driver() {
   const [currentComponent, setCurrentComponent] = useState("TravelDetails_Ac");
   const handleClick = (component: string) => {
@@ -36,6 +33,8 @@ function Driver() {
     color: 'black', // Optionally change text color to ensure readability    
     width: '15%'
   };
+ 
+
 
   
   let location = useLocation();
@@ -82,6 +81,7 @@ function Driver() {
       <PrimaryNavBar />
       <div className="container-fluid pt-3">
         <div>
+
         <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">
               <div className="col-lg-3 col-sm-6 col-12 text-center">

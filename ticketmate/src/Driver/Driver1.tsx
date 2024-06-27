@@ -67,7 +67,8 @@ function Driver() {
             requestStatus: driver.requestStatus,
           }))
         ));
-      
+        const driverId=(driverdata[0]?driverdata[0].Id:0).toString();
+        sessionStorage.setItem('userId', driverId);
         //console.log(passengerdata);
       })
       .catch((error) => {

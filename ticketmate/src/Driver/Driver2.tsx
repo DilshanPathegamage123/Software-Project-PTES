@@ -51,9 +51,6 @@ function Driver2() {
     
   }
 
-
-
-
   if (!travelDetails) {
     return <div>Travel details not found.</div>;
   }
@@ -102,7 +99,7 @@ function Driver2() {
           <div className="p-5 rounded-4 custom-height" style={{ background: "#FFFFFF"}}>
           <StartRideButton rideId={travelDetails.id} />&nbsp;&nbsp;
           <span onClick={handleend}><EndRideButton rideId={travelDetails.id} connectionId=""/></span>
-            <VehicleLocation rideId={13} />
+            <VehicleLocation rideId={travelDetails.id} />
             </div>
 
         </div>

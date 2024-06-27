@@ -111,6 +111,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/driver2" element={<Driver2 />} />
         <Route path="/paymentmain" element={<Paymentmain />} />
         <Route path="/Mapview" element={<MapView />} />
+
         <Route path="/notification" element={<NotificationComponent />} />
       
 
@@ -139,6 +140,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path='/TrainShceduleUpdatePage4' element={<TrainShceduleUpdatePage4 />} />
         <Route path='/TrainShceduleUpdatePage5' element={<TrainShceduleUpdatePage5 />} />
         <Route path='/OwnerPage' element={<OwnerPage/>}/>
+
 
 
 

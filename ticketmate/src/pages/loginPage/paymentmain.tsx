@@ -1,4 +1,4 @@
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Selection from "../../Components/payment/Selection";
 import Back from "../../Components/payment/Backbutton";
 import Footer from "../../Components/Footer/Footer1";
@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function Payment() {
+
   const location = useLocation();
   const state = location.state || {}; // Ensure state is not undefined
   //const bookingDetails = state.bookingDetails || {}; // Ensure bookingDetails is not undefined

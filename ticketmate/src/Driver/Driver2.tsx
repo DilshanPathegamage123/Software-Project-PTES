@@ -1,15 +1,20 @@
+
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import UpdateBreakdown from "./UpdateBreakDown";
 import { useLocation } from "react-router-dom";
 import Notification from "../Passenger/Notification";
 import TravelDetails from "./TravelDetails_Ac";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VehicleLocation from "../pages/MapLocationWindow/LocationWindow";
 import StartRideButton from "../Components/Buttons/MapButton/StartRideButton";
 import EndRideButton from "../Components/Buttons/MapButton/EndRideButton";
 import axios from "axios";
 import { head } from "cypress/types/lodash";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+const MySwal = withReactContent(Swal);
 
 const getToken = () => {
   return sessionStorage.getItem("token");
@@ -52,7 +57,27 @@ function Driver2() {
     }
     
   }
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    MySwal.fire({
+      title: 'Loading...',
+      text: 'Please wait while we load your data',
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
+
+    // Simulating data fetching, you should replace this with actual data fetching logic
+    setTimeout(() => {
+      setLoading(false);
+      MySwal.close();
+    }, 2000); // Adjust the timeout as needed
+  }, []);
+  if (loading) {
+    return null; // Return null or a loader component while data is loading
+  }
 
 
 
@@ -119,6 +144,7 @@ function Driver2() {
           </div>
           {/* <div className="row">Booked Seat</div> */}
           <div className="p-5 rounded-4 custom-height" style={{ background: "#FFFFFF"}}>
+
           <StartRideButton rideId={travelDetails.id} />&nbsp;&nbsp;
           <span onClick={handleend}><EndRideButton rideId={travelDetails.id} connectionId=""/></span>
             <VehicleLocation rideId={travelDetails.id} />

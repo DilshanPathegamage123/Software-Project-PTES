@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +18,9 @@ interface BookingData {
 
   busBookingId: number;
   busScheduleId: number;
+  
   busId: number;
+
 
   passengerId: string;
   routeNo: string;
@@ -75,6 +76,7 @@ const total=Math.round(1000 * 0.3458 *100 );
   ) => {
     setCardHolderName(event.target.value);
   };
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     
@@ -168,6 +170,7 @@ const total=Math.round(1000 * 0.3458 *100 );
         .then((response) => {
           console.log("Email sent", response);
           if (props.busId) {
+
           axios
           .post("https://localhost:7296/api/BusBooking", {
             busBookingId: props.busBookingId,

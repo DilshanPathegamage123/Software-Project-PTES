@@ -169,6 +169,7 @@ const total=Math.round(1000 * 0.3458 *100 );
         })
         .then((response) => {
           console.log("Email sent", response);
+          console.log(props.busId);
           if (props.busId) {
 
           axios

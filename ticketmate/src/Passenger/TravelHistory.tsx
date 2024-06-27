@@ -41,7 +41,8 @@ function TravelHistory() {
     null
   );
 
-  let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
+  //let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
+  let passengerId = "98";
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -205,7 +206,7 @@ function TravelHistory() {
                 passengerId={passengerId}
                 trainScheduleId={selectedBooking.trainScheduleId || 0}
                 bookingId={selectedBooking.id}
-                trainName="Dumbara Menike"
+                
               />
             </>
           )}

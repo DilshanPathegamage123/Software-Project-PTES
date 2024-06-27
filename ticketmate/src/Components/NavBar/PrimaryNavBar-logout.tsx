@@ -5,6 +5,7 @@ import LOGO2 from "./assest/logopart2.png";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import "../../vars.css";
 import icon from "./assest/log-out-icon.png"
+import './PrimaryNavBar.css';
 import { Link } from "react-router-dom";
 
 //import { Link } from "react-router-dom";

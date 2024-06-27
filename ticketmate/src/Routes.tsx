@@ -47,6 +47,7 @@ import NotificationComponent from "./Passenger/Notification";
 
 
 
+
 interface AppRoutesProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
   setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;

@@ -19,6 +19,7 @@ import Paymentmain from "./pages/loginPage/paymentmain";
 import Payment3 from "./pages/loginPage/payment3";
 import Payment4 from "./pages/loginPage/payment4";
 import Driver2 from "./Driver/Driver2";
+import MapView from "./Passenger/MapView";
 
 
 
@@ -75,7 +76,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/paymentmain" element={<Paymentmain />} />
         <Route path="/Payment3" element={<Payment3 />} />
         <Route path="/Payment4" element={<Payment4 />} />
-
+        <Route path="/Mapview" element={<MapView />} />
+        
       </Routes>
   //  </Router>
   );

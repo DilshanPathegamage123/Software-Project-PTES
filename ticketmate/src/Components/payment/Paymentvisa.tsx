@@ -18,6 +18,7 @@ interface BookingData {
 
   busBookingId: number;
   busScheduleId: number;
+  
   busId: number;
 
   passengerId: string;
@@ -167,6 +168,7 @@ const total=Math.round(1000 * 0.3458 *100 );
         .then((response) => {
           console.log("Email sent", response);
           if (props.busId) {
+            
           axios
           .post("https://localhost:7296/api/BusBooking", {
             busBookingId: props.busBookingId,

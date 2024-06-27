@@ -44,7 +44,7 @@ const VehicleLocation: React.FC<VehicleLocationProps> = ({ rideId }) => {
                     console.log('Connected!');
                     const connectionId = connection.connectionId;
                     console.log(connectionId,rideId);
-                    connection.invoke("JoinRideGroup", connectionId,rideId);
+                    connection.invoke("JoinRideGroup",connectionId, rideId);
 
                     connection.on("ReceiveLocation", (latitude: number, longitude: number) => {
                         setLocations(locations => [...locations, { latitude, longitude }]);

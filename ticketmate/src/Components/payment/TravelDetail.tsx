@@ -31,9 +31,9 @@ interface BookingData {
 const TravelDetails:React.FC<BookingData> = (props)=>{
     return (
       <>
- 
-<div className="container ml-5">
-    <div className="card ml-5 mt-1" style={{border:'none',width:'25rem'}}>
+
+<div className="container">
+    <div className="card" style={{border:'none',width:'35rem', borderRadius: '15px'}}>
       <div className="card-body" >
       <ul className="list-inline">
         <li className="list-inline-item">Travel Journey Id : <strong style={{ marginLeft: '20px' }}> {props.busScheduleId ? props.busScheduleId : props.trainScheduleId}</strong> </li>

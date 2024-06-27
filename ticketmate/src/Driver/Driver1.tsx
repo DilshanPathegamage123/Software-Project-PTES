@@ -1,9 +1,16 @@
 import ProfileSection from "./ProfileSection";
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../Components/NavBar//PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import TravelDetails_Ac from "./TravelDetails_Ac";
 import TravelDetails_Co from "./TravelDetails_Co";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+import axios from "axios";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+
+const MySwal = withReactContent(Swal);
 interface driverData {
   Id: number;
   firstName: string;
@@ -74,7 +81,27 @@ function Driver() {
       });
   }, []);
  
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    MySwal.fire({
+      title: 'Loading...',
+      text: 'Please wait while we load your data',
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
+
+    // Simulating data fetching, you should replace this with actual data fetching logic
+    setTimeout(() => {
+      setLoading(false);
+      MySwal.close();
+    }, 2000); // Adjust the timeout as needed
+  }, []);
+  if (loading) {
+    return null; // Return null or a loader component while data is loading
+  }
 
   return (
     <>

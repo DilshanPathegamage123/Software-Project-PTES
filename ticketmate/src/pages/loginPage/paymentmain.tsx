@@ -1,5 +1,5 @@
 
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Selection from "../../Components/payment/Selection";
 import Back from "../../Components/payment/Backbutton";
 import Footer from "../../Components/Footer/Footer1";
@@ -10,7 +10,7 @@ function Payment() {
  const bookingData = {
   driverId:5,
 
-  busBookingId: 0,
+  busBookingId:0,
   busScheduleId: 0,
   busId: 0,
 

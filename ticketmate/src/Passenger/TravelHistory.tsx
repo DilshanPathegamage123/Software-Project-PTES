@@ -47,6 +47,7 @@ function TravelHistory({pid}: {pid: number}) {
     null
   );
 
+
   let passengerId = passengerid.toString();
 
   useEffect(() => {
@@ -211,7 +212,7 @@ function TravelHistory({pid}: {pid: number}) {
                 passengerId={passengerId}
                 trainScheduleId={selectedBooking.trainScheduleId || 0}
                 bookingId={selectedBooking.id}
-                trainName="Dumbara Menike"
+                
               />
             </>
           )}

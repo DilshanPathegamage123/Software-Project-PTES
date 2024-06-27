@@ -78,7 +78,12 @@ function BusOwnerPage() {
       // Function to fetch user data
       const fetchUserData = async () => {
         try {
-          const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`);
+          const response = await fetch(`https://localhost:7001/api/userData/authenticate?userName=${username}&password=${password}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          });
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }

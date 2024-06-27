@@ -90,6 +90,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
                     +9471 123 2145</p>
                     <p>QR Code for your booking:</p>
                     <div><img src="${url}" alt="QR Code"></div>
+
                   </body>
                 </html>
               `,

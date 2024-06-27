@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
+
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
 import './BusOwnerPage.css';
@@ -9,15 +11,40 @@ import ScheduledBusInfo from '../../Components/ScheduledBusInfo/ScheduledBusInfo
 import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/RegisteredBusInfoSec';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import BgImg from '../../assets/busProImg.png'
+import BgImg from '../../assets/busProImg.png';
+
+
+interface OwnerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 
 function BusOwnerPage() {
   const location = useLocation();
-  const storedUsername = localStorage.getItem('username');
-  const storedPassword = localStorage.getItem('password');
+  const navigate = useNavigate();
+
+  const storedUsername = sessionStorage.getItem('username');
+  const storedPassword = sessionStorage.getItem('password');
+
   const locationState = location.state || { username: 'Guest', password: '' };
   const [username, setUsername] = useState(storedUsername || locationState.username);
   const [password, setPassword] = useState(storedPassword || locationState.password);
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const [divWidth, setDivWidth] = useState(0); // State to store div width
   const [selectedComponent, setSelectedComponent] = useState('ScheduledBuses'); // State to track selected component
@@ -31,7 +58,8 @@ function BusOwnerPage() {
     id: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    requestStatus: true
   });
   const [loading, setLoading] = useState(true);
 
@@ -64,14 +92,21 @@ function BusOwnerPage() {
             id: data.id,
             firstName: data.firstName,
             lastName: data.lastName,
-            email: data.email
+            email: data.email,
+            requestStatus: data.requestStatus
           });
           setLoading(false);
           Swal.close();
 
-          // Store username and password in local storage
-          localStorage.setItem('username', username);
-          localStorage.setItem('password', password);
+          // Store username and password in session storage
+          sessionStorage.setItem('username', username);
+          sessionStorage.setItem('password', password);
+
+
+          // Check the requestStatus and navigate to /loginpage if it is 0
+          if (data.requestStatus === 0) {
+            navigate('/loginpage');
+          }
         } catch (error) {
           console.error('Failed to fetch user data:', error);
           setLoading(false);
@@ -89,7 +124,7 @@ function BusOwnerPage() {
       setLoading(false);
       Swal.close();
     }
-  }, [username, password, loading]);
+  }, [username, password, loading, navigate]);
 
   useEffect(() => {
     // Function to handle window resize
@@ -110,14 +145,14 @@ function BusOwnerPage() {
   const handleButtonClick = (componentName:any) => {
     setSelectedComponent(componentName);
     // Update button states
-    setButtonStates((prevState) => ({
+    setButtonStates((prevState:any) => ({
       ...prevState,
       [componentName]: true
     }));
     // Reset other button states
     for (let key in buttonStates) {
       if (key !== componentName) {
-        setButtonStates((prevState) => ({
+        setButtonStates((prevState:any) => ({
           ...prevState,
           [key]: false
         }));

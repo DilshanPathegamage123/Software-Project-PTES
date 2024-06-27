@@ -86,6 +86,10 @@ function Passenger() {
             requestStatus: passenger.requestStatus,
           }))
         ));
+        if (response.data.length > 0) {
+          const userId = response.data[0].id.toString(); // Convert to string for storage
+          sessionStorage.setItem('passengerId', userId);
+        }
         //console.log(passengerdata);
       })
       .catch((error) => {

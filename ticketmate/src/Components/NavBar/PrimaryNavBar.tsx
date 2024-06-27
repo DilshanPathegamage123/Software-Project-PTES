@@ -23,7 +23,7 @@ function PrimaryNavBar() {
 
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
     
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="#" onClick={()=>history("/")}>
           {" "}
           <img src={LOGO} alt="LOGO" width="84px" height="37px" />{" "}
           <img src={LOGO2} alt="LOGO2" width="156px" height="22px" />
@@ -47,6 +47,7 @@ function PrimaryNavBar() {
                 className="nav-link"
                 href="#"
                 style={{ color: "var(--color-text-dark)" }}
+                onClick={() => history("/")}
               >
                 Home <span className="sr-only">(current)</span>
               </a>

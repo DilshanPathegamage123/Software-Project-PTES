@@ -86,7 +86,7 @@ header {
 }
 
 [type="radio"] {
-  opacity: 0;
+  opacity: 1;
 }
 
 [type="radio"]:checked ~ label {

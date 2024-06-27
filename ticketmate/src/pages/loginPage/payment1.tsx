@@ -1,5 +1,5 @@
 import React from 'react';
-import Paymentvisa from '../../Components/payment/Paymentvisa';
+//import Paymentvisa from '../../Components/payment/Paymentvisa';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
 import Creditcard from '../../Components/payment/asset/creditcard.png';
 import TravelDetails from '../../Components/payment/TravelDetail';
@@ -66,7 +66,9 @@ const Payment1:React.FC<BookingData> = (props)=>{
             <div className="row mb-5 d-flex justify-content-center">
                <div className="col-2"></div>
                <div className="col-10">
+
                  <Paymentvisa {...props}/>
+
                </div>
             </div>
    

@@ -7,6 +7,7 @@ import PassengerFormComponent from "./passengerFormComponent";
 import OwnerFormComponent from "./ownerFormComponent";
 import DriverFormComponent from "./driverFormComponent";
 import Footer from "../../Components/Footer/footer";
+import { color } from "html2canvas/dist/types/css/types/color";
 
 
 const  PassengerForm=()=> {
@@ -70,6 +71,7 @@ const [selectedOption, setSelectedOption] = useState("option1");
                 name="option"
                 value="option2"
                 checked={selectedOption === "option2"}
+      
 
                 //  onChange={handleUserTypeChange}
               />

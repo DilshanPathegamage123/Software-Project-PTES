@@ -122,7 +122,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
 
   return (
     <div className="TotalBlock container-fluid py-4  align-items-center col-lg-10 col-8 z-1  ">
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-5 align-items-center justify-content-center d-flex  m-0 p-0">
+      <div className=" row1 row row-cols-1 row-cols-sm-2 row-cols-lg-5 align-items-center justify-content-center d-flex  m-0 p-0">
         <div className="col col-lg-2 col-md-4 col-sm-6 mb-4 column-gap-auto p-lg-0">
           <VehicleType
             selectedVehicleType={selectedVehicleType}

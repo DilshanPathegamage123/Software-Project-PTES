@@ -2,7 +2,7 @@ import React from "react";
 // import { BrowserRouter as Router, Routes as ReactRoutes, Route } from "react-router-dom";
 import { Outlet, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import Paymentmain from "../pages/loginPage/paymentmain";
-import Paymentvisa from "../Components/payment/Paymentvisa";
+//import Paymentvisa from "../Components/payment/Paymentvisa";
 import Payment3 from "../pages/loginPage/payment3";
 import Payment4 from "../pages/loginPage/payment4";
 

@@ -18,9 +18,7 @@ function PrimaryNavBar() {
 
   return (
     <>
-
-
-      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-3 pr-5">
     
         <a className="navbar-brand" href="/">
           {" "}
@@ -72,9 +70,7 @@ function PrimaryNavBar() {
               color="third"
               //className="btn btn-outline-primary btn-sm"
               style={{border: "none", background: "none", color: "var(--color-text-dark)"}}
-          
-
-              onClick={() => {sessionStorage.clear();history("/login")}}
+                      onClick={() => {sessionStorage.clear();history("/login")}}
 
             
             > Log out &nbsp;<img src={icon} alt="icon" width="25px" height="25px" /> 

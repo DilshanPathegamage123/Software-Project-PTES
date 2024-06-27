@@ -31,6 +31,23 @@ interface OwnerData {
   requestStatus: boolean;
 }
 
+
+interface OwnerData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
 function BusOwnerPage() {
   const location = useLocation();
   const navigate = useNavigate();

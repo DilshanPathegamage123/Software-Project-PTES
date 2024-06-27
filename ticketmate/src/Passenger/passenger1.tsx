@@ -88,7 +88,8 @@ function Passenger() {
         ));
         if (response.data.length > 0) {
           const userId = response.data[0].id.toString(); // Convert to string for storage
-          sessionStorage.setItem('passengerId', userId);
+          sessionStorage.setItem('userId', userId);
+
         }
         //console.log(passengerdata);
       })
@@ -185,11 +186,11 @@ function Passenger() {
             </div>
             <div className="p-2 rounded-4 ms-auto me-auto justify-content-center align-items-center " style={{ background: "#F1F1F1" }}>
               {currentComponent === "My Bookings" ? (
-                <MyBookings />
+                <MyBookings pid={passengerdata[0]?passengerdata[0].Id:0} />
               ) : currentComponent === "Travel History" ? (
-                <TravelHistory />
+                <TravelHistory pid={passengerdata[0]?passengerdata[0].Id:0} />
               ) : (
-                <Notifications />
+                <Notifications passengerId={passengerdata[0]?passengerdata[0].Id:0}/>
               )}
             </div>
           </div>

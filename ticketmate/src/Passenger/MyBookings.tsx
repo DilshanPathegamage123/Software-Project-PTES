@@ -20,7 +20,15 @@ type BookingType = {
   paymentId: string;
 };
 
-function MyBookings() {
+
+interface passengerData {
+  id: number;
+}
+
+
+
+function MyBookings({pid}: {pid: number}) {
+  const passengerid=pid;
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -28,8 +36,8 @@ function MyBookings() {
     null
   );
 
-  //let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
-  let passengerId = "98";
+  
+let passengerId = passengerid.toString();
 
   useEffect(() => {
     const fetchBookings = async () => {

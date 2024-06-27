@@ -110,8 +110,11 @@ import React, { useEffect, useState } from "react";
 import Icon1 from "./images/notification.png";
 import * as signalR from "@microsoft/signalr";
 import axios from "axios";
+type NotificationProps = {
+  passengerId: number;
+};
 
-const NotificationComponent: React.FC = () => {
+const NotificationComponent: React.FC<NotificationProps> = ({passengerId}) => {
   const [messages, setMessages] = useState<
     { Id: number; message: string; routNo: string }[]
   >([]);

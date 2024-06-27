@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './RegisteredCarriagePage.css'
 import Footer from '../../Components/Footer/footer'
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar'
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout'
 import BusImg from '../../assets/RegBusImg.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'

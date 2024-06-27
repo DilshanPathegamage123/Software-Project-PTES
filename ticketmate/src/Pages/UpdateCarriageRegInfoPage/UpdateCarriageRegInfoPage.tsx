@@ -6,7 +6,7 @@ import axios from 'axios';
 import SelectBusSeatStructureCarr from '../../Components/SelectBusSeatStructureCarr/SelectBusSeatStructureCarr';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 interface ApiResponse {

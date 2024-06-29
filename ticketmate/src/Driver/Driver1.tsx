@@ -1,5 +1,5 @@
 import ProfileSection from "./ProfileSection";
-import PrimaryNavBar from "../Components/NavBar//PrimaryNavBar-logout";
+import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import TravelDetails_Ac from "./TravelDetails_Ac";
 import TravelDetails_Co from "./TravelDetails_Co";
@@ -40,9 +40,8 @@ function Driver() {
     color: 'black', // Optionally change text color to ensure readability    
     width: '15%'
   };
- 
 
-
+  
   
   let location = useLocation();
   let { username, password } = location.state;
@@ -84,43 +83,7 @@ function Driver() {
  
 
 
-  
-  let location = useLocation();
-  let { username, password } = location.state;
-  const [driverdata, setDriverdata] = useState<driverData[]>([]);
-  const history = useNavigate();
-  useEffect(() => {
-    axios
-      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}`)
-      .then((response) => {
-       // console.log(response.data);
-        setDriverdata(
-       
-        (
-          response.data.map((driver: any) => ({
-            Id: driver.id,
-            firstName: driver.firstName,
-            lastName: driver.lastName,
-            email: driver.email,
-            dob: driver.dob,
-            nic: driver.nic, 
-            contactNo: driver.contactNo,
-            userName: driver.userName,
-            password: driver.password,
-            userType: driver.userType,
-            ownVehicleType: driver.ownVehicleType,
-            drivingLicenseNo: driver.drivingLicenseNo,
-            isDeleted: driver.isDeleted,
-            requestStatus: driver.requestStatus,
-          }))
-        ));
-      
-        //console.log(passengerdata);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+ 
  
   const [loading, setLoading] = useState(true);
 

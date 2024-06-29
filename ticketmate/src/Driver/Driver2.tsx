@@ -1,4 +1,3 @@
-
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import UpdateBreakdown from "./UpdateBreakDown";
@@ -57,6 +56,7 @@ function Driver2() {
     }
     
   }
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -98,9 +98,15 @@ function Driver2() {
     
   }
 
+
   if (!travelDetails) {
     return <div>Travel details not found.</div>;
   }
+
+    
+  
+
+  
   return (
     <>
       <PrimaryNavBar />
@@ -144,7 +150,6 @@ function Driver2() {
           </div>
           {/* <div className="row">Booked Seat</div> */}
           <div className="p-5 rounded-4 custom-height" style={{ background: "#FFFFFF"}}>
-
           <StartRideButton rideId={travelDetails.id} />&nbsp;&nbsp;
           <span onClick={handleend}><EndRideButton rideId={travelDetails.id} connectionId=""/></span>
             <VehicleLocation rideId={travelDetails.id} />

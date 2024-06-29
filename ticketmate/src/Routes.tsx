@@ -20,9 +20,6 @@ import Payment3 from "./pages/loginPage/payment3";
 import Payment4 from "./pages/loginPage/payment4";
 import Driver2 from "./Driver/Driver2";
 import MapView from "./Passenger/MapView";
-
-
-
 import BusRegistrationPage from './pages/BusRegistrationPage/BusRegistrationPage';
 import RegisteredBusPage from './pages/RegisteredBusPage/RegisteredBusPage';
 import ScheduledBusPage from './pages/ScheduledBusPage/ScheduledBusPage';
@@ -111,7 +108,6 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/driver2" element={<Driver2 />} />
         <Route path="/paymentmain" element={<Paymentmain />} />
         <Route path="/Mapview" element={<MapView />} />
-
         <Route path="/notification" element={<NotificationComponent />} />
       
 

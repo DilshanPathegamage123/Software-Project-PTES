@@ -5,26 +5,50 @@ import train from "../Components/payment/asset/train.png";
 import Minicar from "../Components/payment/asset/Minicar.png";
 import Rec5 from "./images/Rectangle 1288.png";
 import VehicleLocation from "../pages/MapLocationWindow/LocationWindow";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
-interface TripData {
-  id: number;
-  busId: number;
-  trainScheduleId: number | null;
-  busScheduleId: number | null;
-  type: "bus" | "train";
-  boardingPoint: string;
-  bookingDate: string;
-  startTime: string;
-  droppingPoint: string;
-  endTime: string;
-  StartLocation: string;
-  EndLocation: string;
-  routeNumber: string;
-  passengerId: number;
+interface TripData{
+  id:number,
+  busId: number,
+  trainScheduleId: number | null,
+  busScheduleId:number | null,
+  type: string,
+  boardingPoint: string,
+  bookingDate: string,
+  startTime: string,
+  droppingPoint: string,
+  endTime: string,
+  StartLocation: string,
+  EndLocation: string,
+  routeNumber: string,
+  passengerId: number
 }
 
 
-const MapView: React.FC<TripData> = (props) => {
+function MapView() {
+  // const TripData={
+  //   id:13,
+  //   busId: 15,
+  //   trainScheduleId: 0,
+  //   busScheduleId:6 ,
+  //   type: "bus" ,
+  //   boardingPoint: "string",
+  //   bookingDate: "string",
+  //   startTime: "string",
+  //   droppingPoint: "string",
+  //   endTime: "string",
+  //   StartLocation: "string",
+  //   EndLocation: "string",
+  //   routeNumber: "string",
+  //   passengerId: 56
+  // }
+  const [MapData,setMapData]=useState<TripData[]>([]);
+  let location = useLocation();
+  const state=location.state.booking || {};
+  // setMapData(location.state as TripData[]);
+  console.log("Booking object",state);
+  console.log("Dropping Point",state.droppingPoint);
   return (
     <>
       <PrimaryNavBar />
@@ -38,11 +62,11 @@ const MapView: React.FC<TripData> = (props) => {
         <div className="row justify-content-center">
           <div className="col-auto">
             <p className="text-success fs-6 fw-bold font-family-Poppins">
-              Trip No:{" "}
-              {props.busId ? props.busScheduleId : props.trainScheduleId}
+              Trip No:{state.trainScheduleId || state.busScheduleId}
+              {}
             </p>
             <p className="text-success fs-6 font-family-Poppins">
-              Passenger Id:{props.passengerId}
+              Passenger Id:{state.passengerId}
             </p>
           </div>
         </div>
@@ -59,7 +83,7 @@ const MapView: React.FC<TripData> = (props) => {
                     </div>
                     <div className="col-6 col-md-2 text-center mt-2 mt-md-0">
                       <h3 className="text-dark fs-6 font-family-Poppins text-uppercase m-0">
-                        Katunayaka
+                        {state.boardingPoint}
                       </h3>
                     </div>
                     <div className="col-6 col-md-1 text-center mt-2 mt-md-0">
@@ -67,14 +91,12 @@ const MapView: React.FC<TripData> = (props) => {
                     </div>
                     <div className="col-6 col-md-2 text-center mt-2 mt-md-0">
                       <h3 className="text-dark fs-6 font-family-Poppins text-uppercase m-0">
-                        Colombo
+                      {state.droppingPoint}
                       </h3>
                     </div>
                     <div className="col-12 col-md-2 text-center mt-2 mt-md-0">
                       <div className="bg-success-subtle rounded-3 px-2 py-0">
-                        <p className="text-black fs-6 fw-bold font-family-Poppins m-0">
-                          {/* Any additional text or content */}
-                        </p>
+                      
                       </div>
                     </div>
                   </div>
@@ -88,14 +110,14 @@ const MapView: React.FC<TripData> = (props) => {
                 <p className="m-1">Route Number</p>
                 <p className="m-1">Boarding Point</p>
                 <p className="m-1">Dropping Point</p>
-                <p className="m-1">No of Passengers</p>
+               
               </div>
               <div className="col-4" style={{ lineHeight: "1" }}>
-                <p className="date text-end m-1">{props.bookingDate}</p>
-                <p className="routenumber text-end m-1">{props.routeNumber}</p>
-                <p className="starttime text-end m-1">{props.boardingPoint}</p>
-                <p className="endtime text-end m-1">{props.droppingPoint}</p>
-                <p className="passenger text-end m-1">{props.EndLocation}</p>
+                <p className="date text-end m-1">{state.bookingDate}</p>
+                <p className="routenumber text-end m-1">{state.routeNumber}</p>
+                <p className="starttime text-end m-1">{state.boardingPoint}</p>
+                <p className="endtime text-end m-1">{state.droppingPoint}</p>
+                <p className="passenger text-end m-1">{state.bookedSeatCount}</p>
               </div>
               <div className="col-2"></div>
             </div>
@@ -105,7 +127,7 @@ const MapView: React.FC<TripData> = (props) => {
           className="p-2 rounded-4 custom-height mt-5 "
           style={{ background: "#F1F1F1" }}
         >
-          <VehicleLocation rideId={rideId} />
+          <VehicleLocation rideId={state.busScheduleId||state.trainScheduleId} />
         </div>
       </div>
 

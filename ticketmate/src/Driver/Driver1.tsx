@@ -39,46 +39,6 @@ function Driver() {
   };
 
   
-  let location = useLocation();
-  let { username, password } = location.state;
-  const [driverdata, setDriverdata] = useState<driverData[]>([]);
-  const history = useNavigate();
-  useEffect(() => {
-    axios
-      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}`)
-      .then((response) => {
-       // console.log(response.data);
-        setDriverdata(
-       
-        (
-          response.data.map((driver: any) => ({
-            Id: driver.id,
-            firstName: driver.firstName,
-            lastName: driver.lastName,
-            email: driver.email,
-            dob: driver.dob,
-            nic: driver.nic, 
-            contactNo: driver.contactNo,
-            userName: driver.userName,
-            password: driver.password,
-            userType: driver.userType,
-            ownVehicleType: driver.ownVehicleType,
-            drivingLicenseNo: driver.drivingLicenseNo,
-            isDeleted: driver.isDeleted,
-            requestStatus: driver.requestStatus,
-          }))
-        ));
-        const driverId=(driverdata[0]?driverdata[0].Id:0).toString();
-        sessionStorage.setItem('userId', driverId);
-        //console.log(passengerdata);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
- 
-
-
   
   let location = useLocation();
   let { username, password } = location.state;

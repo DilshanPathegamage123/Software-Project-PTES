@@ -8,6 +8,7 @@ import BusIcon2 from "./images/Group 391.png";
 import TrainIcon from "./images/TrainImage.png";
 import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import ConfirmModal from "../Components/ConfirmModal/ConfirmModal";
+import { props } from "cypress/types/bluebird";
 
 
 type BookingType = {
@@ -34,7 +35,7 @@ function MyBookings({pid}: {pid: number}) {
   const [selectedBooking, setSelectedBooking] = useState<BookingType | null>(
     null
   );
-  
+
 let passengerId = passengerid.toString();
 
   useEffect(() => {
@@ -107,11 +108,15 @@ let passengerId = passengerid.toString();
       console.error("Error fetching bookings:", error);
     }
   };
-
+ 
   fetchBookings();
 }, []);
 
   console.log(bookings);
+
+  // const handelviewbtn = () => {
+  //   navigate("/Mapview", { state: { bookings } });
+  // }
 
   const handleEditClick = (booking: BookingType) => {
     if(booking.type === 'bus'){
@@ -127,7 +132,7 @@ let passengerId = passengerid.toString();
     setShowModal(true);
   };
 
-  console.log(selectedBooking);
+  console.log("bookig",selectedBooking);
   const handleConfirmCancel = async () => {
     if (selectedBooking) {
       try {
@@ -191,7 +196,15 @@ let passengerId = passengerid.toString();
                   type="button"
                   color="primary"
                   className=" m-0 p-0 "
+                  onClick={()=>navigate("/Mapview", {
+                     state: {
+                      booking
+                     } } 
+                  )  
+                  }
+                  
                 />
+                
               </div>
               <div className="col-lg-1 col-2 align-items-center justify-content-center d-flex m-auto pt-sm-2 ">
                 <PrimaryButton

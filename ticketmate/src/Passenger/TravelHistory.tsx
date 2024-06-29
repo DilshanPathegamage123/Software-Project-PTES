@@ -37,7 +37,6 @@ interface passengerData {
 }
 
 
-
 function TravelHistory({pid}: {pid: number}) {
   const passengerid=pid;
   const [bookings, setBookings] = useState<BookingType[]>([]);
@@ -211,7 +210,7 @@ function TravelHistory({pid}: {pid: number}) {
                 passengerId={passengerId}
                 trainScheduleId={selectedBooking.trainScheduleId || 0}
                 bookingId={selectedBooking.id}
-                trainName="Dumbara Menike"
+                
               />
             </>
           )}

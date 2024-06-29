@@ -20,9 +20,6 @@ import Payment3 from "./pages/loginPage/payment3";
 import Payment4 from "./pages/loginPage/payment4";
 import Driver2 from "./Driver/Driver2";
 import MapView from "./Passenger/MapView";
-
-
-
 import BusRegistrationPage from './pages/BusRegistrationPage/BusRegistrationPage';
 import RegisteredBusPage from './pages/RegisteredBusPage/RegisteredBusPage';
 import ScheduledBusPage from './pages/ScheduledBusPage/ScheduledBusPage';
@@ -47,6 +44,7 @@ import TrainShceduleUpdatePage4 from './pages/TrainShceduleUpdatePage/TrainShced
 import TrainShceduleUpdatePage5 from './pages/TrainShceduleUpdatePage/TrainShceduleUpdatePage5';
 import OwnerPage from "./pages/OwnerPage/OwnerPage";
 import NotificationComponent from "./Passenger/Notification";
+import LoginPage2 from "./pages/Bus-BookingPage/LoginPage2";
 
 
 
@@ -100,6 +98,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/register" element={<PassengerForm />} />
         <Route path="/AdminPage" element={<AdminPage/>} />
         <Route path="/login" element={<LoginPage/>}/>
+        <Route path="/loginpage2" element={<LoginPage2/>}/>
+
         <Route path="/BusOwnerPage" element={<BusOwnerPage/>}/>
         <Route path="/UpdatePassengerProfile" element={   <UpdatePassengerProfile/>}/>
         <Route path="/UpdateOwnerProfile" element={<UpdateOwnerProfile />} />
@@ -136,6 +136,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path='/TrainShceduleUpdatePage4' element={<TrainShceduleUpdatePage4 />} />
         <Route path='/TrainShceduleUpdatePage5' element={<TrainShceduleUpdatePage5 />} />
         <Route path='/OwnerPage' element={<OwnerPage/>}/>
+
 
 
 

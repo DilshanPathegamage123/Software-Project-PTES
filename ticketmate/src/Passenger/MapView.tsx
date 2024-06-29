@@ -24,7 +24,7 @@ interface TripData{
   routeNumber: string,
   passengerId: number
 }
-const rideId = 13;
+
 
 function MapView() {
   // const TripData={

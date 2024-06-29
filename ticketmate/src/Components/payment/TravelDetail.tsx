@@ -1,4 +1,4 @@
-import './TravelDetail.css';
+import "./TravelDetail.css";
 
 interface BookingData {
   busBookingId: number;
@@ -20,20 +20,19 @@ interface BookingData {
   totalPaymentAmount: number;
   paymentStatus: boolean;
 
-  trainBookingId:number ;
+  trainBookingId: number;
   trainScheduleId: number;
   bookingCarriageNo: number;
   bookingClass: string;
-
 }
 
 
 const TravelDetails:React.FC<BookingData> = (props)=>{
     return (
       <>
- 
-<div className="container ml-5">
-    <div className="card ml-5 mt-1" style={{border:'none',width:'25rem'}}>
+
+<div className="container">
+    <div className="card" style={{border:'none',width:'35rem', borderRadius: '15px'}}>
       <div className="card-body" >
       <ul className="list-inline">
         <li className="list-inline-item">Travel Journey Id : <strong style={{ marginLeft: '20px' }}> {props.busScheduleId ? props.busScheduleId : props.trainScheduleId}</strong> </li>
@@ -58,13 +57,10 @@ const TravelDetails:React.FC<BookingData> = (props)=>{
         <li className="list-inline-item">End Time: <strong style={{ marginLeft: '20px' }}>{props.endTime}</strong></li>
         <li className="list-inline-item"></li>
       </ul>     
+
       </div>
-    </div>
-    </div>
-      </>
-    );
-}
+    </>
+  );
+};
 
 export default TravelDetails;
-
-

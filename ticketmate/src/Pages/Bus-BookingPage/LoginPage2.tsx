@@ -1,18 +1,38 @@
 // import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-// import "./loginPage.css";
-//  //import vars from '../../vars.css'
+// import "./LoginPage2.css";
 // import loginimage from "../../assets/Ellipse 628.svg";
-// import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 // import Footer from "../../Components/Footer/footer";
 // import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 // import { useState } from "react";
-// import { content } from "html2canvas/dist/types/css/property-descriptors/content";
+// import { useLocation } from "react-router-dom";
 
-// const LoginPage = () => {
+// interface userData {
+//     Id: number;
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     dob: string;
+//     nic: string;
+//     contactNo: string;
+//     userName: string;
+//     password: string;
+//     userType: string;
+//     ownVehicleType: string;
+//     drivingLicenseNo: string;
+//     isDeleted: boolean;
+//     requestStatus: boolean;
+//   }
+
+// const LoginPage2 = () => {
 //   const [username, setUsername] = useState("");
 //   const [password, setPassword] = useState("");
-//   const history = useNavigate();
+//   const [userData, setUserData] = useState<userData | null>(null);
+//   const navigate = useNavigate();
+
+//   const location = useLocation();
+// const bookingDetails = location.state;
+// console.log("bookingDetails", bookingDetails);
 
 //   const handlesubmit = async (e: { preventDefault: () => void }) => {
 //     e.preventDefault();
@@ -27,45 +47,54 @@
 //         }
 //       );
 
- 
 //       const token = response.data.jwtToken;
 //       //Fconsole.log("token", token);
+
+//       axios
+//       .get(`https://localhost:7196/api/userData/findUser/${username}/${password}`)
+//       .then((response2) => {
+//        console.log(response2.data);
+//         setUserData(
+
+//         (
+//           response2.data.map((user: any) => ({
+//             Id: user.id,
+//             firstName: user.firstName,
+//             lastName: user.lastName,
+//             email: user.email,
+//             dob: user.dob,
+//             nic: user.nic,
+//             contactNo: user.contactNo,
+//             userName: user.userName,
+//             password: user.password,
+//             userType: user.userType,
+//             ownVehicleType: user.ownVehicleType,
+//             drivingLicenseNo: user.drivingLicenseNo,
+//             isDeleted: user.isDeleted,
+//             requestStatus: user.requestStatus,
+//           }))
+//         ));
+//         //console.log(passengerdata);
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
 
 //       if (token) {
 //         sessionStorage.setItem("token", token);
 
-//         //decode the token
+//         try {   //decode the token
 //         const tokenParts = token.split(".");
 //         const encodedPayload = tokenParts[1];
-//         // console.log("encodedPayload", encodedPayload); // Log the encoded payload
-
-//         const decodedPayload = JSON.parse(atob(encodedPayload));
+// const decodedPayload = JSON.parse(atob(encodedPayload));
 //         const userRole =
 //           decodedPayload[
 //             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
 //           ];
-//         //console.log("userRole" , userRole);
 
-//         switch (userRole) {
-//           case "Admin":
-//             // history("/AdminPage");
-//             //history(`/AdminPage?username=${username}&password=${password}`);
-//             history("/AdminPage", { state: { username, password } });
-
-//             break;
-//           case "Owner":
-//             history("/BusOwnerPage", { state: { username, password } });
-//             break;
-//           case "Passenger":
-//             history("/passenger", { state: { username, password } });
-//             break;
-//           case "Driver":
-//             history("/driver", { state: { username, password } });
-//             break;
-//           default:
-//             //alert("Invalid user name or password");
-//             break;
-//         }
+//           // Navigate to the paymentmain page and pass bookingDetails and userId
+//            if (userData && bookingDetails) {
+//             navigate("/paymentmain", { state: { bookingDetails, userData } });
 //       } else {
 //         alert("Invalid user name or password");
 //       }
@@ -78,6 +107,7 @@
 
 //   };
 
+// } catch (error) {
 
 //   return (
 //     <div className="loginpage-body">
@@ -110,13 +140,6 @@
 //             <div className="text-center">
 //               <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon"/>
 //             </div>
-
-//             {/* <input
-//               className="form-control col-8 mx-auto m-4 custom-bg-color"
-//               type="text"
-//               placeholder=" <><BsFillPersonFill />    username"
-//               required
-//             ></input> */}
 //             <input
 //               className="form-control col-8 mx-auto m-4 custom-bg-color"
 //               type="text"
@@ -126,9 +149,6 @@
 //               onChange={(e) => setUsername(e.target.value)}
 //               style={{ paddingLeft: "30px" }}
 //               data-testid="username"
-//               // Add padding for the icon
-
-
 
 //             ></input>
 
@@ -144,13 +164,9 @@
 
 //             ></input>
 //             <div className=" justify-content-center text-center" >
-             
+
 //               <input type="submit" value="LOG IN" className=" btn-primary btn"
-//               data-testid="login-button" /><br/><br/>
-              
-//                <small>Don't have an account? <a href="/register">sign up</a></small> 
-                
-              
+//               data-testid="login-button" />
 
 //             </div>
 //           </div>
@@ -161,31 +177,50 @@
 
 //   );
 // };
-// export default LoginPage;
+// export default LoginPage2;
 
-
-
-import React, { useState } from "react";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
-import "./loginPage.css";
+import "./LoginPage2.css";
 import loginimage from "../../assets/Ellipse 628.svg";
-import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import Footer from "../../Components/Footer/footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const LoginPage = () => {
+interface userData {
+  Id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dob: string;
+  nic: string;
+  contactNo: string;
+  userName: string;
+  password: string;
+  userType: string;
+  ownVehicleType: string;
+  drivingLicenseNo: string;
+  isDeleted: boolean;
+  requestStatus: boolean;
+}
+
+const LoginPage2 = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const history = useNavigate();
+  const [userData, setUserData] = useState<userData | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  //const bookingDetails = location.state;
+  //console.log("bookingDetails", bookingDetails);
 
-  const handlesubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {
       const response = await axios.post(
-        `https://localhost:7196/api/Auth/login`,
+        "https://localhost:7196/api/Auth/login",
         {
           username,
           password,
@@ -193,39 +228,65 @@ const LoginPage = () => {
       );
 
       const token = response.data.jwtToken;
+      console.log("token", token);
 
       if (token) {
         sessionStorage.setItem("token", token);
 
-        // Decode the token
-        const tokenParts = token.split(".");
-        const encodedPayload = tokenParts[1];
-        const decodedPayload = JSON.parse(atob(encodedPayload));
-        const userRole =
-          decodedPayload[
-            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-          ];
+        try {
+          const response2 = await axios.get(
+            `https://localhost:7196/api/userData/findUser/${username}/${password}`
+          );
+          console.log(response2.data);
+          
 
-        switch (userRole) {
-          case "Admin":
-            history("/AdminPage", { state: { username, password } });
-            break;
-          case "Owner":
-            history("/OwnerPage", { state: { username, password } });
-            break;
-          case "Passenger":
-            history("/passenger", { state: { username, password } });
-            break;
-          case "Driver":
-            history("/driver", { state: { username, password } });
-            break;
-          default:
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Invalid user role",
+          const user = response2.data[0];
+          setUserData(user);
+
+          console.log(user.id);
+
+          // Decode the token
+          const tokenParts = token.split(".");
+          const encodedPayload = tokenParts[1];
+          const decodedPayload = JSON.parse(atob(encodedPayload));
+          const userRole =
+            decodedPayload[
+              "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+            ];
+
+          // Navigate to the paymentmain page and pass bookingDetails and userId
+          if (user && location.state) {
+            navigate("/paymentmain", {
+              state: { BusScheduleId : location.state.BusScheduleId,
+        TrainScheduleId : location.state.TrainScheduleId,
+        VehicleId : location.state.VehicleId,
+        RouteNo : location.state.RouteNo,
+        StartLocation : location.state.StartLocation,
+        EndLocation : location.state.EndLocation,
+        BoardingPoint : location.state.BoardingPoint,
+        DroppingPoint : location.state.DroppingPoint,
+        StartTime : location.state.StartTime,
+        EndTime : location.state.EndTime,
+        BookingSeatNO : location.state.BookingSeatNO,
+        BookingSeatCount : location.state.BookingSeatCount,
+        TicketPrice : location.state.TicketPrice,
+        TotalPaymentAmount : location.state.TotalPaymentAmount,
+        departureDate : location.state.departureDate,
+        BookingClass : location.state.BookingClass,
+        BookingCarriageNo : location.state.BookingCarriageNo,
+         userId: user.id },
             });
-            break;
+          } else {
+            alert("Invalid username or password");
+          }
+        } catch (error) {
+          console.error("Error fetching user data", error);
+          //alert("Error fetching user data");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Error fetching user data",
+          });
         }
       } else {
         Swal.fire({
@@ -235,12 +296,12 @@ const LoginPage = () => {
         });
       }
     } catch (error) {
+      console.error("Login error", error);
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "Invalid username or password",
       });
-      console.error("There was an error!", error);
     }
   };
 
@@ -264,16 +325,20 @@ const LoginPage = () => {
         </svg>
       </a>
 
-      <form onSubmit={handlesubmit} method="post">
+      <form onSubmit={handleSubmit} method="post">
         <div className=" d-flex justify-content-center ">
           <div
             className="shadow p-3 mb-5 bg-white col-5 row-2 justify-center "
             id="login-form"
           >
             <div className="text-center">
-              <img src={loginimage} alt="loginimage" className="" data-testid="login-page-profile-icon" />
+              <img
+                src={loginimage}
+                alt="loginimage"
+                className=""
+                data-testid="login-page-profile-icon"
+              />
             </div>
-
             <input
               className="form-control col-8 mx-auto m-4 custom-bg-color"
               type="text"
@@ -290,7 +355,7 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="password"
+              placeholder="    password"
               value={password}
               required
               data-testid="password"
@@ -316,4 +381,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginPage2;

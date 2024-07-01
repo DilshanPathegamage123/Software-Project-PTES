@@ -3,8 +3,11 @@ import Footer from "../../Components/Footer/Footer1";
 import "./payment4.css";
 import Receipt from "../../Components/payment/Receipt";
 import { useLocation } from 'react-router-dom';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 
+const MySwal = withReactContent(Swal);
 
 
 interface BookingData {
@@ -40,6 +43,27 @@ const Payment4: React.FC<BookingData> = () => {
   const location = useLocation();
   const state=location.state;
   console.log("payment 4 state",state);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    MySwal.fire({
+      title: 'Loading...',
+      text: 'Please wait while we load your data',
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
+
+    // Simulating data fetching, you should replace this with actual data fetching logic
+    setTimeout(() => {
+      setLoading(false);
+      MySwal.close();
+    }, 2000); // Adjust the timeout as needed
+  }, []);
+  if (loading) {
+    return null; // Return null or a loader component while data is loading
+  }
   return (
     <>
    

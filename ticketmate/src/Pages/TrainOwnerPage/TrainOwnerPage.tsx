@@ -136,6 +136,8 @@ function TrainOwnerPage() {
         return <RegLocomotiveInfoSec id={userData.id} />;
       case 'RegCarriages':
         return <RegCarriagesInfoSec id={userData.id} />;
+      case 'Reports':
+        return <RegCarriagesInfoSec id={userData.id} />;
       default:
         return null;
     }
@@ -173,6 +175,9 @@ function TrainOwnerPage() {
               </button>
               <button className={`btn btn-primary secButton ${buttonStates.RegCarriages ? 'active' : ''}`} onClick={() => handleButtonClick('RegCarriages')}>
                 Registered Carriages
+              </button>
+              <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
+                Reports
               </button>
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>

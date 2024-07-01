@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./UserManage.css";
 import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+import Swal from "sweetalert2";
 
 const UserManage = () => {
   // const [userData, setUserData] = useState([]);
@@ -42,11 +43,13 @@ const UserManage = () => {
 
   const deleteUser = (id: number) => {
     console.log("befor api", id);
+    
 
     axios
-      .put(`https://localhost:7196/api/userData/${id}`, {},{
+      .put(`https://localhost:7196/api/userData/${id}`,{},{
         headers: {
           Authorization: `Bearer ${getToken()}`,
+        
         },
       
       
@@ -54,9 +57,22 @@ const UserManage = () => {
       .then((response) => {
         console.log(response);
         setUserData(userData.filter((user) => user.id !== id));
+        setModel2(false);
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'User has been removed successfully.',
+          confirmButtonText: 'OK'
+        });
       })
       .catch((error) => {
         console.log("error in delete userr" + error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was an error removing the user.',
+          confirmButtonText: 'OK'
+        });
       });
   };
 
@@ -373,8 +389,11 @@ const UserManage = () => {
                             <button
                               className="close-Model1 col col-6 text-right"
                               onClick={() => {
-                                deleteUser(user.id);
-                                toggleModel2(user);
+                                if (selectedUser) {
+                                  deleteUser(selectedUser.id);
+                                }
+                               
+                                 
                               }}
                               style={{
                                 border: "none",

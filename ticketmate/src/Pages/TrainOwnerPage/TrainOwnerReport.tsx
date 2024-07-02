@@ -1,41 +1,68 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import "./ReportingAnalysis.css";
-import TrainOwners from "./ReportingAnalysisTrain";
-
+import '../AdminDashboard/ReportingAnalysis.css';
 import { Bar, Line } from "react-chartjs-2";
 import "chart.js/auto";
-
 import jsPDF from "jspdf";
-// import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
 
 import Swal from 'sweetalert2';
 
-interface ReportData {
-  vehicleOwner: string;
-  totalPassengers: number;
+
+interface TrainReportItem {
+  trainName: string;
   totalIncome: number;
+  totalPassengers: number;
+  monthlyPredictedIncome: number; 
   averageRate: number;
-  monthlyTotalPredictedIncome: number; 
+  userId: string;
+  date: string;
+  scheduleIds: {
+    id: string;
+    values: number[];
+  };
 }
 
-const ReportTable: React.FC = () => {
-  const [reportType, setReportType] = useState<string>("monthly");
-  const [busOwners, setBusOwners] = useState<string[]>([]);
-  const [reportData, setReportData] = useState<ReportData[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [vehicleType, setVehicleType] = useState<string>("Bus");
-  const [loading, setLoading] = useState<boolean>(false);
+interface ApiResponse {
+  $values: ApiResponseItem[];
+}
+
+interface ApiResponseItem {
+  $id: string;
+  trainName: string;
+  totalIncome: number;
+  totalPassengers: number;
+  monthlyPredictedIncome: number; 
+  averageRate: number;
+  userId: string;
+  date: string;
+  scheduleIds: {
+    $id: string;
+    $values: number[];
+  };
+}
+
+interface MyComponentProps {
+  // showHeading: boolean;
+  // headingText?: string; // `headingText` is optional
+  id: string;
+}
+
+const TrainReport: React.FC<MyComponentProps> = ({ id }) => {//showHeading, headingText
+  const [dateFilter, setDateFilter] = useState<number>(1); // Default to 'daily' (0)
+  const [report, setReport] = useState<TrainReportItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentDate, setCurrentDate] = useState<string>("");
+  // const [vehicleType, setVehicleType] = useState<string>("Train");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
 
   const barChartRef = useRef<HTMLDivElement>(null);
   const lineChartRef = useRef<HTMLDivElement>(null);
 
-  // Fetch all bus owners when component mounts
 
   useEffect(() => {
     // Set the current date when the component mounts
@@ -43,175 +70,124 @@ const ReportTable: React.FC = () => {
     setCurrentDate(date);
   }, []);
 
+
+  const mapResponseToTrainReportItem = (data: ApiResponse): TrainReportItem[] => {
+    return data.$values.map((item: ApiResponseItem) => ({
+      trainName: item.trainName,
+      totalIncome: item.totalIncome,
+      totalPassengers: item.totalPassengers,
+      averageRate: item.averageRate,
+      monthlyPredictedIncome: item.monthlyPredictedIncome,
+      userId: item.userId,
+      date: item.date,
+      scheduleIds: {
+        id: item.scheduleIds.$id,
+        values: item.scheduleIds.$values,
+      },
+    }));
+  };
+
+  async function fetchTrainReport(dateFilter: number): Promise<TrainReportItem[]> {
+    const userId = id; // Set the constant user ID101
+    try {
+      const response = await axios.get<ApiResponse>(`http://localhost:5050/api/TrainReports/${userId}/${dateFilter}`);
+      // Ensure the response has the $values property
+      if (response.data && response.data.$values) {
+        return mapResponseToTrainReportItem(response.data);
+      } else {
+        throw new Error('Invalid data format');
+      }
+    } catch (error) {
+      console.error('Error fetching train report:', error);
+      throw new Error('Failed to fetch train report');
+    }
+  }
+
+
+
   useEffect(() => {
-    axios
-      .get("http://localhost:5050/api/AdminReport/busowners")
-      .then((response) => {
-        console.log("Bus Owners:", response.data);
-        // Extract the user IDs from the response
-        let ownerIds = response.data.$values;
-        ownerIds = ownerIds.filter((id: number) => id && !isNaN(id));
-        setBusOwners(ownerIds);
-        console.log("Set Bus Owners:", ownerIds);
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the bus owners!", error);
-      });
-  }, []);
-
-  
-  useEffect(() => {
-    if (vehicleType === "Bus") {
-      const fetchReportData = async () => {
-        setLoading(true);
-        Swal.fire({
-          title: 'Loading...',
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-
-        let allData: ReportData[] = [];
-        console.log("Fetching report data for bus owners:", busOwners);
-
-        for (const ownerId of busOwners) {
-          console.log(`Fetching data for bus owner: ${ownerId}`);
-
-          let data: ReportData | undefined;
-          if (reportType === "daily") {
-            data = await fetchDailyStatistics(ownerId);
-          } else if (reportType === "monthly") {
-            data = await fetchMonthlyStatistics(ownerId);
-          } else if (reportType === "3months") {
-            data = await fetchThreeMonthsStatistics(ownerId);
-          } else if (reportType === "yearly") {
-            data = await fetchYearlyStatistics(ownerId);
-          }
-          if (data) {
-            console.log(`Fetched data for owner ${ownerId}:`, data);
-            allData.push(data);
-          }
-        }
-        console.log("Fetched Report Data:", allData);
-        console.log("Fetched all report data:", allData);
-        setReportData(allData);
+    const getReport = async () => {
+      setLoading(true);
+      // Swal.fire({
+      //   title: 'Loading...',
+      //   allowOutsideClick: false,
+      //   didOpen: () => {
+      //     Swal.showLoading();
+      //   }
+      // });
+      setError(null);
+      try {
+        const data = await fetchTrainReport(dateFilter);
+        setReport(data);
+      } catch (err) {
+        setError("Failed to fetch train report");
+      } finally {
         setLoading(false);
         Swal.close();
-      };
-
-      if (busOwners.length > 0) {
-        fetchReportData();
       }
-    }
-  }, [reportType, busOwners, vehicleType]);
-
-
-
-  
-  const fetchDailyStatistics = async (userId: string): Promise<ReportData> => {
-    const response = await axios.get(
-      `http://localhost:5050/api/AdminReport/daily/${userId}`
-    );
-    return mapResponseToReportData(response.data);
-  };
-
-  const fetchMonthlyStatistics = async (
-    userId: string
-  ): Promise<ReportData> => {
-    const response = await axios.get(
-      `http://localhost:5050/api/AdminReport/monthly/${userId}`
-    );
-    return mapResponseToReportData(response.data);
-  };
-
-  const fetchThreeMonthsStatistics = async (
-    userId: string
-  ): Promise<ReportData> => {
-    const response = await axios.get(
-      `http://localhost:5050/api/AdminReport/3months/${userId}`
-    );
-    return mapResponseToReportData(response.data);
-  };
-
-  const fetchYearlyStatistics = async (userId: string): Promise<ReportData> => {
-    const response = await axios.get(
-      `http://localhost:5050/api/AdminReport/yearly/${userId}`
-    );
-    return mapResponseToReportData(response.data);
-  };
-
-  const mapResponseToReportData = (data: any): ReportData => {
-    return {
-      vehicleOwner: data.vehicleOwner,
-      totalPassengers: data.totalPassengers,
-      totalIncome: data.totalIncome,
-      averageRate: data.averageRate,
-      monthlyTotalPredictedIncome: data.monthlyTotalPredictedIncome,
     };
+
+    getReport();
+  }, [dateFilter]);
+ 
+
+  const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setDateFilter(parseInt(event.target.value, 10));
   };
-
-  function handleDateFilterChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    setReportType(event.target.value);
-  }
-
+  // function handleVehicleTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
+  //   setVehicleType(event.target.value);
+  // }
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setSearchTerm(event.target.value);
+    setSearchTerm(event.target.value.toLowerCase());
   }
-
-  function handleVehicleTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setVehicleType(event.target.value);
-  }
-
-  const filteredReportData = reportData.filter((data) =>
-    data.vehicleOwner.includes(searchTerm)
+  const filteredReportData = report.filter((data) =>
+    data.trainName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const barChartData = {
-    labels: filteredReportData.map((data) => data.vehicleOwner),
+    labels: filteredReportData.map((data) => data.trainName),
     datasets: [
       {
-        label: "No of Passengers",
+        label: "No Of Passengers",
         data: filteredReportData.map((data) => data.totalPassengers),
-        backgroundColor: "rgba(82, 208, 146, 01)",// yellow "rgba(0, 128, 0, .8)",green
+        backgroundColor: "rgba(82, 208, 146, 01)",
         borderWidth: 1,
       },
     ],
   };
 
   const lineChartData = {
-    labels: filteredReportData.map((data) => data.vehicleOwner),
+    labels: filteredReportData.map((data) => data.trainName),
     datasets: [
       {
         label: "Income",
         data: filteredReportData.map((data) => data.totalIncome),
-        borderColor: "rgba(255, 99, 132, 1)", // red color
-        borderWidth: 5, // Increase the border width for a thicker line
-        tension: 0, // Set tension to 0 for a straight line
+        borderColor: "rgba(255, 99, 132, 1)", 
+        borderWidth: 5,
         fill: false,
-      },  {
+      },
+      {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => data.monthlyTotalPredictedIncome),
+        data: filteredReportData.map((data) => data.monthlyPredictedIncome),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 
         fill: false,
       },
     ],
-    
   };
   const getReportHeading = () => {
-    switch (reportType) {
-      case "daily":
-        return "Daily Admin Bus Report";
-      case "monthly":
-        return "Monthly Admin  Bus Report";
-      case "3months":
-        return "Three Months Admin Bus Report";
-      case "yearly":
-        return "Yearly Admin Bus Report";
+    switch (dateFilter) {
+      case 0:
+        return "Daily Admin Train Report";
+      case 1:
+        return "Monthly Admin Train Report";
+      case 2:
+        return "Three Months Admin Train Report";
+      case 3:
+        return "Yearly Admin Train Report";
       default:
-        return "Admin Report"; // Default fallback
+        return "Admin Train Report"; // Default fallback
     }
   };
 
@@ -220,13 +196,12 @@ const ReportTable: React.FC = () => {
     const doc: any = new jsPDF(); //corrected the error in line 228 the autotable error
 
   
-    // Capture bar chart as image
     const barChartElement = barChartRef.current;
     const barChartCanvas = barChartElement?.querySelector("canvas");
     let barChartImage = "";
 
     if (barChartCanvas instanceof HTMLCanvasElement) {
-      barChartImage = await html2canvas(barChartCanvas).then((canvas) =>
+      barChartImage = await html2canvas(barChartCanvas,{scale:4}).then((canvas) =>
         canvas.toDataURL("image/png")
       );
     }
@@ -235,7 +210,7 @@ const ReportTable: React.FC = () => {
     let lineChartImage = "";
 
     if (lineChartCanvas instanceof HTMLCanvasElement) {
-      lineChartImage = await html2canvas(lineChartCanvas).then((canvas) =>
+      lineChartImage = await html2canvas(lineChartCanvas,{scale:4}).then((canvas) =>
         canvas.toDataURL("image/png")
       );
     }
@@ -244,20 +219,21 @@ const ReportTable: React.FC = () => {
     autoTable(doc, {
       head: [
         [
-          "Vehicle Owner",
+          "Train Name",
+          "Schedule Ids",
           "Total Passengers",
           "Average Rate",
           "Total Income",
-          "Monthly PredictedIncome",
+          "Monthly Predicted Income",
         ],
       ],
       body: filteredReportData.map((data) => [
-        data.vehicleOwner,
+        data.trainName,
+        data.scheduleIds.values.join(', '), // Convert the scheduleIds object to a string
         data.totalPassengers,
         (data.averageRate.toFixed(1)),
         Math.round(data.totalIncome),
-        Math.max(0, Math.round(data.monthlyTotalPredictedIncome))
-        
+        Math.max(0,Math.round(data.monthlyPredictedIncome)),
       ]),
      
       startY: 30, // Start the table below the date
@@ -267,7 +243,6 @@ const ReportTable: React.FC = () => {
     didDrawPage: function (data) {
       doc.setFontSize(8);
       doc.text(getReportHeading(), 14, 15);
-
 // Add the current date at the top
 doc.text(`Date: ${currentDate}`, 14, 20);
 
@@ -368,60 +343,28 @@ doc.setFontSize(12);
     }
 
     // Save the PDF
-    doc.save("AdminBusReport.pdf");
+    doc.save("AdminTrainReport.pdf");
   }
 
+
   return (
-    <>
+
+<>
       <div>
         <div
-          className="container shadow col-10 justify-center p-3  rounded-top"
+          className="container  col-10 justify-center p-3  "
           style={{ backgroundColor: "#D9D9D9" }}
         >
           <div className="row">
-            <div className="clo-lg-8 col-12 col-md-6 p-1">
-              {/* Vehicle type radio buttons */}
-
-              <div className="form-check form-check-inline">
-                <input
-                data-testid="radioOption1"
-                  className="form-check-input"
-                  type="radio"
-                  name="radioOptions"
-                  id="radioOption1"
-                  value="Bus"
-                  checked={vehicleType === "Bus"}
-                  onChange={handleVehicleTypeChange}
-                />
-                <label className="form-check-label" htmlFor="radioOption1">
-                  Bus
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                data-testid="radioOption2"
-                  className="form-check-input"
-                  type="radio"
-                  name="radioOptions"
-                  id="radioOption2"
-                  value="Train"
-                  checked={vehicleType === "Train"}
-                  onChange={handleVehicleTypeChange}
-                />
-                <label className="form-check-label" htmlFor="radioOption2">
-                  Train
-                </label>
-              </div>
-            </div>
-            {vehicleType === "Bus" && (
+          
               <>
-              <div  className="row">
+              <h6>Train Owner Report</h6>
+              {/*  {showHeading && }*/}
                 <div className="col-lg-3 col-12 col-md-6 ml-auto">
                   {/* Search input */}
                   <input
-                  data-testid="searchInput"
                     type="text"
-                    placeholder="Search Bus Owner ID"
+                    placeholder="Search Train Name"
                     name="search"
                     id="search"
                     className="form-control border rounded-5"
@@ -429,21 +372,21 @@ doc.setFontSize(12);
                     onChange={handleSearchChange}
                   />
                 </div>
-                <div 
-                className="col-lg-3 col-12 col-md-6">
+                <div className="col-lg-3 col-12 col-md-6">
                   {/* Date filter select */}
-                  <select value={reportType} 
-                  data-testid="dateFilter"
-                  onChange={handleDateFilterChange}>
-                    <option data-testid="dateFilter0" value="daily" >Daily</option>
-                    <option  value="monthly">Monthly</option>
-                    <option  value="3months">Three Months</option>
-                    <option  value="yearly">Yearly</option>
-                  </select>
-                </div>
+                  <select
+                        id="reportType"
+                        value={dateFilter}
+                        onChange={handleDateFilterChange}
+                      >
+                        <option value={0}>Daily</option>
+                        <option value={1}>Monthly</option>
+                        <option value={2}>Three Months</option>
+                        <option value={3}>Yearly</option>
+                      </select>
                 </div>
               </>
-            )}
+            
           </div>
         </div>
         {loading ? (
@@ -453,7 +396,7 @@ doc.setFontSize(12);
           //     <span className="visually-hidden">Loading...</span>
           //   </div>
           // </div>
-        ) : vehicleType === "Bus" ? (
+        ) :  (
           <>
             <div
               className="container  col-10 justify-center p-3 mt-0 mb-5 rounded-bottom bottom-shadow"
@@ -463,31 +406,33 @@ doc.setFontSize(12);
                 {/* Table */}
                 <table>
                   <thead>
-                    <tr>
-                      <th className="text-center">Vehicle Owner</th>
-                      <th className="text-center">Total Passengers</th>
-                      <th className="text-center">Average Rate</th>
-                      <th className="text-center">Total Income</th>
-                      <th className="text-center">Monthly Predicted Income</th>
-                    </tr>
+                  <tr>
+                    <th className="text-center">Train Name</th>
+                    <th className="text-center">Schedule IDs</th>
+                    <th className="text-center">Total Passengers</th>
+                    <th className="text-center">Average Rate</th>
+                    <th className="text-center">Total Income</th>
+                    <th className="text-center">Monthly Predicted Income</th>
+                  </tr>
                   </thead>
                   <tbody>
-                    {filteredReportData.map((data, index) => (
-                      <tr key={index}>
-                        <td className="text-center">{data.vehicleOwner}</td>
-                        <td className="text-center">{data.totalPassengers}</td>
-                        <td className="text-center">{(data.averageRate.toFixed(1))}</td>
-                        <td className="text-center">{Math.round(data.totalIncome)}</td>
-                        <td className="text-center">{Math.max(0, Math.round(data.monthlyTotalPredictedIncome))}</td> {/*.toFixed(0) */}
-
-                      </tr>
-                    ))}
-                  </tbody>
+                      {filteredReportData.map((item) => (
+                        <tr key={item.trainName}>
+                          <td className="text-center">{item.trainName}</td>
+                          <td className="text-center">{item.scheduleIds.values.join(', ')}</td>
+                          <td className="text-center">{item.totalPassengers}</td>
+                          <td className="text-center">{(item.averageRate.toFixed(1))}</td>
+                          <td className="text-center">{Math.round(item.totalIncome)}</td>
+                          <td className="text-center">{Math.max(0,Math.round(item.monthlyPredictedIncome))}</td> {/* .toFixed(0) */}
+                        </tr>
+                      ))}
+                    </tbody>
                 </table>
               </div>
             </div>
 
             {/* Charts */}
+            
             <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
               <div className="chart-container" ref={barChartRef}>
                 <Bar data={barChartData} options={{
@@ -498,7 +443,7 @@ doc.setFontSize(12);
                     x: {
                       title: {
                         display: true,
-                        text: "Vehicle Owner",
+                        text: "Train Name",
                         font: {
                           weight: 'bold'
                         }
@@ -517,8 +462,6 @@ doc.setFontSize(12);
                 }} />
               </div>
             </div>
-
-            
             <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
               <div className="chart-container" ref={lineChartRef}>
                 <Line data={lineChartData} options={{
@@ -529,7 +472,7 @@ doc.setFontSize(12);
                     x: {
                       title: {
                         display: true,
-                        text: "Vehicle Owner",
+                        text: "Train Name",
                         font: {
                           weight: 'bold'
                         }
@@ -549,10 +492,10 @@ doc.setFontSize(12);
                 }} />
               </div>
             </div>
+            
 
             <div className="row mt-3 p-5 d-flex justify-content-center align-items-center">
               <button
-              data-testid="downloadPDF"
                 onClick={downloadPDF}
                 className="btn btn-primary px-3 custom-button"
               >
@@ -560,12 +503,12 @@ doc.setFontSize(12);
               </button>
             </div>
           </>
-        ) : (
-          <TrainOwners  showHeading={false}/>
+       
+          
         )}
       </div>
     </>
   );
 };
 
-export default ReportTable;
+export default TrainReport;

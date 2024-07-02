@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import ProfileSection from '../../Components/ProfileSection/ProfileSection';
 import SquareButton from '../../Components/Buttons/SquareButton/SquareButton';
 import './TrainOwnerPage.css';
@@ -145,6 +145,7 @@ function TrainOwnerPage() {
         return <TrainReport id={userData.id} />
       case 'LeaveRequests':
         return <LeaveRequestTrainOwnerView id={userData.id} />
+
       default:
         return null;
     }
@@ -189,6 +190,7 @@ function TrainOwnerPage() {
               <button className={`btn btn-primary secButton ${buttonStates.LeaveRequests ? 'active' : ''}`} onClick={() => handleButtonClick('LeaveRequests')}>
               Leave Requests
               </button>
+
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}

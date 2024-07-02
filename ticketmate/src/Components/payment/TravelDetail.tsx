@@ -59,6 +59,8 @@ const TravelDetails:React.FC<BookingData> = (props)=>{
       </ul>     
 
       </div>
+    </div>
+    </div>
     </>
   );
 };

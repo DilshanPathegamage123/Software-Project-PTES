@@ -3,7 +3,7 @@ import swal from 'sweetalert2';
 import axios from 'axios';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './TrainShceduleUpdatePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Swal from 'sweetalert2';
 
 // Define the TrainSchedule interface

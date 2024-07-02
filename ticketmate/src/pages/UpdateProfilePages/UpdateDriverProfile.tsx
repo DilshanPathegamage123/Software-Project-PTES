@@ -9,6 +9,7 @@ import axios from "axios";
 import { useNavigate,useLocation } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../../Components/Footer/footer";
+import Swal from "sweetalert2";
 
 
 const initialValues = {
@@ -86,15 +87,43 @@ function UpdateDriverProfile() {
           }
         );
         if(userResponse.status === 200){
-          history("/login");
+          
+          Swal.fire({
+            icon: 'success',
+            title: 'Profile Updated',
+            text: 'Your profile has been updated successfully!',
+          }).then(() => {
+            history("/login");
+          });
         }else{
           console.log("error");
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while updating the profile.',
+          });
         }
       } catch (error) {
         console.error("Error:", error);
       }
     },
   });
+
+  const handleCancel = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        history("/login");
+      }
+    });
+  };
 
   return (
     <div>
@@ -406,9 +435,8 @@ function UpdateDriverProfile() {
             <button
               type="reset"
               className="btn-outline-primary btn-sm btn-width"
-              onClick={() => {
-                history("/login");
-              }}
+                onClick={handleCancel}
+              
             >
               Cancel
             </button>

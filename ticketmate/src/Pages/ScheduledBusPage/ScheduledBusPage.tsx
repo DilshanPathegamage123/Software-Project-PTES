@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ScheduledBusPage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 import MainImg from '../../assets/busImgBack copy.jpg';
 import SchePageIcon from '../../assets/SchePageIcon.png';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import '../../vars.css';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 function TrainShceduleUpdatePage4() {

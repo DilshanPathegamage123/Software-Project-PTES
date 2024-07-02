@@ -81,22 +81,7 @@ function Driver2() {
 
 
 
-    }else{
-      axios.put(`https://localhost:7296/api/Scheduledtrain/endtraintrip/${travelDetails.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${getToken()}`,
-            },
-          }
-      )
-      .then((response) => {
-        if(response.status === 200){
-          alert("Train trip ended")
-        }
-      })
-    }
-    
-  }
+ 
 
 
   if (!travelDetails) {

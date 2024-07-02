@@ -21,8 +21,6 @@ import Payment4 from "./pages/loginPage/payment4";
 import Driver2 from "./Driver/Driver2";
 import MapView from "./Passenger/MapView";
 
-
-
 import BusRegistrationPage from './pages/BusRegistrationPage/BusRegistrationPage';
 import RegisteredBusPage from './pages/RegisteredBusPage/RegisteredBusPage';
 import ScheduledBusPage from './pages/ScheduledBusPage/ScheduledBusPage';
@@ -49,15 +47,11 @@ import OwnerPage from "./pages/OwnerPage/OwnerPage";
 import NotificationComponent from "./Passenger/Notification";
 import LoginPage2 from "./pages/Bus-BookingPage/LoginPage2";
 
-
-
-
 interface AppRoutesProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
   setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
   setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
 }
-
 
 const AppRoutes: React.FC<AppRoutesProps> = ({
   onSearch,

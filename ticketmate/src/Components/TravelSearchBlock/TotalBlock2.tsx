@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 import StartLocationSelector from "./StartLocationSelector";
 import EndLocationSelector from "./EndLocationSelector";
@@ -27,28 +28,37 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
   setSelectedEndLocation,
   onSearch,
 }) => {
-  //const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
 
   const [selectedDate, setSelectedDate] = useState<string>(
     sessionStorage.getItem("selectedDate") || ""
   );
 
+  console.log(selectedVehicleType, selectedStartLocation, selectedEndLocation, selectedDate);
   const handleSearch = async () => {
     if (
-      selectedVehicleType === "" ||
-      selectedStartLocation === "" ||
-      selectedEndLocation === "" ||
-      selectedDate === ""
+      selectedVehicleType === '' ||
+      selectedStartLocation === '' ||
+      selectedEndLocation === '' ||
+      selectedDate === ''
     ) {
-      toast.warn("Please fill all required fields before searching");
+      Swal.fire("Oops", "Please fill all required fields before searching", "error");
       return;
     }
 
     if (selectedStartLocation == selectedEndLocation) {
-      toast.warn("You Can't Travel Between Same Locations");
+      Swal.fire("Warning", "You Can't Travel Between Same Locations", "warning");
       return;
     }
+
+    Swal.fire({
+      title: "Searching",
+      text: "Please wait...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     try {
       const Response = await axios.post(
@@ -104,6 +114,7 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
           JSON.stringify(unifiedSearchResults)
         );
         sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
+        Swal.close();
 
         onSearch(unifiedSearchResults);
 
@@ -121,6 +132,8 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
         console.error("Search results are not in the expected format");
       }
     } catch (error) {
+      Swal.close();
+      Swal.fire("Error", "Error during search! Please try again.", "error");
       console.error("Error during search:", error);
     }
   };

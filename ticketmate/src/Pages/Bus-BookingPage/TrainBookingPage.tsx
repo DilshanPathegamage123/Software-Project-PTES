@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 import BoardinPoint from "./BusBookingPageAssests/BoardingPoint.png";
 import DroppingPoint from "./BusBookingPageAssests/DroppingPoint.png";
@@ -97,12 +98,21 @@ const TrainBookingPage: React.FC = () => {
   }, [location.state]);
 
   console.log(trainDetails);
+  console.log(trainDetails.scheduleId);
   useEffect(() => {
     const fetchTrainDetails = async () => {
       if (!trainDetails || !trainDetails.scheduleId) {
         console.error("Train details or ScheduleId is undefined");
         return;
       }
+
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Loading vehicle details. Please wait.',
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
       try {
         const response = await axios.get(
@@ -146,17 +156,20 @@ const TrainBookingPage: React.FC = () => {
         );
 
         setBookedSeats(bookedSeatsByClassAndCarriage);
+        Swal.close();
       } catch (error) {
+        Swal.close();
+      Swal.fire('Error', 'Error fetching Train details or booked seats.', 'error');
         console.error("Error fetching train details:", error);
       }
     };
 
     fetchTrainDetails();
-  }, [trainDetails]);
+  }, [trainDetails, trainDetails.scheduleId, selectedDate]);
 
   console.log("Booked Seats:", bookedSeats);
   console.log("Train Details:", trainDetails);
-  console.log("Bus Details with seats:", trainDetailsWithSeats);
+  console.log("Train Details with seats:", trainDetailsWithSeats);
 
   useEffect(() => {
     if (trainDetailsWithSeats && trainDetailsWithSeats.scheduledCarriages) {
@@ -270,12 +283,14 @@ const TrainBookingPage: React.FC = () => {
   };
   console.log(trainDetails);
   console.log(trainDetailsWithSeats);
+  console.log("Booked Seats:", bookedSeats);
 
   const getBookedSeatsForCurrentCarriage = (): number[] => {
     // Map selected class to numeric key
     const classKey =
       selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
 
+    
     if (classKey !== null && bookedSeats[classKey]) {
       // Use currentCarriageIndex + 1 to get the carriage number (1-based index)
       const carriageSeats = bookedSeats[classKey][currentCarriageIndex + 1];

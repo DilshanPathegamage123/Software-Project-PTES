@@ -6,8 +6,9 @@ import { toast } from "react-toastify";
 interface TotalPriceLableProps {
   passengers: number;
   totalPrice: number;
-  buttonText?: string; 
+  buttonText?: string;
   onSave?: () => void;
+  mode?: "book" | "update";
   BusScheduleId?: string;
   TrainScheduleId?: string;
   VehicleId?: Number;
@@ -23,10 +24,9 @@ interface TotalPriceLableProps {
   TicketPrice?: Number;
   TotalPaymentAmount?: Number;
   departureDate?: string;
- // disableButton?: boolean;
+  // disableButton?: boolean;
   BookingClass?: string;
   BookingCarriageNo?: Number;
-
 }
 
 const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
@@ -34,6 +34,7 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
   totalPrice,
   buttonText = "Pay Now", // Default value is Pay Now
   onSave,
+  mode = "book", // Default mode is book
   BusScheduleId,
   TrainScheduleId,
   VehicleId,
@@ -53,43 +54,41 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
   BookingClass,
   BookingCarriageNo,
 }) => {
-
   const getToken = () => {
-    return sessionStorage.getItem("token")
-   }
+    return sessionStorage.getItem("token");
+  };
 
   const navigate = useNavigate();
- 
-  const handlePayNow = () => {
-    
-    if(BookingSeatCount === 0){
-      toast.warning("Please select at least one seat to proceed");
-    } else{
-    const path = getToken() ? "/paymentmain" : "/loginpage2";
-    //const path = getToken() ? "/login" : "/paymentmain";
 
-    navigate(path, {
-      state: {
-        BusScheduleId,
-        TrainScheduleId,
-        VehicleId,
-        RouteNo,
-        StartLocation,
-        EndLocation,
-        BoardingPoint,
-        DroppingPoint,
-        StartTime,
-        EndTime,
-        BookingSeatNO,
-        BookingSeatCount,
-        TicketPrice,
-        TotalPaymentAmount,
-        departureDate,
-        BookingClass,
-        BookingCarriageNo,
-      },
-    });
-  };
+  const handlePayNow = () => {
+    if (BookingSeatCount === 0) {
+      toast.warning("Please select at least one seat to proceed");
+    } else {
+      const path = getToken() ? "/paymentmain" : "/loginpage2";
+      //const path = getToken() ? "/login" : "/paymentmain";
+
+      navigate(path, {
+        state: {
+          BusScheduleId,
+          TrainScheduleId,
+          VehicleId,
+          RouteNo,
+          StartLocation,
+          EndLocation,
+          BoardingPoint,
+          DroppingPoint,
+          StartTime,
+          EndTime,
+          BookingSeatNO,
+          BookingSeatCount,
+          TicketPrice,
+          TotalPaymentAmount,
+          departureDate,
+          BookingClass,
+          BookingCarriageNo,
+        },
+      });
+    }
   };
 
   console.log(
@@ -109,23 +108,31 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
     TotalPaymentAmount,
     departureDate,
     BookingClass,
-        BookingCarriageNo,
+    BookingCarriageNo
   );
+
+  const handleButtonClick = () => {
+    if (mode === "book") {
+      handlePayNow();
+    } else if (mode === "update" && onSave) {
+      onSave();
+    }
+  };
   return (
     <div className="PriceLable col-12 pt-5 h-auto">
-      <div className="row1 row col-12 pb-2 m-auto h-auto pt-lg-4 pb-lg-5">
-        <div className="col col-8 fs-4 d-flex justify-content-start m-auto p-0  fw-semibold">
+      <div className="row3 row col-12 pb-2 m-auto h-auto pt-lg-4 pb-lg-5">
+        <div className="col col-8 fs-4 d-flex justify-content-start p-0 me-auto fw-semibold">
           Passengers
         </div>
-        <div className="col col-2 fs-4 fw-semibold d-flex d-flex justify-content-end m-auto">
+        <div className="col col-2 fs-4 fw-semibold d-flex d-flex justify-content-end ms-auto">
           {passengers}
         </div>
       </div>
-      <div className="row2 row col-12 pb-2 m-auto h-auto ">
-        <div className="col col-md-6 col-sm-8 fs-4 d-flex justify-content-start p-0  m-auto ">
+      <div className="row2 row col-12 pb-2 m-auto h-auto">
+        <div className="col col-md-6 col-sm-8 fs-4 d-flex justify-content-start p-0 me-auto">
           Total
         </div>
-        <div className="col col-md-4 col-sm-8 fs-4 fw-semibold d-flex  justify-content-end m-auto ">
+        <div className="col col-md-4 col-sm-8 fs-4 fw-semibold d-flex  justify-content-end ms-auto">
           LKR {totalPrice}.00
         </div>
       </div>
@@ -134,8 +141,7 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
           <button
             className=" button PayNowButton w-100 h-auto  border-0 p-1 fs-4 fw-bold "
             type="button"
-            onClick={handlePayNow}
-            //disabled={disableButton}
+            onClick={handleButtonClick}
           >
             {buttonText}
           </button>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import "./TravelHistory.css";
 import BusIcon from "./images/fa6-solid_bus.png";
 import BusIcon2 from "./images/Group 391.png";
@@ -36,8 +38,6 @@ interface passengerData {
   id: number;
 }
 
-
-
 function TravelHistory({pid}: {pid: number}) {
   const passengerid=pid;
   const [bookings, setBookings] = useState<BookingType[]>([]);
@@ -52,6 +52,16 @@ function TravelHistory({pid}: {pid: number}) {
 
   useEffect(() => {
     const fetchBookings = async () => {
+
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we fetch your bookings.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       try {
         const [busResponse, trainResponse] = await Promise.all([
           axios.get(
@@ -94,8 +104,11 @@ function TravelHistory({pid}: {pid: number}) {
           }));
 
         setBookings([...busBookings, ...trainBookings]);
+        Swal.close();
       } catch (error) {
         console.error("Error fetching bookings:", error);
+              Swal.fire('Error', 'Failed to load past bookings. Please try again later.', 'error');
+
       }
     };
 

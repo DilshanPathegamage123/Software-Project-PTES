@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 import "./DatePicker.css";
 
 interface DatePickerProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
-  defaultDate: string;
+  defaultDate?: string;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -30,7 +31,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
           const now = new Date();
           now.setHours(0, 0, 0, 0);
           if (selectedDate < now) {
-            toast.error("The selected date is in the past.");
+            Swal.fire("Warning", "The selected date is in the past.", "warning");
             setDate(currentDate);
             setSelectedDate(currentDate);
           } else {

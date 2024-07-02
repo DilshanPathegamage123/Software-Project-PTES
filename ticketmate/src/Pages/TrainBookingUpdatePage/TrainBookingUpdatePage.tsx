@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import BoardinPoint from "./TrainBookingUpdatePageAssests/BoardingPoint.png";
 import DroppingPoint from "./TrainBookingUpdatePageAssests/DroppingPoint.png";
 import ProgresLine from "./TrainBookingUpdatePageAssests/ProgressLine.png";
@@ -103,7 +105,13 @@ export interface Feedback {
 const TrainBookingUpdatePage: React.FC = () => {
   const location = useLocation();
   const booking = location.state as Booking;
+  const username = location.state.username;
+  const password = location.state.password;
   const navigate = useNavigate();
+
+  console.log(booking);
+  console.log(username);
+  console.log(password);
 
   const [trainDetailsWithSeats, setTrainDetailsWithSeats] =
     useState<TrainDetailsWithSeats | null>(null);
@@ -166,7 +174,7 @@ const TrainBookingUpdatePage: React.FC = () => {
     booking.booking.ticketPrice
   );
   console.log("Booking object", booking);
-  console.log("Booking Carriage Index", booking.booking.bookingCarriageNo - 1 );
+  console.log("Booking Carriage Index", booking.booking.bookingCarriageNo - 1);
 
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [averageRating, setAverageRating] = useState<number | null>(null);
@@ -177,6 +185,14 @@ const TrainBookingUpdatePage: React.FC = () => {
         console.error("Train details or ScheduleId is undefined");
         return;
       }
+
+      Swal.fire({
+        title: "Loading...",
+        text: "Loading vehicle details. Please wait.",
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
       try {
         const response = await axios.get(
@@ -232,7 +248,14 @@ const TrainBookingUpdatePage: React.FC = () => {
 
         // Update state with booked seats
         setBookedSeats(bookedSeatsByClassAndCarriage);
+        Swal.close();
       } catch (error) {
+        Swal.close();
+        Swal.fire(
+          "Error",
+          "Error fetching Train details or booked seats.",
+          "error"
+        );
         console.error("Error fetching train details:", error);
       }
     };
@@ -262,8 +285,9 @@ const TrainBookingUpdatePage: React.FC = () => {
       const carriages = trainDetailsWithSeats.scheduledCarriages.$values.filter(
         (carriage: any) =>
           //carriage.registeredCarriage.carriageClass.toString() === selectedClass
-          classMapping[carriage.registeredCarriage.carriageClass.toString()] ===
-          selectedClass
+          classMapping[
+            carriage.registeredCarriage?.carriageClass?.toString() ?? ""
+          ] === selectedClass
       );
       console.log(carriages);
       setSelectedClassCarriages(carriages);
@@ -296,7 +320,11 @@ const TrainBookingUpdatePage: React.FC = () => {
     console.log(selectedSeatCount);
     console.log(bookedSeatCount);
     if (selectedSeatCount !== bookedSeatCount) {
-      toast.info(`You have to select ${bookedSeatCount} seats for saving`);
+      Swal.fire({
+        icon: "info",
+        title: "Information",
+        text: `You have to select ${bookedSeatCount} seats for saving`,
+      });
       return;
     }
 
@@ -317,11 +345,24 @@ const TrainBookingUpdatePage: React.FC = () => {
         payload
       );
 
-      toast.success("Seats booked successfully!");
-      navigate("/passenger-profile");
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Seats booked successfully!",
+        confirmButtonText: "OK",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Navigate to the passenger profile page
+          navigate("/passenger", { state: { username, password } });
+        }
+      });
     } catch (error) {
       console.error("Error updating booked seats:", error);
-      toast.error("Failed to save seats. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to save seats. Please try again.",
+      });
     }
   };
 
@@ -330,25 +371,27 @@ const TrainBookingUpdatePage: React.FC = () => {
       const nextCarriageIndex = currentCarriageIndex + 1;
       // Update the carriage index first
       setCurrentCarriageIndex(nextCarriageIndex);
-  
+
       // Then check if the next carriage is the booked one
-      if (nextCarriageIndex === booking.booking.bookingCarriageNo - 1) { // Adjusted to match zero-based index
-        setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number));
+      if (nextCarriageIndex === booking.booking.bookingCarriageNo - 1) {
+        // Adjusted to match zero-based index
+        setSelectedSeats(booking.booking.bookingSeatNO.split(",").map(Number));
       } else {
         setSelectedSeats([]); // Clear or adjust selectedSeats as needed
       }
     }
   };
-  
+
   const handlePreviousCarriage = () => {
     if (currentCarriageIndex > 0) {
       const prevCarriageIndex = currentCarriageIndex - 1;
       // Update the carriage index first
       setCurrentCarriageIndex(prevCarriageIndex);
-  
+
       // Then check if the previous carriage is the booked one
-      if (prevCarriageIndex === booking.booking.bookingCarriageNo - 1) { // Adjusted to match zero-based index
-        setSelectedSeats(booking.booking.bookingSeatNO.split(',').map(Number));
+      if (prevCarriageIndex === booking.booking.bookingCarriageNo - 1) {
+        // Adjusted to match zero-based index
+        setSelectedSeats(booking.booking.bookingSeatNO.split(",").map(Number));
       } else {
         setSelectedSeats([]); // Clear or adjust selectedSeats as needed
       }
@@ -686,6 +729,7 @@ const TrainBookingUpdatePage: React.FC = () => {
             totalPrice={selectedSeats.length * booking.booking.ticketPrice}
             buttonText="Save"
             onSave={handleSave}
+            mode="update"
           />
         </div>
       </div>

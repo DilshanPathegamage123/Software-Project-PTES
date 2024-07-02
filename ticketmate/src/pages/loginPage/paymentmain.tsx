@@ -5,13 +5,9 @@ import Footer from "../../Components/Footer/Footer1";
 import "./paymentmain.css";
 import { useLocation } from "react-router-dom";
 
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
 function Payment() {
   const location = useLocation();
   const state = location.state || {}; // Ensure state is not undefined
-  //const bookingDetails = state.bookingDetails || {}; // Ensure bookingDetails is not undefined
-  //const userId = state.userId;
   console.log(location.state);
 
   console.log(state.BusScheduleId);
@@ -27,7 +23,7 @@ function Payment() {
     busScheduleId: state.BusScheduleId,
     busId: state.VehicleId || 0,
 
-    passengerId: state.userId.toString() || UserId?.toString(),
+    passengerId: (state.userId || UserId || "").toString(),
     routeNo: state.RouteNo,
     startLocation: state.StartLocation,
     endLocation: state.EndLocation,
@@ -45,7 +41,7 @@ function Payment() {
     trainBookingId: 0,
     trainScheduleId: state.TrainScheduleId,
     bookingCarriageNo: state.BookingCarriageNo,
-    bookingClass: state.BookingClass,
+    bookingClass: state.BookingClass === "1st" ? "1" : "2",
     // driverId: 5,
 
     // busBookingId: 0,

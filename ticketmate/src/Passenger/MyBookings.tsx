@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import "./MyBookings.css";
 import BusIcon from "./images/fa6-solid_bus.png";
 import BusIcon2 from "./images/Group 391.png";
@@ -21,13 +21,15 @@ type BookingType = {
 };
 
 
-interface passengerData {
-  id: number;
+interface MyBookingsProps {
+  pid: number;
+  username: string;
+  password: string;
 }
 
 
 
-function MyBookings({pid}: {pid: number}) {
+function MyBookings({ pid, username, password }: MyBookingsProps) {
   const passengerid=pid;
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<BookingType[]>([]);
@@ -36,11 +38,24 @@ function MyBookings({pid}: {pid: number}) {
     null
   );
 
-  
-let passengerId = passengerid.toString();
+  console.log(pid);
+  console.log(username);
+  console.log(password);
 
+let passengerId = passengerid.toString();
+console.log(passengerId);
   useEffect(() => {
     const fetchBookings = async () => {
+
+      Swal.fire({
+        title: "Loading",
+        text: "Please wait while we loading your active bookings...",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       try {
         const busResponse = await axios.get(
           `https://localhost:7048/api/GetUserBusBookings/${passengerId}`
@@ -106,24 +121,25 @@ let passengerId = passengerid.toString();
         console.log(filteredTrainBookings);
 
         setBookings([...filteredBusBookings, ...filteredTrainBookings]);
-
+        Swal.close();
         console.log(busBookings);
         console.log(trainBookings);
       } catch (error) {
         console.error("Error fetching bookings:", error);
+        Swal.fire("Error", "Failed to load your bookings. Please try again.", "error");
       }
     };
 
     fetchBookings();
-  }, []);
+  }, [passengerId]);
 
   console.log(bookings);
 
   const handleEditClick = (booking: BookingType) => {
     if (booking.type === "bus") {
-      navigate("/bus-booking-update", { state: { booking } });
+      navigate("/bus-booking-update", { state: { booking, username, password } });
     } else if (booking.type === "train") {
-      navigate("/train-booking-update", { state: { booking } });
+      navigate("/train-booking-update", { state: { booking, username, password } });
     }
     console.log(booking);
   };
@@ -141,7 +157,8 @@ let passengerId = passengerid.toString();
         if (selectedBooking.paymentId && selectedBooking.paymentId !== "None") {
           await axios.post(`https://localhost:7296/api/Refund/refund-payment`, {
             paymentId: selectedBooking.paymentId,
-          });
+          })
+          ;
           console.log("Refund API called");
           console.log(selectedBooking.paymentId);
         }
@@ -157,10 +174,10 @@ let passengerId = passengerid.toString();
         }
         setBookings(bookings.filter((b) => b.id !== selectedBooking.id));
         setShowModal(false);
-        toast.success("Booking cancelled successfully");
+        Swal.fire("Success", "Booking cancelled successfully", "success");
       } catch (error) {
         console.error("Error cancelling booking:", error);
-        toast.error("Failed to cancel booking. Please try again.");
+        Swal.fire("Error", "Failed to cancel booking. Please try again.", "error");
       }
     }
   };

@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
 export const ownerFormValidation = yup.object().shape({
-    firstName:yup.string().min(3).required('Name is required*'),
-    lastName:yup.string().min(3).required('Name is required*'),
+    firstName:yup.string().min(3).max(50).required('Name is required*'),
+    lastName:yup.string().min(3).max(50).required('Name is required*'),
     nic:yup.string().length(12).required('NIC is required*'),
     email:yup.string().email("Please Enter valid email").required('Email is required*'),
     contactNumber:yup.string().length(10).required('Contact number is required*'),

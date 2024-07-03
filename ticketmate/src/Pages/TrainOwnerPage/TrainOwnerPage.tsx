@@ -25,7 +25,8 @@ function TrainOwnerPage() {
   const [buttonStates, setButtonStates] = useState({ // State to track button states
     ScheduledTrains: true,
     RegLocomotives: false,
-    RegCarriages: false
+    RegCarriages: false,
+    Reports: false
   });
 
   const [userData, setUserData] = useState({
@@ -137,7 +138,7 @@ function TrainOwnerPage() {
       case 'RegCarriages':
         return <RegCarriagesInfoSec id={userData.id} />;
       case 'Reports':
-        return <RegCarriagesInfoSec id={userData.id} />;
+        // return <RegCarriagesInfoSec id={userData.id} />;
       default:
         return null;
     }

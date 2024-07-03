@@ -12,6 +12,8 @@ import RegisteredBusInfoSec from '../../Components/RegisteredBusInfoSec/Register
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import BgImg from '../../assets/busProImg.png';
+import BusOwnerPageReport from '../BusOwnerPage3/BusOwnerPageReport';
+import LeaveRequestsBusOwnerView from '../BusOwnerPage3/LeaveRequestsBusOwnerView';
 
 
 interface OwnerData {
@@ -68,7 +70,8 @@ function BusOwnerPage() {
   const [buttonStates, setButtonStates] = useState({ // State to track button states
     ScheduledBuses: true,
     RegisteredBuses: false,
-    Reports: false
+    Reports: false,
+    LeaveRequests:false
   });
 
   const [userData, setUserData] = useState({
@@ -96,6 +99,7 @@ function BusOwnerPage() {
     if (username !== 'Guest' && password !== '') {
       console.log(`Logged in as: ${username}`);
       console.log(`Password: ${password}`);
+     
 
       // Function to fetch user data
       const fetchUserData = async () => {
@@ -190,7 +194,10 @@ function BusOwnerPage() {
       case 'RegisteredBuses':
         return <RegisteredBusInfoSec id={userData.id} />;
       case 'Reports':
-        // return <RegisteredBusInfoSec />;
+        return <BusOwnerPageReport  userId={userData.id}/>;
+        case 'LeaveRequests':
+          return <LeaveRequestsBusOwnerView  userId={userData.id}/>;
+    
       default:
         return null;
     }
@@ -225,9 +232,13 @@ function BusOwnerPage() {
               <button className={`btn btn-primary secButton ${buttonStates.RegisteredBuses ? 'active' : ''}`} onClick={() => handleButtonClick('RegisteredBuses')}>
                 Registered Buses
               </button>
-              {/* <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
+              <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
                 Reports
-              </button> */}
+              </button>
+              <button className={`btn btn-primary secButton ${buttonStates.LeaveRequests ? 'active' : ''}`} onClick={() => handleButtonClick('LeaveRequests')}>
+              Leave Requests
+              </button>
+
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}

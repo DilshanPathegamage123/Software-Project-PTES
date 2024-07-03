@@ -8,6 +8,9 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
 
+import Swal from 'sweetalert2';
+
+
 interface TrainReportItem {
   trainName: string;
   totalIncome: number;
@@ -44,6 +47,7 @@ interface ApiResponseItem {
 interface MyComponentProps {
   showHeading: boolean;
   headingText?: string; // `headingText` is optional
+ 
 }
 
 const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) => {
@@ -84,7 +88,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
   };
 
   async function fetchTrainReport(dateFilter: number): Promise<TrainReportItem[]> {
-    const userId = 48; // Set the constant user ID
+    const userId = 99; // Set the constant user ID101/48
     try {
       const response = await axios.get<ApiResponse>(`http://localhost:5050/api/TrainReports/${userId}/${dateFilter}`);
       // Ensure the response has the $values property
@@ -99,9 +103,18 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
     }
   }
 
+
+
   useEffect(() => {
     const getReport = async () => {
       setLoading(true);
+      Swal.fire({
+        title: 'Loading...',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       setError(null);
       try {
         const data = await fetchTrainReport(dateFilter);
@@ -110,11 +123,13 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
         setError("Failed to fetch train report");
       } finally {
         setLoading(false);
+        Swal.close();
       }
     };
 
     getReport();
   }, [dateFilter]);
+ 
 
   const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setDateFilter(parseInt(event.target.value, 10));
@@ -133,8 +148,8 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
     labels: filteredReportData.map((data) => data.trainName),
     datasets: [
       {
-        label: "Rate",
-        data: filteredReportData.map((data) => data.averageRate),
+        label: "No Of Passengers",
+        data: filteredReportData.map((data) => data.totalPassengers),
         backgroundColor: "rgba(82, 208, 146, 01)",
         borderWidth: 1,
       },
@@ -216,9 +231,9 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
         data.trainName,
         data.scheduleIds.values.join(', '), // Convert the scheduleIds object to a string
         data.totalPassengers,
-        data.averageRate,
-        data.totalIncome,
-        data.monthlyPredictedIncome,
+        (data.averageRate.toFixed(1)),
+        Math.round(data.totalIncome),
+        Math.max(0,Math.round(data.monthlyPredictedIncome)),
       ]),
      
       startY: 30, // Start the table below the date
@@ -374,11 +389,12 @@ doc.setFontSize(12);
           </div>
         </div>
         {loading ? (
-          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
+           <div>Loading...</div>
+          // <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
+          //   <div className="spinner-border" role="status">
+          //     <span className="visually-hidden">Loading...</span>
+          //   </div>
+          // </div>
         ) :  (
           <>
             <div
@@ -404,9 +420,9 @@ doc.setFontSize(12);
                           <td className="text-center">{item.trainName}</td>
                           <td className="text-center">{item.scheduleIds.values.join(', ')}</td>
                           <td className="text-center">{item.totalPassengers}</td>
-                          <td className="text-center">{item.averageRate.toFixed(1)}</td>
-                          <td className="text-center">{item.totalIncome}</td>
-                          <td className="text-center">{(item.monthlyPredictedIncome)}</td> {/* .toFixed(0) */}
+                          <td className="text-center">{(item.averageRate.toFixed(1))}</td>
+                          <td className="text-center">{Math.round(item.totalIncome)}</td>
+                          <td className="text-center">{Math.max(0,Math.round(item.monthlyPredictedIncome))}</td> {/* .toFixed(0) */}
                         </tr>
                       ))}
                     </tbody>
@@ -415,76 +431,67 @@ doc.setFontSize(12);
             </div>
 
             {/* Charts */}
-            <div
-              className="container shadow col-10 justify-center p-3 mb-5 rounded "
-              style={{ backgroundColor: "#FFFFFF" }}
-              ref={barChartRef}
-            >
-              <div className="container-fluid">
-                <Bar
-                  data={barChartData}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        title: {
-                          display: true,
-                          text: "Train Name",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                      },
-                      y: {
-                        title: {
-                          display: true,
-                          text: "Rate",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                      },
-                    },
-                  }}
-                />
-              </div>
-            </div>
+            
+            <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="chart-container" ref={barChartRef}>
+                <Bar data={barChartData} options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
 
-            <div
-              className="container shadow col-10 justify-center p-3 mb-5 rounded "
-              style={{ backgroundColor: "#FFFFFF" }}
-              ref={lineChartRef}
-            >
-              <div className="container-fluid">
-                <Line
-                  data={lineChartData}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        title: {
-                          display: true,
-                          text: "Train Name",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                      },
-                      y: {
-                        title: {
-                          display: true,
-                          text: "Income",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                        min: 0,
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Train Name",
+                        font: {
+                          weight: 'bold'
+                        }
                       },
                     },
-                  }}
-                />
+                    y: {
+                      title: {
+                        display: true,
+                        text: "No of Passengers",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                    },
+                  },
+                }} />
               </div>
             </div>
+            <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="chart-container" ref={lineChartRef}>
+                <Line data={lineChartData} options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Train Name",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                    },
+                    y: {
+                      title: {
+                        display: true,
+                        text: "Income",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                      min: 0,
+                    },
+                  },
+                }} />
+              </div>
+            </div>
+            
 
             <div className="row mt-3 p-5 d-flex justify-content-center align-items-center">
               <button

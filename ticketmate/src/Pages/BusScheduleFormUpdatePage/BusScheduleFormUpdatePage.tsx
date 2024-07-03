@@ -3,7 +3,7 @@ import swal from 'sweetalert2';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './BusScheduleFormUpdatePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 import '../../vars.css';
 

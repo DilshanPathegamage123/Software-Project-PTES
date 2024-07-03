@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './BusSchedulePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import BusScheduleForm from '../../Components/BusScheduleForm/BusScheduleForm';
 import BusScheduleForm2 from '../../Components/BusScheduleForm/BusScheduleForm2';
 import BusScheduleForm3 from '../../Components/BusScheduleForm/BusScheduleForm3';

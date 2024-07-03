@@ -79,10 +79,6 @@ function Driver2() {
     return null; // Return null or a loader component while data is loading
   }
 
-
-
- 
-
   if (!travelDetails) {
     return <div>Travel details not found.</div>;
   }

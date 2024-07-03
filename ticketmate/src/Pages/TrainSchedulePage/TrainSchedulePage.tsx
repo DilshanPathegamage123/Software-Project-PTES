@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './TrainSchedulePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import { useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import TrainScheduleForm from '../../Components/TrainScheduleForm/TrainScheduleForm';

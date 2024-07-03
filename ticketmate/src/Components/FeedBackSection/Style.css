@@ -81,10 +81,9 @@ header {
 
 .rating li:hover,
 .num-display {
-  background: rebeccapurple;
+  background:#eea404;
   color: #fff;
 }
-
 
 
 .rating-input {
@@ -92,7 +91,7 @@ header {
 }
 
 [type="radio"]:checked ~ label {
-  background: #db7e03;
+  background: #eea404;
   color: #fff;
 }
 
@@ -225,4 +224,8 @@ input:focus {
 
 .rate {
   color: #ff9900;
+}
+
+.feedback-list {
+  background-color: #ffffff;
 }

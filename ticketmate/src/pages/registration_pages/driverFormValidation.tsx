@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 
 export const driverFormValidation = Yup.object().shape({
-    firstName:Yup.string().min(3).required('Name is required*'),
-    lastName:Yup.string().min(3).required('Name is required*'),
+    firstName:Yup.string().min(3).max(50).required('Name is required*'),
+    lastName:Yup.string().min(3).max(50).required('Name is required*'),
     nic:Yup.string().length(12).required('NIC is required*'),
     email:Yup.string().email("Please Enter valid email").required('Email is required*'),
     contactNumber:Yup.string().length(10).required('Contact number is required*'),

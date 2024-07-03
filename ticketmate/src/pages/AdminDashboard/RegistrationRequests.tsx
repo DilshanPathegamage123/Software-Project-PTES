@@ -52,24 +52,7 @@ const getToken = () => {
   }
 
   const rejectOwner = (id: number) => {
-    // axios
-    //   .put(`https://localhost:7196/api/userData/handleReject/${id}`, {},{
-    //     headers: {
-    //       Authorization: `Bearer ${getToken()}`,
-    //     },
-      
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setUserData(
-    //       userData.filter((user) => {
-    //         return user.id !== id;
-    //       })
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+   
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -107,33 +90,39 @@ const getToken = () => {
               'error'
             );
           });
+
+          try{
+            axios
+          .post(`https://localhost:7296/api/Email/SendEmails/${id}`,
+            {
+              to: "",
+              subject: "Registration Rejected",
+              message: `
+          <html>
+            <body>
+              <h1>Registration Rejected</h1>
+              <p>Your registration request has been rejected. You can try again with valid credentials.</p>
+            </body>
+          </html>
+          `,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          )
+
+          }catch(error){
+            console.log(error);
+          }
+
+
       }
     });
   };
   const AcceptOwner = (id: number) => {
-    // axios
-    //   .put(`https://localhost:7196/api/userData/handleAccept/${id}`, {},{
-    //     headers: {
-    //       Authorization: `Bearer ${getToken()}`,
-    //     },
-      
-      
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     Swal.fire({
 
-          
-    //     })
-    //     setUserData(
-    //       userData.filter((user) => {
-    //         return user.id !== id;
-    //       })
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     Swal.fire({
       title: 'Are you sure?',
       text: "You're about to accept this registration request.",
@@ -171,6 +160,33 @@ const getToken = () => {
               'error'
             );
           });
+
+          try{
+            axios
+          .post(`https://localhost:7296/api/Email/SendEmails/${id}`,
+            {
+              to: "",
+              subject: "Registration Accepted",
+              message: `
+          <html>
+            <body>
+              <h1>Registration Accepted</h1>
+              <p>Your registration request has been accepted. You can now login to your account.</p>
+            </body>
+          </html>
+          `,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          )
+
+          }catch(error){
+            console.log(error);
+          }
+
       }
     });
   };

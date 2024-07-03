@@ -27,6 +27,7 @@ interface TotalPriceLableProps {
   // disableButton?: boolean;
   BookingClass?: string;
   BookingCarriageNo?: Number;
+
 }
 
 const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
@@ -89,6 +90,7 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
         },
       });
     }
+
   };
 
   console.log(
@@ -118,6 +120,7 @@ const TotalPriceLable: React.FC<TotalPriceLableProps> = ({
       onSave();
     }
   };
+
   return (
     <div className="PriceLable col-12 pt-5 h-auto">
       <div className="row3 row col-12 pb-2 m-auto h-auto pt-lg-4 pb-lg-5">

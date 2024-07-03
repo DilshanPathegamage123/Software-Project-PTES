@@ -36,7 +36,6 @@ const LoginPage2 = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
     Swal.fire({
       title: "Logging in",
       text: "Please wait...",
@@ -45,6 +44,7 @@ const LoginPage2 = () => {
         Swal.showLoading();
       },
     });
+
 
     try {
       const response = await axios.post(
@@ -83,6 +83,7 @@ const LoginPage2 = () => {
             ];
 
             Swal.close();
+
           // Navigate to the paymentmain page and pass bookingDetails and userId
           if (user && location.state) {
             navigate("/paymentmain", {

@@ -4,6 +4,8 @@ import QRCode from 'qrcode';
 import axios from "axios";
 
 interface BookingData {
+  disabled: boolean ;
+
   busBookingId: number;
   busScheduleId: number;
   busId: number;
@@ -34,6 +36,8 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
     const [userId, setUserId] = useState("10");//to pass userId 
     const [tripId, setTripId] = useState("23");//to pass tripId
+
+
     const history = useNavigate();
     const PassengerId = "1";
     const buttonStyle = {
@@ -180,7 +184,8 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
     return(
         <div className="d-grid">
-            <button className="btn mt-5 mb-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} >Confirm</button>
+            <button className="btn mt-5 mb-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} 
+            disabled={props.disabled} >Confirm</button>
             {/* <button className="btn mt-5" type="button" style={buttonStyle}   onClick={() => history("/payment3",{state:{userId,tripId}})} >Pay Now</button> */}
 
         </div>

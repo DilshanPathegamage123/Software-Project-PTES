@@ -8,6 +8,7 @@ import BusIcon2 from "./images/Group 391.png";
 import TrainIcon from "./images/TrainImage.png";
 import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import ConfirmModal from "../Components/ConfirmModal/ConfirmModal";
+import { props } from "cypress/types/bluebird";
 
 type BookingType = {
   id: number;
@@ -27,6 +28,11 @@ interface MyBookingsProps {
   password: string;
 }
 
+interface passengerData {
+  id: number;
+}
+
+
 
 
 function MyBookings({ pid, username, password }: MyBookingsProps) {
@@ -37,6 +43,10 @@ function MyBookings({ pid, username, password }: MyBookingsProps) {
   const [selectedBooking, setSelectedBooking] = useState<BookingType | null>(
     null
   );
+
+
+let passengerId = passengerid.toString();
+
 
   console.log(pid);
   console.log(username);
@@ -55,6 +65,7 @@ console.log(passengerId);
           Swal.showLoading();
         },
       });
+
 
       try {
         const busResponse = await axios.get(
@@ -119,7 +130,6 @@ console.log(passengerId);
 
         console.log(filteredBusBookings);
         console.log(filteredTrainBookings);
-
         setBookings([...filteredBusBookings, ...filteredTrainBookings]);
         Swal.close();
         console.log(busBookings);
@@ -133,13 +143,20 @@ console.log(passengerId);
     fetchBookings();
   }, [passengerId]);
 
+
+
   console.log(bookings);
+
+  // const handelviewbtn = () => {
+  //   navigate("/Mapview", { state: { bookings } });
+  // }
 
   const handleEditClick = (booking: BookingType) => {
     if (booking.type === "bus") {
       navigate("/bus-booking-update", { state: { booking, username, password } });
     } else if (booking.type === "train") {
       navigate("/train-booking-update", { state: { booking, username, password } });
+
     }
     console.log(booking);
   };
@@ -149,7 +166,7 @@ console.log(passengerId);
     setShowModal(true);
   };
 
-  console.log(selectedBooking);
+  console.log("bookig",selectedBooking);
   const handleConfirmCancel = async () => {
     if (selectedBooking) {
       try {
@@ -157,8 +174,8 @@ console.log(passengerId);
         if (selectedBooking.paymentId && selectedBooking.paymentId !== "None") {
           await axios.post(`https://localhost:7296/api/Refund/refund-payment`, {
             paymentId: selectedBooking.paymentId,
-          })
-          ;
+          });
+
           console.log("Refund API called");
           console.log(selectedBooking.paymentId);
         }
@@ -224,7 +241,15 @@ console.log(passengerId);
                   type="button"
                   color="primary"
                   className=" m-0 p-0 "
+                  onClick={()=>navigate("/Mapview", {
+                     state: {
+                      booking
+                     } } 
+                  )  
+                  }
+                  
                 />
+                
               </div>
               <div className="col-lg-1 col-2 align-items-center justify-content-center d-flex m-auto pt-sm-2 ">
                 <PrimaryButton

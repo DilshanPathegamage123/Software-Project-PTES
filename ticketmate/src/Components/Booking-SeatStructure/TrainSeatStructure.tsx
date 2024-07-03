@@ -113,6 +113,7 @@ function TrainSeatStructure({
 
   return (
     <div className="col-12 SeatStr p-3 align-items-center justify-content-center m-auto pb-5 w-auto h-auto mb-3">
+
       <div className="d-flex justify-content-end align-items-start pt-3 pe-5 m-0">
         <img src={Steering} alt="Up Side" />
       </div>

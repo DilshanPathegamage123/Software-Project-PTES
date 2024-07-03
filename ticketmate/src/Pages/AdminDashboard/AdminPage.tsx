@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 //import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
@@ -14,6 +14,8 @@ import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
 import ReportAnlysis from "./ReportingAnalysisBus";
 import ReportTable from "./ReportingAnalysisBus";
+import Swal from "sweetalert2";
+
 
 function AdminPage() {
 let location = useLocation();
@@ -23,6 +25,31 @@ let { username, password } = location.state;
 //  const password = new URLSearchParams(location.search).get("password");
 
   const [selectedOption, setSelectedOption] = useState("option1");
+
+  const [loading, setLoading] = useState(true);
+  
+
+
+  
+  useEffect(() => {
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we load your data',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+  
+      // Simulating data fetching, you should replace this with actual data fetching logic
+      setTimeout(() => {
+        setLoading(false);
+        Swal.close();
+      }, 2000); // Adjust the timeout as needed
+    }, []);
+  if (loading) {
+    return null; // Return null or a loader component while data is loading
+  }
 
   return (
     <div className="adminpage">
@@ -119,3 +146,5 @@ let { username, password } = location.state;
 }
 
 export default AdminPage;
+
+

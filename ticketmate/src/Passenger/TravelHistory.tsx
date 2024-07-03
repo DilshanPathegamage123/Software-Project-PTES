@@ -38,6 +38,7 @@ interface passengerData {
   id: number;
 }
 
+
 function TravelHistory({pid}: {pid: number}) {
   const passengerid=pid;
   const [bookings, setBookings] = useState<BookingType[]>([]);

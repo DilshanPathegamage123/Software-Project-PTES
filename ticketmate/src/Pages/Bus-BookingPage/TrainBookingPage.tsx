@@ -157,6 +157,7 @@ const TrainBookingPage: React.FC = () => {
 
         setBookedSeats(bookedSeatsByClassAndCarriage);
         Swal.close();
+
       } catch (error) {
         Swal.close();
       Swal.fire('Error', 'Error fetching Train details or booked seats.', 'error');
@@ -170,6 +171,7 @@ const TrainBookingPage: React.FC = () => {
   console.log("Booked Seats:", bookedSeats);
   console.log("Train Details:", trainDetails);
   console.log("Train Details with seats:", trainDetailsWithSeats);
+
 
   useEffect(() => {
     if (trainDetailsWithSeats && trainDetailsWithSeats.scheduledCarriages) {
@@ -290,7 +292,7 @@ const TrainBookingPage: React.FC = () => {
     const classKey =
       selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
 
-    
+
     if (classKey !== null && bookedSeats[classKey]) {
       // Use currentCarriageIndex + 1 to get the carriage number (1-based index)
       const carriageSeats = bookedSeats[classKey][currentCarriageIndex + 1];

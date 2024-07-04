@@ -62,13 +62,13 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
     };
 
     useEffect(() => {
-        Swal.fire({
-            title: 'Loading...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
+        // Swal.fire({
+        //     title: 'Loading...',
+        //     allowOutsideClick: false,
+        //     didOpen: () => {
+        //         Swal.showLoading();
+        //     },
+        // });
     
         setIsLoading(true);
     
@@ -301,6 +301,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
             
             {isLoading ? (
                 <p>Loading...</p>
+            
             ) :
             leaveRequests.length === 0 ? (
           <div className="row p-5 rounded-4 sec shadow bg-grey mt-5 mb-5 ml-4 mr-4">

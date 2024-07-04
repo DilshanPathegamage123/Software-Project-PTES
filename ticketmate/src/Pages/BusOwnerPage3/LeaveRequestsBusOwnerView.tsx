@@ -18,6 +18,7 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ userId 
         const fetchLeaveRequests = async () => {
             setIsLoading(true); // Start loading
             try {
+                console.log('Fetching leave requests for bus owner:', userId);
                 const response = await axios.get(`http://localhost:5050/api/LeaveRequests/busowner/${userId}/leaverequests`);
                 const now = new Date();
                 const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Today's date without time
@@ -52,7 +53,7 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ userId 
                 setIsLoading(false); // Stop loading
             } catch (error) {
                 console.error('There was an error fetching the leave requests!', error);
-                Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
+                // Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
                 setIsLoading(false); // Stop loading
             }
         };
@@ -118,7 +119,7 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ userId 
                         return (
                             <li key={request.id} className={`list-group-item d-flex justify-content-between align-items-center ${isPast ? 'list-group-item-danger' : ''}`}>
                                 <div>
-                                    <span>{request.name}  -{request.startDate}</span>
+                                    <span>{request.name}  -Start Date:{request.startDate}</span>
                                 </div>
                                 <div className="d-flex align-items-center">
                                     {isPast && <span className="me-3 text-danger">{statusText}</span>}

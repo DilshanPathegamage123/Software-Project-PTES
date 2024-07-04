@@ -62,7 +62,6 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
     };
 
     useEffect(() => {
-   
         Swal.fire({
             title: 'Loading...',
             allowOutsideClick: false,
@@ -70,22 +69,27 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                 Swal.showLoading();
             },
         });
+    
         setIsLoading(true);
+    
         axios.get(`http://localhost:5050/api/LeaveRequests/user/${DriverId}`)
             .then(response => {
-                const leaveRequests = response.data.$values;
+                const leaveRequests = response.data.$values || [];
                 leaveRequests.sort((a: LeaveRequest, b: LeaveRequest) => new Date(b.date).getTime() - new Date(a.date).getTime());
                 setLeaveRequests(leaveRequests);
-                setIsLoading(false); // Stop loading
-                Swal.close(); // Close the loading alert
-                console.log(DriverId);
-                console.log(leaveRequests);
-                
+                setIsLoading(false);
+                Swal.close();
             })
-            .catch(error => console.error('There was an error fetching the leave requests!', error));
-                // Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
-                setIsLoading(false); // Stop loading
-
+            .catch(error => {
+                if (error.response && error.response.status === 404) {
+                    setLeaveRequests([]);
+                    Swal.close();
+                } else {
+                    console.error('There was an error fetching the leave requests!', error);
+                    Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
+                }
+                setIsLoading(false);
+            });
     }, [DriverId]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -234,7 +238,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Accepted leave requests cannot be updated.'
+                text: `${request.status} leave requests cannot be updated.`
             });
             return;
         }

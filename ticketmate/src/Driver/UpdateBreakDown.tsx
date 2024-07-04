@@ -169,6 +169,7 @@ const UpdateBreakdown: React.FC<Props> = ({ routNo, Id, DriverId, BusNo }) => {
       showNotification("Message sent successfully!");
     } catch (error) {
       console.error("Error sending breakdown update: ", error);
+      showNotification("Failed to send message. Please try again.");
     }
   };
 
@@ -178,10 +179,10 @@ const UpdateBreakdown: React.FC<Props> = ({ routNo, Id, DriverId, BusNo }) => {
         driverId: DriverId,
         busNo: BusNo,
       });
-      showNotification("Message sent successfully!");
+   
     } catch (error) {
       console.error("Error sending breakdown update using radio button: ", error);
-      showNotification("Failed to send message. Please try again.");
+     
     }
   };
 
@@ -277,6 +278,7 @@ const UpdateBreakdown: React.FC<Props> = ({ routNo, Id, DriverId, BusNo }) => {
           {notification}
         </div>
       )}
+      
     </div>
   );
 };

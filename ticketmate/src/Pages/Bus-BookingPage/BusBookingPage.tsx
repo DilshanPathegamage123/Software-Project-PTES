@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 import BoardinPoint from "./BusBookingPageAssests/BoardingPoint.png";
 import DroppingPoint from "./BusBookingPageAssests/DroppingPoint.png";
@@ -73,6 +74,14 @@ const BusBookingPage: React.FC = () => {
         return;
       }
 
+    Swal.fire({
+      title: 'Loading...',
+      text: 'Loading vehicle details. Please wait.',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
       try {
         const busDetailsResponse = await axios.get(
           `https://localhost:7048/api/GetBusDetails/${busDetails.VehicleId}`
@@ -88,7 +97,10 @@ const BusBookingPage: React.FC = () => {
         );
         console.log("Booked Seats:", bookedSeatsList);
         setBookedSeats(bookedSeatsList);
+        Swal.close();
       } catch (error) {
+        Swal.close();
+      Swal.fire('Error', 'Error fetching bus details or booked seats.', 'error');
         console.error("Error fetching bus details or booked seats:", error);
       }
     };
@@ -114,7 +126,9 @@ const BusBookingPage: React.FC = () => {
     }
   };
 
-  sessionStorage.setItem("BusScheduleId", busDetails.scheduleId);
+  console.log(busDetails.scheduledDatesList.$values[0].departureDate);
+
+  sessionStorage.setItem("BusScheduleId", Number(busDetails.scheduleId).toString());
   sessionStorage.setItem("VehicleId", busDetails.VehicleId.toString());
   sessionStorage.setItem("RouteNo", busDetails.routNo);
   sessionStorage.setItem("StartLocation", busDetails.startLocation);
@@ -133,11 +147,34 @@ const BusBookingPage: React.FC = () => {
     "TotalPaymentAmount",
     (selectedSeatNumbers.length * busDetails.ticketPrice).toString()
   );
+  sessionStorage.setItem(
+    "departureDate",
+    busDetails.scheduledDatesList.$values[0].departureDate
+  );
+
+
 
   const [feedback, setFeedback] = useState<Feedback[]>([]);
   const [averageRating, setAverageRating] = useState<number | null>(null);
 
   const busId = busDetails.VehicleId || 0;
+
+  console.log(
+    busDetails.scheduleId,
+    busDetails.VehicleId,
+    busDetails.routNo,
+    busDetails.startLocation,
+    busDetails.endLocation,
+    selectedStartLocation,
+    selectedEndLocation,
+    startStandTime,
+    endStandTime,
+    selectedSeatNumbers.toString(),
+    selectedSeatNumbers.length,
+    busDetails.ticketPrice,
+    selectedSeatNumbers.length * busDetails.ticketPrice,
+
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -196,7 +233,6 @@ const BusBookingPage: React.FC = () => {
 
   console.log(busName);
 
- 
   return (
     <div className="BusBooking">
       <PrimaryNavBar />
@@ -255,7 +291,7 @@ const BusBookingPage: React.FC = () => {
               ticketPrice={busDetails.ticketPrice}
               totalSeats={busDetailsWithSeats?.registeredBus.setsCount || 0}
               rate={averageRating}
-              vehicleName = {busName}
+              vehicleName={busName}
             />
           </div>
           <div className="BDPoints row col-12 h-auto d-flex pt-5 pb-5  mt-5 ms-auto  ">
@@ -299,6 +335,25 @@ const BusBookingPage: React.FC = () => {
           <TotalPriceLable
             passengers={selectedSeatNumbers.length}
             totalPrice={selectedSeatNumbers.length * busDetails.ticketPrice}
+            BusScheduleId={busDetails.scheduleId}
+            VehicleId={busDetails.VehicleId}
+            RouteNo={busDetails.routNo}
+            StartLocation={busDetails.startLocation}
+            EndLocation={busDetails.endLocation}
+            BoardingPoint={selectedStartLocation}
+            DroppingPoint={selectedEndLocation}
+            StartTime={startStandTime}
+            EndTime={endStandTime}
+            BookingSeatNO={selectedSeatNumbers.toString()}
+            BookingSeatCount={selectedSeatNumbers.length}
+            TicketPrice={busDetails.ticketPrice}
+            TotalPaymentAmount={
+              selectedSeatNumbers.length * busDetails.ticketPrice
+            }
+            departureDate={
+              busDetails.scheduledDatesList.$values[0].departureDate
+            }
+           // disableButton={selectedSeatNumbers.length === 0}
           />
         </div>
       </div>

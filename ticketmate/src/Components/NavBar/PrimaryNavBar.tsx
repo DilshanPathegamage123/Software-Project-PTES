@@ -21,7 +21,7 @@ function PrimaryNavBar() {
     <>
 
 
-      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-3 pr-5">
     
         <a className="navbar-brand" href="#" onClick={()=>history("/")}>
           {" "}
@@ -57,6 +57,7 @@ function PrimaryNavBar() {
                 className="nav-link"
                 href="#"
                 style={{ color: "var(--color-text-dark)" }}
+                onClick={() => history('/#section2')}
               >
                 About us
               </a>

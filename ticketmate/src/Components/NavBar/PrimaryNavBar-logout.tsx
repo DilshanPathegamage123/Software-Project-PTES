@@ -10,17 +10,38 @@ import { Link } from "react-router-dom";
 
 //import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 function PrimaryNavBar() {
   const history = useNavigate();
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log me out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Perform the logout operation here
+        sessionStorage.removeItem("token");
+        history("/login");
+        Swal.fire(
+          'Logged Out!',
+          'You have been successfully logged out.',
+          'success'
+        )
+      }
+    });
+  };
 
 
   return (
     <>
-
-
-      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-3 pr-5">
     
         <a className="navbar-brand" href="/">
           {" "}
@@ -72,9 +93,7 @@ function PrimaryNavBar() {
               color="third"
               //className="btn btn-outline-primary btn-sm"
               style={{border: "none", background: "none", color: "var(--color-text-dark)"}}
-          
-
-              onClick={() => {sessionStorage.clear();history("/login")}}
+                      onClick={handleLogout}
 
             
             > Log out &nbsp;<img src={icon} alt="icon" width="25px" height="25px" /> 

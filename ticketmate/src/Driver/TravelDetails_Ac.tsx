@@ -193,7 +193,6 @@ import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 interface Travel {
     id: number;
     arrivalDate: string;

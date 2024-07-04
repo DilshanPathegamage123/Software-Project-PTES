@@ -1,9 +1,17 @@
 import ProfileSection from "./ProfileSection";
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../Components/Footer/Footer1";
 import TravelDetails_Ac from "./TravelDetails_Ac";
 import TravelDetails_Co from "./TravelDetails_Co";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+import axios from "axios";
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
+import DriverLeaveRequest from "./DriverLeaveRequest";
+
+const MySwal = withReactContent(Swal);
 interface driverData {
   Id: number;
   firstName: string;
@@ -33,10 +41,10 @@ function Driver() {
     color: 'black', // Optionally change text color to ensure readability    
     width: '15%'
   };
- 
-
 
   
+  
+
   let location = useLocation();
   let { username, password } = location.state;
   const [driverdata, setDriverdata] = useState<driverData[]>([]);
@@ -66,7 +74,8 @@ function Driver() {
             requestStatus: driver.requestStatus,
           }))
         ));
-      
+        const driverId=(driverdata[0]?driverdata[0].Id:0).toString();
+        sessionStorage.setItem('userId', driverId);
         //console.log(passengerdata);
       })
       .catch((error) => {
@@ -75,6 +84,31 @@ function Driver() {
   }, []);
  
 
+
+
+ 
+ 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    MySwal.fire({
+      title: 'Loading...',
+      text: 'Please wait while we load your data',
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
+
+    // Simulating data fetching, you should replace this with actual data fetching logic
+    setTimeout(() => {
+      setLoading(false);
+      MySwal.close();
+    }, 2000); // Adjust the timeout as needed
+  }, []);
+  if (loading) {
+    return null; // Return null or a loader component while data is loading
+  }
 
   return (
     <>
@@ -143,13 +177,33 @@ function Driver() {
               >
                 Completed
               </button>
+              <button
+                  className={`btn ${
+                    currentComponent === "DriverLeaveRequest" ? "secondary" : "Yellow"
+                  }`}
+                  onClick={() => handleClick("DriverLeaveRequest")}
+                  style={buttonStyle}
+                >
+                  Request Leave
+                </button>
             </div>
             <div className="p-4 rounded-4 mb-4" style={{ background: "#F1F1F1" }}>
-              {currentComponent === "TravelDetails_Ac" ? (
-                <TravelDetails_Ac DriverId={driverdata[0]?driverdata[0].Id:0} DrivingLicenceNum={driverdata[0]?driverdata[0].drivingLicenseNo:""}/>
-              ) : (
-                <TravelDetails_Co DriverId={driverdata[0]?driverdata[0].Id:0} DrivingLicenceNum={driverdata[0]?driverdata[0].drivingLicenseNo:""}/>
-              )}
+            {currentComponent === "TravelDetails_Ac" ? (
+                  <TravelDetails_Ac 
+                    DriverId={driverdata[0] ? driverdata[0].Id : 0} 
+                    DrivingLicenceNum={driverdata[0] ? driverdata[0].drivingLicenseNo : ""} 
+                  />
+                ) : currentComponent === "TravelDetails_Co" ? (
+                  <TravelDetails_Co 
+                    DriverId={driverdata[0] ? driverdata[0].Id : 0} 
+                    DrivingLicenceNum={driverdata[0] ? driverdata[0].drivingLicenseNo : ""} 
+                  />
+                ) : currentComponent === "DriverLeaveRequest" ? (
+                  <DriverLeaveRequest 
+                    DriverId={driverdata[0] ? driverdata[0].Id : 0}
+                    DriverName={`${driverdata[0] ? driverdata[0].firstName : ''} ${driverdata[0] ? driverdata[0].lastName : ''}`}
+                  />
+                ) : null}
             </div>
           </div>
         </div>

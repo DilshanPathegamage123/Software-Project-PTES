@@ -12,6 +12,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
 
+import Swal from 'sweetalert2';
+
 interface ReportData {
   vehicleOwner: string;
   totalPassengers: number;
@@ -47,21 +49,35 @@ const ReportTable: React.FC = () => {
       .then((response) => {
         console.log("Bus Owners:", response.data);
         // Extract the user IDs from the response
-        const ownerIds = response.data.$values;
+        let ownerIds = response.data.$values;
+        ownerIds = ownerIds.filter((id: number) => id && !isNaN(id));
         setBusOwners(ownerIds);
+        console.log("Set Bus Owners:", ownerIds);
       })
       .catch((error) => {
         console.error("There was an error fetching the bus owners!", error);
       });
   }, []);
 
-  // Fetch report data whenever reportType changes
+  
   useEffect(() => {
     if (vehicleType === "Bus") {
       const fetchReportData = async () => {
         setLoading(true);
+        Swal.fire({
+          title: 'Loading...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         let allData: ReportData[] = [];
+        console.log("Fetching report data for bus owners:", busOwners);
+
         for (const ownerId of busOwners) {
+          console.log(`Fetching data for bus owner: ${ownerId}`);
+
           let data: ReportData | undefined;
           if (reportType === "daily") {
             data = await fetchDailyStatistics(ownerId);
@@ -73,23 +89,26 @@ const ReportTable: React.FC = () => {
             data = await fetchYearlyStatistics(ownerId);
           }
           if (data) {
+            console.log(`Fetched data for owner ${ownerId}:`, data);
             allData.push(data);
           }
         }
         console.log("Fetched Report Data:", allData);
+        console.log("Fetched all report data:", allData);
         setReportData(allData);
         setLoading(false);
+        Swal.close();
       };
 
       if (busOwners.length > 0) {
         fetchReportData();
       }
     }
-    // handleSearchInputChange;
-  }, [reportType, busOwners, searchTerm, vehicleType]);
-  
+  }, [reportType, busOwners, vehicleType]);
 
-  // Functions to fetch statistics for each date filter
+
+
+  
   const fetchDailyStatistics = async (userId: string): Promise<ReportData> => {
     const response = await axios.get(
       `http://localhost:5050/api/AdminReport/daily/${userId}`
@@ -152,8 +171,8 @@ const ReportTable: React.FC = () => {
     labels: filteredReportData.map((data) => data.vehicleOwner),
     datasets: [
       {
-        label: "Rate",
-        data: filteredReportData.map((data) => data.averageRate),
+        label: "No of Passengers",
+        data: filteredReportData.map((data) => data.totalPassengers),
         backgroundColor: "rgba(82, 208, 146, 01)",// yellow "rgba(0, 128, 0, .8)",green
         borderWidth: 1,
       },
@@ -172,7 +191,7 @@ const ReportTable: React.FC = () => {
         fill: false,
       },  {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => data.monthlyTotalPredictedIncome),
+        data: filteredReportData.map((data) => Math.max(0,data.monthlyTotalPredictedIncome)),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 
@@ -184,13 +203,13 @@ const ReportTable: React.FC = () => {
   const getReportHeading = () => {
     switch (reportType) {
       case "daily":
-        return "Daily Admin Report";
+        return "Daily Admin Bus Report";
       case "monthly":
-        return "Monthly Admin Report";
+        return "Monthly Admin  Bus Report";
       case "3months":
-        return "Three Months Admin Report";
+        return "Three Months Admin Bus Report";
       case "yearly":
-        return "Yearly Admin Report";
+        return "Yearly Admin Bus Report";
       default:
         return "Admin Report"; // Default fallback
     }
@@ -235,9 +254,9 @@ const ReportTable: React.FC = () => {
       body: filteredReportData.map((data) => [
         data.vehicleOwner,
         data.totalPassengers,
-        data.averageRate,
-        data.totalIncome,
-        data.monthlyTotalPredictedIncome
+        (data.averageRate.toFixed(1)),
+        Math.round(data.totalIncome),
+        Math.max(0, Math.round(data.monthlyTotalPredictedIncome))
         
       ]),
      
@@ -365,6 +384,7 @@ doc.setFontSize(12);
 
               <div className="form-check form-check-inline">
                 <input
+                data-testid="radioOption1"
                   className="form-check-input"
                   type="radio"
                   name="radioOptions"
@@ -379,6 +399,7 @@ doc.setFontSize(12);
               </div>
               <div className="form-check form-check-inline">
                 <input
+                data-testid="radioOption2"
                   className="form-check-input"
                   type="radio"
                   name="radioOptions"
@@ -398,6 +419,7 @@ doc.setFontSize(12);
                 <div className="col-lg-3 col-12 col-md-6 ml-auto">
                   {/* Search input */}
                   <input
+                  data-testid="searchInput"
                     type="text"
                     placeholder="Search Bus Owner ID"
                     name="search"
@@ -407,13 +429,16 @@ doc.setFontSize(12);
                     onChange={handleSearchChange}
                   />
                 </div>
-                <div className="col-lg-3 col-12 col-md-6">
+                <div 
+                className="col-lg-3 col-12 col-md-6">
                   {/* Date filter select */}
-                  <select value={reportType} onChange={handleDateFilterChange}>
-                    <option value="daily">Daily</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="3months">Three Months</option>
-                    <option value="yearly">Yearly</option>
+                  <select value={reportType} 
+                  data-testid="dateFilter"
+                  onChange={handleDateFilterChange}>
+                    <option data-testid="dateFilter0" value="daily" >Daily</option>
+                    <option  value="monthly">Monthly</option>
+                    <option  value="3months">Three Months</option>
+                    <option  value="yearly">Yearly</option>
                   </select>
                 </div>
                 </div>
@@ -422,11 +447,12 @@ doc.setFontSize(12);
           </div>
         </div>
         {loading ? (
-          <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
+           <div>Loading...</div>
+          // <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "200px" }}>
+          //   <div className="spinner-border" role="status">
+          //     <span className="visually-hidden">Loading...</span>
+          //   </div>
+          // </div>
         ) : vehicleType === "Bus" ? (
           <>
             <div
@@ -450,9 +476,9 @@ doc.setFontSize(12);
                       <tr key={index}>
                         <td className="text-center">{data.vehicleOwner}</td>
                         <td className="text-center">{data.totalPassengers}</td>
-                        <td className="text-center">{data.averageRate}</td>
-                        <td className="text-center">{data.totalIncome}</td>
-                        <td className="text-center">{(data.monthlyTotalPredictedIncome)}</td> {/*.toFixed(0) */}
+                        <td className="text-center">{(data.averageRate.toFixed(1))}</td>
+                        <td className="text-center">{Math.round(data.totalIncome)}</td>
+                        <td className="text-center">{Math.max(0, Math.round(data.monthlyTotalPredictedIncome))}</td> {/*.toFixed(0) */}
 
                       </tr>
                     ))}
@@ -462,79 +488,71 @@ doc.setFontSize(12);
             </div>
 
             {/* Charts */}
-            <div
-              className="container shadow col-10 justify-center p-3 mb-5 rounded "
-              style={{ backgroundColor: "#FFFFFF" }}
-              ref={barChartRef}
-            >
-              <div className="container-fluid">
-                <Bar
-                  data={barChartData}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        title: {
-                          display: true,
-                          text: "Vehicle Owner",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                      },
-                      y: {
-                        title: {
-                          display: true,
-                          text: "Rate",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
+            <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="chart-container" ref={barChartRef}>
+                <Bar data={barChartData} options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Vehicle Owner",
+                        font: {
+                          weight: 'bold'
+                        }
                       },
                     },
-                  }}
-                />
+                    y: {
+                      title: {
+                        display: true,
+                        text: "No of Passengers",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                    },
+                  },
+                }} />
               </div>
             </div>
 
-            <div
-              className="container shadow col-10 justify-center p-3 mb-5 rounded "
-              style={{ backgroundColor: "#FFFFFF" }}
-              ref={lineChartRef}
-            >
-              <div className="container-fluid">
-                <Line
-                  data={lineChartData}
-                  options={{
-                    responsive: true,
-                    scales: {
-                      x: {
-                        title: {
-                          display: true,
-                          text: "Vehicle Owner",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                      },
-                      y: {
-                        title: {
-                          display: true,
-                          text: "Income",
-                          font: {
-                            weight: 'bold'
-                          }
-                        },
-                        min: 0,
+            
+            <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="chart-container" ref={lineChartRef}>
+                <Line data={lineChartData} options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Vehicle Owner",
+                        font: {
+                          weight: 'bold'
+                        }
                       },
                     },
-                  }}
-                />
+                    y: {
+                      title: {
+                        display: true,
+                        text: "Income",
+                        font: {
+                          weight: 'bold'
+                        }
+                      },
+                      min: 0,
+                    },
+                  },
+                }} />
               </div>
             </div>
 
             <div className="row mt-3 p-5 d-flex justify-content-center align-items-center">
               <button
+              data-testid="downloadPDF"
                 onClick={downloadPDF}
                 className="btn btn-primary px-3 custom-button"
               >

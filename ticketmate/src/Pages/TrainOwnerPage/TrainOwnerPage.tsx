@@ -10,6 +10,9 @@ import { Link } from 'react-router-dom';
 import RegCarriagesInfoSec from '../../Components/RegCarriagesInfoSec/RegCarriagesInfoSec';
 import ScheduledTrainInfo from '../../Components/ScheduledTrainInfo/ScheduledTrainInfo';
 import BgImg from '../../assets/trainProImg.png';
+import TrainReport from './TrainOwnerReport';
+import LeaveRequestTrainOwnerView from './LeaveRequestsTrainOwnerView';
+
 import Swal from 'sweetalert2';
 
 function TrainOwnerPage() {
@@ -26,7 +29,8 @@ function TrainOwnerPage() {
     ScheduledTrains: true,
     RegLocomotives: false,
     RegCarriages: false,
-    Reports: false
+    Reports: false,
+    LeaveRequests: false
   });
 
   const [userData, setUserData] = useState({
@@ -138,7 +142,11 @@ function TrainOwnerPage() {
       case 'RegCarriages':
         return <RegCarriagesInfoSec id={userData.id} />;
       case 'Reports':
-        // return <RegCarriagesInfoSec id={userData.id} />;
+        return <TrainReport id={userData.id} />
+      case 'LeaveRequests':
+        return <LeaveRequestTrainOwnerView id={userData.id} />
+
+
       default:
         return null;
     }
@@ -180,6 +188,11 @@ function TrainOwnerPage() {
               <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
                 Reports
               </button>
+
+              <button className={`btn btn-primary secButton ${buttonStates.LeaveRequests ? 'active' : ''}`} onClick={() => handleButtonClick('LeaveRequests')}>
+              Leave Requests
+              </button>
+
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}

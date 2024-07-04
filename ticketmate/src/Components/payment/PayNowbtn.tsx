@@ -4,6 +4,8 @@ import QRCode from 'qrcode';
 import axios from "axios";
 
 interface BookingData {
+  disabled: boolean ;
+
   busBookingId: number;
   busScheduleId: number;
   busId: number;
@@ -34,6 +36,8 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
     const [userId, setUserId] = useState("10");//to pass userId 
     const [tripId, setTripId] = useState("23");//to pass tripId
+
+
     const history = useNavigate();
     const PassengerId = "1";
     const buttonStyle = {
@@ -68,6 +72,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
             {
                 to: "",
+                subject: props.busId ? "TicketMate - Bus Booking Confirmation" : "TicketMate - Train Booking Confirmation",
                 message:  `
                 <html>
                   <body>
@@ -84,7 +89,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
                     <p>You can make your payment in cash on the day of your trip.</p>
                     <p>Thank you for choosing our service. We look forward to serving you aboard our service. Should you have any further inquiries or require assistance, please feel free to contact us at +9471 1152 633.</p>
                     <p>Warm regards,</p>
-                    <p>R.M.H.Ranasinghe<br>
+                    <p>Joe Henry<br>
                     Director<br>
                     TicketMate<br>
                     +9471 123 2145</p>
@@ -180,7 +185,8 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
     return(
         <div className="d-grid">
-            <button className="btn mt-5 mb-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} >Confirm</button>
+            <button className="btn mt-5 mb-5" type="button" style={buttonStyle}  onClick={handlePayNowClick} 
+            disabled={props.disabled} >Confirm</button>
             {/* <button className="btn mt-5" type="button" style={buttonStyle}   onClick={() => history("/payment3",{state:{userId,tripId}})} >Pay Now</button> */}
 
         </div>

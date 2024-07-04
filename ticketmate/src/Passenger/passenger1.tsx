@@ -101,7 +101,7 @@ function Passenger() {
   return (
     <div>
       <PrimaryNavBar />
-      <div className="col-lg-10 col-sm-12 m-auto pt-3">
+      <div className="col-lg-10 col-sm-12 m-auto pt-3 mb-4">
         <div>
         <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">

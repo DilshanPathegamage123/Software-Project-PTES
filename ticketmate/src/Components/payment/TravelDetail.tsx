@@ -29,9 +29,7 @@ interface BookingData {
 
 const TravelDetails:React.FC<BookingData> = (props)=>{
     return (
-      <>
-
-<div className="container">
+  <div className="container">
     <div className="card" style={{border:'none',width:'35rem', borderRadius: '15px'}}>
       <div className="card-body" >
       <ul className="list-inline">
@@ -57,10 +55,9 @@ const TravelDetails:React.FC<BookingData> = (props)=>{
         <li className="list-inline-item">End Time: <strong style={{ marginLeft: '20px' }}>{props.endTime}</strong></li>
         <li className="list-inline-item"></li>
       </ul>     
-
-      </div>
-    </>
+     </div>
+    </div>
+  </div>
   );
-};
-
+}
 export default TravelDetails;

@@ -191,7 +191,7 @@ const ReportTable: React.FC = () => {
         fill: false,
       },  {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => data.monthlyTotalPredictedIncome),
+        data: filteredReportData.map((data) => Math.max(0,data.monthlyTotalPredictedIncome)),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 

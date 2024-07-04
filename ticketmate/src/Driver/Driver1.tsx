@@ -9,6 +9,7 @@ import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-c
 import axios from "axios";
 import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import DriverLeaveRequest from "./DriverLeaveRequest";
 
 const MySwal = withReactContent(Swal);
 interface driverData {
@@ -43,6 +44,7 @@ function Driver() {
 
   
   
+
   let location = useLocation();
   let { username, password } = location.state;
   const [driverdata, setDriverdata] = useState<driverData[]>([]);
@@ -81,6 +83,7 @@ function Driver() {
       });
   }, []);
  
+
 
 
  
@@ -174,13 +177,33 @@ function Driver() {
               >
                 Completed
               </button>
+              <button
+                  className={`btn ${
+                    currentComponent === "DriverLeaveRequest" ? "secondary" : "Yellow"
+                  }`}
+                  onClick={() => handleClick("DriverLeaveRequest")}
+                  style={buttonStyle}
+                >
+                  Request Leave
+                </button>
             </div>
             <div className="p-4 rounded-4 mb-4" style={{ background: "#F1F1F1" }}>
-              {currentComponent === "TravelDetails_Ac" ? (
-                <TravelDetails_Ac DriverId={driverdata[0]?driverdata[0].Id:0} DrivingLicenceNum={driverdata[0]?driverdata[0].drivingLicenseNo:""}/>
-              ) : (
-                <TravelDetails_Co DriverId={driverdata[0]?driverdata[0].Id:0} DrivingLicenceNum={driverdata[0]?driverdata[0].drivingLicenseNo:""}/>
-              )}
+            {currentComponent === "TravelDetails_Ac" ? (
+                  <TravelDetails_Ac 
+                    DriverId={driverdata[0] ? driverdata[0].Id : 0} 
+                    DrivingLicenceNum={driverdata[0] ? driverdata[0].drivingLicenseNo : ""} 
+                  />
+                ) : currentComponent === "TravelDetails_Co" ? (
+                  <TravelDetails_Co 
+                    DriverId={driverdata[0] ? driverdata[0].Id : 0} 
+                    DrivingLicenceNum={driverdata[0] ? driverdata[0].drivingLicenseNo : ""} 
+                  />
+                ) : currentComponent === "DriverLeaveRequest" ? (
+                  <DriverLeaveRequest 
+                    DriverId={driverdata[0] ? driverdata[0].Id : 0}
+                    DriverName={`${driverdata[0] ? driverdata[0].firstName : ''} ${driverdata[0] ? driverdata[0].lastName : ''}`}
+                  />
+                ) : null}
             </div>
           </div>
         </div>

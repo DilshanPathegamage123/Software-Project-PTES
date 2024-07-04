@@ -6,6 +6,12 @@ import "chart.js/auto";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import html2canvas from "html2canvas";
+import Swal from 'sweetalert2';
+
+
+interface BusOwnerPageReportProps {
+  userId: string;
+}
 
 
 interface ReportData {
@@ -22,9 +28,9 @@ interface ReportData {
   }
 
 
-const ReportTable: React.FC = () => {
+const ReportTable: React.FC<BusOwnerPageReportProps> = ({ userId })=>{
     const [reportType, setReportType] = useState<string>("monthly");
-    const [userId, setUserId] = useState<string>("");
+    // const [userId, setUserId] = useState<string>("");
     const [reportData, setReportData] = useState<ReportData[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -46,53 +52,55 @@ const ReportTable: React.FC = () => {
   }, []);
 
 
+
+
 useEffect(() => {
-    const fetchReportData = async () => {
-      if (!userId) return;
-      setErrorMessage(''); // Clear any previous error message
-      setLoading(true);
-  
+  const fetchReportData = async () => {
+    if (!userId) return;
+    // setErrorMessage('');
+    setLoading(true);
 
-      const timeoutId = setTimeout(() => {
-        setErrorMessage('The server is not connected. Please check your connection.');
-        setLoading(false);
-      }, 120000); // 120 seconds
+    // Swal.fire({
+    //   title: 'Loading...',
+    //   allowOutsideClick: false,
+    //   didOpen: () => {
+    //     Swal.showLoading();
+    //   }
+    // });
 
-      try {
-        let data: ReportData[] = [];
+    try {
+      let data: ReportData[] = [];
 
-        switch (reportType) {
-          case "daily":
-            data = await fetchDailyStatistics(userId);
-            break;
-          case "monthly":
-            data = await fetchMonthlyStatistics(userId);
-            break;
-          case "3months":
-            data = await fetchThreeMonthsStatistics(userId);
-            break;
-          case "yearly":
-            data = await fetchYearlyStatistics(userId);
-            break;
-          default:
-            data = [];
-        }
-        clearTimeout(timeoutId); // Clear the timeout if the request is successful
-
-        setReportData(data);
-      } catch (error) {
-        clearTimeout(timeoutId); // Clear the timeout if there is an error
-
-        console.error('Error fetching data:', error);
-        setErrorMessage('Error fetching data. Please try again later.');
-        setReportData([]);
-      } finally {
-        setLoading(false);
+      switch (reportType) {
+        case "daily":
+          data = await fetchDailyStatistics(userId);
+          break;
+        case "monthly":
+          data = await fetchMonthlyStatistics(userId);
+          break;
+        case "3months":
+          data = await fetchThreeMonthsStatistics(userId);
+          break;
+        case "yearly":
+          data = await fetchYearlyStatistics(userId);
+          break;
+        default:
+          data = [];
       }
-    };
 
-    fetchReportData();
-  }, [reportType, userId]);
+      setReportData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // setErrorMessage('Error fetching data. Please try again later.');
+      setReportData([]);
+    } finally {
+      setLoading(false);
+      Swal.close();
+    }
+  };
+
+  fetchReportData();
+}, [reportType, userId]);
 
 
 
@@ -144,17 +152,17 @@ useEffect(() => {
     setReportType(event.target.value);
   };
 
-  const handleUserIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserId(event.target.value);
-  };
+  // const handleUserIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setUserId(event.target.value);
+  // };
 
 
   const barChartData = {
     labels: reportData.map((data) => data.vehicleNo),
     datasets: [
       {
-        label: "Rate",
-        data: reportData.map((data) => data.averageRate),
+        label: "No of Passengers",
+        data: reportData.map((data) => data.totalPassengers),
         backgroundColor: "rgba(82, 208, 146, 01)",
         borderWidth: 1,
       },
@@ -231,9 +239,9 @@ useEffect(() => {
       body: reportData.map((data) => [
         data.vehicleNo,
         data.totalPassengers,
-        data.averageRate,
-        data.totalIncome,
-        data.monthlyPredictedIncome
+        (data.averageRate.toFixed(1)),
+        Math.round(data.totalIncome),
+        Math.max(0,Math.round(data.monthlyPredictedIncome))
       ]),
       startY: 30, // Start the table below the date
       margin: { left: 14 }, // Align with the date
@@ -352,9 +360,9 @@ useEffect(() => {
                 onChange={handleUserIdChange}
               />
             </div> */}
-            <div className="col-lg-3 col-12 col-md-6 ml-auto">
+            {/* <div className="col-lg-3 col-12 col-md-6 ml-auto"> */}
                   {/* Search input */}
-                  <input
+                  {/* <input
                     type="text"
                     placeholder="Search Bus Owner ID"
                     name="search"
@@ -363,8 +371,8 @@ useEffect(() => {
                     value={userId}
                     onChange={handleUserIdChange}
                   />
-                </div>
-            <div className="col-lg-4 col-12 col-md-6">
+                </div> */}
+            <div className="col-lg-4 col-12 col-md-6 ml-auto">
               {/* <label htmlFor="reportType">Report Type:</label> */}
               <select
                 id="reportType"
@@ -382,14 +390,15 @@ useEffect(() => {
           </div>
         </div>
         {loading ? (
-          <div
-            className="d-flex justify-content-center align-items-center"
-            style={{ minHeight: "200px" }}
-          >
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
+           <div>Loading...</div>
+          // <div
+          //   className="d-flex justify-content-center align-items-center"
+          //   style={{ minHeight: "200px" }}
+          // >
+          //   <div className="spinner-border" role="status">
+          //     <span className="visually-hidden">Loading...</span>
+          //   </div>
+          // </div>
         ) : errorMessage ?(
             <div className="d-flex justify-content-center">
 
@@ -419,23 +428,21 @@ useEffect(() => {
               <tr key={data.$id}>
                         <td className="text-center">{data.vehicleNo}</td>
                         <td className="text-center">{data.totalPassengers}</td>
-                        <td className="text-center">{data.averageRate}</td>
-                        <td className="text-center">{data.totalIncome}</td>
-                        <td className="text-center">{(data.monthlyPredictedIncome)}</td> {/*.toFixed(0) */}
+                        <td className="text-center">{(data.averageRate.toFixed(1))}</td>
+                        <td className="text-center">{Math.round(data.totalIncome)}</td>
+                        <td className="text-center">{Math.max(0,Math.round(data.monthlyPredictedIncome))}</td> {/*.toFixed(0) */}
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             </div>
-            <div
-              className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom"
-              style={{ backgroundColor: "#FFFFFF" }}
-            >
-              <div ref={barChartRef}>
-                <Bar data={barChartData}
-                options={{
+            <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="chart-container" ref={barChartRef}>
+                <Bar data={barChartData} options={{
                   responsive: true,
+                  maintainAspectRatio: false,
+
                   scales: {
                     x: {
                       title: {
@@ -449,26 +456,22 @@ useEffect(() => {
                     y: {
                       title: {
                         display: true,
-                        text: "Rate",
+                        text: "No of Passengers",
                         font: {
                           weight: 'bold'
                         }
                       },
                     },
                   },
-                }}
-                 />
+                }} />
               </div>
-              
             </div>
-            <div
-              className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom"
-              style={{ backgroundColor: "#FFFFFF" }}
-            >
-               <div ref={lineChartRef}>
-                <Line data={lineChartData} 
-                 options={{
+            <div className="container shadow col-10 justify-center p-3 mt-0 mb-5 rounded-bottom" style={{ backgroundColor: "#FFFFFF" }}>
+              <div className="chart-container" ref={lineChartRef}>
+                <Line data={lineChartData} options={{
                   responsive: true,
+                  maintainAspectRatio: false,
+
                   scales: {
                     x: {
                       title: {
@@ -490,20 +493,19 @@ useEffect(() => {
                       min: 0,
                     },
                   },
-                }}
-                />
+                }} />
               </div>
             </div>
           </>
         )}
       </div>
-      <div className="container">
-        <div className="row justify-content-center">
-          <button className="btn btn-primary px-3 custom-button" onClick={downloadPDF}>
-            Download PDF
-          </button>
-        </div>
-      </div>
+          <div className="container">
+            <div className="row justify-content-center">
+              <button className="btn btn-primary px-3 custom-button" onClick={downloadPDF}>
+                Download PDF
+              </button>
+            </div>
+          </div>
     </>
   );
 };

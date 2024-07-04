@@ -81,11 +81,6 @@ function Driver2() {
 
 
 
-
-    
-  
-
-
   if (!travelDetails) {
     return <div>Travel details not found.</div>;
   }

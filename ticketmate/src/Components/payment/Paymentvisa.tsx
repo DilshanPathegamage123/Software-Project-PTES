@@ -161,6 +161,7 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
             </body>
           </html>
         `,
+
             }
           )
           .then((response) => {
@@ -234,6 +235,7 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
                   // Handle error if needed
                 });
             }
+
           })
           .catch((error) => {
             console.error("Failed to send email", error);

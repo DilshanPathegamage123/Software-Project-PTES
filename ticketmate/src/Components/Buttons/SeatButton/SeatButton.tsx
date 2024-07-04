@@ -64,7 +64,7 @@ const SeatButton: React.FC<SeatButtonProps> = ({
 
   return (
     <button
-      className="seatButton p-0 m-0 border-0 mt-2"
+      className="seatButton p-0 m-0 mt-3 border-0 bg-transparent"
       onClick={handleButtonClick}
       disabled={currentStatus === "booked" || currentStatus === "not-available"}
     >

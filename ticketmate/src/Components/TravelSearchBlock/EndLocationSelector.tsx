@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./EndLocationSelector.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast} from 'react-toastify';
-
+import Swal from 'sweetalert2';
 import axios from "axios";
 
 interface EndLocationSelectorProps {
@@ -36,58 +36,45 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
     }
   }, [selectedVehicleType]);
 
+  // Define a generic type for the uniqueBy function
+function uniqueBy<T>(arr: T[], key: keyof T): T[] {
+  const result = [];
+  const map = new Map();
+  for (const item of arr) {
+    if (!map.has(item[key])) {
+      map.set(item[key], true); // set any value to Map
+      result.push(item);
+    }
+  }
+  return result;
+}
+  
   const getAllBusStands = async () => {
     try {
-      const response1 = await axios.get(
-        "https://localhost:7048/api/GetBusStands"
-      );
-      console.log("Response end (locations) from backend:", response1.data);
-      if (Array.isArray(response1.data.$values)) {
-      
-          setEndData(
-            response1.data.$values.map((item: BusStand) => ({
-              stopName: item.standName,
-            }))
-          );
-          setFilteredEndData(
-            response1.data.$values.map((item: BusStand) => ({
-              stopName: item.standName,
-            }))
-          );
-      } else {
-        setEndData([]);
-        setFilteredEndData([]);
-      }
+      const response = await axios.get("https://localhost:7048/api/GetBusStands");
+      console.log("Bus Stands from backend:", response.data);
+  
+      const uniqueBusStands = uniqueBy(response.data.$values, 'standName');
+  
+      setEndData(uniqueBusStands.map(item => ({ stopName: item.standName })));
+      setFilteredEndData(uniqueBusStands.map(item => ({ stopName: item.standName })));
     } catch (error) {
-      console.error("Error while fetching end locations from backend", error);
+      console.error("Error while fetching bus stands", error);
     }
   };
-
-
+  
+  
   const getAllTrainStations = async () => {
     try {
-      const response1 = await axios.get(
-        "https://localhost:7048/api/GetTrainStations"
-      );
-      console.log("Response end (locations) from backend:", response1.data);
-      if (Array.isArray(response1.data.$values)) {
-      
-          setEndData(
-            response1.data.$values.map((item:TrainStation ) => ({
-              stopName: item.trainStationName,
-            }))
-          );
-          setFilteredEndData(
-            response1.data.$values.map((item: TrainStation) => ({
-              stopName: item.trainStationName,
-            }))
-          );
-      } else {
-        setEndData([]);
-        setFilteredEndData([]);
-      }
+      const response = await axios.get<{ $values: TrainStation[] }>("https://localhost:7048/api/GetTrainStations");
+      console.log("Train Stations from backend:", response.data.$values);
+  
+      const uniqueTrainStations = uniqueBy(response.data.$values, 'trainStationName');
+  
+      setEndData(uniqueTrainStations.map(item => ({ stopName: item.trainStationName })));
+      setFilteredEndData(uniqueTrainStations.map(item => ({ stopName: item.trainStationName })));
     } catch (error) {
-      console.error("Error while fetching end locations from backend", error);
+      console.error("Error while fetching train stations", error);
     }
   };
   
@@ -105,7 +92,11 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
     <div className="selector d-flex "
     onClick={() => {
       if (!selectedVehicleType) {
-        toast.error('Please select a vehicle type first.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please select a vehicle type first.',
+        });
       }
     }}
     >
@@ -169,3 +160,59 @@ const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
 };
 
 export default EndLocationSelector;
+
+
+// const getAllBusStands = async () => {
+  //   try {
+  //     const response1 = await axios.get(
+  //       "https://localhost:7048/api/GetBusStands"
+  //     );
+  //     console.log("Response end (locations) from backend:", response1.data);
+  //     if (Array.isArray(response1.data.$values)) {
+      
+  //         setEndData(
+  //           response1.data.$values.map((item: BusStand) => ({
+  //             stopName: item.standName,
+  //           }))
+  //         );
+  //         setFilteredEndData(
+  //           response1.data.$values.map((item: BusStand) => ({
+  //             stopName: item.standName,
+  //           }))
+  //         );
+  //     } else {
+  //       setEndData([]);
+  //       setFilteredEndData([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error while fetching end locations from backend", error);
+  //   }
+  // };
+
+
+  // const getAllTrainStations = async () => {
+  //   try {
+  //     const response1 = await axios.get(
+  //       "https://localhost:7048/api/GetTrainStations"
+  //     );
+  //     console.log("Response end (locations) from backend:", response1.data);
+  //     if (Array.isArray(response1.data.$values)) {
+      
+  //         setEndData(
+  //           response1.data.$values.map((item:TrainStation ) => ({
+  //             stopName: item.trainStationName,
+  //           }))
+  //         );
+  //         setFilteredEndData(
+  //           response1.data.$values.map((item: TrainStation) => ({
+  //             stopName: item.trainStationName,
+  //           }))
+  //         );
+  //     } else {
+  //       setEndData([]);
+  //       setFilteredEndData([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error while fetching end locations from backend", error);
+  //   }
+  // };

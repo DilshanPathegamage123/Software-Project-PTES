@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UpdateBusRegInfoPage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';

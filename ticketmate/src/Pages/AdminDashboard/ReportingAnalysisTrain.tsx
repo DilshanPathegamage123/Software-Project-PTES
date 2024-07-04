@@ -64,7 +64,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
   // const [vehicleType, setVehicleType] = useState<string>("Train");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [trainOwners, setTrainOwners] = useState<string[]>([]);
-  const [selectedOwner, setSelectedOwner] = useState<string>("");
+  const [selectedOwner, setSelectedOwner] = useState<string>("SelectTrainOwner");
 
 
 
@@ -110,7 +110,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
   };
 
   async function fetchTrainReport(dateFilter: number): Promise<TrainReportItem[]> {
-    const userId = 99; // Set the constant user ID101/48
+    const userId = selectedOwner || "99"; // Default to a placeholder value (if needed)
     try {
       const response = await axios.get<ApiResponse>(`http://localhost:5050/api/TrainReports/${userId}/${dateFilter}`);
       // Ensure the response has the $values property
@@ -402,7 +402,7 @@ doc.setFontSize(12);
                       value={selectedOwner}
                       onChange={handleOwnerChange}
                     >
-                      <option value="">Select Train Owner</option>
+                      <option value="SelectTrainOwner">Select Train Owner</option>
                       {trainOwners.map((owner) => (
                         <option key={owner} value={owner}>
                           {owner}

@@ -45,7 +45,7 @@ function MyBookings({ pid, username, password }: MyBookingsProps) {
   );
 
 
-let passengerId = passengerid.toString();
+
 
 
   console.log(pid);

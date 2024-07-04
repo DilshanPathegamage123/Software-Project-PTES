@@ -26,7 +26,6 @@ interface BookingData {
   bookingClass: string;
 }
 
-
 const TravelDetails: React.FC<BookingData> = (props) => {
   return (
     <>
@@ -98,6 +97,5 @@ const TravelDetails: React.FC<BookingData> = (props) => {
 
     </>
   );
-};
-
+}
 export default TravelDetails;

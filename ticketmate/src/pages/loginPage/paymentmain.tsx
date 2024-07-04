@@ -28,6 +28,7 @@ function Payment() {
 
     busBookingId: 0,
     busScheduleId: state.BusScheduleId,
+    //busScheduleId:75,
     busId: state.VehicleId || 0,
 
     passengerId: (state.userId || UserId || "").toString(),

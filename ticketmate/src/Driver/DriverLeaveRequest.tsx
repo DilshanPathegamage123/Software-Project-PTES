@@ -90,6 +90,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                 }
                 setIsLoading(false);
             });
+
     }, [DriverId]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -239,6 +240,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                 icon: 'error',
                 title: 'Error',
                 text: `${request.status} leave requests cannot be updated.`
+
             });
             return;
         }
@@ -301,7 +303,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
             
             {isLoading ? (
                 <p>Loading...</p>
-            
+
             ) :
             leaveRequests.length === 0 ? (
           <div className="row p-5 rounded-4 sec shadow bg-grey mt-5 mb-5 ml-4 mr-4">

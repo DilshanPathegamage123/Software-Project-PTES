@@ -75,7 +75,7 @@ const ReviewList: React.FC<ReviewListProps> = ({ busId }) => {
   return (
     <div
       id="carouselInterval"
-      className="carousel slide col-11 m-auto justify-content-center align-items-center mt-3"
+      className="carousel slide col-11 m-auto justify-content-center align-items-center mt-3 mb-3"
       data-bs-ride="carousel"
     >
       <div className="carousel-inner col-8 pt-3 m-auto p-4">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Swal from 'sweetalert2';
 
 import BoardinPoint from "./BusBookingUpdatePageAssests/BoardingPoint.png";
 import DroppingPoint from "./BusBookingUpdatePageAssests/DroppingPoint.png";
@@ -71,8 +72,12 @@ export interface Feedback {
 const BusBookingUpdatePage: React.FC = () => {
   const location = useLocation();
   const booking = location.state.booking;
+  const username = location.state.username;
+  const password = location.state.password;
 
   console.log("Bus Booking:", booking);
+  console.log(username);
+  console.log(password);
 
   const [busDetailsWithSeats, setBusDetailsWithSeats] =
     useState<BusDetailsWithSeats | null>(null);
@@ -107,6 +112,15 @@ const BusBookingUpdatePage: React.FC = () => {
 
   useEffect(() => {
     const fetchBusDetails = async () => {
+
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Loading vehicle details. Please wait.',
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       try {
         // Fetch bus schedule details
         const busScheduleDetailsResponse = await axios.get(
@@ -141,7 +155,10 @@ const BusBookingUpdatePage: React.FC = () => {
         setCurrentBookingSeats(userBookedSeats);
         setSelectedSeatNumbers(userBookedSeats);
         setSelectedSeatLocations(userBookedSeats);
+        Swal.close();
       } catch (error) {
+        Swal.close();
+        Swal.fire('Error', 'Error fetching bus details or booked seats.', 'error');
         console.error("Error fetching bus details or booked seats:", error);
       }
     };
@@ -176,7 +193,11 @@ const BusBookingUpdatePage: React.FC = () => {
     const selectedSeatCount = selectedSeatNumbers.length;
 
     if (selectedSeatCount !== bookedSeatCount) {
-      toast.info(`You have to select ${bookedSeatCount} seats for saving`);
+      Swal.fire({
+        icon: 'info',
+        title: 'Information',
+        text: `You have to select ${bookedSeatCount} seats for saving`,
+    });
       return;
     }
 
@@ -196,13 +217,25 @@ const BusBookingUpdatePage: React.FC = () => {
       );
 
       console.log(booking.busBookingId, bookingSeatNO);
-      toast.success("Seats booked successfully!");
-
-      // Navigate to the passenger profile page
-      navigate("/passenger-profile");
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Seats booked successfully!',
+        confirmButtonText: 'OK'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Navigate to the passenger profile page
+            navigate("/passenger", { state: { username, password } });
+        }
+    });
     } catch (error) {
       console.error("Error updating booked seats:", error);
-      toast.error("Failed to save seats. Please try again.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to save seats. Please try again.',
+    });
     }
   };
 
@@ -384,6 +417,7 @@ const BusBookingUpdatePage: React.FC = () => {
             passengers={selectedSeatNumbers.length}
             buttonText="Save"
             onSave={handleSave}
+             mode="update"
           />
         </div>
       </div>

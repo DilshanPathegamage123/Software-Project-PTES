@@ -126,9 +126,9 @@ const TrainFeedbackList: React.FC<FeedbackListProps> = ({
 
   console.log("FeedBack", hasFeedback);
   return (
-    <div className="feedback-list">
+    <div className="feedback-list rounded-2">
       {feedback.length === 0 ? (
-        <p className="ps-5 ms-3">No Feedback Yet from you.</p>
+        <p className="text-center pt-2">No Feedback Yet from you.</p>
       ) : (
         feedback.map((item) => (
           <TrainFeedbackItem

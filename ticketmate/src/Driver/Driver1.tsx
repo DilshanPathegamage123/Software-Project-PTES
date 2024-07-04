@@ -44,6 +44,7 @@ function Driver() {
 
   
   
+
   let location = useLocation();
   let { username, password } = location.state;
   const [driverdata, setDriverdata] = useState<driverData[]>([]);
@@ -82,6 +83,7 @@ function Driver() {
       });
   }, []);
  
+
 
 
  

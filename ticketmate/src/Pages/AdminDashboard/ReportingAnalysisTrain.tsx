@@ -52,6 +52,7 @@ interface MyComponentProps {
 interface TrainOwnersResponse {
   $id: string;
   $values: string[];
+
 }
 
 
@@ -151,7 +152,6 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
 
     getReport();
   }, [dateFilter,selectedOwner]);
- 
 
   const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setDateFilter(parseInt(event.target.value, 10));

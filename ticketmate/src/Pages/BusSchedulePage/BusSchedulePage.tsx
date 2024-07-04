@@ -15,6 +15,10 @@ function BusSchedulePage() {
   const [standNames, setStandNames] = useState<string[]>([]);
   const [scheduleId, setScheduleId] = useState<string>('');
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get('id');

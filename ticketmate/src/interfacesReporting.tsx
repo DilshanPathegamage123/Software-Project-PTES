@@ -38,6 +38,7 @@ export interface LeaveRequest {
   totalDays: number;
   familyAndMedical: string;
   weddingRelationship: string;
+
   funeralRelationship: string;
   name: string;
   userId: string;

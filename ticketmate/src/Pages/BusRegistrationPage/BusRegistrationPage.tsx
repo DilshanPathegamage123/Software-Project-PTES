@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './BusRegistrationPage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import SelectBusSeatStructure from '../../Components/SelectBusSeatStructure/SelectBusSeatStructure';
@@ -24,12 +23,14 @@ function BusRegistrationPage() {
   const userId = queryParams.get('id');
   console.log("user id " + userId);
 
-    
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const [formData, setFormData] = useState({
     busNum: '',
     busName: '',
     licenceNum: '',
-    seatCount: '',
     selectedFile1: null,
     selectedFile2: null,
     acOption: ''
@@ -39,7 +40,6 @@ function BusRegistrationPage() {
     busNum: '',
     busName: '',
     licenceNum: '',
-    seatCount: '',
     selectedFile1: '',
     selectedFile2: '',
     acOption: ''
@@ -51,21 +51,14 @@ function BusRegistrationPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'seatCount' && !/^\d+$/.test(value)) {
-      setErrors({
-        ...errors,
-        [name]: 'Only numbers are allowed for seat count'
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    setErrors({
+      ...errors,
+      [name]: ''
+    });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,19 +155,25 @@ function BusRegistrationPage() {
 
       try {
         const acOptionValue = formData.acOption === 'AC' ? true : false;
+        const seatCount = Object.values(buttonStates).filter((value) => value).length;
+
         const response = await axios.post<ApiResponse>('https://localhost:7001/api/BusReg', {
           BusNo: formData.busNum,
           LicenNo: formData.licenceNum,
-          SetsCount: formData.seatCount,
+          SetsCount: seatCount,
           ACorNONAC: acOptionValue,
           LicenseImgURL: licenseUrl,
           InsuranceImgURL: insuranceUrl,
           BusName: formData.busName,
           userId: userId
+        }, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
         });
 
         const busId = response.data.busId;
-        console.log("Newly generated BusId:", busId );
+        console.log("Newly generated BusId:", busId);
 
         await storeButtonData(busId);
 
@@ -183,18 +182,14 @@ function BusRegistrationPage() {
         Swal.fire({
           icon: "success",
           title: "Your Bus Successfully Registered",
-          showConfirmButton: false,
+          showConfirmButton: true,
           timer: 3500
         })
-        // setTimeout(() => {
-        //     window.location.reload();
-        // }, 4000);
 
         navigate('/BusOwnerPage');
-        //toast.success('Form submitted successfully');
       } catch (error) {
         Swal.fire({
-          icon: "error",  
+          icon: "error",
           title: "Form submission failed",
           showConfirmButton: false,
           timer: 2500
@@ -202,7 +197,7 @@ function BusRegistrationPage() {
       }
     } else {
       Swal.fire({
-        icon: "error",  
+        icon: "error",
         title: "Form submission failed",
         showConfirmButton: false,
         timer: 2500
@@ -215,21 +210,19 @@ function BusRegistrationPage() {
       for (const [seatId, availability] of Object.entries(buttonStates)) {
         const buttonData = {
           seatId: seatId,
-          seatAvailability: !!availability, // Convert to boolean
+          seatAvailability: !!availability,
           registeredBusBusId: busId,
         };
-  
-        console.log("Button Data:", buttonData); // Log button data before sending the request
-  
+
+        console.log("Button Data:", buttonData);
+
         await axios.post(`https://localhost:7001/api/SelectedSeatStr`, buttonData);
-  
-        console.log("Button data stored successfully for BusId:", busId); // Log success message for each seat
+
+        console.log("Button data stored successfully for BusId:", busId);
       }
     } catch (error) {
       console.error('Error storing button data:', error);
     }
-
-    
   };
 
   const uploadFileAndGetUrl = async (file: File) => {
@@ -256,7 +249,6 @@ function BusRegistrationPage() {
       }
     });
   }
-
 
   return (
     <>
@@ -308,13 +300,13 @@ function BusRegistrationPage() {
                     {errors.selectedFile2 && <div className="text-danger">{errors.selectedFile2}</div>}
                   </div>
 
-                  <div className="form-group row">
+                  {/* <div className="form-group row">
                     <label htmlFor="inputSeatNo" className="col-form-label">Enter seat Count</label>
                     <div className="">
                       <input type="number" className="form-control" id="inputSeatNo" name="seatCount" placeholder="seat Count" onChange={handleInputChange} />
                       {errors.seatCount && <div className="text-danger">{errors.seatCount}</div>}
                     </div>
-                  </div>
+                  </div> */}
                   <div className="row">
                     <fieldset className="form-group">
                       <legend className="col-form-label pt-0">AC or NoN AC</legend>

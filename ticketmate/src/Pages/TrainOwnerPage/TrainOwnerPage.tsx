@@ -146,6 +146,7 @@ function TrainOwnerPage() {
       case 'LeaveRequests':
         return <LeaveRequestTrainOwnerView id={userData.id} />
 
+
       default:
         return null;
     }
@@ -187,6 +188,7 @@ function TrainOwnerPage() {
               <button className={`btn btn-primary secButton ${buttonStates.Reports ? 'active' : ''}`} onClick={() => handleButtonClick('Reports')}>
                 Reports
               </button>
+
               <button className={`btn btn-primary secButton ${buttonStates.LeaveRequests ? 'active' : ''}`} onClick={() => handleButtonClick('LeaveRequests')}>
               Leave Requests
               </button>

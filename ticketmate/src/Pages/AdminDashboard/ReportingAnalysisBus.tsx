@@ -468,7 +468,7 @@ doc.setFontSize(12);
                       <th className="text-center">Total Passengers</th>
                       <th className="text-center">Average Rate</th>
                       <th className="text-center">Total Income</th>
-                      <th className="text-center">Monthly Predicted Income</th>
+                      <th className="text-center">Monthly Total Predicted Income</th>
                     </tr>
                   </thead>
                   <tbody>

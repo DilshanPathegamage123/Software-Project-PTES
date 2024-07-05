@@ -180,7 +180,7 @@ useEffect(() => {
         fill: false,
       },{
         label: "Monthly Predicted Income",
-        data: reportData.map((data) => data.monthlyPredictedIncome),
+        data: reportData.map((data) => Math.max(0,data.monthlyPredictedIncome)),
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth:6,
         fill: false,

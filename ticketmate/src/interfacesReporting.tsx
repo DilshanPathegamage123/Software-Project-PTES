@@ -37,6 +37,7 @@ export interface LeaveRequest {
   endDate: string;
   totalDays: number;
   familyAndMedical: string;
+  weddingRelationship: string;
   funeralRelationship: string;
   name: string;
   userId: string;
@@ -53,6 +54,7 @@ export interface NewLeaveRequest {
   totalDays: number;
   currentDate: string;
   familyAndMedical: string;
+  weddingRelationship: string;
   funeralRelationship: string;
   termsAccepted: boolean;
   status:''|'Accepted' | 'Rejected'|'Cancelled';

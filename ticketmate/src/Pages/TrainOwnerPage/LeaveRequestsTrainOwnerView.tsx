@@ -56,6 +56,7 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ id }) =
             } catch (error) {
                 console.error('There was an error fetching the leave requests!', error);
                 // Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
+
                 setIsLoading(false); // Stop loading
             }
         };

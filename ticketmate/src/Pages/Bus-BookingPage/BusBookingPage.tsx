@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 import BoardinPoint from "./BusBookingPageAssests/BoardingPoint.png";
 import DroppingPoint from "./BusBookingPageAssests/DroppingPoint.png";
@@ -73,6 +74,14 @@ const BusBookingPage: React.FC = () => {
         return;
       }
 
+    Swal.fire({
+      title: 'Loading...',
+      text: 'Loading vehicle details. Please wait.',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
       try {
         const busDetailsResponse = await axios.get(
           `https://localhost:7048/api/GetBusDetails/${busDetails.VehicleId}`
@@ -88,7 +97,10 @@ const BusBookingPage: React.FC = () => {
         );
         console.log("Booked Seats:", bookedSeatsList);
         setBookedSeats(bookedSeatsList);
+        Swal.close();
       } catch (error) {
+        Swal.close();
+      Swal.fire('Error', 'Error fetching bus details or booked seats.', 'error');
         console.error("Error fetching bus details or booked seats:", error);
       }
     };

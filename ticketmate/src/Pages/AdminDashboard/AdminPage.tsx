@@ -15,7 +15,11 @@ import RegistrationRequests from "./RegistrationRequests";
 import ReportAnlysis from "./ReportingAnalysisBus";
 import ReportTable from "./ReportingAnalysisBus";
 import Swal from "sweetalert2";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 function AdminPage() {
 let location = useLocation();
@@ -53,7 +57,8 @@ let { username, password } = location.state;
 
   return (
     <div className="adminpage">
- <span data-testid="navbar"><PrimaryNavBar_logout /></span>
+      {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
+
 
       <div className="container-fluid pt-3 ">
         <div className="container-fluid rounded-4 proSec">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 import BoardinPoint from "./BusBookingPageAssests/BoardingPoint.png";
 import DroppingPoint from "./BusBookingPageAssests/DroppingPoint.png";
@@ -15,6 +15,13 @@ import TotalPriceLable from "../../Components/Booking-TotalPriceLable/TotalPrice
 import TrainSeatStructure from "../../Components/Booking-SeatStructure/TrainSeatStructure";
 import { SearchResult } from "../../SearchResult";
 import TrainReviewList from "../../Components/FeedBackSection/TrainReviewList";
+import "./TrainBookingPage.css";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 export interface Feedback {
   feedBackId: number;
@@ -89,6 +96,7 @@ const TrainBookingPage: React.FC = () => {
   );
 
   const [trainName, setTrainName] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (location.state) {
@@ -107,8 +115,8 @@ const TrainBookingPage: React.FC = () => {
       }
 
       Swal.fire({
-        title: 'Loading...',
-        text: 'Loading vehicle details. Please wait.',
+        title: "Loading...",
+        text: "Loading vehicle details. Please wait.",
         didOpen: () => {
           Swal.showLoading();
         },
@@ -157,10 +165,13 @@ const TrainBookingPage: React.FC = () => {
 
         setBookedSeats(bookedSeatsByClassAndCarriage);
         Swal.close();
-
       } catch (error) {
         Swal.close();
-      Swal.fire('Error', 'Error fetching Train details or booked seats.', 'error');
+        Swal.fire(
+          "Error",
+          "Error fetching Train details or booked seats.",
+          "error"
+        );
         console.error("Error fetching train details:", error);
       }
     };
@@ -171,7 +182,6 @@ const TrainBookingPage: React.FC = () => {
   console.log("Booked Seats:", bookedSeats);
   console.log("Train Details:", trainDetails);
   console.log("Train Details with seats:", trainDetailsWithSeats);
-
 
   useEffect(() => {
     if (trainDetailsWithSeats && trainDetailsWithSeats.scheduledCarriages) {
@@ -292,7 +302,6 @@ const TrainBookingPage: React.FC = () => {
     const classKey =
       selectedClass === "1st" ? 1 : selectedClass === "2nd" ? 2 : null;
 
-
     if (classKey !== null && bookedSeats[classKey]) {
       // Use currentCarriageIndex + 1 to get the carriage number (1-based index)
       const carriageSeats = bookedSeats[classKey][currentCarriageIndex + 1];
@@ -388,7 +397,7 @@ const TrainBookingPage: React.FC = () => {
 
   return (
     <div className="BusBooking">
-      <PrimaryNavBar />
+      {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <div className=" d-flex justify-content-center align-items-center pt-3">
         <DetailsCard
           isBookingPage
@@ -524,6 +533,52 @@ const TrainBookingPage: React.FC = () => {
               </div>
             </div>
           </div>
+
+        {/* View Stop Stations */}
+<div className="row col-4 me-auto w-auto">
+  <p
+    className="text-success btn bg-transparent"
+    onClick={() => setShowModal(true)}
+  >
+    To view train stops &rarr;
+  </p>
+
+  {showModal && (
+    <div
+      className="modal show d-block w-auto"
+      role="dialog"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+    >
+      <div className="modal-dialog" role="document" style={{ width: 'auto', maxWidth: '30%' }}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title ms-auto me-auto">Train Stops and Arrival Times</h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={() => setShowModal(false)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <ul>
+              {trainDetails?.selectedStands?.$values.map((stop) => (
+                <li key={stop.id} className="station-time-layout">
+                  <span>{stop.trainStationName.trim()}</span>
+                  <span>{stop.trainDepartureTime}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+          {/* View Selected Seats */}
           <div className=" d-flex justify-content-center pt-5 fs-5 h-auto ">
             {selectedSeats.length > 0
               ? formatSelectedSeats()
@@ -558,21 +613,18 @@ const TrainBookingPage: React.FC = () => {
                 : trainDetails?.secondClassTicketPrice || 0
             }
             TotalPaymentAmount={
-                selectedClass === "1st"
+              selectedClass === "1st"
                 ? selectedSeats.length *
                   (trainDetails?.firstClassTicketPrice || 0)
                 : selectedSeats.length *
                   (trainDetails?.secondClassTicketPrice || 0)
             }
-            // departureDate={
-            //   trainDetails.scheduledDatesList.$values[0].departureDate 
-            // }
             departureDate={
-              trainDetails.scheduledDatesList && trainDetails.scheduledDatesList.length > 0
+              trainDetails.scheduledDatesList &&
+              trainDetails.scheduledDatesList.length > 0
                 ? trainDetails.scheduledDatesList[0].departureDate
                 : undefined // or a default value or handling for when departureDate is not available
             }
-            //disableButton={selectedSeats.length === 0}
             BookingClass={selectedClass}
             BookingCarriageNo={currentCarriageIndex + 1}
           />
@@ -580,6 +632,26 @@ const TrainBookingPage: React.FC = () => {
       </div>
       <TrainReviewList trainName={trainName} />
       <Footer />
+
+      {/* <StopLocationsModal
+        show={showStationModal}
+        onClose={() => setShowStationModal(false)}
+      >
+        <h2>Stop Stations and Departure Times</h2>
+        <ul>
+          {trainDetailsWithSeats?.selectedStands?.$values.map((stop: any) => (
+            <li key={stop.id}>
+              {stop.trainStationName} - {stop.trainDepartureTime}
+            </li>
+          ))}
+        </ul>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setShowStationModal(false)}
+        >
+          Close
+        </button>
+      </StopLocationsModal> */}
     </div>
   );
 };

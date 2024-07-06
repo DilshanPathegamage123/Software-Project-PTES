@@ -5,7 +5,6 @@ import MyBookings from "./MyBookings";
 import { useEffect, useState } from "react";
 import TravelHistory from "./TravelHistory";
 import Notifications from "./Notification";
-
 import axios from "axios";
 import {
   BrowserRouter as Router,
@@ -13,7 +12,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
-
+import "./passenger1.css";
 interface PassengerData {
   Id: number;
   firstName: string;
@@ -101,9 +100,9 @@ function Passenger() {
   }, []);
 
   return (
-    <div>
+    <div className="passenger-page">
       <PrimaryNavBar />
-      <div className="col-lg-10 col-sm-12 m-auto pt-3 mb-4">
+      <div className="col-lg-10 col-sm-12 m-auto pt-3 mb-4 content-wrapper3">
         <div>
           <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">

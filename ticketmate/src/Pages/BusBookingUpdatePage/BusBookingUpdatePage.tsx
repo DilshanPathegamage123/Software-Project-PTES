@@ -15,6 +15,12 @@ import TravelLable from "../../Components/Booking-TravelLable/TravelLable";
 import TotalPriceLable from "../../Components/Booking-TotalPriceLable/TotalPriceLable";
 import BusSeatStructure from "../../Components/Booking-SeatStructure/BusSeatStructure";
 import "../Bus-BookingPage/BusBookingPage.css";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 type BusStand = {
   id: number;
@@ -303,7 +309,7 @@ const BusBookingUpdatePage: React.FC = () => {
 
   return (
     <div className="BusBooking">
-      <PrimaryNavBar />
+        {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <div className=" d-flex justify-content-center align-items-center pt-3">
         {busScheduleDetails ? (
           <DetailsCard

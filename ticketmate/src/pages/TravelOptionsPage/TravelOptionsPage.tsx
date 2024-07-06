@@ -7,6 +7,13 @@ import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
 import Footer from "../../Components/Footer/footer";
 import { SearchResult } from "../../SearchResult";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
+
 
 const TravelOptionsPage: React.FC = () => {
   const location = useLocation();
@@ -61,6 +68,8 @@ const TravelOptionsPage: React.FC = () => {
       },
     });
   };
+
+  console.log;(searchResults);
 
   useEffect(() => {
     sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
@@ -133,7 +142,7 @@ const TravelOptionsPage: React.FC = () => {
 
   return (
     <div className="wrapper">
-      <PrimaryNavBar />
+      {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <TotalBlock2
         selectedVehicleType={selectedVehicleType}
         selectedStartLocation={selectedStartLocation}
@@ -161,7 +170,7 @@ const TravelOptionsPage: React.FC = () => {
         </div>
       </div>
       <Footer />
-      </div>
+    </div>
   );
 };
 

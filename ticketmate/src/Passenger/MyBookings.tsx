@@ -282,7 +282,7 @@ console.log(passengerId);
        // <div className="text-center">No active bookings found.</div>
                 <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
                     <div className="col-lg-12 mt-5 mb-4">
-                        <p className="text-danger fs-10 fw-bold font-family-Inter">
+                        <p className="text-center fs-10 font-family-Inter">
                             No active bookings found.
                         </p>
                     </div>

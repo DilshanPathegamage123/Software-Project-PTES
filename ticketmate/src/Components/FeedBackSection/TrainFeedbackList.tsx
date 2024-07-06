@@ -9,7 +9,7 @@ interface FeedbackListProps {
   passengerId: string;
   trainScheduleId: number;
   bookingId: number;
-  trainName : string;
+  //trainName : string;
 }
 
 export interface Feedback {
@@ -28,12 +28,44 @@ const TrainFeedbackList: React.FC<FeedbackListProps> = ({
   passengerId,
   trainScheduleId,
   bookingId,
-  trainName,
+  //trainName,
 }) => {
   const [feedback, setFeedback] = useState<Feedback[]>([]);
-  //const [isLoading, setIsLoading] = useState(true);
   const [editFeedback, setEditFeedback] = useState<Feedback | null>(null);
+  const [trainName, setTrainName] = useState("");
 
+  useEffect(() => {
+    const fetchTrainName = async () => {
+      if (!trainScheduleId) {
+        console.error("Train scheduleId is undefined");
+        return;
+      }
+
+      try {
+        const trainSchedule = await axios.get(
+          `https://localhost:7048/api/GetTrainNames`,
+          {
+            params: { trainScheduleId },
+          }
+        );
+        const trainDetails = trainSchedule.data.$values[0];
+        console.log(trainDetails);
+        //setTrainScheduleDetails(trainDetails);
+        setTrainName(trainDetails.trainName);
+        
+      } catch (error) {
+        console.error(
+          "Error fetching schedule details for get train name:",
+          error
+        );
+      }
+    };
+
+    fetchTrainName();
+  }, [trainScheduleId]);
+ 
+  console.log(trainName);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,9 +126,9 @@ const TrainFeedbackList: React.FC<FeedbackListProps> = ({
 
   console.log("FeedBack", hasFeedback);
   return (
-    <div className="feedback-list">
+    <div className="feedback-list rounded-2">
       {feedback.length === 0 ? (
-        <p className="ps-5 ms-3">No Feedback Yet from you.</p>
+        <p className="text-center pt-2">No Feedback Yet from you.</p>
       ) : (
         feedback.map((item) => (
           <TrainFeedbackItem

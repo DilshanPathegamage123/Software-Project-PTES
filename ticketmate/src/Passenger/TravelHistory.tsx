@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import "./TravelHistory.css";
 import BusIcon from "./images/fa6-solid_bus.png";
 import BusIcon2 from "./images/Group 391.png";
@@ -32,8 +34,13 @@ type Feedback = {
   rating: number;
 };
 
+interface passengerData {
+  id: number;
+}
 
-function TravelHistory() {
+
+function TravelHistory({pid}: {pid: number}) {
+  const passengerid=pid;
   const [bookings, setBookings] = useState<BookingType[]>([]);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   //const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
@@ -41,10 +48,21 @@ function TravelHistory() {
     null
   );
 
-  let passengerId = "44d1f9d3-fd5a-4aa4-ba79-f72ba195198e";
+
+  let passengerId = passengerid.toString();
 
   useEffect(() => {
     const fetchBookings = async () => {
+
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we fetch your bookings.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       try {
         const [busResponse, trainResponse] = await Promise.all([
           axios.get(
@@ -87,8 +105,11 @@ function TravelHistory() {
           }));
 
         setBookings([...busBookings, ...trainBookings]);
+        Swal.close();
       } catch (error) {
         console.error("Error fetching bookings:", error);
+              Swal.fire('Error', 'Failed to load past bookings. Please try again later.', 'error');
+
       }
     };
 
@@ -172,7 +193,14 @@ function TravelHistory() {
           </div>
         ))
       ) : (
-        <div className="text-center">No past bookings found.</div>
+       // <div className="text-center">No past bookings found.</div>
+       <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
+       <div className="col-lg-12 mt-5 mb-4">
+           <p className="text-danger fs-10 fw-bold font-family-Inter">
+               No past bookings found.
+           </p>
+       </div>
+   </div>
       )}
 
 {showFeedbackForm && selectedBooking && (
@@ -205,7 +233,7 @@ function TravelHistory() {
                 passengerId={passengerId}
                 trainScheduleId={selectedBooking.trainScheduleId || 0}
                 bookingId={selectedBooking.id}
-                trainName="Dumbara Menike"
+                
               />
             </>
           )}

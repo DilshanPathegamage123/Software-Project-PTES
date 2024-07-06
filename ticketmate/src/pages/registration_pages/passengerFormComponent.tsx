@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { passengerFormValidation } from "./passengerFormValidation";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const initialValues = {
   FirstName: "",
@@ -64,11 +65,26 @@ const PassengerFormComponent = () => {
         );
 
         if (authResponse.status === 200 && userResponse.status === 200) {
+
+          await Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful!',
+            text: 'You have successfully registered. You will now be redirected to the login page.',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+          });
           history("/login");
         }
         console.log(authResponse.data);
       } catch (error) {
         console.error("Error:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: 'There was an error during registration. Please try again.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK'
+        });
       }
     },
 

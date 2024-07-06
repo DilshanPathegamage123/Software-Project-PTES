@@ -2,6 +2,7 @@ import "./RegistrationRequests.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import profileIcon from "../../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
+import Swal from "sweetalert2";
 
 const RegistrationRequests = () => {
   type User = {
@@ -51,45 +52,145 @@ const getToken = () => {
   }
 
   const rejectOwner = (id: number) => {
-    axios
-      .put(`https://localhost:7196/api/userData/handleReject/${id}`, {},{
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      
-      })
-      .then((response) => {
-        console.log(response.data);
-        setUserData(
-          userData.filter((user) => {
-            return user.id !== id;
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, reject it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(`https://localhost:7196/api/userData/handleReject/${id}`, {}, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           })
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          .then((response) => {
+            console.log(response.data);
+            setUserData(
+              userData.filter((user) => {
+                return user.id !== id;
+              })
+            );
+            Swal.fire(
+              'Rejected!',
+              'The registration request has been rejected.',
+              'success'
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire(
+              'Error!',
+              'There was an error rejecting the request.',
+              'error'
+            );
+          });
+
+          try{
+            axios
+          .post(`https://localhost:7296/api/Email/SendEmails/${id}`,
+            {
+              to: "",
+              subject: "Registration Rejected",
+              message: `
+          <html>
+            <body>
+              <h1>Registration Rejected</h1>
+              <p>Your registration request has been rejected. You can try again with valid credentials.</p>
+            </body>
+          </html>
+          `,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          )
+
+          }catch(error){
+            console.log(error);
+          }
+
+
+
+      }
+    });
   };
   const AcceptOwner = (id: number) => {
-    axios
-      .put(`https://localhost:7196/api/userData/handleAccept/${id}`, {},{
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      
-      
-      })
-      .then((response) => {
-        console.log(response.data);
-        setUserData(
-          userData.filter((user) => {
-            return user.id !== id;
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You're about to accept this registration request.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, accept it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(`https://localhost:7196/api/userData/handleAccept/${id}`, {}, {
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           })
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          .then((response) => {
+            console.log(response.data);
+            setUserData(
+              userData.filter((user) => {
+                return user.id !== id;
+              })
+            );
+            Swal.fire(
+              'Accepted!',
+              'The registration request has been accepted.',
+              'success'
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire(
+              'Error!',
+              'There was an error accepting the request.',
+              'error'
+            );
+          });
+
+          try{
+            axios
+          .post(`https://localhost:7296/api/Email/SendEmails/${id}`,
+            {
+              to: "",
+              subject: "Registration Accepted",
+              message: `
+          <html>
+            <body>
+              <h1>Registration Accepted</h1>
+              <p>Your registration request has been accepted. You can now login to your account.</p>
+            </body>
+          </html>
+          `,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${getToken()}`,
+              },
+            }
+          )
+
+          }catch(error){
+            console.log(error);
+          }
+
+
+      }
+    });
   };
 
   return (
@@ -121,14 +222,14 @@ const getToken = () => {
                   <td>{user.ownVehicleType}</td>
                   <td>
                     <button
-                      className="btn-accept btn "
+                      className="btn-accept pl-2 pr-2 pt-0 m-1"
                       onClick={() => AcceptOwner(user.id)}
                     >
                       Accept
                     </button>
                     &nbsp;&nbsp;
                     <button
-                      className="btn-accept btn"
+                      className="btn-accept pl-2 pr-2 pt-0"
                       onClick={() => rejectOwner(user.id)}
                     >
                       Reject
@@ -138,7 +239,7 @@ const getToken = () => {
                   <td>
                     {/* onClick={() => toggleModel1(user)} */}
                     <button
-                      className="btn viewbutton"
+                      className="btn-accept pl-2 pr-2 pt-0"
                       onClick={() => toggleModel1(user)}
                     >
                       View

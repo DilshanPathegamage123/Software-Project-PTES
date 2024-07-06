@@ -5,7 +5,7 @@ type ConfirmModalProps = {
   onHide: () => void;
   onConfirm: () => void;
   title: string;
-  body: string;
+  body: React.ReactNode;
 };
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -33,9 +33,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
               onClick={onHide}
             ></button>
           </div>
-          <div className="modal-body">
-            <p>{body}</p>
-          </div>
+          <div className="modal-body">{body}</div>
           <div className="modal-footer">
             <button
               type="button"

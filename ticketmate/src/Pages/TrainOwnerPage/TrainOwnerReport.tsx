@@ -168,7 +168,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ id }) => {//showHeading, head
       },
       {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => data.monthlyPredictedIncome),
+        data: filteredReportData.map((data) => Math.max(0,data.monthlyPredictedIncome)),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 

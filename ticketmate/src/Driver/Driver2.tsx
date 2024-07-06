@@ -10,8 +10,9 @@ import StartRideButton from "../Components/Buttons/MapButton/StartRideButton";
 import EndRideButton from "../Components/Buttons/MapButton/EndRideButton";
 import axios from "axios";
 import { head } from "cypress/types/lodash";
-import withReactContent from 'sweetalert2-react-content';
+//import withReactContent from 'sweetalert2-react-content';
 import Swal from 'sweetalert2';
+import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
@@ -78,7 +79,6 @@ function Driver2() {
   if (loading) {
     return null; // Return null or a loader component while data is loading
   }
-
 
 
   if (!travelDetails) {

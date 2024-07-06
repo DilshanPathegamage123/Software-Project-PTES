@@ -15,6 +15,10 @@ interface BusInfo {
     deleteState: boolean;
 }
 
+const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
 function ScheduledBusInfo({ id }: { id: string }) {
     const [data, setData] = useState<BusInfo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +31,10 @@ function ScheduledBusInfo({ id }: { id: string }) {
 
     const getData = () => {
         setLoading(true);
-        axios.get(`https://localhost:7001/api/ScheduledBus/user/${id}`)
+        axios.get(`https://localhost:7001/api/ScheduledBus/user/${id}`,
+            { headers: { Authorization: `Bearer ${getToken()}` } }
+            
+        )
             .then((result) => {
                 const filteredData = result.data.filter((busInfo: BusInfo) => busInfo.deleteState === true);
                 setData(filteredData);
@@ -54,7 +61,9 @@ function ScheduledBusInfo({ id }: { id: string }) {
                 const busInfo = data.find(bus => bus.scheduleId === scheduleId);
                 if (busInfo) {
                     const updatedBusInfo = { ...busInfo, deleteState: false };
-                    axios.put(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, updatedBusInfo)
+                    axios.put(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, updatedBusInfo,
+                        { headers: { Authorization: `Bearer ${getToken()}` } }
+                    )
                         .then(() => {
                             Swal.fire({
                                 title: "Deleted!",

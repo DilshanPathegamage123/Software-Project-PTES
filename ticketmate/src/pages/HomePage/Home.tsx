@@ -9,6 +9,12 @@ import HomeContent from "../../Components/HomePageContent/HomeContent";
 import Footer from "../../Components/Footer/footer";
 import SelectedVehicleTypeContext from "../../SelectedVehicleTypeContext";
 import { SearchResult } from "../../SearchResult";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 interface HomeProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
   setSelectedStartLocation: Dispatch<SetStateAction<string>>;
@@ -42,7 +48,7 @@ const Home: React.FC<HomeProps> = ({ onSearch }) => {
 
   return (
     <div className=" HomeBody">
-      <PrimaryNavBar />
+       {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <div className="HomeBackground p-0 z-1 ">
         <img className="img" src={Background} alt="Background1" />
       </div>

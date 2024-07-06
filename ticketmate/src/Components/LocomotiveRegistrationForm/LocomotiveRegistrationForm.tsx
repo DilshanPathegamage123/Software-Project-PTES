@@ -187,7 +187,7 @@ function LocomotiveRegistrationForm() {
     <>
       <div className='container'>
         <div className='col-12 rounded-4 formSec'>
-          <div className='row py-4'>
+          <div className='row pb-4'>
             <h3 className='h3Style text-center'>Fill this form to register a new Locomotive</h3>
           </div>
 
@@ -240,8 +240,8 @@ function LocomotiveRegistrationForm() {
                 </div>
               </div>
             </div>
-            <div className='row py-5'>
-              <div className='col-12 text-center p-3'>
+            <div className='row pt-5'>
+              <div className='col-12 text-center pt-3'>
 
                 <button type='button' className='btn white mx-3 ' onClick={CancelButton}>Cancel</button>
                 <button type='submit' className='btn primary mx-3 '>Register</button>

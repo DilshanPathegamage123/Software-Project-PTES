@@ -20,6 +20,10 @@ interface TrainCarriageData {
 
 function RegCarriagesInfoSec({ id }: { id: string }) { // Pass id as props
 
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
+
     console.log("Component mounted with id:", id);
 
     const [data, setData] = useState<TrainCarriageData[]>([]);
@@ -31,7 +35,12 @@ function RegCarriagesInfoSec({ id }: { id: string }) { // Pass id as props
     }, []);
 
     const getData = () => {
-        axios.get(`https://localhost:7001/api/RegCarriage/user/${id}`)
+        axios.get(`https://localhost:7001/api/RegCarriage/user/${id}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((result) => {
                 console.log("Data fetched successfully:", result.data);
                 // Filter out carriages where deleteState is false
@@ -57,11 +66,21 @@ function RegCarriagesInfoSec({ id }: { id: string }) { // Pass id as props
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.get(`https://localhost:7001/api/RegCarriage/${carriageId}`)
+                axios.get(`https://localhost:7001/api/RegCarriage/${carriageId}`,{
+                    headers: {
+                      Authorization: `Bearer ${getToken()}`,
+                    },
+                  
+                  })
                     .then((res) => {
                         const carriageData = res.data;
                         carriageData.deleteState = false;
-                        axios.put(`https://localhost:7001/api/RegCarriage/${carriageId}`, carriageData)
+                        axios.put(`https://localhost:7001/api/RegCarriage/${carriageId}`, carriageData,{
+                            headers: {
+                              Authorization: `Bearer ${getToken()}`,
+                            },
+                          
+                          })
                             .then(() => {
                                 Swal.fire({
                                     title: "Deleted!",

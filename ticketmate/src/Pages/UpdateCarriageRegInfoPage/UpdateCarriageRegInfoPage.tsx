@@ -27,6 +27,10 @@ interface ButtonState {
 }
 
 function UpdateCarriageRegInfoPage() {
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,7 +68,12 @@ function UpdateCarriageRegInfoPage() {
 
   const fetchCarriageData = async (carriageId: string) => {
     try {
-      const response = await axios.get<ApiResponse>(`https://localhost:7001/api/RegCarriage/${carriageId}`);
+      const response = await axios.get<ApiResponse>(`https://localhost:7001/api/RegCarriage/${carriageId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const data = response.data;
       setFormData({
         carriageNum: data.carriageNo || '',
@@ -83,7 +92,12 @@ function UpdateCarriageRegInfoPage() {
 
   const fetchSeatData = async (carriageId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/SelCarriageSeatStru/ByCarriageId/${carriageId}`);
+      const response = await axios.get(`https://localhost:7001/api/SelCarriageSeatStru/ByCarriageId/${carriageId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const seatData = response.data.reduce((acc: { [key: string]: ButtonState }, seat: any) => {
         acc[seat.seatId] = { availability: seat.avalability, id: seat.id };
         return acc;
@@ -159,6 +173,11 @@ function UpdateCarriageRegInfoPage() {
           weight: formData.weight,
           carriageClass: formData.carriageClass,
           userId: formData.userId,
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
         });
 
         const buttonDataSuccess = await storeButtonData(carriageId);
@@ -212,7 +231,12 @@ function UpdateCarriageRegInfoPage() {
 
         console.log("Button Data:", buttonData);
 
-        await axios.put(`https://localhost:7001/api/SelCarriageSeatStru/${id}`, buttonData);
+        await axios.put(`https://localhost:7001/api/SelCarriageSeatStru/${id}`, buttonData,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
 
         console.log("Button data stored successfully for carriageId:", carriageId);
       });

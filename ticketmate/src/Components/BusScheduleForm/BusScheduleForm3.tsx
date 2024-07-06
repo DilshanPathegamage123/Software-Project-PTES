@@ -11,6 +11,10 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
   const [dates, setDates] = useState<{ arrivalDate: string, departureDate: string }[]>([]);
   const [arrivalDate, setArrivalDate] = useState<string>('');
   const [departureDate, setDepartureDate] = useState<string>('');
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const handleAddDate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent form submission
@@ -48,7 +52,9 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
         const response = await fetch('https://localhost:7001/api/ScheduledBusDate', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+
           },
           body: JSON.stringify({
             scheduledBusScheduleId: scheduleId,
@@ -65,7 +71,7 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
       await Swal.fire({
         icon: 'success',
         title: 'Success',
-        text: 'Data submitted successfully',
+        text: 'Bus Schedule successfully',
       });
 
       navigate('/BusOwnerPage');
@@ -74,7 +80,7 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Error submitting data',
+        text: 'Error submitting data please try again later.',
       });
     }
   };
@@ -93,6 +99,10 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
         try {
           const response = await fetch(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+
           });
   
           if (!response.ok) {
@@ -105,11 +115,12 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
 
         } catch (error) {
           console.error('Error deleting schedule', error);
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Error deleting the schedule.',
-          });
+          navigate('/BusOwnerPage');
+          // Swal.fire({
+          //   icon: 'error',
+          //   title: 'Error',
+          //   text: 'Error Canceling the schedule.',
+          // });
         }
       }
     });

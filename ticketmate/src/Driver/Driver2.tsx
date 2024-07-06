@@ -143,7 +143,7 @@ function Driver2() {
       </div>
       <Footer />
       <div className="d-none">
-      <Notification/>
+      {/* <Notification/> */}
       </div>
 
     </>

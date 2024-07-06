@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string | null, scheduleId: string, handleNext: () => void; }) {
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   console.log('ScheduleId:', scheduleId);
 
   const navigate = useNavigate();
@@ -41,7 +45,9 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
         const response = await fetch('https://localhost:7001/api/ScheduledTrainDate', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+
           },
           body: JSON.stringify({
             scheduledTrainSchedulId: scheduleId,
@@ -80,6 +86,10 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
         try {
           const response = await fetch(`https://localhost:7001/api/ScheduledTrain/${scheduleId}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+
           });
   
           // if (!response.ok) {

@@ -46,6 +46,11 @@ interface CarriageData {
 }
 
 function ScheduledTrainPage() {
+
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
+
     const [data, setData] = useState<TrainData>({
         schedulId: '',
         trainDriverId: '',
@@ -88,7 +93,12 @@ function ScheduledTrainPage() {
 
     // Function to fetch train schedule data from API
     const getData = (schedulId: string) => {
-        axios.get(`https://localhost:7001/api/ScheduledTrain/${schedulId}`)
+        axios.get(`https://localhost:7001/api/ScheduledTrain/${schedulId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((response) => {
                 setData(response.data);
                 setLoading(false);
@@ -107,7 +117,12 @@ function ScheduledTrainPage() {
 
     // Function to fetch train station data from API
     const getStationData = (schedulId: string) => {
-        axios.get(`https://localhost:7001/api/SelectedTrainStation/scheduledTrain/${schedulId}`)
+        axios.get(`https://localhost:7001/api/SelectedTrainStation/scheduledTrain/${schedulId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((response) => {
                 setStations(response.data);
             })
@@ -123,7 +138,12 @@ function ScheduledTrainPage() {
 
     // Function to fetch scheduled dates data from API
     const getScheduledDates = (schedulId: string) => {
-        axios.get(`https://localhost:7001/api/ScheduledTrainDate/ByScheduledTrainSchedulId/${schedulId}`)
+        axios.get(`https://localhost:7001/api/ScheduledTrainDate/ByScheduledTrainSchedulId/${schedulId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((response) => {
                 setScheduledDates(response.data);
             })
@@ -139,7 +159,12 @@ function ScheduledTrainPage() {
 
     // Function to fetch locomotive data from API
     const getLocomotiveData = (schedulId: string) => {
-        axios.get(`https://localhost:7001/api/ScheduledLocomotive/by-train-schedule/${schedulId}`)
+        axios.get(`https://localhost:7001/api/ScheduledLocomotive/by-train-schedule/${schedulId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((response) => {
                 setLocomotives(response.data);
             })
@@ -155,7 +180,12 @@ function ScheduledTrainPage() {
 
     // Function to fetch carriage data from API
     const getCarriageData = (schedulId: string) => {
-        axios.get(`https://localhost:7001/api/ScheduledCarriage/ByTrainSchedule/${schedulId}`)
+        axios.get(`https://localhost:7001/api/ScheduledCarriage/ByTrainSchedule/${schedulId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((response) => {
                 setCarriages(response.data);
             })
@@ -175,7 +205,12 @@ function ScheduledTrainPage() {
 
       const handleUpdateClick2 = async () => {
         try {
-          const response = await fetch(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${data.trainRoutNo}`);
+          const response = await fetch(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${data.trainRoutNo}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          });
           if (response.ok) {
             const data2 = await response.json();
             navigate(`/TrainShceduleUpdatePage2?routId=${data2.id}&scheduleId=${schedulId}`);

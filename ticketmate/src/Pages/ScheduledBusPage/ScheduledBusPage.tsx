@@ -21,6 +21,11 @@ interface ScheduleDate {
 }
 
 function ScheduledBusPage() {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+  
   const [data, setData] = useState({
     startLocation: '',
     endLocation: '',
@@ -54,7 +59,12 @@ function ScheduledBusPage() {
 
   const getData = async (scheduleId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`);
+      const response = await axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       setData(response.data);
       setLoading(false);
     } catch (error) {
@@ -65,7 +75,12 @@ function ScheduledBusPage() {
 
   const getBusStations = async (scheduleId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/SchBusStand/schedule/${scheduleId}`);
+      const response = await axios.get(`https://localhost:7001/api/SchBusStand/schedule/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       setBusStations(response.data);
     } catch (error) {
       console.error('Error fetching bus station data:', error);
@@ -74,7 +89,12 @@ function ScheduledBusPage() {
 
   const getScheduleDates = async (scheduleId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/ScheduledBusDate/ByScheduleId/${scheduleId}`);
+      const response = await axios.get(`https://localhost:7001/api/ScheduledBusDate/ByScheduleId/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       setScheduleDates(response.data);
     } catch (error) {
       console.error('Error fetching schedule dates:', error);
@@ -91,7 +111,12 @@ function ScheduledBusPage() {
 
   const handleUpdateClick2 = async () => {
     try {
-      const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${data.routNo}`);
+      const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${data.routNo}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.ok) {
         const data2 = await response.json();
         navigate(`/BusScheduleFormUpdatePage2?routId=${data2.routId}&scheduleId=${scheduleId}`);

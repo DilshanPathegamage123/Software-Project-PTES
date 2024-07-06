@@ -16,6 +16,10 @@ interface ApiResponse {
 }
 
 function CarriageRegistrationForm() {
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -72,7 +76,7 @@ function CarriageRegistrationForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     if (!Object.values(buttonStates).some(state => state)) {
       Swal.fire({
         icon: "error",
@@ -82,10 +86,10 @@ function CarriageRegistrationForm() {
       });
       return;
     }
-
+  
     let formValid = true;
     const newErrors = { ...errors };
-
+  
     for (const key in formData) {
       if (formData.hasOwnProperty(key)) {
         if ((formData as any)[key] === '') {
@@ -96,9 +100,9 @@ function CarriageRegistrationForm() {
         }
       }
     }
-
+  
     setErrors(newErrors);
-
+  
     if (formValid) {
       Swal.fire({
         title: 'Uploading...',
@@ -106,10 +110,10 @@ function CarriageRegistrationForm() {
         showConfirmButton: false
       });
       Swal.showLoading();
-
+  
       try {
         const seatsCount = Object.values(buttonStates).filter(state => state).length;
-
+  
         const response = await axios.post<ApiResponse>('https://localhost:7001/api/RegCarriage', {
           carriageNo: formData.carriageNum,
           seatsCount: seatsCount.toString(),
@@ -119,23 +123,31 @@ function CarriageRegistrationForm() {
           weight: formData.weight,
           carriageClass: formData.carriageClass,
           userId: userId
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
         });
-
+  
         const carriageId = response.data.carriageId;
         console.log("Newly generated CarriageId:", carriageId);
-
+  
         await storeButtonData(carriageId);
-
+  
         Swal.close();
-
+  
         Swal.fire({
           icon: "success",
           title: "Your Carriage Successfully Registered",
           showConfirmButton: false,
           timer: 3500
         });
-
-        navigate('/TrainOwnerPage');
+  
+        // Delay navigation to ensure the success message is displayed
+        setTimeout(() => {
+          navigate('/TrainOwnerPage');
+        }, 3500);
+        
       } catch (error) {
         console.log("Error:", error);
         Swal.fire({
@@ -154,6 +166,7 @@ function CarriageRegistrationForm() {
       });
     }
   };
+  
 
   const storeButtonData = async (carriageId: number) => {
     try {
@@ -166,7 +179,12 @@ function CarriageRegistrationForm() {
 
         console.log("Button Data:", buttonData); // Log button data before sending the request
 
-        await axios.post(`https://localhost:7001/api/SelCarriageSeatStru`, buttonData);
+        await axios.post(`https://localhost:7001/api/SelCarriageSeatStru`, buttonData,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
 
         console.log("Button data stored successfully for CarriageId:", carriageId); // Log success message for each seat
       }

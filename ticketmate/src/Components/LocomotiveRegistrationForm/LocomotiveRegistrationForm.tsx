@@ -18,6 +18,10 @@ interface ApiResponse {
 
 function LocomotiveRegistrationForm() {
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get('id');
@@ -122,6 +126,11 @@ function LocomotiveRegistrationForm() {
             locomotiveSpeed: formData.locomotiveSpeed,
             licenseImgURL: licenseUrl,
             userId: userId
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
         });
 
         const locomotiveId = response.data.locomotiveId;

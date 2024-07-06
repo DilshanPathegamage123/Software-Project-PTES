@@ -11,6 +11,10 @@ interface BusScheduleForm2Props {
 
 function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusScheduleForm2Props) {
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const navigate = useNavigate();
   
   const [selectedStands, setSelectedStands] = useState<{ [key: string]: string }>({});
@@ -62,6 +66,7 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
       scheduledTrainSchedulId: scheduleId,
       trainStationName,
       trainarrivalTime: convertTo12HourFormat(trainarrivalTime),
+      trainDepartureTime : convertTo12HourFormat(trainarrivalTime),
     }));
 
     for (const data of dataToSubmit) {
@@ -70,6 +75,8 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+
           },
           body: JSON.stringify(data),
         });
@@ -111,6 +118,9 @@ function TrainScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusS
         try {
           const response = await fetch(`https://localhost:7001/api/ScheduledTrain/${scheduleId}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
   
           // if (!response.ok) {

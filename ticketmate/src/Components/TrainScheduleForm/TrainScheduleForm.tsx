@@ -5,6 +5,11 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: string | null }) {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const [trainName, setTrainName] = useState('');
   const [driId, setDriId] = useState('');
   const [startStation, setStartStation] = useState('');
@@ -51,7 +56,12 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
 
   const checkDriverIdAvailability = async () => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/userData/${driId}`);
+      const response = await axios.get(`https://localhost:7001/api/userData/${driId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.data && response.data.userType === 'Driver') {
         return true;
       } else {
@@ -74,7 +84,12 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
 
   const checkRoutNoAvailability = async () => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${routNo}`);
+      const response = await axios.get(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${routNo}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.status === 200) {
         const data = response.data;
         return data.id;
@@ -127,7 +142,6 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
       const routeId = await checkRoutNoAvailability();
       if (!routeId) {
         setIsSubmitting(false);
-        alert('Route Number is not available');
         return;
       }
 
@@ -148,7 +162,12 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
       };
 
       try {
-        const response = await axios.post('https://localhost:7001/api/ScheduledTrain', newTrainSchedule);
+        const response = await axios.post('https://localhost:7001/api/ScheduledTrain', newTrainSchedule,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         const { schedulId } = response.data; // Extract scheduleId from response
         setScheduleId(schedulId); // Set scheduleId state
         console.log('Schedule ID: ', schedulId);

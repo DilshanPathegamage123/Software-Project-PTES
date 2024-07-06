@@ -57,6 +57,7 @@ function PrimaryNavBar() {
                 className="nav-link"
                 href="#"
                 style={{ color: "var(--color-text-dark)" }}
+                onClick={() => history('/#section2')}
               >
                 About us
               </a>

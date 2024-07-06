@@ -1,5 +1,4 @@
 import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
-import ProfileSection from "./ProfileSection";
 import Footer from "../Components/Footer/footer";
 
 import MyBookings from "./MyBookings";
@@ -8,10 +7,12 @@ import TravelHistory from "./TravelHistory";
 import Notifications from "./Notification";
 
 import axios from "axios";
-import { BrowserRouter as Router, useLocation,useNavigate } from "react-router-dom";
-import PrimaryButton from "../Components/Buttons/PrimaryButton";
+import {
+  BrowserRouter as Router,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import profileIcon from "../Components/ProfileSection/assets/iconamoon_profile-circle-fill.png";
-
 
 interface PassengerData {
   Id: number;
@@ -32,7 +33,7 @@ interface PassengerData {
 
 function Passenger() {
   const [divWidth, setDivWidth] = useState(0);
-  const [currentComponent, setCurrentComponent] = useState("My Bookings");
+  const [currentComponent, setCurrentComponent] = useState("My Bookings"); //Set current component to My Bookings
   const handleClick = (component: string) => {
     setCurrentComponent(component);
   };
@@ -40,7 +41,9 @@ function Passenger() {
   let { username, password } = location.state;
   const [passengerdata, setPassengerdata] = useState<PassengerData[]>([]);
   const history = useNavigate();
-  
+
+  console.log(username);
+  console.log(password);
 
   const buttonStyle = {
     backgroundColor: "rgba(217, 217, 217, 1)",
@@ -63,12 +66,12 @@ function Passenger() {
   }, []);
   useEffect(() => {
     axios
-      .get(`https://localhost:7196/api/userData/findUser/${username}/${password}`)
+      .get(
+        `https://localhost:7196/api/userData/findUser/${username}/${password}`
+      )
       .then((response) => {
-       // console.log(response.data);
+        // console.log(response.data);
         setPassengerdata(
-       
-        (
           response.data.map((passenger: any) => ({
             Id: passenger.id,
             firstName: passenger.firstName,
@@ -85,11 +88,10 @@ function Passenger() {
             isDeleted: passenger.isDeleted,
             requestStatus: passenger.requestStatus,
           }))
-        ));
+        );
         if (response.data.length > 0) {
           const userId = response.data[0].id.toString(); // Convert to string for storage
-          sessionStorage.setItem('userId', userId);
-
+          sessionStorage.setItem("userId", userId);
         }
         //console.log(passengerdata);
       })
@@ -101,9 +103,9 @@ function Passenger() {
   return (
     <div>
       <PrimaryNavBar />
-      <div className="col-lg-10 col-sm-12 m-auto pt-3">
+      <div className="col-lg-10 col-sm-12 m-auto pt-3 mb-4">
         <div>
-        <div className="container-fluid rounded-4 proSec">
+          <div className="container-fluid rounded-4 proSec">
             <div className="row align-items-center">
               <div className="col-lg-3 col-sm-6 col-12 text-center">
                 <h5 className="text-white pt-4">Passenger</h5>
@@ -113,12 +115,19 @@ function Passenger() {
               <div className="col-lg-4 col-sm-6 p-4">
                 <div className="">
                   <p className="text-white">
-                  {passengerdata[0] ? passengerdata[0].firstName : 'Loading...'}&nbsp;{passengerdata[0] ? passengerdata[0].lastName : 'Loading...'}
+                    {passengerdata[0]
+                      ? passengerdata[0].firstName
+                      : "Loading..."}
+                    &nbsp;
+                    {passengerdata[0]
+                      ? passengerdata[0].lastName
+                      : "Loading..."}
                     <br />
-                    Passenger Id : {passengerdata[0]?passengerdata[0].Id:'Loading...'} <br />
-                  {passengerdata[0] ? passengerdata[0].email : 'Loading...'}
+                    Passenger Id :{" "}
+                    {passengerdata[0] ? passengerdata[0].Id : "Loading..."}{" "}
                     <br />
-                    
+                    {passengerdata[0] ? passengerdata[0].email : "Loading..."}
+                    <br />
                   </p>
                 </div>
                 {/* <PrimaryButton type="button" value="Update" color="third" /> */}
@@ -132,7 +141,6 @@ function Passenger() {
                 >
                   Update
                 </button>
-
               </div>
             </div>
           </div>
@@ -141,7 +149,7 @@ function Passenger() {
           <div className="col-12  rounded-4 pt-3 class1">
             <div className="d-flex flex-row pb-2 ">
               <button
-                className={`btn m-1  ${
+                className={`btn m-1 ${
                   currentComponent === "My Bookings" ? "secondary" : "grey"
                 }`}
                 onClick={() => handleClick("My Bookings")}
@@ -164,7 +172,7 @@ function Passenger() {
                 onClick={() => handleClick("Travel History")}
                 style={
                   currentComponent === "Travel History"
-                    ? { ...buttonStyle, fontWeight: "bold", color: "white" }
+                    ? { ...buttonStyle, fontWeight: "semi-bold", color: "white" }
                     : buttonStyle
                 }
               >
@@ -177,20 +185,31 @@ function Passenger() {
                 onClick={() => handleClick("Notifications")}
                 style={
                   currentComponent === "Notifications"
-                    ? { ...buttonStyle, fontWeight: "bold", color: "white" }
+                    ? { ...buttonStyle, fontWeight: "semi-bold", color: "white" }
                     : buttonStyle
                 }
               >
                 Notifications
               </button>
             </div>
-            <div className="p-2 rounded-4 ms-auto me-auto justify-content-center align-items-center " style={{ background: "#F1F1F1" }}>
+            <div
+              className="p-2 rounded-4 ms-auto me-auto justify-content-center align-items-center "
+              style={{ background: "#F1F1F1" }}
+            >
               {currentComponent === "My Bookings" ? (
-                <MyBookings pid={passengerdata[0]?passengerdata[0].Id:0} />
+                <MyBookings
+                  pid={passengerdata[0] ? passengerdata[0].Id : 0}
+                  username={username}
+                  password={password}
+                />
               ) : currentComponent === "Travel History" ? (
-                <TravelHistory pid={passengerdata[0]?passengerdata[0].Id:0} />
+                <TravelHistory
+                  pid={passengerdata[0] ? passengerdata[0].Id : 0}
+                />
               ) : (
-                <Notifications passengerId={passengerdata[0]?passengerdata[0].Id:0}/>
+                <Notifications
+                  passengerId={passengerdata[0] ? passengerdata[0].Id : 0}
+                />
               )}
             </div>
           </div>
@@ -202,4 +221,3 @@ function Passenger() {
 }
 
 export default Passenger;
-

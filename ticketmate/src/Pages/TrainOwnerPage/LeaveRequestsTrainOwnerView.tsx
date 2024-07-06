@@ -20,6 +20,7 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ id }) =
             setIsLoading(true); // Start loading
             try {
                 const userId = id;
+                console.log('Fetching leave requests for train owner:', userId);
                 const response = await axios.get(`http://localhost:5050/api/LeaveRequests/trainowner/${userId}/leaverequests`);
                 const now = new Date();
                 const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Today's date without time
@@ -54,7 +55,8 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ id }) =
                 setIsLoading(false); // Stop loading
             } catch (error) {
                 console.error('There was an error fetching the leave requests!', error);
-                Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
+                // Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
+
                 setIsLoading(false); // Stop loading
             }
         };

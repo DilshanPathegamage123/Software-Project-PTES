@@ -1,5 +1,5 @@
 import SuccessBox from "../../Components/payment/SuccessBox";
-import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Footer from "../../Components/Footer/Footer1";
 import "./payment3.css";
 import { useLocation } from "react-router-dom";

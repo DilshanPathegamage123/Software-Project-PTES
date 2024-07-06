@@ -238,7 +238,6 @@ function BusOwnerPage() {
               <button className={`btn btn-primary secButton ${buttonStates.LeaveRequests ? 'active' : ''}`} onClick={() => handleButtonClick('LeaveRequests')}>
               Leave Requests
               </button>
-
             </div>
             <div className='p-4 rounded-4' style={{ background: '#F1F1F1' }}>
               {renderSelectedComponent()}

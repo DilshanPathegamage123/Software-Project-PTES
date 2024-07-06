@@ -49,6 +49,12 @@ interface MyComponentProps {
   headingText?: string; // `headingText` is optional
  
 }
+interface TrainOwnersResponse {
+  $id: string;
+  $values: string[];
+
+}
+
 
 const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) => {
   const [dateFilter, setDateFilter] = useState<number>(1); // Default to 'daily' (0)
@@ -58,6 +64,10 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
   const [currentDate, setCurrentDate] = useState<string>("");
   // const [vehicleType, setVehicleType] = useState<string>("Train");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [trainOwners, setTrainOwners] = useState<string[]>([]);
+  const [selectedOwner, setSelectedOwner] = useState<string>("SelectTrainOwner");
+
+
 
 
   const barChartRef = useRef<HTMLDivElement>(null);
@@ -68,6 +78,20 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
     // Set the current date when the component mounts
     const date = new Date().toLocaleDateString();
     setCurrentDate(date);
+  }, []);
+
+  const fetchTrainOwners = async () => {
+    try {
+      const response = await axios.get<TrainOwnersResponse>("http://localhost:5050/api/AdminReport/trainOwners");
+      setTrainOwners(response.data.$values.filter(owner => owner)); // Filter out empty strings
+      console.log(response.data.$values.filter(owner => owner));
+
+    } catch (error) {
+      console.error('Error fetching train owners:', error);
+    }
+  };
+  useEffect(() => {
+    fetchTrainOwners();
   }, []);
 
 
@@ -88,7 +112,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
   };
 
   async function fetchTrainReport(dateFilter: number): Promise<TrainReportItem[]> {
-    const userId = 99; // Set the constant user ID101/48
+    const userId = selectedOwner || "99"; // Default to a placeholder value (if needed)
     try {
       const response = await axios.get<ApiResponse>(`http://localhost:5050/api/TrainReports/${userId}/${dateFilter}`);
       // Ensure the response has the $values property
@@ -128,8 +152,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
     };
 
     getReport();
-  }, [dateFilter]);
- 
+  }, [dateFilter,selectedOwner]);
 
   const handleDateFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setDateFilter(parseInt(event.target.value, 10));
@@ -137,6 +160,9 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
   // function handleVehicleTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
   //   setVehicleType(event.target.value);
   // }
+  const handleOwnerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOwner(event.target.value);
+  }
   function handleSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value.toLowerCase());
   }
@@ -168,7 +194,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
       },
       {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => data.monthlyPredictedIncome),
+        data: filteredReportData.map((data) => Math.max(0,data.monthlyPredictedIncome)),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 
@@ -370,6 +396,25 @@ doc.setFontSize(12);
                     value={searchTerm}
                     onChange={handleSearchChange}
                   />
+                       </div>
+                  <div className="col-lg-2 col-10 col-md-4">
+                    <select
+                      id="trainOwner"
+                      value={selectedOwner}
+                      onChange={handleOwnerChange}
+                    >
+                      <option value="SelectTrainOwner">Select Train Owner</option>
+
+                      {trainOwners.map((owner) => (
+                        <option key={owner} value={owner}>
+                          {owner}
+                        </option>
+                      ))}
+                    </select>
+             
+                  
+        
+
                 </div>
                 <div className="col-lg-3 col-12 col-md-6">
                   {/* Date filter select */}

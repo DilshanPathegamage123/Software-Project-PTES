@@ -184,9 +184,10 @@ function BusRegistrationPage() {
           title: "Your Bus Successfully Registered",
           showConfirmButton: true,
           timer: 3500
-        })
+        }).then(() => {
+          navigate('/BusOwnerPage');
+        });
 
-        navigate('/BusOwnerPage');
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -204,6 +205,7 @@ function BusRegistrationPage() {
       });
     }
   };
+
 
   const storeButtonData = async (busId: number) => {
     try {

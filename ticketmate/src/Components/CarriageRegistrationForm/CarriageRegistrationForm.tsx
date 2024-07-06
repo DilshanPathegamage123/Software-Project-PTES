@@ -202,7 +202,7 @@ function CarriageRegistrationForm() {
 
   return (
     <>
-      <div className='container py-4'>
+      <div className='container px-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to register a new carriage</h3>
@@ -270,7 +270,7 @@ function CarriageRegistrationForm() {
               <SelectBusSeatStructure setButtonStates={setButtonStates} />
             </div>
             <div className='row'>
-              <div className='col-12 text-center p-3'>
+              <div className='col-12 text-center pt-3'>
 
                 <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
                 <button type='submit' className='btn primary mx-3 '>Register</button>

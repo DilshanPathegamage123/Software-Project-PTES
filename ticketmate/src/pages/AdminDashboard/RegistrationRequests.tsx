@@ -52,7 +52,7 @@ const getToken = () => {
   }
 
   const rejectOwner = (id: number) => {
-   
+
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -116,6 +116,7 @@ const getToken = () => {
           }catch(error){
             console.log(error);
           }
+
 
 
       }
@@ -186,6 +187,7 @@ const getToken = () => {
           }catch(error){
             console.log(error);
           }
+
 
       }
     });

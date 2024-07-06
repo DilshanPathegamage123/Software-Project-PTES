@@ -27,7 +27,7 @@ function PrimaryNavBar() {
     }).then((result) => {
       if (result.isConfirmed) {
         // Perform the logout operation here
-        sessionStorage.removeItem("token");
+        sessionStorage.clear();
         history("/login");
         Swal.fire(
           'Logged Out!',

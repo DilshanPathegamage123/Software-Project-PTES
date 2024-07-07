@@ -180,7 +180,7 @@ useEffect(() => {
         fill: false,
       },{
         label: "Monthly Predicted Income",
-        data: reportData.map((data) => Math.max(0,data.monthlyPredictedIncome)),
+        data: reportData.map((data) => Math.max(0,Math.round(data.monthlyPredictedIncome))),
         borderColor: "rgba(54, 162, 235, 1)",
         borderWidth:6,
         fill: false,
@@ -214,15 +214,15 @@ useEffect(() => {
     const getReportHeading = () => {
       switch (reportType) {
         case "daily":
-          return "Daily BusOwner Report ";
+          return "Daily Report ";
         case "monthly":
-          return "Monthly BusOwner Report";
+          return "Monthly Report";
         case "3months":
-          return "Three Months BusOwner Report";
+          return "Three Months Report";
         case "yearly":
-          return "Yearly BusOwner Report";
+          return "Yearly Report";
         default:
-          return "Bus Owner Report"; // Default fallback
+          return "Bus Report"; // Default fallback
       }
     };
 
@@ -258,7 +258,7 @@ useEffect(() => {
     const pageNumber = data.pageNumber; // Get current page number
     doc.setFontSize(8);
     // Add page number at the bottom right corner
-    doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+    doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 2);
     doc.setFontSize(12);   
   }
     });
@@ -338,7 +338,7 @@ useEffect(() => {
       }
     }
 
-    doc.save("BusOwnerReport.pdf");
+    doc.save(`BusReport_${currentDate}.pdf`);
   };
 
   return (

@@ -191,7 +191,7 @@ const ReportTable: React.FC = () => {
         fill: false,
       },  {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => Math.max(0,data.monthlyTotalPredictedIncome)),
+        data: filteredReportData.map((data) => Math.max(0,Math.round(data.monthlyTotalPredictedIncome))),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 
@@ -277,7 +277,7 @@ doc.setFontSize(12);
   const pageNumber = data.pageNumber; // Get current page number
   doc.setFontSize(8);
   // Add page number at the bottom right corner
-  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 2);
   doc.setFontSize(12);   
 }
 
@@ -368,7 +368,7 @@ doc.setFontSize(12);
     }
 
     // Save the PDF
-    doc.save("AdminBusReport.pdf");
+    doc.save(`AdminBusReport_${currentDate}.pdf`);
   }
 
   return (

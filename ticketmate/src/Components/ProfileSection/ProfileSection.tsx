@@ -20,6 +20,9 @@ interface PassengerData {
   isDeleted: boolean;
   requestStatus: boolean;
 }
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehicleType }: { id: string, firstName: string, lastName: string, email: string, backgroundImage: string, vehicleType:string }) {
 
@@ -38,6 +41,7 @@ function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehic
         },
       
       });
+
       const data = await response.json();
       const passenger = {
         id: data.id,
@@ -56,7 +60,7 @@ function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehic
         requestStatus: data.requestStatus,
       };
       setPassengerdata(passenger);
-
+//ownerdata: OwnerData 
       // Navigate to UpdatePassengerProfile with the retrieved data
       navigate('/UpdatePassengerProfile', { state: { passengerdata: passenger } });
     } catch (error) {

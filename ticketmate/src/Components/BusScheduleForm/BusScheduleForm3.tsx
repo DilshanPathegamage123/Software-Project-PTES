@@ -72,6 +72,7 @@ function BusScheduleForm3({ userId, scheduleId }: { userId: string | null, sched
         icon: 'success',
         title: 'Success',
         text: 'Bus Schedule successfully',
+
       });
 
       navigate('/BusOwnerPage');

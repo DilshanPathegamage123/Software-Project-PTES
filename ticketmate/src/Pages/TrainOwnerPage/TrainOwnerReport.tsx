@@ -168,7 +168,8 @@ const TrainReport: React.FC<MyComponentProps> = ({ id }) => {//showHeading, head
       },
       {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => Math.max(0,data.monthlyPredictedIncome)),
+        data: filteredReportData.map((data) => Math.max(0,Math.round(data.monthlyPredictedIncome))),
+
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 
@@ -179,15 +180,15 @@ const TrainReport: React.FC<MyComponentProps> = ({ id }) => {//showHeading, head
   const getReportHeading = () => {
     switch (dateFilter) {
       case 0:
-        return "Daily Admin Train Report";
+        return "Daily Report";
       case 1:
-        return "Monthly Admin Train Report";
+        return "Monthly Report";
       case 2:
-        return "Three Months Admin Train Report";
+        return "Three Months Report";
       case 3:
-        return "Yearly Admin Train Report";
+        return "Yearly Report";
       default:
-        return "Admin Train Report"; // Default fallback
+        return "Train Report"; // Default fallback
     }
   };
 
@@ -252,7 +253,7 @@ doc.setFontSize(12);
   const pageNumber = data.pageNumber; // Get current page number
   doc.setFontSize(8);
   // Add page number at the bottom right corner
-  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 2);
   doc.setFontSize(12);   
 }
 
@@ -343,7 +344,7 @@ doc.setFontSize(12);
     }
 
     // Save the PDF
-    doc.save("AdminTrainReport.pdf");
+    doc.save(`TrainReport_${currentDate}.pdf`);
   }
 
 
@@ -407,12 +408,13 @@ doc.setFontSize(12);
                 <table>
                   <thead>
                   <tr>
-                    <th className="text-center">Train Name</th>
+                    <th className="text-center ">Train Name</th>
                     <th className="text-center">Schedule IDs</th>
-                    <th className="text-center">Total Passengers</th>
-                    <th className="text-center">Average Rate</th>
-                    <th className="text-center">Total Income</th>
-                    <th className="text-center">Monthly Predicted Income</th>
+                    <th className="text-center ">Total Passengers</th>
+                    <th className="text-center ">Average Rate</th>
+                    <th className="text-center ">Total Income</th>
+                    <th className="text-center table-header-train">Monthly Predicted Income</th>
+              
                   </tr>
                   </thead>
                   <tbody>

@@ -73,7 +73,7 @@ function UpdateOwnerProfile() {
         requestStatus: true,
       };
 
-      
+      console.log(userData);
       try {
         const userResponse = await axios.put(
           `https://localhost:7196/api/UpdateProfile`,
@@ -119,7 +119,9 @@ function UpdateOwnerProfile() {
       confirmButtonText: 'Yes, cancel it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        history("/login");
+        history("/OwnerPage", { state: { userName: ownerdata.userName, password: ownerdata.password } });
+
+       
       }
     });
   };

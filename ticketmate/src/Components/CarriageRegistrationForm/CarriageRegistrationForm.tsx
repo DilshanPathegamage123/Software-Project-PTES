@@ -113,7 +113,7 @@ function CarriageRegistrationForm() {
   
       try {
         const seatsCount = Object.values(buttonStates).filter(state => state).length;
-  
+
         const response = await axios.post<ApiResponse>('https://localhost:7001/api/RegCarriage', {
           carriageNo: formData.carriageNum,
           seatsCount: seatsCount.toString(),

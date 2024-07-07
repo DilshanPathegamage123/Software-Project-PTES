@@ -16,6 +16,11 @@ import BusSeatStructure from "../../Components/Booking-SeatStructure/BusSeatStru
 import { SearchResult } from "../../SearchResult";
 import "./BusBookingPage.css";
 import ReviewList from "../../Components/FeedBackSection/ReviewList";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 export interface Feedback {
   feedBackId: number;
@@ -235,7 +240,7 @@ const BusBookingPage: React.FC = () => {
 
   return (
     <div className="BusBooking">
-      <PrimaryNavBar />
+      {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <div className=" d-flex justify-content-center align-items-center pt-3">
         <DetailsCard
           isBookingPage

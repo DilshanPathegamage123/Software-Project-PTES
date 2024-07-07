@@ -1,4 +1,3 @@
-
 // import React, { useEffect, useState } from "react";
 // import Icon1 from "./images/notification.png";
 // import * as signalR from "@microsoft/signalr";
@@ -123,13 +122,12 @@
 //     maxWidth: "100%",
 //   },
 //   messageContent: {
- 
+
 //     marginLeft: "10px",
 //   },
 // };
 
 // export default NotificationComponent;
-
 
 //accept all notifications=====================================================
 
@@ -163,13 +161,13 @@
 //         console.log("Connection established");
 
 //         connection.on("ReceiveNotification", (receivedMessage: string, Id: number, routNo: string) => {
-          
+
 //           setMessages((prevMessages) => {
 //             const newMessages = [{ Id, message: receivedMessage, routNo }, ...prevMessages]; // Prepend the new message
 //             localStorage.setItem("messages", JSON.stringify(newMessages)); // Save to local storage
 //             return newMessages;
 //           });
-        
+
 //         });
 //       })
 //       .catch((err) => console.error("Connection error: ", err));
@@ -227,8 +225,6 @@
 
 //edit as filtering code========================================================================
 
-
-
 import React, { useEffect, useState } from "react";
 import Icon1 from "./images/notification.png";
 import * as signalR from "@microsoft/signalr";
@@ -238,16 +234,20 @@ type NotificationProps = {
   passengerId: number;
 };
 
-const NotificationComponent: React.FC<NotificationProps> = ({ passengerId }) => {
-  const [messages, setMessages] = useState<{ Id: number; message: string; routNo: string }[]>([]);
+const NotificationComponent: React.FC<NotificationProps> = ({
+  passengerId,
+}) => {
+  const [messages, setMessages] = useState<
+    { Id: number; message: string; routNo: string }[]
+  >([]);
   const [allowedIds, setAllowedIds] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchAllowedIds = async () => {
       try {
         const [busResponse, trainResponse] = await Promise.all([
-          axios.get(`https://localhost:7296/api/BusScheduledId/GetBusScheduleIdsByPassengerId/${passengerId}`),
-          axios.get(`https://localhost:7296/api/TrainScheduledId/GetBusScheduleIdsByPassengerId/${passengerId}`),
+          axios.get(`https://localhost:7296/api/BusRelevantIdsByPassengerId/relevant-ids/${passengerId}`),
+          axios.get(`https://localhost:7296/api/TrainRelevantIdsByPassengerId/relevant-ids/${passengerId}`),
         ]);
 
         const busIds = busResponse.data;
@@ -282,16 +282,25 @@ const NotificationComponent: React.FC<NotificationProps> = ({ passengerId }) => 
       .then(() => {
         console.log("Connection established");
 
-        connection.on("ReceiveNotification", (receivedMessage: string, Id: number, routNo: string) => {
-          console.log(`Notification received: ${receivedMessage} for ${Id} and ${routNo}`);
-          if (allowedIds.includes(Id)) { // Filter messages to only show those with allowed Ids
-            setMessages((prevMessages) => {
-              const newMessages = [{ Id, message: receivedMessage, routNo }, ...prevMessages]; // Prepend the new message
-              localStorage.setItem("messages", JSON.stringify(newMessages)); // Save to local storage
-              return newMessages;
-            });
+        connection.on(
+          "ReceiveNotification",
+          (receivedMessage: string, Id: number, routNo: string) => {
+            console.log(
+              `Notification received: ${receivedMessage} for ${Id} and ${routNo}`
+            );
+            if (allowedIds.includes(Id)) {
+              // Filter messages to only show those with allowed Ids
+              setMessages((prevMessages) => {
+                const newMessages = [
+                  { Id, message: receivedMessage, routNo },
+                  ...prevMessages,
+                ]; // Prepend the new message
+                localStorage.setItem("messages", JSON.stringify(newMessages)); // Save to local storage
+                return newMessages;
+              });
+            }
           }
-        });
+        );
       })
       .catch((err) => console.error("Connection error: ", err));
 
@@ -306,25 +315,39 @@ const NotificationComponent: React.FC<NotificationProps> = ({ passengerId }) => 
       {messages.length > 0 ? (
         <div>
           {messages.map((msg, index) => (
-            <div className="row p-4 rounded-4 sec shadow m-4" key={index} style={styles.messageContainer}>
+            <div
+              className="row p-4 rounded-4 sec shadow m-4"
+              key={index}
+              style={styles.messageContainer}
+            >
               <div className="col-lg-1 d-flex align-items-center">
-                <img src={Icon1} alt="BusIcon" className="img-fluid" style={styles.icon} />
+                <img
+                  src={Icon1}
+                  alt="BusIcon"
+                  className="img-fluid"
+                  style={styles.icon}
+                />
               </div>
               <div className="col-lg-11 d-flex align-items-center">
-                <div className="message-content" style={styles.messageContent}>{msg.message}</div>
+
+            {/* Display Id as Trip ID */}
+                <div className="message-content" style={styles.messageContent}>
+                <p><strong>Trip ID:</strong> {msg.Id}</p>
+                  {msg.message}
+                  </div>
               </div>
             </div>
           ))}
         </div>
       ) : (
-       // <p>No messages available.</p>
-       <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
-       <div className="col-lg-12 mt-5 mb-4">
-           <p className="text-danger fs-10 fw-bold font-family-Inter">
-           No messages available.
-           </p>
-       </div>
-   </div>
+        // <p>No messages available.</p>
+        <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
+          <div className="col-lg-12 mt-5 mb-4">
+            <p className="text-center fs-10 font-family-Inter">
+              No messages available.
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -352,6 +375,3 @@ const styles = {
 };
 
 export default NotificationComponent;
-
-
-

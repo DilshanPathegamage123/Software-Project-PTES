@@ -39,6 +39,10 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ id }) =
                 }).filter((request: LeaveRequest) => {
                     const endDate = new Date(request.endDate);
                     const endDateOnly = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()); // End date without time
+                     // Exclude requests with status "Accepted" or "Rejected"
+                if (request.status === 'Accepted' || request.status === 'Rejected') {
+                    return false;
+                }
 
                     // Only include cancelled requests from the last week or not cancelled requests
                     const isRecentCancelled = request.status !== 'Cancelled' || (nowDateOnly.getTime() - endDateOnly.getTime()) <= (7 * 24 * 60 * 60 * 1000);
@@ -87,19 +91,30 @@ const LeaveRequestsOwnerView: React.FC<LeaveRequestsOwnerViewProps> = ({ id }) =
             Swal.fire('Error', 'This request has been cancelled and cannot be accepted or rejected.', 'error');
             return;
         }
-
-        const endpoint = decision === 'accepted' ? `http://localhost:5050/api/LeaveRequests/${id}/accept` : `http://localhost:5050/api/LeaveRequests/${id}/reject`;
-
-        axios.post(endpoint)
-            .then(response => {
-                setLeaveRequests(prevRequests => prevRequests.filter(req => req.id !== id));
-                Swal.fire('Success', `Leave request ${decision}`, 'success');
-                handleClose();
-            })
-            .catch(error => {
-                Swal.fire('Error', 'Something went wrong', 'error');
-                console.error('There was an error making the decision!', error);
-            });
+    
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Do you want to ${decision} this leave request?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const endpoint = decision === 'accepted' ? `http://localhost:5050/api/LeaveRequests/${id}/accept` : `http://localhost:5050/api/LeaveRequests/${id}/reject`;
+    
+                axios.post(endpoint)
+                    .then(response => {
+                        setLeaveRequests(prevRequests => prevRequests.filter(req => req.id !== id));
+                        Swal.fire('Success', `Leave request ${decision}`, 'success');
+                        handleClose();
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Something went wrong', 'error');
+                        console.error('There was an error making the decision!', error);
+                    });
+            }
+        });
     };
 
     return (

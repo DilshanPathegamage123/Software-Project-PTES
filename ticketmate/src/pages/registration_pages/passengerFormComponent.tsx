@@ -170,6 +170,7 @@ const PassengerFormComponent = () => {
               <input
                 type="text"
                 name="FirstName"
+                maxLength={30}
                 id="FirstName"
                 style={{
                   borderRadius: "4px",
@@ -197,6 +198,7 @@ const PassengerFormComponent = () => {
               <input
                 type="text"
                 name="LastName"
+                maxLength={30}
                 id="LastName"
                 style={{
                   borderRadius: "4px",
@@ -233,6 +235,7 @@ const PassengerFormComponent = () => {
                 }}
                 placeholder="Enter your NIC number"
                 className="col-11 p-3"
+                maxLength={12}
                 value={values.NIC}
                 //onChange={handleInputChange}
                 onChange={handleChange}
@@ -305,6 +308,7 @@ const PassengerFormComponent = () => {
               <input
                 type="text"
                 name="ContactNumber"
+                maxLength={10}
                 id="ContactNumber"
                 style={{
                   borderRadius: "4px",
@@ -334,6 +338,7 @@ const PassengerFormComponent = () => {
                 type="text"
                 name="UserName"
                 id="UserName"
+                maxLength={20}
                 style={{
                   borderRadius: "4px",
                   background: "#F6F6F6",

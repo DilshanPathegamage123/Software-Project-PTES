@@ -193,7 +193,14 @@ function TravelHistory({pid}: {pid: number}) {
           </div>
         ))
       ) : (
-        <div className="text-center">No past bookings found.</div>
+       // <div className="text-center">No past bookings found.</div>
+       <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
+       <div className="col-lg-12 mt-5 mb-4">
+           <p className="text-danger fs-10 fw-bold font-family-Inter">
+               No past bookings found.
+           </p>
+       </div>
+   </div>
       )}
 
 {showFeedbackForm && selectedBooking && (

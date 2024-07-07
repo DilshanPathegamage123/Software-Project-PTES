@@ -31,7 +31,7 @@ function RegCarriagesInfoSec({ id }: { id: string }) { // Pass id as props
     }, []);
 
     const getData = () => {
-        axios.get("https://localhost:7001/api/RegCarriage/user/48")
+        axios.get(`https://localhost:7001/api/RegCarriage/user/${id}`)
             .then((result) => {
                 console.log("Data fetched successfully:", result.data);
                 // Filter out carriages where deleteState is false

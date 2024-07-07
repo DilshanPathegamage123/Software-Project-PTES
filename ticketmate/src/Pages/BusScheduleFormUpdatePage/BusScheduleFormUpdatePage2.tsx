@@ -16,10 +16,19 @@ function BusScheduleFormUpdatePage2() {
   const [allStands, setAllStands] = useState<{ [key: string]: { time: string, id: number } }>({});
   const navigate = useNavigate();
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+  
   useEffect(() => {
     const fetchStandNames = async () => {
       try {
-        const response = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${routId}`);
+        const response = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${routId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         if (response.ok) {
           const data = await response.json();
           const standNames = data.map((stand: { standName: string }) => stand.standName);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 import StartLocationSelector from "./StartLocationSelector";
 import EndLocationSelector from "./EndLocationSelector";
@@ -40,14 +41,23 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
       selectedEndLocation === "" ||
       selectedDate === ""
     ) {
-      toast.warn("Please fill all required fields before searching");
+      Swal.fire("Oops", "Please fill all required fields before searching", "error");
       return;
     }
 
     if (selectedStartLocation === selectedEndLocation) {
-      toast.warn("You Can't Travel Between Same Locations");
+      Swal.fire("Warning", "You Can't Travel Between Same Locations", "warning");
       return;
     }
+
+    Swal.fire({
+      title: "Searching",
+      text: "Please wait...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     try {
       const Response = await axios.post(
@@ -104,14 +114,15 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
           JSON.stringify(unifiedSearchResults)
         );
         sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
-
-        onSearch(unifiedSearchResults); // Store the search results in the state
-        console.log("Search result:", unifiedSearchResults); // Log the search results for debugging
+Swal.close();
+     onSearch(unifiedSearchResults); // Store the search results in the state
+        console.log("Search result:", unifiedSearchResults); 
       } else {
         console.error("Search results are not in the expected format");
       }
     } catch (error) {
-      window.confirm("Error during search! Please try again.");
+      Swal.close();
+      Swal.fire("Error", "Error during search! Please try again.", "error");
       console.error("Error during search:", error);
     }
   };

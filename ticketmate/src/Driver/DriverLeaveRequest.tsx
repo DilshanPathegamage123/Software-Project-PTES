@@ -29,6 +29,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
         currentDate: new Date().toISOString().split('T')[0],
         familyAndMedical: '',
         funeralRelationship: '',
+        weddingRelationship: '',
         termsAccepted: false,
         status:''
     });
@@ -48,6 +49,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
             currentDate: new Date().toISOString().split('T')[0],
             familyAndMedical: '',
             funeralRelationship: '',
+            weddingRelationship: '',
             termsAccepted: false,
             status: ''
         });
@@ -62,29 +64,34 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
     };
 
     useEffect(() => {
-   
-        Swal.fire({
-            title: 'Loading...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
+        // Swal.fire({
+        //     title: 'Loading...',
+        //     allowOutsideClick: false,
+        //     didOpen: () => {
+        //         Swal.showLoading();
+        //     },
+        // });
+    
         setIsLoading(true);
+    
         axios.get(`http://localhost:5050/api/LeaveRequests/user/${DriverId}`)
             .then(response => {
-                const leaveRequests = response.data.$values;
+                const leaveRequests = response.data.$values || [];
                 leaveRequests.sort((a: LeaveRequest, b: LeaveRequest) => new Date(b.date).getTime() - new Date(a.date).getTime());
                 setLeaveRequests(leaveRequests);
-                setIsLoading(false); // Stop loading
-                Swal.close(); // Close the loading alert
-                console.log(DriverId);
-                console.log(leaveRequests);
-                
+                setIsLoading(false);
+                Swal.close();
             })
-            .catch(error => console.error('There was an error fetching the leave requests!', error));
-                // Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
-                setIsLoading(false); // Stop loading
+            .catch(error => {
+                if (error.response && error.response.status === 404) {
+                    setLeaveRequests([]);
+                    Swal.close();
+                } else {
+                    console.error('There was an error fetching the leave requests!', error);
+                    Swal.fire('Error', 'There was an error fetching the leave requests!', 'error');
+                }
+                setIsLoading(false);
+            });
 
     }, [DriverId]);
 
@@ -234,7 +241,8 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Accepted leave requests cannot be updated.'
+                text: `${request.status} leave requests cannot be updated.`
+
             });
             return;
         }
@@ -249,6 +257,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                 currentDate: request.date,
                 familyAndMedical: request.familyAndMedical,
                 funeralRelationship: request.funeralRelationship,
+                weddingRelationship: request.weddingRelationship,
                 termsAccepted: true,
                 status: request.status
             });
@@ -297,6 +306,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
             
             {isLoading ? (
                 <p>Loading...</p>
+
             ) :
             leaveRequests.length === 0 ? (
           <div className="row p-5 rounded-4 sec shadow bg-grey mt-5 mb-5 ml-4 mr-4">
@@ -355,7 +365,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                                     <div className="form-group">
                                         <label>Reason for Leave</label>
                                         <div className="row">
-                                            {['Vacation', 'Sick - Self', 'Leave of Absence', 'Civil Leave/Jury Duty', 'Sick - Family', 'Sick - Dr. Appointment', 'Funeral - Relationship', 'Other'].map((reason) => (
+                                            {['Vacation', 'Sick - Self', 'Leave of Absence', 'Civil Leave/Jury Duty', 'Sick - Family', 'Sick - Dr. Appointment', 'Funeral - Relationship','Wedding', 'Other'].map((reason) => (
                                                 <div key={reason} className="col-md-6">
                                                     <input
                                                         type="radio"
@@ -383,8 +393,22 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                                                             value={newRequest.funeralRelationship}
                                                             onChange={handleInputChange}
                                                             placeholder="Enter relationship"
+                                                            maxLength={30} // Use number instead of string
+
+                                                        />
+                                                    )} 
+                                                      {/* {(newRequest.reason === 'Wedding' && reason === 'Wedding') && (
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            name="weddingRelationship"
+                                                            value={newRequest.weddingRelationship}
+                                                            onChange={handleInputChange}
+                                                            placeholder="Enter relationship"
+                                                            maxLength={30} // Use number instead of string
                                                         />
                                                     )}
+                                                     */}
                                                     {(newRequest.reason === 'Other' && reason === 'Other') && (
                                                         <input
                                                             type="text"
@@ -392,6 +416,8 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                                                             name="otherReason"
                                                             value={newRequest.otherReason}
                                                             onChange={handleInputChange}
+                                                            maxLength={50} // Use number instead of string
+
                                                         />
                                                     )}
                                                 </div>
@@ -478,6 +504,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                                 {selectedRequest.reason === 'Other' && <p><strong>Other Reason:</strong> {selectedRequest.otherReason}</p>}
                                 {selectedRequest.reason === 'Sick - Family' && <p><strong>Family and Medical Details:</strong> {selectedRequest.familyAndMedical}</p>}
                                 {selectedRequest.reason === 'Funeral - Relationship' && <p><strong>Funeral Relationship:</strong> {selectedRequest.funeralRelationship}</p>}
+                                {/* {selectedRequest.reason === 'Wedding' && <p><strong>Wedding Relationship:</strong> {selectedRequest.weddingRelationship}</p>} */}
                                 <p><strong>Start Date:</strong> {selectedRequest.startDate}</p>
                                 <p><strong>End Date:</strong> {selectedRequest.endDate}</p>
                                 <p><strong>Total Days:</strong> {selectedRequest.totalDays}</p>

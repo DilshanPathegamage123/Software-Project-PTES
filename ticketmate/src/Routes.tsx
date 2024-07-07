@@ -47,14 +47,11 @@ import NotificationComponent from "./Passenger/Notification";
 import LoginPage2 from "./pages/Bus-BookingPage/LoginPage2";
 
 
-
-
 interface AppRoutesProps {
   onSearch: React.Dispatch<React.SetStateAction<SearchResult[] | null>>;
   setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
   setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
 }
-
 
 const AppRoutes: React.FC<AppRoutesProps> = ({
   onSearch,

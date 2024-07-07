@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import "./StartLocationSelector.css";
 import { toast } from "react-toastify";
+import Swal from 'sweetalert2';
 
 interface StartLocationSelectorProps {
   selectedVehicleType: string;
@@ -34,60 +35,45 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
     }
   }, [selectedVehicleType]);
 
+// Define a generic type for the uniqueBy function
+function uniqueBy<T>(arr: T[], key: keyof T): T[] {
+  const result = [];
+  const map = new Map();
+  for (const item of arr) {
+    if (!map.has(item[key])) {
+      map.set(item[key], true); // set any value to Map
+      result.push(item);
+    }
+  }
+  return result;
+}
+  
   const getAllBusStands = async () => {
     try {
-      // Api call for fetching bus stands
-      const response = await axios.get(
-        "https://localhost:7048/api/GetBusStands"
-      );
-      console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
-
-      if (Array.isArray(response.data.$values)) {
-        setStartData(
-          response.data.$values.map((item: BusStand) => ({
-            stopName: item.standName,
-          }))
-        );
-        setFilteredStartData(
-          response.data.$values.map((item: BusStand) => ({
-            stopName: item.standName,
-          }))
-        );
-      } else {
-        setStartData([]);
-        setFilteredStartData([]);
-      }
+      const response = await axios.get("https://localhost:7048/api/GetBusStands");
+      console.log("Bus Stands from backend:", response.data);
+  
+      const uniqueBusStands = uniqueBy(response.data.$values, 'standName');
+  
+      setStartData(uniqueBusStands.map(item => ({ stopName: item.standName })));
+      setFilteredStartData(uniqueBusStands.map(item => ({ stopName: item.standName })));
     } catch (error) {
-      console.error("Error while sending start location to backend", error);
+      console.error("Error while fetching bus stands", error);
     }
   };
+  
 
   const getAllTrainStations = async () => {
     try {
-      // Api call for fetching train stations
-      const response = await axios.get(
-        "https://localhost:7048/api/GetTrainStations"
-      );
-
-      console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
-
-      if (Array.isArray(response.data.$values)) {
-        setStartData(
-          response.data.$values.map((item: TrainStation) => ({
-            stopName: item.trainStationName,
-          }))
-        );
-        setFilteredStartData(
-          response.data.$values.map((item: TrainStation) => ({
-            stopName: item.trainStationName,
-          }))
-        );
-      } else {
-        setStartData([]);
-        setFilteredStartData([]);
-      }
+      const response = await axios.get<{ $values: TrainStation[] }>("https://localhost:7048/api/GetTrainStations");
+      console.log("Train Stations from backend:", response.data.$values);
+  
+      const uniqueTrainStations = uniqueBy(response.data.$values, 'trainStationName');
+  
+      setStartData(uniqueTrainStations.map(item => ({ stopName: item.trainStationName })));
+      setFilteredStartData(uniqueTrainStations.map(item => ({ stopName: item.trainStationName })));
     } catch (error) {
-      console.error("Error while sending start location to backend", error);
+      console.error("Error while fetching train stations", error);
     }
   };
 
@@ -105,7 +91,11 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
       className="selector  d-flex  w-100 "
       onClick={() => {
         if (!selectedVehicleType) {
-          toast.error("Please select a vehicle type first.");
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select a vehicle type first.',
+          });
         }
       }}
     >
@@ -170,3 +160,60 @@ const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
 };
 
 export default StartLocationSelector;
+
+ // const getAllBusStands = async () => {
+  //   try {
+  //     // Api call for fetching bus stands
+  //     const response = await axios.get(
+  //       "https://localhost:7048/api/GetBusStands"
+  //     );
+  //     console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
+
+  //     if (Array.isArray(response.data.$values)) {
+  //       setStartData(
+  //         response.data.$values.map((item: BusStand) => ({
+  //           stopName: item.standName,
+  //         }))
+  //       );
+  //       setFilteredStartData(
+  //         response.data.$values.map((item: BusStand) => ({
+  //           stopName: item.standName,
+  //         }))
+  //       );
+  //     } else {
+  //       setStartData([]);
+  //       setFilteredStartData([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error while sending start location to backend", error);
+  //   }
+  // };
+
+  // const getAllTrainStations = async () => {
+  //   try {
+  //     // Api call for fetching train stations
+  //     const response = await axios.get(
+  //       "https://localhost:7048/api/GetTrainStations"
+  //     );
+
+  //     console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
+
+  //     if (Array.isArray(response.data.$values)) {
+  //       setStartData(
+  //         response.data.$values.map((item: TrainStation) => ({
+  //           stopName: item.trainStationName,
+  //         }))
+  //       );
+  //       setFilteredStartData(
+  //         response.data.$values.map((item: TrainStation) => ({
+  //           stopName: item.trainStationName,
+  //         }))
+  //       );
+  //     } else {
+  //       setStartData([]);
+  //       setFilteredStartData([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error while sending start location to backend", error);
+  //   }
+  // };

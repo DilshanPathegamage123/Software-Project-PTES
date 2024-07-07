@@ -131,6 +131,7 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
             `https://localhost:7296/api/Email/SendEmails/${props.passengerId}`,
             {
               to: "",
+              subject: props.busId ? "TicketMate - Bus Booking Confirmation" : "TicketMate - Train Booking Confirmation",
               message: `
           <html>
             <body>
@@ -160,6 +161,7 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
             </body>
           </html>
         `,
+
             }
           )
           .then((response) => {
@@ -233,6 +235,7 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
                   // Handle error if needed
                 });
             }
+
           })
           .catch((error) => {
             console.error("Failed to send email", error);

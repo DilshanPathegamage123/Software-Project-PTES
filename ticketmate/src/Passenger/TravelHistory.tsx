@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import "./TravelHistory.css";
 import BusIcon from "./images/fa6-solid_bus.png";
 import BusIcon2 from "./images/Group 391.png";
@@ -46,10 +48,21 @@ function TravelHistory({pid}: {pid: number}) {
     null
   );
 
+
   let passengerId = passengerid.toString();
 
   useEffect(() => {
     const fetchBookings = async () => {
+
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we fetch your bookings.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       try {
         const [busResponse, trainResponse] = await Promise.all([
           axios.get(
@@ -92,8 +105,11 @@ function TravelHistory({pid}: {pid: number}) {
           }));
 
         setBookings([...busBookings, ...trainBookings]);
+        Swal.close();
       } catch (error) {
         console.error("Error fetching bookings:", error);
+              Swal.fire('Error', 'Failed to load past bookings. Please try again later.', 'error');
+
       }
     };
 
@@ -177,7 +193,14 @@ function TravelHistory({pid}: {pid: number}) {
           </div>
         ))
       ) : (
-        <div className="text-center">No past bookings found.</div>
+       // <div className="text-center">No past bookings found.</div>
+       <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
+       <div className="col-lg-12 mt-5 mb-4">
+           <p className="text-danger fs-10 fw-bold font-family-Inter">
+               No past bookings found.
+           </p>
+       </div>
+   </div>
       )}
 
 {showFeedbackForm && selectedBooking && (

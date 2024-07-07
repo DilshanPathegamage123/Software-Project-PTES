@@ -72,6 +72,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
 
             {
                 to: "",
+                subject: props.busId ? "TicketMate - Bus Booking Confirmation" : "TicketMate - Train Booking Confirmation",
                 message:  `
                 <html>
                   <body>
@@ -88,7 +89,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
                     <p>You can make your payment in cash on the day of your trip.</p>
                     <p>Thank you for choosing our service. We look forward to serving you aboard our service. Should you have any further inquiries or require assistance, please feel free to contact us at +9471 1152 633.</p>
                     <p>Warm regards,</p>
-                    <p>R.M.H.Ranasinghe<br>
+                    <p>Joe Henry<br>
                     Director<br>
                     TicketMate<br>
                     +9471 123 2145</p>

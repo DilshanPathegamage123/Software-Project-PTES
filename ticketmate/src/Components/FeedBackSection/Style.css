@@ -81,10 +81,9 @@ header {
 
 .rating li:hover,
 .num-display {
-  background: rebeccapurple;
+  background:#eea404;
   color: #fff;
 }
-
 
 
 .rating-input {
@@ -228,4 +227,8 @@ input:focus {
 
 .rate {
   color: #ff9900;
+}
+
+.feedback-list {
+  background-color: #ffffff;
 }

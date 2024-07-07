@@ -221,7 +221,7 @@ function LocomotiveRegistrationForm() {
                 <div className="form-group row">
                   <label htmlFor="inputLocomotiveCapacity" className="col-form-label">Enter Locomotive Capacity</label>
                   <div className="">
-                    <input type="text" className="form-control" id="inputLocomotiveCapacity" name="locomotiveCapacity" placeholder="Locomotive Capacity (No of Passengers)" onChange={handleInputChange} />
+                    <input type="text" className="form-control" id="inputLocomotiveCapacity" name="locomotiveCapacity" placeholder="Locomotive Capacity (tons)" onChange={handleInputChange} />
                     {errors.locomotiveCapacity && <div className="text-danger"><small>{errors.locomotiveCapacity}</small></div>}
                   </div>
                 </div>

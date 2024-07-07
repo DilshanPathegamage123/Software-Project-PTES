@@ -6,7 +6,7 @@ import PrimaryButton from "../../Components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
 import { updatePassengerProfileValidation } from "./updatePassengerProfileValidation";
 import axios from "axios";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavigateFunction } from "react-router-dom";
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import Footer from "../../Components/Footer/footer";
 import Swal from "sweetalert2";
@@ -46,7 +46,7 @@ const getToken = () => {
 const UpdatePassengerProfile = () => {
 
   const [dob, setDob] = useState<Date | null>(null);
-  const history = useNavigate();
+  const history = useNavigate() as NavigateFunction;
   const location = useLocation();
   const { passengerdata } = location.state as { passengerdata: passengerData };
 
@@ -190,7 +190,7 @@ const UpdatePassengerProfile = () => {
       confirmButtonText: 'Yes, cancel it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        history("/login");
+        history(-1);
       }
     });
   };

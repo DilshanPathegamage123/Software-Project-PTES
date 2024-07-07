@@ -87,6 +87,7 @@ function driverFormComponent() {
               <input
                 type="text"
                 name="firstName"
+                maxLength={30}
                 id="firstName"
                 style={{
                   borderRadius: "4px",
@@ -112,6 +113,7 @@ function driverFormComponent() {
               <input
                 type="text"
                 name="lastName"
+                maxLength={30}
                 id="lastName"
                 style={{
                   borderRadius: "4px",
@@ -139,6 +141,7 @@ function driverFormComponent() {
               <input
                 type="text"
                 name="nic"
+                maxLength={12}
                 id="nic"
                 style={{
                   borderRadius: "4px",
@@ -210,6 +213,7 @@ function driverFormComponent() {
                 type="text"
                 name="contactNumber"
                 id="contactNumber"
+                maxLength={10}
                 style={{
                   borderRadius: "4px",
                   background: "#F6F6F6",

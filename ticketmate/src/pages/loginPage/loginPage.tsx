@@ -174,6 +174,11 @@ import Footer from "../../Components/Footer/footer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -246,7 +251,7 @@ const LoginPage = () => {
 
   return (
     <div className="loginpage-body">
-      <PrimaryNavBar />
+       {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <a href="http://localhost:5173/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -290,7 +295,7 @@ const LoginPage = () => {
               name="password"
               onChange={(e) => setPassword(e.target.value)}
               className="form-control col-8 mx-auto m-4 custom-bg-color"
-              placeholder="password"
+              placeholder="    password"
               value={password}
               required
               data-testid="password"
@@ -311,7 +316,8 @@ const LoginPage = () => {
           </div>
         </div>
       </form>
-      <Footer />
+      <div className="footer">  <Footer /></div>
+    
     </div>
   );
 };

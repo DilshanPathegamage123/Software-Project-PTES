@@ -1,9 +1,11 @@
+
 import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar-logout";
 import Selection from "../../Components/payment/Selection";
 import Back from "../../Components/payment/Backbutton";
 import Footer from "../../Components/Footer/Footer1";
 import "./paymentmain.css";
 import { useLocation } from "react-router-dom";
+
 
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -27,6 +29,7 @@ function Payment() {
 
     busBookingId: 0,
     busScheduleId: state.BusScheduleId,
+    //busScheduleId:75,
     busId: state.VehicleId || 0,
 
     passengerId: (state.userId || UserId || "").toString(),
@@ -47,7 +50,8 @@ function Payment() {
     trainBookingId: 0,
     trainScheduleId: state.TrainScheduleId,
     bookingCarriageNo: state.BookingCarriageNo,
-    bookingClass: state.BookingClass,
+    bookingClass: state.BookingClass === "1st" ? "1" : "2",
+
     // driverId: 5,
 
     // busBookingId: 0,

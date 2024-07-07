@@ -24,7 +24,6 @@ function CarriageRegistrationForm() {
 
   const [formData, setFormData] = useState({
     carriageNum: '',
-    seatsCount: '',
     length: '',
     width: '',
     height: '',
@@ -34,7 +33,6 @@ function CarriageRegistrationForm() {
 
   const [errors, setErrors] = useState({
     carriageNum: '',
-    seatsCount: '',
     length: '',
     width: '',
     height: '',
@@ -48,7 +46,7 @@ function CarriageRegistrationForm() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (['seatsCount', 'length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
+    if (['length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
       setErrors({
         ...errors,
         [name]: 'Only numbers are allowed'
@@ -110,9 +108,11 @@ function CarriageRegistrationForm() {
       Swal.showLoading();
 
       try {
+        const seatsCount = Object.values(buttonStates).filter(state => state).length;
+
         const response = await axios.post<ApiResponse>('https://localhost:7001/api/RegCarriage', {
           carriageNo: formData.carriageNum,
-          seatsCount: formData.seatsCount,
+          seatsCount: seatsCount.toString(),
           length: formData.length,
           width: formData.width,
           height: formData.height,
@@ -202,7 +202,7 @@ function CarriageRegistrationForm() {
 
   return (
     <>
-      <div className='container py-4'>
+      <div className='container px-4'>
         <div className='col-12 rounded-4 formSec'>
           <div className='row'>
             <h3 className='h3Style text-center'>Fill this form to register a new carriage</h3>
@@ -217,13 +217,6 @@ function CarriageRegistrationForm() {
                   <div className="">
                     <input type="text" className="form-control" id="inputCarriageNum" name="carriageNum" placeholder="Carriage Number" onChange={handleInputChange} />
                     {errors.carriageNum && <div className="text-danger">{errors.carriageNum}</div>}
-                  </div>
-                </div>
-                <div className="form-group row">
-                  <label htmlFor="inputSeatsCount" className="col-form-label">Enter Seat Count</label>
-                  <div className="">
-                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" onChange={handleInputChange} />
-                    {errors.seatsCount && <div className="text-danger">{errors.seatsCount}</div>}
                   </div>
                 </div>
                 <div className="form-group row">
@@ -277,7 +270,7 @@ function CarriageRegistrationForm() {
               <SelectBusSeatStructure setButtonStates={setButtonStates} />
             </div>
             <div className='row'>
-              <div className='col-12 text-center p-3'>
+              <div className='col-12 text-center pt-3'>
 
                 <button type='button' className='btn white mx-3 ' onClick={() => CancelButton()}>Cancel</button>
                 <button type='submit' className='btn primary mx-3 '>Register</button>

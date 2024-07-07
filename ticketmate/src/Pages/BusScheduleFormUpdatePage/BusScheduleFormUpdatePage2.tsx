@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './BusScheduleFormUpdatePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 function BusScheduleFormUpdatePage2() {
@@ -16,10 +16,19 @@ function BusScheduleFormUpdatePage2() {
   const [allStands, setAllStands] = useState<{ [key: string]: { time: string, id: number } }>({});
   const navigate = useNavigate();
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+  
   useEffect(() => {
     const fetchStandNames = async () => {
       try {
-        const response = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${routId}`);
+        const response = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${routId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         if (response.ok) {
           const data = await response.json();
           const standNames = data.map((stand: { standName: string }) => stand.standName);

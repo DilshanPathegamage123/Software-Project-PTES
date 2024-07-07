@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./HomeContent.css";
 import HomeImg1 from "./AssertHomePage/HomeImg2.png";
 import HomeImg2 from "./AssertHomePage/HomeImg3.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function HomeContent() {
   const history=useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash === '#section2') {
+      const section = document.getElementById('section2');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [location.hash]);
+  
   return (
     <>
       {/*Section 1 */}
@@ -40,7 +51,7 @@ export default function HomeContent() {
 
       {/*Section 2 */}
 
-      <div className=" section2 container row row-cols-1 row-cols-lg-2  pt-4 pb-4  align-content-center ms-auto me-auto mb-auto      ">
+      <div id="section2" className=" section2 container row row-cols-1 row-cols-lg-2  pt-4 pb-4  align-content-center ms-auto me-auto mb-auto">
         <div className=" sectioncolumn1 col-lg-5 col-12 align-content-start    ">
           <div className="para4  ">
             <p>
@@ -53,8 +64,8 @@ export default function HomeContent() {
               <b>Daily Convenience:</b> Streamline your daily commute with our
               user-friendly platform. Booking your daily transport has never
               been easier. <br />
-              <b>Comprehensive Network:</b> Access a wide range of buses, trams,
-              and shuttles covering your city. We partner with local transit
+              <b>Comprehensive Network:</b> Access a wide range of buses
+              and trains covering your city. We partner with local transit
               authorities to ensure seamless connectivity. <br />
               <b>Reliable Service:</b> Count on us for punctual and reliable
               services. Our commitment is to make sure you reach your
@@ -95,13 +106,13 @@ export default function HomeContent() {
         <div className="row container section3row2 row-cols-1 row-cols-lg-2 h-auto   ">
           <div className="col container  section3col col-lg-4 col-12  ms-auto  me-auto mb-3   ">
             <button type="button" className="btn SignUpNow btn-sm " onClick={()=>history("/register")}>
-              Sign Up Now
+              SignUp Now
             </button>
           </div>
           <div className="col  container section3col col-lg-4 col-12  ms-auto me-auto mb-0  ">
-            <button type="button" className="btn ExploreRoutesButton btn-sm "
-            onClick={()=>history("/")}>
-              Explore Routes
+            <button type="button" className="btn SignUpNow btn-sm "
+            onClick={()=>history("login")}>
+              SignIn Now
             </button>
           </div>
         </div>

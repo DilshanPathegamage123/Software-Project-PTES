@@ -3,7 +3,7 @@ import swal from 'sweetalert2';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './BusScheduleFormUpdatePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 import '../../vars.css';
 
@@ -39,6 +39,11 @@ function BusScheduleFormUpdatePage() {
   const searchParams = new URLSearchParams(location.search);
   const scheduleId = searchParams.get('scheduleId');
   // const scheduleId = '9'; // Hardcoded scheduleId for testing purposes
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   useEffect(() => {
     if (scheduleId) {
       fetchScheduleData(scheduleId);
@@ -47,7 +52,12 @@ function BusScheduleFormUpdatePage() {
 
   const fetchScheduleData = async (scheduleId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`);
+      const response = await axios.get(`https://localhost:7001/api/ScheduledBus/${scheduleId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          });
       const data = response.data;
       setBusId(data.registeredBusBusId);
       setBusNo(data.busNo); // Added BusNo
@@ -111,7 +121,12 @@ function BusScheduleFormUpdatePage() {
       };
 
       try {
-        await axios.put(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, updatedBusSchedule);
+        await axios.put(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, updatedBusSchedule,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         swal.fire({
           icon: 'success',
           title: 'Updated',

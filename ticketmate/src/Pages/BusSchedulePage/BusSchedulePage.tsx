@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './BusSchedulePage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import BusScheduleForm from '../../Components/BusScheduleForm/BusScheduleForm';
 import BusScheduleForm2 from '../../Components/BusScheduleForm/BusScheduleForm2';
 import BusScheduleForm3 from '../../Components/BusScheduleForm/BusScheduleForm3';
@@ -14,6 +14,10 @@ function BusSchedulePage() {
   const [showForm3, setShowForm3] = useState(false);
   const [standNames, setStandNames] = useState<string[]>([]);
   const [scheduleId, setScheduleId] = useState<string>('');
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);

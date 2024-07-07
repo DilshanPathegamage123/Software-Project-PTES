@@ -1,0 +1,44 @@
+/* DriverLeaveRequest.css
+.blur {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+} */
+
+.custom-modal-dialog-leaveRequest {
+    max-width: 70%; /* Adjust the width as needed */
+    margin-left: 300px;
+}
+
+.terms-link-leaveRequest {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.margin-left-termsConditions {
+    margin-left: 10px;
+}
+
+.error-message-termsConditions {
+    color: red;
+}
+/* DriverLeaveRequest.css */
+.custom-modal-width-view {
+    max-width: 500px; /* Adjust the width as needed */
+}
+.modal-center-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+}
+.bg-success-light-leaveRequest {
+    background-color: rgba(40, 167, 69, 0.4); /* Adjust the RGB values and opacity (0.5) as needed */
+}
+
+.bg-danger-light-leaveRequest{
+    background-color: rgba(255, 0, 0, 0.2); 
+}

@@ -6,7 +6,7 @@ import axios from 'axios';
 import SelectBusSeatStructureCarr from '../../Components/SelectBusSeatStructureCarr/SelectBusSeatStructureCarr';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 interface ApiResponse {
@@ -36,7 +36,6 @@ function UpdateCarriageRegInfoPage() {
 
   const [formData, setFormData] = useState({
     carriageNum: '',
-    seatsCount: '',
     length: '',
     width: '',
     height: '',
@@ -47,7 +46,6 @@ function UpdateCarriageRegInfoPage() {
 
   const [errors, setErrors] = useState({
     carriageNum: '',
-    seatsCount: '',
     length: '',
     width: '',
     height: '',
@@ -70,7 +68,6 @@ function UpdateCarriageRegInfoPage() {
       const data = response.data;
       setFormData({
         carriageNum: data.carriageNo || '',
-        seatsCount: data.seatsCount.toString(),
         length: data.length.toString(),
         width: data.width.toString(),
         height: data.height.toString(),
@@ -99,7 +96,7 @@ function UpdateCarriageRegInfoPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (['seatsCount', 'length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
+    if (['length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
       setErrors({
         ...errors,
         [name]: 'Only numbers are allowed'
@@ -150,10 +147,12 @@ function UpdateCarriageRegInfoPage() {
       Swal.showLoading();
 
       try {
+        const seatsCount = Object.values(buttonStates).filter(state => state.availability).length;
+
         await axios.put(`https://localhost:7001/api/RegCarriage/${carriageId}`, {
           carriageId: carriageId,
           carriageNo: formData.carriageNum,
-          seatsCount: formData.seatsCount,
+          seatsCount: seatsCount,
           length: formData.length,
           width: formData.width,
           height: formData.height,
@@ -264,8 +263,8 @@ function UpdateCarriageRegInfoPage() {
                 <div className="form-group row">
                   <label htmlFor="inputSeatsCount" className="col-form-label">Enter Seat Count</label>
                   <div className="">
-                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" value={formData.seatsCount} onChange={handleInputChange} />
-                    {errors.seatsCount && <div className="text-danger">{errors.seatsCount}</div>}
+                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" value={Object.values(buttonStates).filter(state => state.availability).length} disabled />
+                    
                   </div>
                 </div>
                 <div className="form-group row">
@@ -334,7 +333,6 @@ function UpdateCarriageRegInfoPage() {
       </div>
       <Footer/>
     </>
-    
   );
 }
 

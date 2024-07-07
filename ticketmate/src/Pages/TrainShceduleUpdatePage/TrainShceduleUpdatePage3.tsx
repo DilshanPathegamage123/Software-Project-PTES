@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../vars.css';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 interface ScheduleDate {

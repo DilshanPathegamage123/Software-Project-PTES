@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { ownerFormValidation } from "./ownerFormValidation";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const initialValues = {
   firstName: "",
@@ -66,12 +67,25 @@ function ownerFormComponent() {
         );
 
         if (authResponse.status === 200 && userResponse.status === 200) {
+          Swal.fire({
+            title: 'Registration request sent successfully!',
+            text: 'Please check your mailbox for response of your request.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+
+        });
           history("/login");
 
         }
         console.log(authResponse.data);
       } catch (error) {
         console.error("Error:", error);
+        Swal.fire({
+          title: 'Error',
+          text: 'There was a problem with your registration. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
 
     },

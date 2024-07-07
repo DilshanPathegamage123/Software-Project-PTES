@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UpdateBusRegInfoPage.css';
-import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { v4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import Swal from 'sweetalert2';
 import { useLocation, useNavigate } from 'react-router-dom';
+import '../../vars.css';
 
 interface ApiResponse {
   busId: number;
@@ -31,7 +32,6 @@ function UpdateBusRegInfoPage() {
     busNum: '',
     busName: '',
     licenceNum: '',
-    seatCount: '',
     selectedFile1: null,
     selectedFile2: null,
     acOption: '',
@@ -42,7 +42,6 @@ function UpdateBusRegInfoPage() {
     busNum: '',
     busName: '',
     licenceNum: '',
-    seatCount: '',
     selectedFile1: '',
     selectedFile2: '',
     acOption: ''
@@ -72,7 +71,6 @@ function UpdateBusRegInfoPage() {
         busNum: busData.busNo,
         busName: busData.busName,
         licenceNum: busData.licenNo,
-        seatCount: busData.setsCount,
         selectedFile1: null,
         selectedFile2: null,
         acOption: busData.aCorNONAC ? 'AC' : 'Non AC',
@@ -102,21 +100,14 @@ function UpdateBusRegInfoPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'seatCount' && !/^\d+$/.test(value)) {
-      setErrors({
-        ...errors,
-        [name]: 'Only numbers are allowed for seat count'
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    setErrors({
+      ...errors,
+      [name]: ''
+    });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -186,11 +177,13 @@ function UpdateBusRegInfoPage() {
 
       try {
         const acOptionValue = formData.acOption === 'AC' ? true : false;
+        const seatCount = Object.values(buttonStates).filter(state => state.availability).length;
+
         await axios.put(`https://localhost:7001/api/BusReg/${busId}`, {
           busId: busId,
           busNo: formData.busNum,
           licenNo: formData.licenceNum,
-          setsCount: formData.seatCount,
+          setsCount: seatCount,
           aCorNONAC: acOptionValue,
           licenseImgURL: licenseUrl,
           insuranceImgURL: insuranceUrl,
@@ -291,133 +284,121 @@ function UpdateBusRegInfoPage() {
   return (
     <>
       <PrimaryNavBar />
-      <div className="container rounded-4 p-5">
+      <div className='BusRegBackUP'>
+      <div className="container p-5">
         <form onSubmit={handleSubmit}>
-          <div className="row ">
-            <div className="col-lg-6 bg-light2 rounded-4 p-5">
-              <div className="row mb-3">
-                <div className="col-md-6">
-                  <label htmlFor="busNum">Bus Number:</label>
-                  <input
-                    type="text"
-                    id="busNum"
-                    name="busNum"
-                    className="form-control"
-                    value={formData.busNum}
-                    onChange={handleInputChange}
-                  />
-                  {errors.busNum && <p className="error-text">{errors.busNum}</p>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="busName">Bus Name:</label>
-                  <input
-                    type="text"
-                    id="busName"
-                    name="busName"
-                    className="form-control"
-                    value={formData.busName}
-                    onChange={handleInputChange}
-                  />
-                  {errors.busName && <p className="error-text">{errors.busName}</p>}
-                </div>
+          
+          <div className='row bg-light2 rounded-4 p-5'>
+          <h3 className='h3Style text-center'>Bus Registration Information</h3>
+            <div className='col-lg-6'>
+              <div className="form-group p-2">
+                <label>Bus Number:</label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.busNum ? 'is-invalid' : ''}`}
+                  placeholder="Enter Bus Number"
+                  name="busNum"
+                  value={formData.busNum}
+                  onChange={handleInputChange}
+                />
+                {errors.busNum && <div className="invalid-feedback">{errors.busNum}</div>}
               </div>
-              <div className="row mb-3">
-                <div className="col-md-6">
-                  <label htmlFor="licenceNum">Licence Number:</label>
-                  <input
-                    type="text"
-                    id="licenceNum"
-                    name="licenceNum"
-                    className="form-control"
-                    value={formData.licenceNum}
-                    onChange={handleInputChange}
-                  />
-                  {errors.licenceNum && <p className="error-text">{errors.licenceNum}</p>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="seatCount">Seat Count:</label>
-                  <input
-                    type="text"
-                    id="seatCount"
-                    name="seatCount"
-                    className="form-control"
-                    value={formData.seatCount}
-                    onChange={handleInputChange}
-                  />
-                  {errors.seatCount && <p className="error-text">{errors.seatCount}</p>}
-                </div>
+              <div className="form-group p-2">
+                <label>Bus Name:</label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.busName ? 'is-invalid' : ''}`}
+                  placeholder="Enter Bus Name"
+                  name="busName"
+                  value={formData.busName}
+                  onChange={handleInputChange}
+                />
+                {errors.busName && <div className="invalid-feedback">{errors.busName}</div>}
               </div>
-              <div className="row mb-3">
-                <div className="col-md-6">
-                  <label htmlFor="selectedFile1">Attach Vehicle Licence Image:</label>
-                  <input
-                    type="file"
-                    id="selectedFile1"
-                    name="selectedFile1"
-                    className="form-control"
-                    onChange={handleFileChange}
-                  />
-                  {errors.selectedFile1 && <p className="error-text">{errors.selectedFile1}</p>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="selectedFile2">Attach Vehicle Insurance Image:</label>
-                  <input
-                    type="file"
-                    id="selectedFile2"
-                    name="selectedFile2"
-                    className="form-control"
-                    onChange={handleFileChange}
-                  />
-                  {errors.selectedFile2 && <p className="error-text">{errors.selectedFile2}</p>}
-                </div>
+              <div className="form-group p-2">
+                <label>Licence Number:</label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.licenceNum ? 'is-invalid' : ''}`}
+                  placeholder="Enter Licence Number"
+                  name="licenceNum"
+                  value={formData.licenceNum}
+                  onChange={handleInputChange}
+                />
+                {errors.licenceNum && <div className="invalid-feedback">{errors.licenceNum}</div>}
               </div>
-              <div className="row mb-3">
-                <div className="col-md-6">
-                  <label>AC or Non AC:</label>
-                  <div>
+              <div className="form-group p-2">
+                <label>Upload Licence Scan Copy:</label>
+                <input
+                  type="file"
+                  className={`form-control ${errors.selectedFile1 ? 'is-invalid' : ''}`}
+                  name="selectedFile1"
+                  onChange={handleFileChange}
+                />
+                {existingFiles.licenseImgURL && (
+                  <p>
+                    Existing file: <a href={existingFiles.licenseImgURL} target="_blank" rel="noopener noreferrer">View</a>
+                  </p>
+                )}
+                {errors.selectedFile1 && <div className="invalid-feedback">{errors.selectedFile1}</div>}
+              </div>
+              <div className="form-group p-2">
+                <label>Upload Insurance Scan Copy:</label>
+                <input
+                  type="file"
+                  className={`form-control ${errors.selectedFile2 ? 'is-invalid' : ''}`}
+                  name="selectedFile2"
+                  onChange={handleFileChange}
+                />
+                {existingFiles.insuranceImgURL && (
+                  <p>
+                    Existing file: <a href={existingFiles.insuranceImgURL} target="_blank" rel="noopener noreferrer">View</a>
+                  </p>
+                )}
+                {errors.selectedFile2 && <div className="invalid-feedback">{errors.selectedFile2}</div>}
+              </div>
+              <div className="form-group p-2">
+                <label>AC/Non AC:</label>
+                <div>
+                  <div className="form-check form-check-inline">
                     <input
                       type="radio"
-                      id="ac"
+                      className={`form-check-input ${errors.acOption ? 'is-invalid' : ''}`}
                       name="acOption"
                       value="AC"
                       checked={formData.acOption === 'AC'}
                       onChange={handleRadioChange}
                     />
-                    <label htmlFor="ac" className="ml-2 mr-4">AC</label>
+                    <label className="form-check-label">AC</label>
+                  </div>
+                  <div className="form-check form-check-inline">
                     <input
                       type="radio"
-                      id="nonAc"
+                      className={`form-check-input ${errors.acOption ? 'is-invalid' : ''}`}
                       name="acOption"
                       value="Non AC"
                       checked={formData.acOption === 'Non AC'}
                       onChange={handleRadioChange}
                     />
-                    <label htmlFor="nonAc" className="ml-2">Non AC</label>
+                    <label className="form-check-label">Non AC</label>
                   </div>
-                  {errors.acOption && <p className="error-text">{errors.acOption}</p>}
                 </div>
+                {errors.acOption && <div className="invalid-feedback">{errors.acOption}</div>}
               </div>
-              
             </div>
-            <div className="col-lg-6 bg-light2 rounded-4 p-5">
-              <h3 className="mb-4 text-center">Update Seat Structure</h3>
-              <SelectBusSeatStructureUP
-                buttonStates={buttonStates}
-                setButtonStates={setButtonStates}
-              />
+          <div className='col-lg-6'>
+            <div className="form-group p-2">
+              <label>Select Seat Structure:</label>
+              <SelectBusSeatStructureUP buttonStates={buttonStates} setButtonStates={setButtonStates} />
             </div>
-
           </div>
-          <div className="row justify-content-center mt-4">
-              <div className="row justify-content-center text-center">
-                <div className="col-6">
-                  <button type="submit" className="btn primary m-2">Update</button>
-                  <button type="button" className="btn white m-2" onClick={CancelButton}>Cancel</button>
-                </div>
-              </div>
+          <div className="text-center pt-3">
+            <button type="submit" className="btn primary mx-3">Update</button>
+            <button type="button" className="btn yellow mx-3" onClick={CancelButton}>Cancel</button>
+          </div>
           </div>
         </form>
-        
+      </div>
       </div>
       <Footer />
     </>

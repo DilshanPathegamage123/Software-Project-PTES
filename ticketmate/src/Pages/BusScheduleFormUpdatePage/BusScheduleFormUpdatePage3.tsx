@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../vars.css';
 import Swal from 'sweetalert2';
 import { useNavigate, useLocation } from 'react-router-dom';
+import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 
 interface ScheduleDate {
   id: number;
@@ -22,13 +23,22 @@ function BusScheduleFormUpdatePage3() {
   const [arrivalDate, setArrivalDate] = useState<string>('');
   const [departureDate, setDepartureDate] = useState<string>('');
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+  
   useEffect(() => {
     fetchExistingDates();
   }, []);
 
   const fetchExistingDates = async () => {
     try {
-      const response = await fetch(`https://localhost:7001/api/ScheduledBusDate/ByScheduleId/${scheduleId}`);
+      const response = await fetch(`https://localhost:7001/api/ScheduledBusDate/ByScheduleId/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.ok) {
         const data = await response.json();
         setDates(data);
@@ -69,6 +79,9 @@ function BusScheduleFormUpdatePage3() {
       try {
         fetch(`https://localhost:7001/api/ScheduledBusDate/${dateToRemove.id}`, {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
         })
           .then(response => {
             if (response.ok) {
@@ -103,7 +116,8 @@ function BusScheduleFormUpdatePage3() {
         const response = await fetch('https://localhost:7001/api/ScheduledBusDate', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify({
             scheduledBusScheduleId: scheduleId,
@@ -142,7 +156,7 @@ function BusScheduleFormUpdatePage3() {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, Go Back!"
     }).then(result => {
       if (result.isConfirmed) {
         navigate(`/ScheduledBusPage?scheduleId=${scheduleId}`);
@@ -151,71 +165,77 @@ function BusScheduleFormUpdatePage3() {
   };
 
   return (
-    <form onSubmit={handleAddDate}>
-      <div className='form-group'>
-        <div className='row align-items-end'>
-          <div className='col-sm-4'>
-            <label htmlFor="arrivalDate">Arrival Date :</label> <br />
-            <div className=''>
-              <input 
-                type="date" 
-                className='form-control '
-                id="arrivalDate" 
-                name="arrivalDate"
-                value={arrivalDate}
-                onChange={(e) => setArrivalDate(e.target.value)}
-              />
+    <>
+    <PrimaryNavBar/>
+    <div className='BusSheUpForm my-5 rounded-3'>
+      <h3 className='h3Style text-center pb-3'>Update Scheduled Dates</h3>
+      <form onSubmit={handleAddDate}>
+        <div className='form-group'>
+          <div className='row align-items-end'>
+            <div className='col-sm-4'>
+              <label htmlFor="arrivalDate">Arrival Date :</label> <br />
+              <div className=''>
+                <input 
+                  type="date" 
+                  className='form-control '
+                  id="arrivalDate" 
+                  name="arrivalDate"
+                  value={arrivalDate}
+                  onChange={(e) => setArrivalDate(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className='col-sm-4'>
+              <label htmlFor="departureDate">Departure Date :</label> <br />
+              <div className=''>
+                <input 
+                  type="date" 
+                  className='form-control '
+                  id="departureDate" 
+                  name="departureDate"
+                  value={departureDate}
+                  onChange={(e) => setDepartureDate(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className='col-sm-4'>
+              <div className=''>
+                <button type="submit" className='btn primary'>Add</button>
+              </div>
             </div>
           </div>
 
-          <div className='col-sm-4'>
-            <label htmlFor="departureDate">Departure Date :</label> <br />
-            <div className=''>
-              <input 
-                type="date" 
-                className='form-control '
-                id="departureDate" 
-                name="departureDate"
-                value={departureDate}
-                onChange={(e) => setDepartureDate(e.target.value)}
-              />
-            </div>
-          </div>
+          <ul>
+            {dates.map((datePair, index) => (
+              <div className='p-1' key={index}>
+                <li className='p-2'>
+                  Arrival: {datePair.arrivalDate}, &nbsp; &nbsp;  Departure: {datePair.departureDate}
+                  &nbsp; &nbsp; <button type="button" className='btn primary p-2' onClick={() => handleRemoveDate(index, true)}>Remove</button>
+                </li>
+              </div>
+            ))}
+            {newDates.map((datePair, index) => (
+              <div className='p-1' key={index + dates.length}>
+                <li className='p-2'>
+                  Arrival: {datePair.arrivalDate}, &nbsp; &nbsp;  Departure: {datePair.departureDate}
+                  &nbsp; &nbsp; <button type="button" className='btn primary p-2' onClick={() => handleRemoveDate(index, false)}>Remove</button>
+                </li>
+              </div>
+            ))}
+          </ul>
 
-          <div className='col-sm-4'>
-            <div className=''>
-              <button type="submit" className='btn primary'>Add</button>
+          <div className='row'>
+            <div className='col-12 text-center p-3'>
+              <button type='button' className='btn white mx-3' onClick={handleCancel}>Cancel</button>
+              <button type='button' className='btn primary mx-3' onClick={handleSubmit}>Submit</button>
             </div>
           </div>
         </div>
-
-        <ul>
-          {dates.map((datePair, index) => (
-            <div className='p-1' key={index}>
-              <li className='p-2'>
-                Arrival: {datePair.arrivalDate}, &nbsp; &nbsp;  Departure: {datePair.departureDate}
-                &nbsp; &nbsp; <button type="button" className='btn primary p-2' onClick={() => handleRemoveDate(index, true)}>Remove</button>
-              </li>
-            </div>
-          ))}
-          {newDates.map((datePair, index) => (
-            <div className='p-1' key={index + dates.length}>
-              <li className='p-2'>
-                Arrival: {datePair.arrivalDate}, &nbsp; &nbsp;  Departure: {datePair.departureDate}
-                &nbsp; &nbsp; <button type="button" className='btn primary p-2' onClick={() => handleRemoveDate(index, false)}>Remove</button>
-              </li>
-            </div>
-          ))}
-        </ul>
-
-        <div className='row'>
-          <div className='col-12 text-center p-3'>
-            <button type='button' className='btn white mx-3' onClick={handleCancel}>Cancel</button>
-            <button type='button' className='btn primary mx-3' onClick={handleSubmit}>Submit</button>
-          </div>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    </>
   );
 }
 

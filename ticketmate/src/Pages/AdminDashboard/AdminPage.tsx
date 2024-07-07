@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 //import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
 import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
@@ -14,6 +14,12 @@ import UserManage from "./UserManage";
 import RegistrationRequests from "./RegistrationRequests";
 import ReportAnlysis from "./ReportingAnalysisBus";
 import ReportTable from "./ReportingAnalysisBus";
+import Swal from "sweetalert2";
+import PrimaryNavBar from "../../Components/NavBar/PrimaryNavBar";
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 function AdminPage() {
 let location = useLocation();
@@ -24,9 +30,35 @@ let { username, password } = location.state;
 
   const [selectedOption, setSelectedOption] = useState("option1");
 
+  const [loading, setLoading] = useState(true);
+  
+
+
+  
+  useEffect(() => {
+      Swal.fire({
+        title: 'Loading...',
+        text: 'Please wait while we load your data',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+  
+      // Simulating data fetching, you should replace this with actual data fetching logic
+      setTimeout(() => {
+        setLoading(false);
+        Swal.close();
+      }, 2000); // Adjust the timeout as needed
+    }, []);
+  if (loading) {
+    return null; // Return null or a loader component while data is loading
+  }
+
   return (
     <div className="adminpage">
- <span data-testid="navbar"><PrimaryNavBar_logout /></span>
+      {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
+
 
       <div className="container-fluid pt-3 ">
         <div className="container-fluid rounded-4 proSec">
@@ -119,3 +151,5 @@ let { username, password } = location.state;
 }
 
 export default AdminPage;
+
+

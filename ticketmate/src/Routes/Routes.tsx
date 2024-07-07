@@ -12,8 +12,8 @@ function Routers() {
     <Router>
       <Routes>
         <Route path="/" element={<Paymentmain />} />
-        <Route path="/Payment3" element={<Payment3 />} />
-        <Route path="/Payment4" element={<Payment4 />} />
+        {/* <Route path="/Payment3" element={<Payment3 />} />
+        <Route path="/Payment4" element={<Payment4 />} /> */}
       </Routes>
       </Router>
     </>

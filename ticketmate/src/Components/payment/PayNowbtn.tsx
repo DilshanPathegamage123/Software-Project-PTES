@@ -37,9 +37,9 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
     const [userId, setUserId] = useState("10");//to pass userId 
     const [tripId, setTripId] = useState("23");//to pass tripId
 
-
+   console.log("passenger",props.passengerId);
     const history = useNavigate();
-    const PassengerId = "1";
+    
     const buttonStyle = {
         backgroundColor: 'rgb(255,199,0)',
         color: 'white', // Optionally change text color to ensure readability
@@ -68,7 +68,7 @@ const PayNowbtn:React.FC<BookingData> = (props)=>{
           return;
         }
         try{
-            const response = await axios.post(`https://localhost:7296/api/Email/SendEmails/${PassengerId}`, 
+            const response = await axios.post(`https://localhost:7296/api/Email/SendEmails/${props.passengerId}`, 
 
             {
                 to: "",

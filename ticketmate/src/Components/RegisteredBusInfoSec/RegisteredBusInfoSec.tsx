@@ -17,6 +17,9 @@ interface BusData {
     userId: string;
     deleteState: boolean;
 }
+const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
 function RegisteredBusInfoSec({ id }: { id: string }) {
     const [data, setData] = useState<BusData[]>([]);
@@ -26,7 +29,9 @@ function RegisteredBusInfoSec({ id }: { id: string }) {
     }, []);
 
     const getData = () => {
-        axios.get(`https://localhost:7001/api/BusReg/byUser/${id}`)
+        axios.get(`https://localhost:7001/api/BusReg/byUser/${id}`,
+            { headers: { Authorization: `Bearer ${getToken()}` } }
+        )
             .then((result) => {
                 const filteredData = result.data.filter((item: BusData) => item.deleteState);
                 setData(filteredData);
@@ -47,11 +52,19 @@ function RegisteredBusInfoSec({ id }: { id: string }) {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.get(`https://localhost:7001/api/BusReg/${busId}`)
+                // Fetch the current data for the bus
+                axios.get(`https://localhost:7001/api/BusReg/${busId}`,
+                    { headers: { Authorization: `Bearer ${getToken()}` } }
+                )
+
                     .then((res) => {
                         const busData = res.data;
                         busData.deleteState = false;
-                        axios.put(`https://localhost:7001/api/BusReg/${busId}`, busData)
+                        // Send the updated data back to the server
+                        axios.put(`https://localhost:7001/api/BusReg/${busId}`, busData,
+                            { headers: { Authorization: `Bearer ${getToken()}` } }
+                        )
+
                             .then(() => {
                                 Swal.fire({
                                     title: "Deleted!",

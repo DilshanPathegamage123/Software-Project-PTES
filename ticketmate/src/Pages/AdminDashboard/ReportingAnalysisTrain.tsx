@@ -194,7 +194,7 @@ const TrainReport: React.FC<MyComponentProps> = ({ showHeading, headingText }) =
       },
       {
         label: "Monthly Predicted Income",
-        data: filteredReportData.map((data) => Math.max(0,data.monthlyPredictedIncome)),
+        data: filteredReportData.map((data) => Math.max(0,Math.round(data.monthlyPredictedIncome))),
         borderColor: "rgba(54, 162, 235, 1)", // Blue color
         borderWidth: 5, 
         tension: 0, 
@@ -278,7 +278,7 @@ doc.setFontSize(12);
   const pageNumber = data.pageNumber; // Get current page number
   doc.setFontSize(8);
   // Add page number at the bottom right corner
-  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+  doc.text(`Page ${pageNumber} of ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 2);
   doc.setFontSize(12);   
 }
 
@@ -369,7 +369,7 @@ doc.setFontSize(12);
     }
 
     // Save the PDF
-    doc.save("AdminTrainReport.pdf");
+    doc.save(`AdminTrainReport_${currentDate}.pdf`);
   }
 
 
@@ -446,12 +446,13 @@ doc.setFontSize(12);
               className="container  col-10 justify-center p-3 mt-0 mb-5 rounded-bottom bottom-shadow"
               style={{ backgroundColor: "#D9D9D9" }}
             >
-              <div className="row  ml-2 mt-3 table-responsive table-container">
+              <div className="row  ml-2 mt-3 table-responsive table-container ">
                 {/* Table */}
                 <table>
                   <thead>
                   <tr>
-                    <th className="text-center">Train Name</th>
+                    <th className="text-center">Train Name</th>   
+                    {/* table-header-train */}
                     <th className="text-center">Schedule IDs</th>
                     <th className="text-center">Total Passengers</th>
                     <th className="text-center">Average Rate</th>

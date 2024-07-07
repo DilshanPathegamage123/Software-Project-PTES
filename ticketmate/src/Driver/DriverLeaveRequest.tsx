@@ -236,33 +236,45 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
         const now = new Date();
         const timeDifference = now.getTime() - requestDate.getTime();
         const hoursDifference = timeDifference / (1000 * 3600);
-
-        if (request.status === 'Accepted'|| request.status === 'Rejected'|| request.status === 'Cancelled') {
+    
+        if (request.status === 'Accepted' || request.status === 'Rejected' || request.status === 'Cancelled') {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: `${request.status} leave requests cannot be updated.`
-
             });
             return;
         }
+    
         if (hoursDifference <= 24) {
-            setSelectedRequest(request);
-            setNewRequest({
-                reason: request.reason,
-                otherReason: request.otherReason,
-                startDate: request.startDate,
-                endDate: request.endDate,
-                totalDays: request.totalDays,
-                currentDate: request.date,
-                familyAndMedical: request.familyAndMedical,
-                funeralRelationship: request.funeralRelationship,
-                weddingRelationship: request.weddingRelationship,
-                termsAccepted: true,
-                status: request.status
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to update this leave request?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update it!',
+                cancelButtonText: 'No, cancel!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    setSelectedRequest(request);
+                    setNewRequest({
+                        reason: request.reason,
+                        otherReason: request.otherReason,
+                        startDate: request.startDate,
+                        endDate: request.endDate,
+                        totalDays: request.totalDays,
+                        currentDate: request.date,
+                        familyAndMedical: request.familyAndMedical,
+                        funeralRelationship: request.funeralRelationship,
+                        weddingRelationship: request.weddingRelationship,
+                        termsAccepted: true,
+                        status: request.status
+                    });
+                    setIsUpdateMode(true);
+                    setShowModal(true);
+                }
+
             });
-            setIsUpdateMode(true);
-            setShowModal(true);
         } else {
             Swal.fire({
                 icon: 'error',

@@ -69,7 +69,7 @@ const TotalBlock: React.FC<TotalBlockProps> = ({
           TravelDate: selectedDate,
         }
       );
-
+console.log(Response.data);
       if (Array.isArray(Response.data.$values)) {
         // Map the response data to the UnifiedSearchResult interface
         const unifiedSearchResults: SearchResult[] = Response.data.$values.map(

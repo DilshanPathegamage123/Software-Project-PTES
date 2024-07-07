@@ -7,6 +7,11 @@ import DetailsCard from "../../Components/TravelDetailsCard/DetailsCard";
 import TotalBlock2 from "../../Components/TravelSearchBlock/TotalBlock2";
 import Footer from "../../Components/Footer/footer";
 import { SearchResult } from "../../SearchResult";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 const TravelOptionsPage: React.FC = () => {
   const location = useLocation();
@@ -62,14 +67,18 @@ const TravelOptionsPage: React.FC = () => {
     });
   };
 
+  console.log(location.state);
+
   useEffect(() => {
     sessionStorage.setItem("selectedVehicleType", selectedVehicleType);
   }, [selectedVehicleType]);
 
-  const handleBookNow = (VehicleId: number) => {
+  const handleBookNow = (VehicleId: number, scheduleId: string) => {
     const selectedVehicle = searchResults.find(
-      (result) => result.VehicleId === VehicleId
+      (result) =>
+        result.VehicleId === VehicleId && result.scheduleId === scheduleId
     );
+    console.log(selectedVehicle);
     if (selectedVehicle) {
       const startStand = selectedVehicle.selectedStands.$values.find(
         (stand) => {
@@ -80,6 +89,8 @@ const TravelOptionsPage: React.FC = () => {
           }
         }
       );
+
+      console.log(startStand);
       const endStand = selectedVehicle.selectedStands.$values.find((stand) => {
         if ("busStation" in stand) {
           return stand.busStation === selectedEndLocation;
@@ -87,6 +98,7 @@ const TravelOptionsPage: React.FC = () => {
           return stand.trainStationName === selectedEndLocation;
         }
       });
+      console.log(endStand);
       if (startStand && endStand) {
         const startStandTime =
           "busStation" in startStand
@@ -97,6 +109,8 @@ const TravelOptionsPage: React.FC = () => {
             ? endStand.standArrivalTime
             : endStand.trainDepartureTime;
 
+        console.log(startStandTime);
+        console.log(endStandTime);
         sessionStorage.setItem("startStandTime", startStandTime);
         sessionStorage.setItem("endStandTime", endStandTime);
         sessionStorage.setItem("selectedStartLocation", selectedStartLocation);
@@ -133,7 +147,15 @@ const TravelOptionsPage: React.FC = () => {
 
   return (
     <div className="wrapper">
-      <PrimaryNavBar />
+      {getToken() !== null ? (
+        <span data-testid="navbar">
+          <PrimaryNavBar_logout />
+        </span>
+      ) : (
+        <span data-testid="navbar">
+          <PrimaryNavBar />
+        </span>
+      )}
       <TotalBlock2
         selectedVehicleType={selectedVehicleType}
         selectedStartLocation={selectedStartLocation}
@@ -161,7 +183,7 @@ const TravelOptionsPage: React.FC = () => {
         </div>
       </div>
       <Footer />
-      </div>
+    </div>
   );
 };
 

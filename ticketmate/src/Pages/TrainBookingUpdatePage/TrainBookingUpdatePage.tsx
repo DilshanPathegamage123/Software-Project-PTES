@@ -13,7 +13,12 @@ import SeatMenu from "../../Components/Booking-SeatMenu/SeatMenu";
 import TravelLable from "../../Components/Booking-TravelLable/TravelLable";
 import TotalPriceLable from "../../Components/Booking-TotalPriceLable/TotalPriceLable";
 import TrainSeatStructure from "../../Components/Booking-SeatStructure/TrainSeatStructure";
-import { toast } from "react-toastify";
+import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
+
+
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 interface Booking {
   id: number;
@@ -576,7 +581,7 @@ const TrainBookingUpdatePage: React.FC = () => {
 
   return (
     <div className="BusBooking">
-      <PrimaryNavBar />
+     {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
       <div className=" d-flex justify-content-center align-items-center pt-3">
         <DetailsCard2
           isBookingPage

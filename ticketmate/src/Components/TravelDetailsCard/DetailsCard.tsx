@@ -10,7 +10,8 @@ type DetailsCard2Props = SearchResult & {
   onBookNow: (
     VehicleId: number,
     startLocation: string,
-    endLocation: string
+    endLocation: string,
+    scheduleId: string,
   ) => void;
   VehicleType?: string; // Make selectedVehicleType is optional prop
   BookingDate?: string; // Make BookingDate is optional prop
@@ -42,7 +43,7 @@ const DetailsCard2: React.FC<DetailsCard2Props> = ({
     isBookingPage ? "DetailsCard BookingPage" : "DetailsCard"
   } row col-lg-11 col-12 rounded-3 justify-content-center align-content-center font-family-Poppins mt-2 mb-2 h-auto w-100`;
   const handleBookNow = () => {
-    onBookNow(VehicleId, startLocation, endLocation);
+    onBookNow(VehicleId, scheduleId, startLocation, endLocation);
     const pageToNavigate =
       selectedVehicleType === "Train" ? "/train-booking" : "/bus-booking";
 

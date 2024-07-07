@@ -273,6 +273,7 @@ const DriverLeaveRequest: React.FC<DriverLeaveRequestProps> = ({ DriverId,Driver
                     setIsUpdateMode(true);
                     setShowModal(true);
                 }
+
             });
         } else {
             Swal.fire({

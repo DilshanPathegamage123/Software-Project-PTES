@@ -246,8 +246,8 @@ const NotificationComponent: React.FC<NotificationProps> = ({ passengerId }) => 
     const fetchAllowedIds = async () => {
       try {
         const [busResponse, trainResponse] = await Promise.all([
-          axios.get(`https://localhost:7296/api/BusScheduledId/GetBusScheduleIdsByPassengerId/${passengerId}`),
-          axios.get(`https://localhost:7296/api/TrainScheduledId/GetBusScheduleIdsByPassengerId/${passengerId}`),
+          axios.get(`https://localhost:7296/api/BusRelevantIdsByPassengerId/relevant-ids/${passengerId}`),
+          axios.get(`https://localhost:7296/api/TrainRelevantIdsByPassengerId/relevant-ids/${passengerId}`),
         ]);
 
         const busIds = busResponse.data;
@@ -311,7 +311,11 @@ const NotificationComponent: React.FC<NotificationProps> = ({ passengerId }) => 
                 <img src={Icon1} alt="BusIcon" className="img-fluid" style={styles.icon} />
               </div>
               <div className="col-lg-11 d-flex align-items-center">
-                <div className="message-content" style={styles.messageContent}>{msg.message}</div>
+            {/* Display Id as Trip ID */}
+                <div className="message-content" style={styles.messageContent}>
+                <p><strong>Trip ID:</strong> {msg.Id}</p>
+                  {msg.message}
+                  </div>
               </div>
             </div>
           ))}

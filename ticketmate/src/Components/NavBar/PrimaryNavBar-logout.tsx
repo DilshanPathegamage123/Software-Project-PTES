@@ -27,7 +27,7 @@ function PrimaryNavBar() {
     }).then((result) => {
       if (result.isConfirmed) {
         // Perform the logout operation here
-        sessionStorage.removeItem("token");
+        sessionStorage.clear();
         history("/login");
         Swal.fire(
           'Logged Out!',
@@ -41,7 +41,7 @@ function PrimaryNavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-3 pr-5">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-5 pr-5">
     
         <a className="navbar-brand" href="/">
           {" "}

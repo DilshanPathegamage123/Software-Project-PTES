@@ -45,6 +45,7 @@ import TrainShceduleUpdatePage5 from './pages/TrainShceduleUpdatePage/TrainShced
 import OwnerPage from "./pages/OwnerPage/OwnerPage";
 import NotificationComponent from "./Passenger/Notification";
 import LoginPage2 from "./pages/Bus-BookingPage/LoginPage2";
+import Driver3 from "./Driver/Driver3";
 
 
 
@@ -106,6 +107,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({
         <Route path="/UpdateDriverProfile" element={<UpdateDriverProfile />} />
         <Route path="/driver" element={<Driver />} />
         <Route path="/driver2" element={<Driver2 />} />
+        <Route path="/driver3" element={<Driver3 />} />
         <Route path="/paymentmain" element={<Paymentmain />} />
         <Route path="/Mapview" element={<MapView />} />
         <Route path="/notification" element={<NotificationComponent />} />

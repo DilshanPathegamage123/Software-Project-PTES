@@ -90,11 +90,14 @@ header {
   opacity: 0;
 }
 
-[type="radio"]:checked ~ label {
+/* [type="radio"]:checked ~ label {
+  background: #db7e03;
+  color: #fff;
+} */
+.rating .rating-input:checked ~ label {
   background: #eea404;
   color: #fff;
 }
-
 .input-group {
   display: flex;
   flex-direction: row;

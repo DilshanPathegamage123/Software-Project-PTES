@@ -157,7 +157,7 @@ const UpdateBreakdown: React.FC<Props> = ({ routNo, Id, DriverId, BusNo }) => {
         {
           id: Id,
           message: message,
-          routNo: routNo,
+          routNo: routNo || "",
         },
         {
           headers: {
@@ -218,7 +218,7 @@ const UpdateBreakdown: React.FC<Props> = ({ routNo, Id, DriverId, BusNo }) => {
               resize: "vertical",
             }}
             placeholder="Message type here....."
-            value={message}
+            value={message} 
             onChange={(e) => setMessage(e.target.value)}
           />
         </div>
@@ -275,7 +275,7 @@ const UpdateBreakdown: React.FC<Props> = ({ routNo, Id, DriverId, BusNo }) => {
       </div>
       {notification && (
         <div className="notification-box">
-          {notification}
+          {notification} 
         </div>
       )}
       

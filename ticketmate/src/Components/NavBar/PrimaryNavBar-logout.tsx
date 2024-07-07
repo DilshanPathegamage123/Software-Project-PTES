@@ -41,7 +41,7 @@ function PrimaryNavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-3 pr-5">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light shadow cpadding pl-5 pr-5">
     
         <a className="navbar-brand" href="/">
           {" "}

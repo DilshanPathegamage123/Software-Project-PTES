@@ -218,7 +218,12 @@ function BusRegistrationPage() {
 
         console.log("Button Data:", buttonData);
 
-        await axios.post(`https://localhost:7001/api/SelectedSeatStr`, buttonData);
+        await axios.post(`https://localhost:7001/api/SelectedSeatStr`, buttonData, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
 
         console.log("Button data stored successfully for BusId:", busId);
       }

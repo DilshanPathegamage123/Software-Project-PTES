@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import swal from 'sweetalert2';
 import axios from 'axios';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './TrainShceduleUpdatePage.css';
 import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Swal from 'sweetalert2';
 
-// Define the TrainSchedule interface
 interface TrainSchedule {
   trainName: string;
   trainDriverId: string;
@@ -23,20 +22,26 @@ interface TrainSchedule {
 
 function TrainScheduleUpdatePage() {
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const schedulId = queryParams.get('schedulId');
   console.log("locomotive id " + schedulId);
 
-
   const [trainSchedule, setTrainSchedule] = useState<Partial<TrainSchedule>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof TrainSchedule, string>>>({});
-  //const { schedulId } = useParams<{ schedulId: string }>();
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get<TrainSchedule>(`https://localhost:7001/api/ScheduledTrain/${schedulId}`)
+    axios.get<TrainSchedule>(`https://localhost:7001/api/ScheduledTrain/${schedulId}`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    })
       .then((response) => {
         setTrainSchedule(response.data);
       })
@@ -67,7 +72,11 @@ function TrainScheduleUpdatePage() {
       setIsSubmitting(true);
 
       try {
-        await axios.put(`https://localhost:7001/api/ScheduledTrain/${schedulId}`, trainSchedule);
+        await axios.put(`https://localhost:7001/api/ScheduledTrain/${schedulId}`, trainSchedule, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        });
         swal.fire('Success', 'Train schedule updated successfully!', 'success').then(() => {
           navigate(`/ScheduledTrainPage?schedulId=${schedulId}`);
         });
@@ -95,18 +104,31 @@ function TrainScheduleUpdatePage() {
     });
   };
 
+  const convertTo12HourFormat = (time: string) => {
+    const [hourString, minute] = time.split(':');
+    let hour = parseInt(hourString, 10);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12;
+    return `${hour.toString().padStart(2, '0')}:${minute} ${period}`;
+  };
+
+  const handleTimeChange = (field: keyof TrainSchedule, value: string) => {
+    const timeString = convertTo12HourFormat(value);
+    setTrainSchedule({ ...trainSchedule, [field]: timeString });
+  };
+
   return (
     <div>
-        <PrimaryNavBar/>
+      <PrimaryNavBar />
       <h3 className='h3Style text-center pt-4'>Edit Train Schedule</h3>
       <form>
         <div className='row'>
           <div className='col-12 p-3'>
             <div className='infoSecTrainSch rounded-4'>
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputTrainName" className="col-form-label">Train Name</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputTrainName"
@@ -114,15 +136,15 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter Train Name"
                     value={trainSchedule.trainName || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, trainName: e.target.value })}
-                    />
-                    {errors.trainName && <div className='text-danger'>{errors.trainName}</div>}
+                  />
+                  {errors.trainName && <div className='text-danger'>{errors.trainName}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputTrainDriverId" className="col-form-label">Train Driver ID</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputTrainDriverId"
@@ -130,15 +152,15 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter Train Driver ID"
                     value={trainSchedule.trainDriverId || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, trainDriverId: e.target.value })}
-                    />
-                    {errors.trainDriverId && <div className='text-danger'>{errors.trainDriverId}</div>}
+                  />
+                  {errors.trainDriverId && <div className='text-danger'>{errors.trainDriverId}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputStartStation" className="col-form-label">Start Station</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputStartStation"
@@ -146,15 +168,15 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter Start Station"
                     value={trainSchedule.startStation || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, startStation: e.target.value })}
-                    />
-                    {errors.startStation && <div className='text-danger'>{errors.startStation}</div>}
+                  />
+                  {errors.startStation && <div className='text-danger'>{errors.startStation}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputEndStation" className="col-form-label">End Station</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputEndStation"
@@ -162,15 +184,15 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter End Station"
                     value={trainSchedule.endStation || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, endStation: e.target.value })}
-                    />
-                    {errors.endStation && <div className='text-danger'>{errors.endStation}</div>}
+                  />
+                  {errors.endStation && <div className='text-danger'>{errors.endStation}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputTrainRoutNo" className="col-form-label">Train Route No</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputTrainRoutNo"
@@ -179,47 +201,50 @@ function TrainScheduleUpdatePage() {
                     value={trainSchedule.trainRoutNo || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, trainRoutNo: e.target.value })}
                     disabled
-                    />
-                    {errors.trainRoutNo && <div className='text-danger'>{errors.trainRoutNo}</div>}
+                  />
+                  {errors.trainRoutNo && <div className='text-danger'>{errors.trainRoutNo}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputTrainDepartureTime" className="col-form-label">Train Departure Time</label>
                 <div className="">
-                    <input
-                    type="text"
+                  <input
+                    type="time"
                     className="form-control"
                     id="inputTrainDepartureTime"
                     name="trainDepartureTime"
                     placeholder="Enter Train Departure Time"
-                    value={trainSchedule.trainDepartureTime || ''}
-                    onChange={(e) => setTrainSchedule({ ...trainSchedule, trainDepartureTime: e.target.value })}
-                    />
-                    {errors.trainDepartureTime && <div className='text-danger'>{errors.trainDepartureTime}</div>}
+                    value={trainSchedule.trainDepartureTime ? trainSchedule.trainDepartureTime.split(' ')[0] : ''}
+                    onChange={(e) => handleTimeChange('trainDepartureTime', e.target.value)}
+                  />
+                  {errors.trainDepartureTime && <div className='text-danger'>{errors.trainDepartureTime}</div>}
+                  <small className="form-text text-muted">{trainSchedule.trainDepartureTime}</small>
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputTrainArrivalTime" className="col-form-label">Train Arrival Time</label>
                 <div className="">
-                    <input
-                    type="text"
+                  <input
+                    type="time"
                     className="form-control"
                     id="inputTrainArrivalTime"
                     name="trainArrivalTime"
                     placeholder="Enter Train Arrival Time"
-                    value={trainSchedule.trainArrivalTime || ''}
-                    onChange={(e) => setTrainSchedule({ ...trainSchedule, trainArrivalTime: e.target.value })}
-                    />
-                    {errors.trainArrivalTime && <div className='text-danger'>{errors.trainArrivalTime}</div>}
-                </div>
-                </div>
+                    value={trainSchedule.trainArrivalTime ? trainSchedule.trainArrivalTime.split(' ')[0] : ''}
 
-                <div className="form-group row">
+                    onChange={(e) => handleTimeChange('trainArrivalTime', e.target.value)}
+                  />
+                  {errors.trainArrivalTime && <div className='text-danger'>{errors.trainArrivalTime}</div>}
+                  <small className="form-text text-muted">{trainSchedule.trainArrivalTime}</small>
+                </div>
+              </div>
+
+              <div className="form-group row">
                 <label htmlFor="inputDuration" className="col-form-label">Duration</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputDuration"
@@ -227,15 +252,15 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter Duration"
                     value={trainSchedule.duration || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, duration: e.target.value })}
-                    />
-                    {errors.duration && <div className='text-danger'>{errors.duration}</div>}
+                  />
+                  {errors.duration && <div className='text-danger'>{errors.duration}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputFirstClassTicketPrice" className="col-form-label">First Class Ticket Price</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputFirstClassTicketPrice"
@@ -243,15 +268,15 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter First Class Ticket Price"
                     value={trainSchedule.firstClassTicketPrice || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, firstClassTicketPrice: e.target.value })}
-                    />
-                    {errors.firstClassTicketPrice && <div className='text-danger'>{errors.firstClassTicketPrice}</div>}
+                  />
+                  {errors.firstClassTicketPrice && <div className='text-danger'>{errors.firstClassTicketPrice}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className="form-group row">
+              <div className="form-group row">
                 <label htmlFor="inputSecondClassTicketPrice" className="col-form-label">Second Class Ticket Price</label>
                 <div className="">
-                    <input
+                  <input
                     type="text"
                     className="form-control"
                     id="inputSecondClassTicketPrice"
@@ -259,19 +284,19 @@ function TrainScheduleUpdatePage() {
                     placeholder="Enter Second Class Ticket Price"
                     value={trainSchedule.secondClassTicketPrice || ''}
                     onChange={(e) => setTrainSchedule({ ...trainSchedule, secondClassTicketPrice: e.target.value })}
-                    />
-                    {errors.secondClassTicketPrice && <div className='text-danger'>{errors.secondClassTicketPrice}</div>}
+                  />
+                  {errors.secondClassTicketPrice && <div className='text-danger'>{errors.secondClassTicketPrice}</div>}
                 </div>
-                </div>
+              </div>
 
-                <div className='row'>
-              <div className='col-12 text-center p-3'>
-                <button type='button' className='btn white mx-3' onClick={CancelButton}>Cancel</button>
-                <button type='button' className='btn primary mx-3' onClick={handleUpdateClick} disabled={isSubmitting}>Update</button>
+              <div className='row'>
+                <div className='col-12 text-center p-3'>
+                  <button type='button' className='btn white mx-3' onClick={CancelButton}>Cancel</button>
+                  <button type='button' className='btn primary mx-3' onClick={handleUpdateClick} disabled={isSubmitting}>Update</button>
+                </div>
               </div>
             </div>
-            </div>
-            
+
           </div>
         </div>
       </form>

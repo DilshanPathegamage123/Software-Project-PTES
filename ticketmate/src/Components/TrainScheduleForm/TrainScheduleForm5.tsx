@@ -4,6 +4,11 @@ import '../../vars.css';
 import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const [trainLocs, setTrainLocs] = useState<string[]>([]);
   const [carriageClasses, setCarriageClasses] = useState<{ [key: string]: string }>({});
   const [currentTrainLoc, setCurrentTrainLoc] = useState('');
@@ -12,7 +17,12 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
   const handleAdd = async () => {
     if (currentTrainLoc.trim() !== '') {
       try {
-        const response = await fetch(`https://localhost:7001/api/RegCarriage/${currentTrainLoc}`);
+        const response = await fetch(`https://localhost:7001/api/RegCarriage/${currentTrainLoc}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         const data = await response.json();
 
         if (response.ok && data.deleteState) {
@@ -69,7 +79,8 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
         const response = await fetch(`https://localhost:7001/api/ScheduledCarriage`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify({
             classType: carriageClasses[loc],
@@ -77,20 +88,20 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
             registeredCarriageCarriageId: loc
           })
         });
-
+  
         if (!response.ok) {
           throw new Error(`Failed to save Carriage ID: ${loc}`);
         }
       }
-
+  
       Swal.fire({
         icon: 'success',
         title: 'Success',
         text: 'Train Schedule has been successfully saved.'
+      }).then(() => {
+        navigate('/TrainOwnerPage');
       });
-
-      navigate('/TrainOwnerPage');
-
+  
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -99,6 +110,7 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
       });
     }
   };
+  
 
   const handleCancel = () => {
     Swal.fire({
@@ -114,6 +126,9 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
         try {
           const response = await fetch(`https://localhost:7001/api/ScheduledTrain/${scheduleId}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
   
           // if (!response.ok) {

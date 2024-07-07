@@ -11,6 +11,12 @@ import TrainScheduleForm5 from '../../Components/TrainScheduleForm/TrainSchedule
 import Footer from '../../Components/Footer/footer';
 
 function TrainSchedulePage() {
+
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const [showForm2, setShowForm2] = useState(false);
   const [showForm3, setShowForm3] = useState(false);
   const [showForm4, setShowForm4] = useState(false);
@@ -29,13 +35,23 @@ function TrainSchedulePage() {
     console.log('ScheduleId:', scheduleId);
 
     try {
-      const response = await fetch(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${trainRoutNo}`);
+      const response = await fetch(`https://localhost:7001/api/TrainRaliway/byRailwayNo/${trainRoutNo}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.ok) {
         const data = await response.json();
         console.log('TrainRouteRoutId:', data.id);
 
         // Fetch stand names by routeId
-        const standResponse = await fetch(`https://localhost:7001/api/TrainRaliwayStation/byTrainRaliwayId/${data.id}`);
+        const standResponse = await fetch(`https://localhost:7001/api/TrainRaliwayStation/byTrainRaliwayId/${data.id}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         if (standResponse.ok) {
           const standData = await standResponse.json();
           const standNames = standData.map((stand: { trainStationName: string; }) => stand.trainStationName);
@@ -80,7 +96,7 @@ function TrainSchedulePage() {
         <div className='container py-4'>
           <div className='rounded-4 formSec2'>
             <div className='row'>
-              <h3 className='h3Style text-center'>Fill this form to Schedule a Train</h3>
+              <h3 className='h3Style text-center'>Schedule Train Journey</h3>
             </div>
 
             {showForm5 ? (

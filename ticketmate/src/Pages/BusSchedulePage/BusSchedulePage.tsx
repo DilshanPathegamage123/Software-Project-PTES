@@ -28,12 +28,22 @@ function BusSchedulePage() {
     setScheduleId(scheduleId);
 
     try {
-      const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
+      const response = await fetch(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.ok) {
         const data = await response.json();
 
         // Fetch stand names by routeId
-        const standResponse = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${data.routId}`);
+        const standResponse = await fetch(`https://localhost:7001/api/BusRouteStand/byroute/${data.routId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         if (standResponse.ok) {
           const standData = await standResponse.json();
           const standNames = standData.map((stand: { standName: string }) => stand.standName);

@@ -136,20 +136,20 @@ function LocomotiveRegistrationForm() {
         const locomotiveId = response.data.locomotiveId;
         console.log("Newly generated LocomotiveId:", locomotiveId );
 
-        Swal.close();
+        Swal.close(); // Close the loading Swal first
 
         Swal.fire({
           icon: "success",
           title: "Your Locomotive Successfully Registered",
           showConfirmButton: false,
           timer: 3500
+        }).then(() => {
+          navigate('/TrainOwnerPage'); // Navigate after the success message is shown
         });
-        // setTimeout(() => {
-        //     window.location.reload();
-        // }, 4000);
 
-        navigate('/TrainOwnerPage');
       } catch (error) {
+        Swal.close(); // Close the loading Swal in case of error
+
         Swal.fire({
           icon: "error",  
           title: "Form submission failed",

@@ -88,20 +88,20 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
             registeredCarriageCarriageId: loc
           })
         });
-
+  
         if (!response.ok) {
           throw new Error(`Failed to save Carriage ID: ${loc}`);
         }
       }
-
+  
       Swal.fire({
         icon: 'success',
         title: 'Success',
         text: 'Train Schedule has been successfully saved.'
+      }).then(() => {
+        navigate('/TrainOwnerPage');
       });
-
-      navigate('/TrainOwnerPage');
-
+  
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -110,6 +110,7 @@ function TrainScheduleForm5({ scheduleId }: { scheduleId: string}) {
       });
     }
   };
+  
 
   const handleCancel = () => {
     Swal.fire({

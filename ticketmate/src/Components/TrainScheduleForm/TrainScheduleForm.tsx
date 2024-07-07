@@ -135,7 +135,7 @@ function TrainScheduleForm({ handleNext, userId }: { handleNext: any, userId: st
       const isDriverIdAvailable = await checkDriverIdAvailability();
       if (!isDriverIdAvailable) {
         setIsSubmitting(false);
-        alert('Driver ID is not available');
+        //alert('Driver ID is not available');
         return;
       }
       

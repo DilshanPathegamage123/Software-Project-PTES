@@ -175,7 +175,7 @@ function TrainScheduleForm3({ userId, scheduleId , handleNext}: { userId: string
         <div className='row'>
           <div className='col-12 text-center p-3'>
             <button type='button' className='btn white mx-3' onClick={handleCancel}>Cancel</button>
-            <button type='button' className='btn primary mx-3' onClick={handleSubmit}>Submit</button>
+            <button type='button' className='btn primary mx-3' onClick={handleSubmit}>Next</button>
           </div>
         </div>
       </div>

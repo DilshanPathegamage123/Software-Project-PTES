@@ -96,7 +96,7 @@ function TrainSchedulePage() {
         <div className='container py-4'>
           <div className='rounded-4 formSec2'>
             <div className='row'>
-              <h3 className='h3Style text-center'>Fill this form to Schedule a Train</h3>
+              <h3 className='h3Style text-center'>Schedule Train Journey</h3>
             </div>
 
             {showForm5 ? (

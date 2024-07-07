@@ -18,7 +18,6 @@ import TrainReviewList from "../../Components/FeedBackSection/TrainReviewList";
 import "./TrainBookingPage.css";
 import PrimaryNavBar_logout from "../../Components/NavBar/PrimaryNavBar-logout";
 
-
 const getToken = () => {
   return sessionStorage.getItem("token");
 };
@@ -397,7 +396,15 @@ const TrainBookingPage: React.FC = () => {
 
   return (
     <div className="BusBooking">
-      {(getToken() !== null)?  <span data-testid="navbar"><PrimaryNavBar_logout /></span>:<span data-testid="navbar"><PrimaryNavBar /></span>}
+      {getToken() !== null ? (
+        <span data-testid="navbar">
+          <PrimaryNavBar_logout />
+        </span>
+      ) : (
+        <span data-testid="navbar">
+          <PrimaryNavBar />
+        </span>
+      )}
       <div className=" d-flex justify-content-center align-items-center pt-3">
         <DetailsCard
           isBookingPage
@@ -534,50 +541,76 @@ const TrainBookingPage: React.FC = () => {
             </div>
           </div>
 
-        {/* View Stop Stations */}
-<div className="row col-4 me-auto w-auto">
-  <p
-    className="text-success btn bg-transparent"
-    onClick={() => setShowModal(true)}
-  >
-    To view train stops &rarr;
-  </p>
-
-  {showModal && (
-    <div
-      className="modal show d-block w-auto"
-      role="dialog"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-    >
-      <div className="modal-dialog" role="document" style={{ width: 'auto', maxWidth: '30%' }}>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title ms-auto me-auto">Train Stops and Arrival Times</h5>
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              onClick={() => setShowModal(false)}
+          {/* View Stop Stations */}
+          <div className="row col-4 me-auto w-auto">
+            <p
+              className="text-success btn bg-transparent"
+              onClick={() => setShowModal(true)}
             >
-              <span aria-hidden="true">&times;</span>
-            </button>
+              To view train stops &rarr;
+            </p>
+
+            {showModal && (
+              <div
+                className="modal show d-block w-auto"
+                role="dialog"
+                style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+              >
+                <div
+                  className="modal-dialog"
+                  role="document"
+                  style={{ width: "auto", maxWidth: "40%" }}
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title ms-auto me-auto">
+                        Train Stops and Arrival Times
+                      </h5>
+                      <button
+                        type="button"
+                        className="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        onClick={() => setShowModal(false)}
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                    <ul>
+    {trainDetails?.selectedStands?.$values
+      .slice() // Create a shallow copy to avoid mutating the original array
+      .sort((a, b) => {
+        // Convert 12-hour format with AM/PM to 24-hour format for comparison
+        const convertTo24Hour = (time) => {
+          const [timePart, period] = time.split(' ');
+          let [hours, minutes] = timePart.split(':').map(Number);
+          if (period === 'PM' && hours < 12) {
+            hours += 12;
+          } else if (period === 'AM' && hours === 12) {
+            hours = 0;
+          }
+          return hours * 60 + minutes; // Convert to minutes for easier comparison
+        };
+      
+        const minutesA = convertTo24Hour(a.trainDepartureTime);
+        const minutesB = convertTo24Hour(b.trainDepartureTime);
+      
+        return minutesA - minutesB;
+      })
+      .map((stop) => (
+        <li key={stop.id} className="station-time-layout">
+          <span>{stop.trainStationName.trim()}</span>
+          <span>{stop.trainDepartureTime}</span>
+        </li>
+      ))}
+  </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <div className="modal-body">
-            <ul>
-              {trainDetails?.selectedStands?.$values.map((stop) => (
-                <li key={stop.id} className="station-time-layout">
-                  <span>{stop.trainStationName.trim()}</span>
-                  <span>{stop.trainDepartureTime}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
-</div>
           {/* View Selected Seats */}
           <div className=" d-flex justify-content-center pt-5 fs-5 h-auto ">
             {selectedSeats.length > 0

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 interface StartLocationSelectorProps {
   selectedVehicleType: string;
   setSelectedStartLocation: React.Dispatch<React.SetStateAction<string>>;
+  defaultStartLocation?: string; 
 }
 
 interface BusStand {
@@ -21,8 +22,9 @@ interface TrainStation {
 const StartLocationSelector: React.FC<StartLocationSelectorProps> = ({
   selectedVehicleType,
   setSelectedStartLocation,
+  defaultStartLocation,
 }) => {
-  const [startvalue, setStartValue] = useState("");
+  const [startValue, setStartValue] = useState(defaultStartLocation); 
   const [startData, setStartData] = useState<{ stopName: string }[]>([]);
   const [filteredStartData, setFilteredStartData] = useState<
     { stopName: string }[]>([]);
@@ -141,6 +143,7 @@ function uniqueBy<T>(arr: T[], key: keyof T): T[] {
       <input
         className="p-sm-3 p-2 align-content-center w-100"
         list="startLocationList"
+        value={startValue}
         onChange={(e) => {
           setStartValue(e.target.value);
           filterStartLocations(e.target.value);
@@ -160,60 +163,3 @@ function uniqueBy<T>(arr: T[], key: keyof T): T[] {
 };
 
 export default StartLocationSelector;
-
- // const getAllBusStands = async () => {
-  //   try {
-  //     // Api call for fetching bus stands
-  //     const response = await axios.get(
-  //       "https://localhost:7048/api/GetBusStands"
-  //     );
-  //     console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
-
-  //     if (Array.isArray(response.data.$values)) {
-  //       setStartData(
-  //         response.data.$values.map((item: BusStand) => ({
-  //           stopName: item.standName,
-  //         }))
-  //       );
-  //       setFilteredStartData(
-  //         response.data.$values.map((item: BusStand) => ({
-  //           stopName: item.standName,
-  //         }))
-  //       );
-  //     } else {
-  //       setStartData([]);
-  //       setFilteredStartData([]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error while sending start location to backend", error);
-  //   }
-  // };
-
-  // const getAllTrainStations = async () => {
-  //   try {
-  //     // Api call for fetching train stations
-  //     const response = await axios.get(
-  //       "https://localhost:7048/api/GetTrainStations"
-  //     );
-
-  //     console.log("Start Locations from backend:", response.data); // for checking the response is correct or not
-
-  //     if (Array.isArray(response.data.$values)) {
-  //       setStartData(
-  //         response.data.$values.map((item: TrainStation) => ({
-  //           stopName: item.trainStationName,
-  //         }))
-  //       );
-  //       setFilteredStartData(
-  //         response.data.$values.map((item: TrainStation) => ({
-  //           stopName: item.trainStationName,
-  //         }))
-  //       );
-  //     } else {
-  //       setStartData([]);
-  //       setFilteredStartData([]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error while sending start location to backend", error);
-  //   }
-  // };

@@ -41,7 +41,7 @@ const TravelDetails:React.FC<TravelDetailsProps>=({DriverId,DrivingLicenceNum})=
 
 
     const handleClick = (detail: travel) => {
-      history("/Driver2", { state: { travelDetails:detail,DriverId} });
+      history("/Driver3", { state: { travelDetails:detail,DriverId} });
     }
     useEffect(() => {
       let url : string| null = null;

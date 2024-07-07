@@ -124,14 +124,14 @@ const PaymentForm: React.FC<PaymentFormProps> = (props) => {
           console.error(err);
           return;
         }
-
+        
         // Send an email when the payment is successful
         axios
           .post(
             `https://localhost:7296/api/Email/SendEmails/${props.passengerId}`,
             {
               to: "",
-              subject: props.busId ? "TicketMate - Bus Booking Confirmation" : "TicketMate - Train Booking Confirmation",
+              subject: props.busId!=0 ? "TicketMate - Bus Booking Confirmation" : "TicketMate - Train Booking Confirmation",
               message: `
           <html>
             <body>

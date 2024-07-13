@@ -27,6 +27,10 @@ interface ButtonState {
 }
 
 function UpdateCarriageRegInfoPage() {
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +40,6 @@ function UpdateCarriageRegInfoPage() {
 
   const [formData, setFormData] = useState({
     carriageNum: '',
-    seatsCount: '',
     length: '',
     width: '',
     height: '',
@@ -47,7 +50,6 @@ function UpdateCarriageRegInfoPage() {
 
   const [errors, setErrors] = useState({
     carriageNum: '',
-    seatsCount: '',
     length: '',
     width: '',
     height: '',
@@ -66,11 +68,15 @@ function UpdateCarriageRegInfoPage() {
 
   const fetchCarriageData = async (carriageId: string) => {
     try {
-      const response = await axios.get<ApiResponse>(`https://localhost:7001/api/RegCarriage/${carriageId}`);
+      const response = await axios.get<ApiResponse>(`https://localhost:7001/api/RegCarriage/${carriageId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const data = response.data;
       setFormData({
         carriageNum: data.carriageNo || '',
-        seatsCount: data.seatsCount.toString(),
         length: data.length.toString(),
         width: data.width.toString(),
         height: data.height.toString(),
@@ -86,7 +92,12 @@ function UpdateCarriageRegInfoPage() {
 
   const fetchSeatData = async (carriageId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/SelCarriageSeatStru/ByCarriageId/${carriageId}`);
+      const response = await axios.get(`https://localhost:7001/api/SelCarriageSeatStru/ByCarriageId/${carriageId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const seatData = response.data.reduce((acc: { [key: string]: ButtonState }, seat: any) => {
         acc[seat.seatId] = { availability: seat.avalability, id: seat.id };
         return acc;
@@ -99,7 +110,7 @@ function UpdateCarriageRegInfoPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (['seatsCount', 'length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
+    if (['length', 'width', 'height', 'weight'].includes(name) && !/^\d*$/.test(value)) {
       setErrors({
         ...errors,
         [name]: 'Only numbers are allowed'
@@ -150,16 +161,23 @@ function UpdateCarriageRegInfoPage() {
       Swal.showLoading();
 
       try {
+        const seatsCount = Object.values(buttonStates).filter(state => state.availability).length;
+
         await axios.put(`https://localhost:7001/api/RegCarriage/${carriageId}`, {
           carriageId: carriageId,
           carriageNo: formData.carriageNum,
-          seatsCount: formData.seatsCount,
+          seatsCount: seatsCount,
           length: formData.length,
           width: formData.width,
           height: formData.height,
           weight: formData.weight,
           carriageClass: formData.carriageClass,
           userId: formData.userId,
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
         });
 
         const buttonDataSuccess = await storeButtonData(carriageId);
@@ -213,7 +231,12 @@ function UpdateCarriageRegInfoPage() {
 
         console.log("Button Data:", buttonData);
 
-        await axios.put(`https://localhost:7001/api/SelCarriageSeatStru/${id}`, buttonData);
+        await axios.put(`https://localhost:7001/api/SelCarriageSeatStru/${id}`, buttonData,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
 
         console.log("Button data stored successfully for carriageId:", carriageId);
       });
@@ -264,8 +287,8 @@ function UpdateCarriageRegInfoPage() {
                 <div className="form-group row">
                   <label htmlFor="inputSeatsCount" className="col-form-label">Enter Seat Count</label>
                   <div className="">
-                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" value={formData.seatsCount} onChange={handleInputChange} />
-                    {errors.seatsCount && <div className="text-danger">{errors.seatsCount}</div>}
+                    <input type="number" className="form-control" id="inputSeatsCount" name="seatsCount" placeholder="Seat Count" value={Object.values(buttonStates).filter(state => state.availability).length} disabled />
+                    
                   </div>
                 </div>
                 <div className="form-group row">
@@ -334,7 +357,6 @@ function UpdateCarriageRegInfoPage() {
       </div>
       <Footer/>
     </>
-    
   );
 }
 

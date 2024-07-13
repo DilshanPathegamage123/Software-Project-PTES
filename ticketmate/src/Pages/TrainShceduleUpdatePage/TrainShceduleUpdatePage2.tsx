@@ -6,6 +6,11 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 function TrainShceduleUpdatePage2() {
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const routId = queryParams.get('routId');
@@ -19,7 +24,13 @@ function TrainShceduleUpdatePage2() {
   useEffect(() => {
     const fetchStandNames = async () => {
       try {
-        const response = await fetch(`https://localhost:7001/api/TrainRaliwayStation/byTrainRaliwayId/${routId}`);
+        const response = await fetch(`https://localhost:7001/api/TrainRaliwayStation/byTrainRaliwayId/${routId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        }
+);
         if (response.ok) {
           const data = await response.json();
           const standNames = data.map((stand: { trainStationName: string }) => stand.trainStationName);
@@ -34,7 +45,13 @@ function TrainShceduleUpdatePage2() {
 
     const fetchSelectedStands = async () => {
       try {
-        const response = await fetch(`https://localhost:7001/api/SelectedTrainStation/scheduledTrain/${scheduleId}`);
+        const response = await fetch(`https://localhost:7001/api/SelectedTrainStation/scheduledTrain/${scheduleId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        }
+);
         if (response.ok) {
           const data = await response.json();
           const stands = data.reduce((acc: { [key: string]: { time: string, id: number } }, item: { trainStationName: string, trainarrivalTime: string, id: number }) => {
@@ -116,6 +133,7 @@ function TrainShceduleUpdatePage2() {
         scheduledTrainSchedulId: scheduleId,
         trainStationName,
         trainarrivalTime: convertTo12HourFormat(time),
+        trainDepartureTime: convertTo12HourFormat(time),
       };
 
       try {
@@ -125,6 +143,7 @@ function TrainShceduleUpdatePage2() {
           method: method,
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify(method === 'PUT' ? { ...data, id } : data),
         });
@@ -155,6 +174,9 @@ function TrainShceduleUpdatePage2() {
         try {
           const response = await fetch(`https://localhost:7001/api/SelectedTrainStation/${id}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
 
           if (!response.ok) {

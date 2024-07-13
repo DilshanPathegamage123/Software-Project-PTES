@@ -138,6 +138,7 @@ const LoginPage2 = () => {
   return (
     <div className="loginpage-body ">
       <PrimaryNavBar />
+      <div className="content-wrapper2">
       <a href="http://localhost:5173/">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -206,6 +207,7 @@ const LoginPage2 = () => {
           </div>
         </div>
       </form>
+      </div>
       <Footer />
     </div>
   );

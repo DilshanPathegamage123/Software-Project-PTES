@@ -13,6 +13,10 @@ import Swal from 'sweetalert2'
 
 function RegisteredCarriagePage() {
 
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
+
     // Using react-router-dom's useLocation hook to get query parameters
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -51,7 +55,12 @@ function RegisteredCarriagePage() {
 
     // Function to fetch bus data from API
     const getData = (carriageId: any) => {
-        axios.get(`https://localhost:7001/api/RegCarriage/${carriageId}`)
+        axios.get(`https://localhost:7001/api/RegCarriage/${carriageId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
         .then((result) => {
             setData(result.data);
         })
@@ -64,7 +73,12 @@ function RegisteredCarriagePage() {
     // Function to fetch button states from API
     const getButtonStates = (carriageId: any) => {
             axios
-                .get(`https://localhost:7001/api/SelCarriageSeatStru/ByCarriageId/${carriageId}`)
+                .get(`https://localhost:7001/api/SelCarriageSeatStru/ByCarriageId/${carriageId}`,{
+                    headers: {
+                      Authorization: `Bearer ${getToken()}`,
+                    },
+                  
+                  })
                 .then((result) => {
                     const fetchedButtonStates: { [key: string]: boolean } = {}; // Provide type annotation for fetchedButtonStates
                     result.data.forEach((seat: any) => {
@@ -110,7 +124,7 @@ function RegisteredCarriagePage() {
     };
 
     // Function to handle delete action
-    const handleDelete = () => {
+    const handleDelete = (carriageId: string) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -119,16 +133,52 @@ function RegisteredCarriagePage() {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#00757C",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+                axios.get(`https://localhost:7001/api/RegCarriage/${carriageId}`,{
+                    headers: {
+                      Authorization: `Bearer ${getToken()}`,
+                    },
+                  
+                  })
+                    .then((res) => {
+                        const carriageData = res.data;
+                        carriageData.deleteState = false;
+                        axios.put(`https://localhost:7001/api/RegCarriage/${carriageId}`, carriageData,{
+                            headers: {
+                              Authorization: `Bearer ${getToken()}`,
+                            },
+                          
+                          })
+                            .then(() => {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "The carriage has been marked as deleted.",
+                                    icon: "success"
+                                });
+                               navigate('/TrainOwnerPage')
+                            })
+                            .catch((error) => {
+                                console.error("Error updating deleteState:", error);
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Failed to mark as deleted.",
+                                    icon: "error"
+                                });
+                            });
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching carriage data:", error);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to fetch carriage data.",
+                            icon: "error"
+                        });
+                    });
             }
-          });
+        });
     }
+
     const handleEdit = () => {
         navigate(`/UpdateCarriageRegInfoPage?carriageId=${data.carriageId}`)
     }
@@ -160,7 +210,7 @@ function RegisteredCarriagePage() {
                             </div>
                             <div className='row p-4 justify-content-center text-center'>
                                 <div className='col-6'>
-                                    <button className='btn yellow m-2'onClick={()=>handleDelete()}>Delete</button>
+                                    <button className='btn yellow m-2'onClick={() => handleDelete(data.carriageId)}>Delete</button>
                                     <button className='btn white m-2' onClick={()=>handleEdit()}>Edit</button>
                                 </div>
                             </div>

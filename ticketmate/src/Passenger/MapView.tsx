@@ -1,5 +1,5 @@
 import Footer from "../Components/Footer/footer";
-import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar";
+import PrimaryNavBar from "../Components/NavBar/PrimaryNavBar-logout";
 import Rec4 from "./images/Rectangle 1291.png";
 import train from "../Components/payment/asset/train.png";
 import Minicar from "../Components/payment/asset/Minicar.png";

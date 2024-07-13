@@ -11,6 +11,9 @@ interface BusScheduleForm2Props {
 
 function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusScheduleForm2Props) {
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
   const navigate = useNavigate();
   
   const [selectedStands, setSelectedStands] = useState<{ [key: string]: string }>({});
@@ -73,6 +76,7 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify(data),
         });
@@ -114,6 +118,9 @@ function BusScheduleForm2({ standNames, handleNext, userId, scheduleId }: BusSch
         try {
           const response = await fetch(`https://localhost:7001/api/ScheduledBus/${scheduleId}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
   
           if (!response.ok) {

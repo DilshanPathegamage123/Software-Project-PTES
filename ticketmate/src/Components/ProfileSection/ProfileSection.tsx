@@ -20,14 +20,28 @@ interface PassengerData {
   isDeleted: boolean;
   requestStatus: boolean;
 }
+const getToken = () => {
+  return sessionStorage.getItem("token");
+};
 
 function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehicleType }: { id: string, firstName: string, lastName: string, email: string, backgroundImage: string, vehicleType:string }) {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+  
   const navigate = useNavigate();
   const [passengerdata, setPassengerdata] = useState<PassengerData | null>(null);
 
   const handleEditClick = async () => {
     try {
-      const response = await fetch(`https://localhost:7001/api/userData/${id}`);
+      const response = await fetch(`https://localhost:7001/api/userData/${id}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
+
       const data = await response.json();
       const passenger = {
         id: data.id,
@@ -46,7 +60,7 @@ function ProfileSection({ id, firstName, lastName, email, backgroundImage, vehic
         requestStatus: data.requestStatus,
       };
       setPassengerdata(passenger);
-
+//ownerdata: OwnerData 
       // Navigate to UpdatePassengerProfile with the retrieved data
       navigate('/UpdatePassengerProfile', { state: { passengerdata: passenger } });
     } catch (error) {

@@ -21,7 +21,6 @@ type BookingType = {
   paymentId: string;
 };
 
-
 interface MyBookingsProps {
   pid: number;
   username: string;
@@ -32,9 +31,6 @@ interface passengerData {
   id: number;
 }
 
-
-
-
 function MyBookings({ pid, username, password }: MyBookingsProps) {
   const passengerid=pid;
   const navigate = useNavigate();
@@ -43,10 +39,6 @@ function MyBookings({ pid, username, password }: MyBookingsProps) {
   const [selectedBooking, setSelectedBooking] = useState<BookingType | null>(
     null
   );
-
-
-
-
 
   console.log(pid);
   console.log(username);
@@ -65,7 +57,6 @@ console.log(passengerId);
           Swal.showLoading();
         },
       });
-
 
       try {
         const busResponse = await axios.get(
@@ -123,7 +114,7 @@ console.log(passengerId);
 
         const today = new Date();
         const filterBookings = (booking: BookingType) =>
-          new Date(booking.bookingDate) >= today;
+        new Date(booking.bookingDate) >= today;
 
         const filteredBusBookings = busBookings.filter(filterBookings);
         const filteredTrainBookings = trainBookings.filter(filterBookings);
@@ -143,13 +134,7 @@ console.log(passengerId);
     fetchBookings();
   }, [passengerId]);
 
-
-
   console.log(bookings);
-
-  // const handelviewbtn = () => {
-  //   navigate("/Mapview", { state: { bookings } });
-  // }
 
   const handleEditClick = (booking: BookingType) => {
     if (booking.type === "bus") {
@@ -248,8 +233,7 @@ console.log(passengerId);
                   )  
                   }
                   
-                />
-                
+                />               
               </div>
               <div className="col-lg-1 col-2 align-items-center justify-content-center d-flex m-auto pt-sm-2 ">
                 <PrimaryButton
@@ -282,7 +266,7 @@ console.log(passengerId);
        // <div className="text-center">No active bookings found.</div>
                 <div className="row p-4 rounded-4 sec shadow bg-grey mt-4 mb-4 ml-4 mr-4">
                     <div className="col-lg-12 mt-5 mb-4">
-                        <p className="text-danger fs-10 fw-bold font-family-Inter">
+                        <p className="text-center fs-10 font-family-Inter">
                             No active bookings found.
                         </p>
                     </div>

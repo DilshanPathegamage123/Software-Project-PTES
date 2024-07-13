@@ -8,6 +8,7 @@ import axios from "axios";
 interface EndLocationSelectorProps {
   selectedVehicleType: string;
   setSelectedEndLocation: React.Dispatch<React.SetStateAction<string>>;
+  defaultEndLocation?: string; 
 }
 
 interface BusStand {
@@ -21,8 +22,9 @@ interface TrainStation {
 const EndLocationSelector: React.FC<EndLocationSelectorProps> = ({
   selectedVehicleType,
   setSelectedEndLocation,
+  defaultEndLocation,
 }) => {
-  const [endvalue, setEndValue] = useState("");
+  const [endValue, setEndValue] = useState(defaultEndLocation); 
   const [endData, setEndData] = useState<{ stopName: string }[]>([]);
   const [filteredEndData, setFilteredEndData] = useState<
     { stopName: string }[]
@@ -141,6 +143,7 @@ function uniqueBy<T>(arr: T[], key: keyof T): T[] {
       <input
         className=" p-sm-3 p-2 align-content-center w-100 "
         list="endLocationList"
+        value={endValue}
         onChange={(e) => {
           setEndValue(e.target.value);
           filterEndLocations(e.target.value);

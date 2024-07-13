@@ -184,9 +184,10 @@ function BusRegistrationPage() {
           title: "Your Bus Successfully Registered",
           showConfirmButton: true,
           timer: 3500
-        })
+        }).then(() => {
+          navigate('/BusOwnerPage');
+        });
 
-        navigate('/BusOwnerPage');
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -205,6 +206,7 @@ function BusRegistrationPage() {
     }
   };
 
+
   const storeButtonData = async (busId: number) => {
     try {
       for (const [seatId, availability] of Object.entries(buttonStates)) {
@@ -216,7 +218,12 @@ function BusRegistrationPage() {
 
         console.log("Button Data:", buttonData);
 
-        await axios.post(`https://localhost:7001/api/SelectedSeatStr`, buttonData);
+        await axios.post(`https://localhost:7001/api/SelectedSeatStr`, buttonData, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
 
         console.log("Button data stored successfully for BusId:", busId);
       }

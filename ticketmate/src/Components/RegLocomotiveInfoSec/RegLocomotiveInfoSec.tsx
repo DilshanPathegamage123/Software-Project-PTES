@@ -19,6 +19,10 @@ interface TrainData {
 
 function RegLocomotiveInfoSec({ id }: { id: string }) { // Pass id as props
 
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
+      
     const [data, setData] = useState<TrainData[]>([]);
 
     useEffect(() => {
@@ -26,7 +30,12 @@ function RegLocomotiveInfoSec({ id }: { id: string }) { // Pass id as props
     }, []);
 
     const getData = () => {
-        axios.get(`https://localhost:7001/api/RegLocomotive/user/${id}`)
+        axios.get(`https://localhost:7001/api/RegLocomotive/user/${id}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((result) => {
                 // Filter out buses where deleteState is false
                 const filteredData = result.data.filter((item: TrainData) => item.deleteState);
@@ -49,13 +58,23 @@ function RegLocomotiveInfoSec({ id }: { id: string }) { // Pass id as props
         }).then((result) => {
             if (result.isConfirmed) {
                 // Fetch the current data for the bus
-                axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`)
+                axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`,{
+                    headers: {
+                      Authorization: `Bearer ${getToken()}`,
+                    },
+                  
+                  })
                     .then((res) => {
                         const busData = res.data;
                         // Update deleteState to false
                         busData.deleteState = false;
                         // Send the updated data back to the server
-                        axios.put(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`, busData)
+                        axios.put(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`, busData,{
+                            headers: {
+                              Authorization: `Bearer ${getToken()}`,
+                            },
+                          
+                          })
                             .then(() => {
                                 Swal.fire({
                                     title: "Deleted!",

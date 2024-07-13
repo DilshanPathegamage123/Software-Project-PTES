@@ -28,6 +28,10 @@ function UpdateBusRegInfoPage() {
   const busId = queryParams.get('busId') ?? '';
   console.log("Bus id " + busId);
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const [formData, setFormData] = useState({
     busNum: '',
     busName: '',
@@ -65,7 +69,12 @@ function UpdateBusRegInfoPage() {
 
   const fetchBusData = async (busId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`);
+      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const busData = response.data;
       setFormData({
         busNum: busData.busNo,
@@ -87,7 +96,12 @@ function UpdateBusRegInfoPage() {
 
   const fetchSeatData = async (busId: string) => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/SelectedSeatStr/bus/${busId}`);
+      const response = await axios.get(`https://localhost:7001/api/SelectedSeatStr/bus/${busId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const seatData = response.data.reduce((acc: { [key: string]: ButtonState }, seat: any) => {
         acc[seat.seatId] = { availability: seat.seatAvailability, id: seat.id };
         return acc;
@@ -189,6 +203,11 @@ function UpdateBusRegInfoPage() {
           insuranceImgURL: insuranceUrl,
           busName: formData.busName,
           userId: formData.userId
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
         });
 
         const buttonDataSuccess = await storeButtonData(busId);
@@ -240,7 +259,12 @@ function UpdateBusRegInfoPage() {
 
         console.log("Button Data:", buttonData);
 
-        await axios.put(`https://localhost:7001/api/SelectedSeatStr/${id}`, buttonData);
+        await axios.put(`https://localhost:7001/api/SelectedSeatStr/${id}`, buttonData,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
 
         console.log("Button data stored successfully for BusId:", busId);
       });

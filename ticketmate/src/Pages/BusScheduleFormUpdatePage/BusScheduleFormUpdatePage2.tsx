@@ -43,7 +43,12 @@ function BusScheduleFormUpdatePage2() {
 
     const fetchSelectedStands = async () => {
       try {
-        const response = await fetch(`https://localhost:7001/api/SchBusStand/schedule/${scheduleId}`);
+        const response = await fetch(`https://localhost:7001/api/SchBusStand/schedule/${scheduleId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         if (response.ok) {
           const data = await response.json();
           const stands = data.reduce((acc: { [key: string]: { time: string, id: number } }, item: { busStation: string, standArrivalTime: string, id: number }) => {
@@ -136,6 +141,7 @@ function BusScheduleFormUpdatePage2() {
           method: method,
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify(method === 'PUT' ? { ...data, id } : data),
         });
@@ -166,6 +172,9 @@ function BusScheduleFormUpdatePage2() {
         try {
           const response = await fetch(`https://localhost:7001/api/SchBusStand/${id}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
           });
 
           if (!response.ok) {

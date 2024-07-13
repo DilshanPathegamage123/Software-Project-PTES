@@ -51,10 +51,18 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
 
   const navigate = useNavigate();
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   // Function to check bus ID availability
   const checkBusIdAvailability = async () => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`);
+      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
       if (response.data && response.data.deleteState === true) {
         console.log("Bus Number:", response.data.busNo);
         return response.data.busNo;
@@ -79,7 +87,11 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
   // Function to check driver ID availability
   const checkDriverIdAvailability = async () => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/userData/${driId}`);
+      const response = await axios.get(`https://localhost:7001/api/userData/${driId}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
       if (response.data && response.data.userType === 'Driver') {
         return true;
       } else {
@@ -103,7 +115,11 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
   // Function to check route number availability
   const checkRoutNoAvailability = async () => {
     try {
-      const response = await axios.get(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`);
+      const response = await axios.get(`https://localhost:7001/api/BusRoute/by-routno/${routNo}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
       if (response.status === 200) {
         const data = response.data;
         return data.routId;
@@ -181,7 +197,11 @@ function BusScheduleForm({ handleNext, userId }: { handleNext: any, userId: stri
       };
 
       try {
-        const response = await axios.post('https://localhost:7001/api/ScheduledBus', newBusSchedule);
+        const response = await axios.post('https://localhost:7001/api/ScheduledBus', newBusSchedule, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        });
         const { scheduleId } = response.data; // Extract scheduleId from response
         setScheduleId(scheduleId); // Set scheduleId state
         console.log('Schedule ID: ', scheduleId);

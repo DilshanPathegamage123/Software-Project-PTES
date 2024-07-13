@@ -131,6 +131,7 @@ function ownerFormComponent() {
               <input
                 type="text"
                 name="firstName"
+                maxLength={30}
                 id="firstName"
                 style={{
                   borderRadius: "4px",
@@ -156,6 +157,7 @@ function ownerFormComponent() {
               <input
                 type="text"
                 name="lastName"
+                maxLength={30}
                 id="lastName"
                 style={{
                   borderRadius: "4px",
@@ -184,6 +186,7 @@ function ownerFormComponent() {
                 type="text"
                 name="nic"
                 id="nic"
+                maxLength={12}
                 style={{
                   borderRadius: "4px",
                   background: "#F6F6F6",
@@ -282,6 +285,7 @@ function ownerFormComponent() {
                 type="text"
                 name="contactNumber"
                 id="contactNumber"
+                maxLength={10}
                 style={{
                   borderRadius: "4px",
                   background: "#F6F6F6",
@@ -309,6 +313,7 @@ function ownerFormComponent() {
                 type="text"
                 name="userName"
                 id="userName"
+                maxLength={20}
                 style={{
                   borderRadius: "4px",
                   background: "#F6F6F6",

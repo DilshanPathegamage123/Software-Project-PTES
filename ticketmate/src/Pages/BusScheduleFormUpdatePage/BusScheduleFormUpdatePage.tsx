@@ -100,10 +100,41 @@ function BusScheduleFormUpdatePage() {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
+  //get the bus no
+  const checkBusIdAvailability = async () => {
+    try {
+      const response = await axios.get(`https://localhost:7001/api/BusReg/${busId}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
+      if (response.data && response.data.deleteState === true) {
+        console.log("Bus Number:", response.data.busNo);
+        return response.data.busNo;
+      } else {
+        swal.fire({
+          icon: 'error',
+          title: 'Bus ID Not Valid',
+          text: 'The entered Bus ID is not valid or the bus is not available. Please check and try again.'
+        });
+        return null;
+      }
+    } catch (error) {
+      swal.fire({
+        icon: 'error',
+        title: 'Bus ID Not Found',
+        text: 'The entered Bus ID is not available. Please check and try again.'
+      });
+      return null;
+    }
+  };
+
   const handleUpdateClick = async () => {
     if (validateInput()) {
       setIsSubmitting(true);
 
+      const busNo = await checkBusIdAvailability();
+      
       const updatedBusSchedule = {
         scheduleId: scheduleId,
         registeredBusBusId: busId,

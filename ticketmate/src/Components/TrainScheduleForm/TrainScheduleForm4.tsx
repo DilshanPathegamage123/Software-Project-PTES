@@ -4,6 +4,10 @@ import '../../vars.css';
 import { useNavigate } from 'react-router-dom';
 
 function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, handleNext: () => void;}) {
+  
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
   const [trainLocs, setTrainLocs] = useState<string[]>([]);
   const [currentTrainLoc, setCurrentTrainLoc] = useState('');
   const navigate = useNavigate();
@@ -11,7 +15,12 @@ function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, ha
   const handleAdd = async () => {
     if (currentTrainLoc.trim() !== '') {
       try {
-        const response = await fetch(`https://localhost:7001/api/RegLocomotive/${currentTrainLoc}`);
+        const response = await fetch(`https://localhost:7001/api/RegLocomotive/${currentTrainLoc}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         const data = await response.json();
 
         if (response.ok && data.deleteState) {
@@ -52,7 +61,8 @@ function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, ha
         const response = await fetch(`https://localhost:7001/api/ScheduledLocomotive`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify({
             scheduledTrainSchedulId: scheduleId,
@@ -89,6 +99,10 @@ function TrainScheduleForm4({ scheduleId, handleNext }: { scheduleId: string, ha
         try {
           const response = await fetch(`https://localhost:7001/api/ScheduledTrain/${scheduleId}`, {
             method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+
           });
   
           // if (!response.ok) {

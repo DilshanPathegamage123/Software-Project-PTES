@@ -12,6 +12,10 @@ import Swal from 'sweetalert2'
 
 function RegisteredLocomitivePage() {
 
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
+
     // Using react-router-dom's useLocation hook to get query parameters
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -44,7 +48,12 @@ function RegisteredLocomitivePage() {
 
     // Function to fetch bus data from API
     const getData = (busId: any) => {
-        axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`)
+        axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
         .then((result) => {
             setData(result.data);
         })
@@ -71,13 +80,23 @@ function RegisteredLocomitivePage() {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-                axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`)
+                axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`,{
+                    headers: {
+                      Authorization: `Bearer ${getToken()}`,
+                    },
+                  
+                  })
                 .then((res) => {
                     const busData = res.data;
                     // Update deleteState to false
                     busData.deleteState = false;
                     // Send the updated data back to the server
-                    axios.put(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`, busData)
+                    axios.put(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`, busData,{
+                        headers: {
+                          Authorization: `Bearer ${getToken()}`,
+                        },
+                      
+                      })
                         .then(() => {
                             Swal.fire({
                                 title: "Deleted!",

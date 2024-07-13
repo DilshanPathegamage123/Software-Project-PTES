@@ -18,6 +18,10 @@ interface ApiResponse {
 
 function LocomotiveRegistrationForm() {
 
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userId = queryParams.get('id');
@@ -122,25 +126,30 @@ function LocomotiveRegistrationForm() {
             locomotiveSpeed: formData.locomotiveSpeed,
             licenseImgURL: licenseUrl,
             userId: userId
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
         });
 
         const locomotiveId = response.data.locomotiveId;
         console.log("Newly generated LocomotiveId:", locomotiveId );
 
-        Swal.close();
+        Swal.close(); // Close the loading Swal first
 
         Swal.fire({
           icon: "success",
           title: "Your Locomotive Successfully Registered",
           showConfirmButton: false,
           timer: 3500
+        }).then(() => {
+          navigate('/TrainOwnerPage'); // Navigate after the success message is shown
         });
-        // setTimeout(() => {
-        //     window.location.reload();
-        // }, 4000);
 
-        navigate('/TrainOwnerPage');
       } catch (error) {
+        Swal.close(); // Close the loading Swal in case of error
+
         Swal.fire({
           icon: "error",  
           title: "Form submission failed",
@@ -187,7 +196,7 @@ function LocomotiveRegistrationForm() {
     <>
       <div className='container'>
         <div className='col-12 rounded-4 formSec'>
-          <div className='row py-4'>
+          <div className='row pb-4'>
             <h3 className='h3Style text-center'>Fill this form to register a new Locomotive</h3>
           </div>
 
@@ -240,8 +249,8 @@ function LocomotiveRegistrationForm() {
                 </div>
               </div>
             </div>
-            <div className='row py-5'>
-              <div className='col-12 text-center p-3'>
+            <div className='row pt-5'>
+              <div className='col-12 text-center pt-3'>
 
                 <button type='button' className='btn white mx-3 ' onClick={CancelButton}>Cancel</button>
                 <button type='submit' className='btn primary mx-3 '>Register</button>

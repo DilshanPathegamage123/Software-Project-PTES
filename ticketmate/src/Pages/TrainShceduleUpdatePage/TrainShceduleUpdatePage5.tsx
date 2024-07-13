@@ -7,6 +7,10 @@ import Footer from '../../Components/Footer/footer';
 
 function TrainScheduleUpdatePage5() {
     
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const navigate = useNavigate();
   const [trainLocs, setTrainLocs] = useState<{ id: number, registeredCarriageCarriageId: string }[]>([]);
   const [newTrainLocs, setNewTrainLocs] = useState<{ carriageId: string, classType: string }[]>([]);
@@ -22,7 +26,12 @@ function TrainScheduleUpdatePage5() {
 
   const fetchExistingLocomotives = async () => {
     try {
-      const response = await fetch(`https://localhost:7001/api/ScheduledCarriage/ByTrainSchedule/${scheduleId}`);
+      const response = await fetch(`https://localhost:7001/api/ScheduledCarriage/ByTrainSchedule/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const data = await response.json();
       setTrainLocs(data.map((loc: { id: number, registeredCarriageCarriageId: string }) => loc));
     } catch (error) {
@@ -33,7 +42,12 @@ function TrainScheduleUpdatePage5() {
   const handleAdd = async () => {
     if (currentTrainLoc.trim() !== '') {
       try {
-        const response = await fetch(`https://localhost:7001/api/RegCarriage/${currentTrainLoc}`);
+        const response = await fetch(`https://localhost:7001/api/RegCarriage/${currentTrainLoc}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         const data = await response.json();
 
         if (response.ok && data.deleteState) {
@@ -70,6 +84,9 @@ function TrainScheduleUpdatePage5() {
     try {
       const response = await fetch(`https://localhost:7001/api/ScheduledCarriage/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
       });
 
       if (response.ok) {
@@ -92,7 +109,8 @@ function TrainScheduleUpdatePage5() {
         const response = await fetch(`https://localhost:7001/api/ScheduledCarriage`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify({
             scheduledTrainSchedulId: scheduleId,

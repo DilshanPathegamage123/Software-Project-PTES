@@ -155,12 +155,14 @@ const TotalBlock2: React.FC<TotalBlock2Props> = ({
             <StartLocationSelector
               selectedVehicleType={selectedVehicleType}
               setSelectedStartLocation={setSelectedStartLocation}
+              defaultStartLocation = {selectedStartLocation}
             />
           </div>
           <div className="col pb-1 ">
             <EndLocationSelector
               selectedVehicleType={selectedVehicleType}
               setSelectedEndLocation={setSelectedEndLocation}
+              defaultEndLocation = {selectedEndLocation}
             />
           </div>
           <div className="col pb-1 ">

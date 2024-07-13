@@ -6,6 +6,10 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout';
 import Footer from '../../Components/Footer/footer';
 
 function TrainShceduleUpdatePage4() {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
     
   const navigate = useNavigate();
   const [trainLocs, setTrainLocs] = useState<{ id: number, registeredLocomotiveLocomotiveId: string }[]>([]);
@@ -22,7 +26,12 @@ function TrainShceduleUpdatePage4() {
 
   const fetchExistingLocomotives = async () => {
     try {
-      const response = await fetch(`https://localhost:7001/api/ScheduledLocomotive/by-train-schedule/${scheduleId}`);
+      const response = await fetch(`https://localhost:7001/api/ScheduledLocomotive/by-train-schedule/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       const data = await response.json();
       setTrainLocs(data.map((loc: { id: number, registeredLocomotiveLocomotiveId: string }) => loc));
     } catch (error) {
@@ -33,7 +42,12 @@ function TrainShceduleUpdatePage4() {
   const handleAdd = async () => {
     if (currentTrainLoc.trim() !== '') {
       try {
-        const response = await fetch(`https://localhost:7001/api/RegLocomotive/${currentTrainLoc}`);
+        const response = await fetch(`https://localhost:7001/api/RegLocomotive/${currentTrainLoc}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         const data = await response.json();
 
         if (response.ok && data.deleteState) {
@@ -69,6 +83,10 @@ function TrainShceduleUpdatePage4() {
     try {
       const response = await fetch(`https://localhost:7001/api/ScheduledLocomotive/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+
       });
 
       if (response.ok) {
@@ -91,7 +109,9 @@ function TrainShceduleUpdatePage4() {
         const response = await fetch(`https://localhost:7001/api/ScheduledLocomotive`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
+
           },
           body: JSON.stringify({
             scheduledTrainSchedulId: scheduleId,

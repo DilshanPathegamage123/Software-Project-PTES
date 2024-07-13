@@ -13,6 +13,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 function UpdateLocomotiveRegInfoPage() {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const locomotiveId = queryParams.get('locomotiveId');
@@ -44,7 +49,12 @@ function UpdateLocomotiveRegInfoPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`);
+        const response = await axios.get(`https://localhost:7001/api/RegLocomotive/${locomotiveId}`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
+        });
         const data = response.data;
         setFormData({
           locomotiveNum: data.locomotiveNumber,
@@ -135,6 +145,11 @@ function UpdateLocomotiveRegInfoPage() {
           locomotiveSpeed: formData.locomotiveSpeed,
           userId: formData.userId,
           licenseImgURL: licenseUrl // Use existing URL if no new file is uploaded
+        },{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        
         });
 
         Swal.close();
@@ -149,7 +164,7 @@ function UpdateLocomotiveRegInfoPage() {
         //   window.location.reload();
         // }, 4000);
 
-        navigate('/TrainOwnerPage');
+        navigate(`/RegisteredLocomitivePage?locomotiveId=${locomotiveId}`);
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -188,7 +203,7 @@ function UpdateLocomotiveRegInfoPage() {
       confirmButtonText: "Yes, Go Back!"
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/TrainOwnerPage');
+        navigate(`/RegisteredLocomitivePage?locomotiveId=${locomotiveId}`);
       }
     });
   };

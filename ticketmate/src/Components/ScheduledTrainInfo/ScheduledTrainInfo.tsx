@@ -16,6 +16,11 @@ interface BusInfo {
 }
 
 function ScheduledTrainInfo({ id }: { id: string }) {
+
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
+
     const [data, setData] = useState<BusInfo[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -27,7 +32,12 @@ function ScheduledTrainInfo({ id }: { id: string }) {
 
     const getData = () => {
         setLoading(true);
-        axios.get(`https://localhost:7001/api/ScheduledTrain/user/${id}`)
+        axios.get(`https://localhost:7001/api/ScheduledTrain/user/${id}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
             .then((result) => {
                 const filteredData = result.data.filter((busInfo: BusInfo) => busInfo.deleteState === true);
                 setData(filteredData);
@@ -54,7 +64,12 @@ function ScheduledTrainInfo({ id }: { id: string }) {
                 const busInfo = data.find(bus => bus.schedulId === schedulId);
                 if (busInfo) {
                     const updatedBusInfo = { ...busInfo, deleteState: false };
-                    axios.put(`https://localhost:7001/api/ScheduledTrain/${schedulId}`, updatedBusInfo)
+                    axios.put(`https://localhost:7001/api/ScheduledTrain/${schedulId}`, updatedBusInfo,{
+                        headers: {
+                          Authorization: `Bearer ${getToken()}`,
+                        },
+                      
+                      })
                         .then(() => {
                             Swal.fire({
                                 title: "Deleted!",

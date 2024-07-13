@@ -14,6 +14,11 @@ interface ScheduleDate {
 }
 
 function TrainShceduleUpdatePage3() {
+
+  const getToken = () => {
+    return sessionStorage.getItem("token");
+  };
+
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -30,7 +35,12 @@ function TrainShceduleUpdatePage3() {
 
   const fetchExistingDates = async () => {
     try {
-      const response = await fetch(`https://localhost:7001/api/ScheduledTrainDate/ByScheduledTrainSchedulId/${scheduleId}`);
+      const response = await fetch(`https://localhost:7001/api/ScheduledTrainDate/ByScheduledTrainSchedulId/${scheduleId}`,{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      
+      });
       if (response.ok) {
         const data = await response.json();
         setDates(data);
@@ -71,6 +81,9 @@ function TrainShceduleUpdatePage3() {
       try {
         fetch(`https://localhost:7001/api/ScheduledTrainDate/${dateToRemove.id}`, {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
         })
           .then(response => {
             if (response.ok) {
@@ -105,7 +118,8 @@ function TrainShceduleUpdatePage3() {
         const response = await fetch('https://localhost:7001/api/ScheduledTrainDate', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getToken()}`,
           },
           body: JSON.stringify({
             scheduledTrainSchedulId: scheduleId,

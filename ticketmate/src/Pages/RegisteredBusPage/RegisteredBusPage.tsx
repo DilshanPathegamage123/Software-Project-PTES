@@ -5,7 +5,7 @@ import PrimaryNavBar from '../../Components/NavBar/PrimaryNavBar-logout'
 import BusImg from '../../assets/BusIconRegBusPage.png'
 import Wheel from '../../assets/steering-wheel (1).png'
 import BackIcon from '../../assets/ion_arrow-back-circle.png'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
@@ -18,6 +18,7 @@ function RegisteredBusPage() {
     const busId = queryParams.get('busId');
 
     console.log(busId);
+    const navigate = useNavigate();
 
     const [data, setData] = useState({
         busId: '',
@@ -30,6 +31,10 @@ function RegisteredBusPage() {
       });
 
     const [buttonStates, setButtonStates] = useState({});
+
+    const getToken = () => {
+        return sessionStorage.getItem("token");
+      };
     
 
     // Fetching data and button states on component mount
@@ -47,7 +52,12 @@ function RegisteredBusPage() {
 
     // Function to fetch bus data from API
     const getData = (busId: any) => {
-        axios.get(`https://localhost:7001/api/BusReg/${busId}`)
+        axios.get(`https://localhost:7001/api/BusReg/${busId}`,{
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          
+          })
         .then((result) => {
             setData(result.data);
         })
@@ -60,7 +70,12 @@ function RegisteredBusPage() {
     // Function to fetch button states from API
     const getButtonStates = (busId: any) => {
             axios
-                .get(`https://localhost:7001/api/SelectedSeatStr/bus/${busId}`)
+                .get(`https://localhost:7001/api/SelectedSeatStr/bus/${busId}`,{
+                    headers: {
+                      Authorization: `Bearer ${getToken()}`,
+                    },
+                  
+                  })
                 .then((result) => {
                     const fetchedButtonStates: { [key: string]: boolean } = {}; // Provide type annotation for fetchedButtonStates
                     result.data.forEach((seat: any) => {
@@ -105,7 +120,7 @@ function RegisteredBusPage() {
     };
 
     // Function to handle delete action
-    const handleDelete = () => {
+    const handleDelete = (busId: string) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -114,15 +129,48 @@ function RegisteredBusPage() {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#00757C",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
+                // Fetch the current data for the bus
+                axios.get(`https://localhost:7001/api/BusReg/${busId}`,
+                    { headers: { Authorization: `Bearer ${getToken()}` } }
+                )
+
+                    .then((res) => {
+                        const busData = res.data;
+                        busData.deleteState = false;
+                        // Send the updated data back to the server
+                        axios.put(`https://localhost:7001/api/BusReg/${busId}`, busData,
+                            { headers: { Authorization: `Bearer ${getToken()}` } }
+                        )
+
+                            .then(() => {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "The bus has been deleted.",
+                                    icon: "success"
+                                });
+                                navigate('/BusOwnerPage');
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Failed to mark as deleted.",
+                                    icon: "error"
+                                });
+                            });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to fetch bus data.",
+                            icon: "error"
+                        });
+                    });
             }
-          });
+        });
     }
 
   return (
@@ -151,7 +199,7 @@ function RegisteredBusPage() {
                         <div className='row p-4 justify-content-center text-center'>
                             <div className='col-6'>
                                 <Link to={`/UpdateBusRegInfoPage?busId=${data.busId}`}><button className='btn white m-2'>Edit</button></Link>
-                                <button className='btn yellow m-2'onClick={()=>handleDelete()}>Delete</button>
+                                <button className='btn yellow m-2'onClick={()=>handleDelete(data.busId)}>Delete</button>
                             </div>
                         </div>
                     </div>

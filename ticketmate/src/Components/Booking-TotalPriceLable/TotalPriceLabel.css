@@ -1,0 +1,10 @@
+.PayNowButton {
+  border-radius: 8px;
+  background: #ffc700;
+  color: white;
+}
+
+.PayNowButton:hover {
+  background: #c08e04;
+  color: white;
+}

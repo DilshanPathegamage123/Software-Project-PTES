@@ -1,0 +1,19 @@
+@import "../../vars.css";
+
+*{
+    margin: 0;
+    padding: 0;
+    
+}
+
+.container-fluid{
+    padding-left: 72px;
+    padding-right: 72px;
+}
+.proSec{
+    background-color: var(--color-primary) !important;
+    background-size: contain; /* Ensure the image fits within the container */
+    background-position: right bottom; /* Position the image on the right side */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    height: 100%; /* Ensure the container takes up the full height */
+}

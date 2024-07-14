@@ -1,0 +1,17 @@
+.form-control{
+    display: flex;
+width: 340.084px;
+height: 52.321px;
+/* padding: 0px 0.084px 2.321px 0px; */
+justify-content: center;
+align-items: center;
+flex-shrink: 0;
+
+}
+.form-control::placeholder {
+    padding-left: 0px;
+  }
+.form-check-label{
+        margin-right: 25%;
+ 
+}

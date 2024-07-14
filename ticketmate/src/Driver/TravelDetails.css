@@ -1,0 +1,13 @@
+@import "../../src/vars.css";
+
+.sec{
+    background:"#F1F1F1"
+}
+.scroll-container {
+    max-height: 1150px; /* Adjust this height to your needs */
+    overflow-y: auto;
+  }
+  
+  .travel-box {
+    margin-bottom: 20px; /* Adjust spacing between boxes if needed */
+  }

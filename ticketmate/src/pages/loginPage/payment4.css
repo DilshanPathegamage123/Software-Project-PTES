@@ -1,0 +1,12 @@
+#payment4_body{
+    background-image: url("../../Components/payment/asset/background.png");
+   
+  /* background-position: center center;   */
+  background-repeat: no-repeat; 
+  width: 100%;
+  height:auto;
+  background-size: cover;
+  }
+  .foot{
+    margin-bottom: 0;
+  }

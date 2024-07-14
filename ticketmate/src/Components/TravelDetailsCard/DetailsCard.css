@@ -1,0 +1,30 @@
+.DetailsCard {
+  background-color: #f1f1f1;
+  height: auto;
+}
+
+.DetailsCard.BookingPage {
+  background-color: #042f40;
+  color: white;
+  height: auto;
+}
+
+.VehicleImg {
+  width: 135px;
+  height: 100px;
+  flex-shrink: 0;
+}
+
+.DetailsCard {
+  font-size: 0.7rem;
+}
+
+.btn {
+  background-color: #00757c;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #004347;
+  cursor: pointer;
+}
